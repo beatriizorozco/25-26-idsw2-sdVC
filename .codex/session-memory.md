@@ -1,72 +1,99 @@
 ---
 name: session-memory
-description: Se activa automáticamente cuando el usuario dice "bienvenido", "sesion terminada", "inicio sesión" o frases similares relacionadas con comenzar o cerrar una sesión de trabajo. Mantiene un conversation-log persistente del proyecto, prompts utilizados, decisiones técnicas, cambios realizados y skills usadas.
+description: Se activa automáticamente cuando el usuario dice "bienvenido", "inicio sesión", "sesion terminada" o frases similares. Mantiene un registro persistente del desarrollo del proyecto mediante `conversation-log.md`, documentando decisiones técnicas, cambios importantes, contexto de trabajo, commits y progreso general.
 ---
 
 # Session Memory
 
+## Objetivo
+
+Mantener continuidad entre sesiones de desarrollo mediante un registro cronológico y técnico del proyecto.
+
+El archivo principal de memoria es:
+
+`conversation-log.md`
+
+Este archivo representa la fuente principal de contexto histórico del proyecto.
+
+---
+
+# Inicio de sesión
+
 Cuando el usuario diga:
 
 - "bienvenido"
-- "empezamos"
 - "inicio sesión"
+- "empezamos"
 - "hola"
 
 Debes:
 
-1. Leer `conversation-log.md` si existe
-2. Analizar el estado actual del repositorio
-3. Crear una nueva entrada de inicio de sesión
-4. Detectar:
-  - rama actual
-  - stack tecnológico
-  - archivos modificados
-  - estado general del proyecto
-  - últimas decisiones técnicas relevantes
+1. Leer `conversation-log.md` si existe.
+2. Si no existe, crearlo automáticamente.
+3. Analizar:
+   - estado actual del repositorio
+   - rama activa
+   - archivos modificados
+   - commits recientes
+   - arquitectura detectada
+   - tecnologías utilizadas
+   - decisiones técnicas previas
+4. Identificar la última entrada relevante del log.
+5. Resumir el contexto actual antes de continuar trabajando.
 
-Formato obligatorio:
+---
+
+# Formato obligatorio del log
+
+Usar SIEMPRE este formato:
 
 # Conversation log
 
-## [HH:MM] Inicio de sesión
+## [HH:MM] Título breve
 
-**Prompt:** Inicio automático de sesión y análisis del estado actual del proyecto.
+**Prompt:** petición realizada por el usuario.
 
-**Resultado:** Resumen del estado actual del repositorio, tecnologías detectadas, archivos modificados y contexto previo.
+**Resultado:** cambios realizados, código generado, archivos afectados, decisiones propuestas o acciones ejecutadas.
 
-**Decisión:** Se continúa el desarrollo manteniendo la arquitectura y decisiones técnicas existentes salvo indicación contraria.
-
----
-
-Durante toda la sesión:
-
-Durante la sesión, añade entradas únicamente para cambios relevantes o decisiones importantes, siguiendo el mismo formato:
-
-## [HH:MM] Título breve de lo que se pidió
-
-**Prompt:** lo que el usuario pidió (textual o resumido fielmente)
-
-**Resultado:** lo que produjo Codex, cambios realizados, archivos afectados o decisiones propuestas
-
-**Decisión:** qué se aceptó, qué se rechazó, qué se modificó y por qué
+**Decisión:** qué se aceptó, rechazó, modificó o aplazó, y por qué.
 
 ---
 
-Considera relevantes:
+# Qué debe registrarse
+
+Registrar únicamente cambios relevantes o decisiones importantes.
+
+Considerar relevantes:
+
 - generación de código
 - refactors
-- creación de arquitectura
-- decisiones técnicas
-- cambios de stack
+- arquitectura
 - diseño de APIs
-- debugging
-- generación de frontend
 - cambios de base de datos
+- debugging importante
+- generación de frontend
+- cambios de stack
+- configuración relevante
+- decisiones técnicas
 - uso de skills
-- cambios importantes en configuración
-- decisiones sobre librerías o frameworks
+- creación o modificación de workflows
+- cambios importantes en autenticación, permisos o estructura
 
-Cuando se use una skill, añádela dentro del apartado Resultado o Decisión.
+Evitar documentar:
+
+- cambios triviales
+- modificaciones visuales menores
+- ajustes irrelevantes
+- logs repetidos
+- información redundante
+
+No generar entradas duplicadas para el mismo cambio.
+
+---
+
+# Uso de skills
+
+Cuando se utilice una skill, debe mencionarse dentro de la sección Resultado o Decisión.
 
 Ejemplo:
 
@@ -74,80 +101,120 @@ Ejemplo:
 
 ---
 
+# Gestión de commits
+
+Cuando detectes:
+
+- una funcionalidad terminada
+- un refactor estable
+- una mejora coherente
+- un conjunto consistente de cambios
+
+puedes sugerir realizar un commit.
+
+Si los cambios parecen suficientemente estables, puedes ejecutar automáticamente:
+
+- `git add .`
+- `git commit -m "mensaje"`
+
+Nunca realizar push automáticamente salvo que el usuario lo solicite explícitamente.
+
+---
+
+# Convención de commits
+
+Seguir siempre Conventional Commits en español.
+
+Formato:
+
+tipo(alcance): descripción breve
+
+Tipos permitidos:
+
+- feat
+- fix
+- docs
+- style
+- refactor
+- test
+- chore
+
+Ejemplos:
+
+- feat(auth): agregar autenticación JWT
+- fix(api): corregir validación de usuarios
+- docs(readme): actualizar instalación
+- refactor(frontend): simplificar navbar
+
+Reglas:
+
+- máximo 72 caracteres
+- usar infinitivo
+- no usar punto final
+- mantener mensajes claros y técnicos
+
+Antes de hacer commit:
+
+- revisar `git diff`
+- evitar archivos temporales
+- evitar código roto
+- evitar commits experimentales
+- agrupar cambios relacionados
+
+Nunca hacer commits si:
+
+- existen errores graves
+- el proyecto no compila
+- hay conflictos sin resolver
+- el código está claramente incompleto
+
+---
+
+# Cierre de sesión
+
 Cuando el usuario diga:
 
 - "sesion terminada"
 - "fin sesión"
 - "cerramos"
 - "hasta luego"
+- "terminamos por hoy"
 
 Debes:
 
 1. Analizar:
-  - git diff
-  - archivos creados
-  - archivos modificados
-  - commits realizados
-  - TODOs pendientes
-  - errores conocidos
-  - estado general del proyecto
+   - archivos creados
+   - archivos modificados
+   - commits realizados
+   - TODOs pendientes
+   - errores conocidos
+   - estado final del repositorio
 
-2. Añadir una entrada final siguiendo el mismo formato:
+2. Añadir una nueva entrada al log.
+
+Formato:
 
 ## [HH:MM] Fin de sesión
 
-**Prompt:** Cierre y documentación automática de la sesión.
+**Prompt:** cierre automático de sesión.
 
-**Resultado:** Resumen de todos los cambios realizados durante la sesión, archivos modificados, decisiones técnicas y estado final del repositorio.
+**Resultado:** resumen de los cambios realizados, decisiones tomadas y estado final del proyecto.
 
-**Decisión:** Se documenta el estado final para poder continuar el desarrollo en futuras sesiones sin perder contexto.
-
----
-
-Cuando detectes una funcionalidad terminada, un refactor estable o un conjunto coherente de cambios, puedes sugerir realizar un commit.
-
-El commit debe:
-- seguir Conventional Commits
-- ser breve y descriptivo
-- agrupar cambios relacionados
-- evitar commits excesivamente grandes
-- evitar commits temporales o experimentales
-
-Ejemplos:
-- feat(auth): agregar autenticación JWT
-- fix(api): corregir validación de usuario
-- refactor(frontend): simplificar manejo del navbar
-
-Si los cambios parecen estables y completos, puedes ejecutar automáticamente:
-- git add .
-- git commit -m "mensaje"
-
-Nunca hagas push automáticamente salvo que el usuario lo pida explícitamente.
-Nunca hagas commits si:
-- existen errores graves
-- hay código claramente incompleto
-- el proyecto no compila
-- hay conflictos sin resolver
+**Decisión:** siguiente paso recomendado, tareas pendientes y continuidad para futuras sesiones.
 
 ---
 
-Evita documentar cambios triviales o irrelevantes.
-Prioriza decisiones técnicas, cambios estructurales y avances importantes.
+# Reglas globales
 
-Respetar siempre las reglas definidas en `AGENTS.md`.
-
----
-
-Reglas obligatorias:
-
-- Nunca elimines entradas anteriores
-- Nunca reescribas el historial
-- El log debe crecer cronológicamente
-- Mantén formato markdown limpio y profesional
-- Sé preciso técnicamente
-- Resume sin perder información importante
-- Mantén continuidad entre sesiones
-- Respeta decisiones técnicas anteriores salvo que el usuario indique cambios
-- Si existe ambigüedad, prioriza fidelidad al desarrollo real realizado
-- El log debe escribirse mientras ocurren las interacciones relevantes, no únicamente al final
-- No generar entradas duplicadas para el mismo cambio o decisión.
+- Mantener formato markdown limpio y profesional.
+- Mantener continuidad entre sesiones.
+- Nunca eliminar historial anterior.
+- Nunca reescribir entradas antiguas.
+- El log debe crecer cronológicamente.
+- Priorizar precisión técnica y claridad.
+- Respetar decisiones técnicas previas salvo indicación explícita del usuario.
+- Priorizar un MVP funcional antes que una arquitectura excesivamente compleja.
+- No inventar requisitos no solicitados.
+- Elegir siempre la solución más simple y mantenible cuando existan varias opciones válidas.
+- Evitar sobreingeniería y abstracciones innecesarias.
+- Respetar siempre las reglas definidas en `CODEX.md`.
