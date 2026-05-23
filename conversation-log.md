@@ -45,26 +45,6 @@
 
 ---
 
-## [2026-05-23 01:50] Ajuste de nombres y enlaces locales
-
-**Prompt:** el usuario pidio normalizar nombres de archivos y carpetas, adaptar enlaces Markdown para que no apunten al repositorio anterior y, posteriormente, mantener `02-detalle` en camelCase con los Markdown de caso llamados `README.md`.
-
-**Resultado:** se renombraron las carpetas de casos de uso en `RUP/00-casos-uso/02-detalle`, `images/rup/00-casos-uso/02-detalle` y `modelosUML/rup/00-casos-uso/02-detalle` a camelCase. Los Markdown de cada caso en RUP pasaron a `README.md`; los SVG y PUML de `images` y `modelosUML` adoptaron el nombre camelCase del caso. Se reescribieron enlaces internos para usar rutas locales del repositorio y se eliminaron referencias a assets externos o no presentes.
-
-**Decisión:** se adopta una convencion mixta: `02-detalle` usa camelCase para casos de uso por legibilidad con nombres de operaciones, mientras el resto de artefactos generales mantiene nombres descriptivos en kebab-case. Los `README.md` se mantienen en mayusculas.
-
----
-
-## [2026-05-23 01:55] Convencion de especificacion PUML
-
-**Prompt:** el usuario pidio que todos los PUML de detalle se llamen `especificacion.puml`.
-
-**Resultado:** se renombraron los archivos `.puml` de detalle en `RUP/00-casos-uso/02-detalle` y `modelosUML/rup/00-casos-uso/02-detalle` a `especificacion.puml`. Se actualizaron los enlaces de los `README.md` de detalle para apuntar a la nueva ruta local en `modelosUML`.
-
-**Decisión:** cada carpeta de caso de uso mantiene el nombre del caso en camelCase, el documento textual se llama `README.md` y la fuente PlantUML asociada se llama `especificacion.puml`.
-
----
-
 ## [02:10] Fin de sesion
 
 **Prompt:** cierre automatico de sesion usando la skill `session-memory`.
