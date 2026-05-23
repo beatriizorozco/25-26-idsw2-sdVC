@@ -3,18 +3,19 @@
 <div align="center">
 
 [![](https://img.shields.io/badge/-Inicio-0A3B64?style=for-the-badge&logo=github&logoColor=white)](/README.md)
-[![](https://img.shields.io/badge/-Modelo_del_Dominio-0A3B64?style=for-the-badge&logo=drawio&logoColor=white)](https://github.com/31Diego/ProyectoIDSW1-V2/blob/main/documentos/modeloDelDominio/modeloDominio.md)
-[![](https://img.shields.io/badge/-Actores_y_casos_de_uso-0A3B64?style=for-the-badge&logo=group&logoColor=white)](https://github.com/31Diego/ProyectoIDSW1-V2/blob/main/documentos/casosDeUso/casosDeUso.md)
-[![](https://img.shields.io/badge/-Glosario-0A3B64?style=for-the-badge&logo=notepad&logoColor=white)](https://github.com/31Diego/ProyectoIDSW1-V2/blob/main/documentos/modeloDelDominio/documentos/vocabulario.md)
+[![](https://img.shields.io/badge/-Modelo_del_Dominio-0A3B64?style=for-the-badge&logo=drawio&logoColor=white)](/RUP/00-casos-uso/00-modelo-del-dominio/modelo-dominio.md)
+[![](https://img.shields.io/badge/-Actores_y_casos_de_uso-0A3B64?style=for-the-badge&logo=group&logoColor=white)](/RUP/00-casos-uso/01-actores-casos-uso/actores-casos-uso.md)
+[![](https://img.shields.io/badge/-Glosario-0A3B64?style=for-the-badge&logo=notepad&logoColor=white)](/documents/vocabulario.md)
 
-[![](https://img.shields.io/badge/-Detallado_y_Prototipos-0A3B64?style=for-the-badge&logo=notepad&logoColor=white)](https://github.com/31Diego/ProyectoIDSW1-V2/blob/main/documentos/casosDeUso/detalle/detalladoYPrototipos.md)
-[![](https://img.shields.io/badge/-Diagrama_de_Contexto-0A3B64?style=for-the-badge&logo=flowchart&logoColor=white)](https://github.com/31Diego/ProyectoIDSW1-V2/blob/main/documentos/casosDeUso/diagramas/diagramasContexto.md)
-[![](https://img.shields.io/badge/-Reuniones-0A3B64?style=for-the-badge&logo=google-meet&logoColor=white)](https://github.com/31Diego/ProyectoIDSW1-V2/blob/main/documentos/reuniones/reuniones.md)
-[![](https://img.shields.io/badge/-Priorización-0A3B64?style=for-the-badge&logo=priority&logoColor=white)](https://github.com/31Diego/ProyectoIDSW1-V2/blob/main/documentos/casosDeUso/priorizacionCasosDeUso.md)
+[![](https://img.shields.io/badge/-Detallado_y_Prototipos-0A3B64?style=for-the-badge&logo=notepad&logoColor=white)](/RUP/00-casos-uso/02-detalle/README.md)
+[![](https://img.shields.io/badge/-Diagrama_de_Contexto-0A3B64?style=for-the-badge&logo=flowchart&logoColor=white)](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)
+[![](https://img.shields.io/badge/-Reuniones-0A3B64?style=for-the-badge&logo=google-meet&logoColor=white)](/documents/reuniones.md)
+[![](https://img.shields.io/badge/-Priorización-0A3B64?style=for-the-badge&logo=priority&logoColor=white)](/RUP/00-casos-uso/01-actores-casos-uso/priorizacion-cdu.md)
 [![](https://img.shields.io/badge/-Rúbrica-0A3B64?style=for-the-badge&logo=checklist&logoColor=white)](https://github.com/mmasias/25-26-IdSw1-SdR/blob/main/documents/l'Rubrica.md)
 
-</div>
+[![](https://img.shields.io/badge/-Log_de_conversación-0A3B64?style=for-the-badge&logo=gnometerminal&logoColor=white)](/conversation-log.md)
 
+</div>
 # Modelo del dominio
 
 ## Objetivo
@@ -26,7 +27,7 @@
 
 ## Vocabulario del proyecto
 
-#### En base a nuestra primera reunión definimos los términos clave del proyecto y los explicamos, a continuación los términos mas importantes del [vocabulario](https://github.com/31Diego/ProyectoIDSW1-V2/blob/Desarrollo/documentaci%C3%B3n/ModeloDelDominio/Documentos/Vocabulario.md)
+#### En base a nuestra primera reunión definimos los términos clave del proyecto y los explicamos, a continuación los términos mas importantes del [vocabulario](/documents/vocabulario.md)
 
 ---
 
@@ -60,23 +61,21 @@
 
 <div align=center>
 
-|![](/documentos/modeloDelDominio/imagenes/clases/diagramaClasesProyectoRed.svg)|
+|![](https://raw.githubusercontent.com/beatriizorozco/25-26-idsw2-sdVC/develop/images/RUP/00-casos-uso/00-modelo-del-dominio/00-diagrama-clases/diagrama-clases-proyecto-red.svg)|
 |:-:|
-|**[código](https://github.com/31Diego/ProyectoIDSW1-V2/blob/Desarrollo/documentaci%C3%B3n/ModeloDelDominio/Diagramas/Clases/DiagramaClasesProyectoRed.puml)**| 
+|**[código](/modelosUML/rup/00-casos-uso/00-modelo-del-dominio/00-diagrama-clases/diagrama-clases-proyecto-red.puml)**| 
+
 </div>
-
-
 #### De este diagrama elaboramos dos subdiagramas, los cuales reflejan mejor las necesidades de nuestro sistema y en donde cada uno tiene un contexto muy diferenciado del otro, los cuales son: la gestión de proyectos para el primer diagrama y la red de investigadores para el segundo diagrama.
 
 
 <div align=center>
 
-|![](/documentos/modeloDelDominio/imagenes/clases/diagramaClasesProyecto.svg)|![](/documentos/modeloDelDominio/imagenes/clases/diagramaClasesRed.svg)|
+|![](https://raw.githubusercontent.com/beatriizorozco/25-26-idsw2-sdVC/develop/images/RUP/00-casos-uso/00-modelo-del-dominio/00-diagrama-clases/diagrama-clases-proyecto.svg)|![](https://raw.githubusercontent.com/beatriizorozco/25-26-idsw2-sdVC/develop/images/RUP/00-casos-uso/00-modelo-del-dominio/00-diagrama-clases/diagrama-clases-red.svg)|
 |:-:|:-:|
-|**[código](https://github.com/31Diego/ProyectoIDSW1-V2/blob/Desarrollo/documentaci%C3%B3n/ModeloDelDominio/Diagramas/Clases/DiagramaClasesProyecto.puml)**| **[código](https://github.com/31Diego/ProyectoIDSW1-V2/blob/Desarrollo/documentaci%C3%B3n/ModeloDelDominio/Diagramas/Clases/DiagramaClasesRed.puml)**|
+|**[código](/modelosUML/rup/00-casos-uso/00-modelo-del-dominio/00-diagrama-clases/diagrama-clases-proyecto.puml)**| **[código](/modelosUML/rup/00-casos-uso/00-modelo-del-dominio/00-diagrama-clases/diagrama-clases-red.puml)**|
+
 </div>
-
-
 #### De estos dos diagramas elaboramos los siguientes diagramas de estados de las entidades principales de cada uno de ellos, es decir proyecto e investigador/docente, sin olvidarnos de los dos diferentes contextos que puede tener cada entidad.
 
 
@@ -87,55 +86,37 @@
 
 <div align=center>
 
-|![](/documentos/modeloDelDominio/imagenes/estados/diagramaEstadosProyectoGestion.svg)|![](/documentos/modeloDelDominio/imagenes/estados/diagramaEstadosProyectoRed.svg)|
 |:-:|:-:|
-|**[código](https://github.com/31Diego/ProyectoIDSW1-V2/blob/Desarrollo/documentaci%C3%B3n/ModeloDelDominio/Diagramas/Estados/DiagramaEstadosProyectoGestion.puml)**| **[código](https://github.com/31Diego/ProyectoIDSW1-V2/blob/main/documentos/modeloDelDominio/diagramas/estados/diagramaEstadosProyectoRed.puml)**|
+
 </div>
-
-
 #### En los siguientes diagramas de estado se modelan los diferentes comportamientos que puede tener un investigador.
 
 <div align=center>
 
-|![](/documentos/modeloDelDominio/imagenes/estados/diagramaEstadosInvestigadorGestion.svg)|![](/documentos/modeloDelDominio/imagenes/estados/diagramaEstadosInvestigadorRed.svg)|
 |:-:|:-:|
-|**[código](https://github.com/31Diego/ProyectoIDSW1-V2/blob/Desarrollo/documentaci%C3%B3n/ModeloDelDominio/Diagramas/Estados/DiagramaEstadosInvestigadorGestion.puml)**| **[código](https://github.com/31Diego/ProyectoIDSW1-V2/blob/main/documentos/modeloDelDominio/diagramas/estados/diagramaEstadosInvestigadorRed.puml)**|
+
 </div>
-
-
-
 ## Diagrama de objetos
 
 #### En el siguiente diagrama se implementa una instancia del sistema de gestión de proyectos, en donde hay varios investigadores participando en un proyecto en donde destacan varios aspectos del proyecto como los entregables o las recompensas del mismo hacia los investigadores.
 
 <div align=center>
 
-|![](/documentos/modeloDelDominio/imagenes/objetos/diagramaObjetosProyecto.svg)|
 |:-:|
-|**[código](https://github.com/31Diego/ProyectoIDSW1-V2/blob/main/documentos/modeloDelDominio/diagramas/objetos/diagramaObjetosProyecto.puml)**|
+
 </div>
-
-
 #### En el siguiente diagrama se implementa una instancia del sistema de red de investigadores, en donde de nuevo hay varios investigadores participando en un proyecto pero en este caso destacan aspectos relacionados con los investigadores como los perfiles de los mismos.
 
 <div align=center>
 
-|![](/documentos/modeloDelDominio/imagenes/objetos/diagramaObjetosInvestigador.svg)|
 |:-:|
-|**[código](https://github.com/31Diego/ProyectoIDSW1-V2/blob/main/documentos/modeloDelDominio/diagramas/objetos/diagramaObjetosInvestigador.puml)**|
+
 </div>
-
-
-
 #### Por último el diagrama de objetos unificado, basado en el diagrama de clases de la red de investigadores + gestión de proyectos
 
 
 <div align=center>
 
-|![](/documentos/modeloDelDominio/imagenes/objetos/diagramaObjetosInvestigadorProyecto.svg)|
 |:-:|
-|**[código](https://github.com/31Diego/ProyectoIDSW1-V2/blob/main/documentos/modeloDelDominio/diagramas/objetos/diagramaObjetosInvestigadorProyecto.puml)**|
+
 </div>
-
-
-

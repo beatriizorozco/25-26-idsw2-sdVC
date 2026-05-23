@@ -59,35 +59,21 @@ Usar SIEMPRE este formato:
 
 ---
 
-# Qué debe registrarse
+# Cuándo debe registrarse
 
-Registrar únicamente cambios relevantes o decisiones importantes.
+Actualizar `conversation-log.md` únicamente en dos momentos:
 
-Considerar relevantes:
+- Al inicio de sesión, cuando el usuario diga "bienvenido", "inicio sesión", "empezamos", "hola" o equivalente.
+- Al cierre de sesión, cuando el usuario diga "sesion terminada", "fin sesión", "cerramos", "hasta luego", "terminamos por hoy" o equivalente.
 
-- generación de código
-- refactors
-- arquitectura
-- diseño de APIs
-- cambios de base de datos
-- debugging importante
-- generación de frontend
-- cambios de stack
-- configuración relevante
-- decisiones técnicas
-- uso de skills
-- creación o modificación de workflows
-- cambios importantes en autenticación, permisos o estructura
+Durante la sesión no se debe añadir una entrada por cada prompt. Los cambios relevantes, decisiones técnicas, archivos afectados, commits, errores conocidos y tareas pendientes se acumulan mentalmente y se resumen en la entrada de cierre.
 
-Evitar documentar:
+Evitar siempre:
 
-- cambios triviales
-- modificaciones visuales menores
-- ajustes irrelevantes
-- logs repetidos
-- información redundante
-
-No generar entradas duplicadas para el mismo cambio.
+- registrar cada petición intermedia
+- generar entradas duplicadas
+- escribir logs de cambios triviales
+- reconstruir historial no observado
 
 ---
 

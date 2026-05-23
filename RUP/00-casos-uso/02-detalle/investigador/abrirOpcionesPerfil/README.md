@@ -1,0 +1,23 @@
+# abrirOpcionesPerfil() -> Detalle y prototipado
+
+## Diagrama de especificación
+
+<div align=center>
+
+|![Caso de uso: abrirOpcionesPerfil()](https://raw.githubusercontent.com/beatriizorozco/25-26-idsw2-sdVC/develop/images/RUP/00-casos-uso/02-detalle/investigador/abrirOpcionesPerfil/abrirOpcionesPerfil.svg)|
+|-|
+|Código fuente: [especificacion.puml](/modelosUML/rup/00-casos-uso/02-detalle/investigador/abrirOpcionesPerfil/especificacion.puml)|
+
+</div>
+
+## Prototipo de interfaz
+
+<div align=center>
+
+| ![Prototipo: abrirOpcionesPerfil](https://raw.githubusercontent.com/beatriizorozco/25-26-idsw2-sdVC/develop/images/RUP/00-casos-uso/02-detalle/investigador/abrirOpcionesPerfil/abrirOpcionesPerfil-wireframe.svg) |
+|-|
+
+</div>
+
+Código fuente del prototipo: [prototipo.puml](/RUP/00-casos-uso/02-detalle/investigador/abrirOpcionesPerfil/prototipo.puml)
+
