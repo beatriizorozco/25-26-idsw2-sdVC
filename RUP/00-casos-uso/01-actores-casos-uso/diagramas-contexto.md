@@ -16,6 +16,7 @@
 [![](https://img.shields.io/badge/-Log_de_conversación-0A3B64?style=for-the-badge&logo=gnometerminal&logoColor=white)](/conversation-log.md)
 
 </div>
+
 # Diagramas de contexto
 
 Este documento recoge los **diagramas de contexto** del sistema para los dos actores principales: **Coordinador** e **Investigador**.  
@@ -56,6 +57,7 @@ Cada diagrama define los **estados de pantalla** y las **transiciones** permitid
 
 
 </div>
+
 ### Estados principales resumidos
 - `SESION_CERRADA` / `PANEL_PRINCIPAL_ABIERTO`
 - Accesos desde panel: `OPCIONES_PERFIL_ABIERTO`, `OPCIONES_CARGA_TRABAJO_ABIERTAS`, `PROYECTOS_ABIERTOS`, `INVESTIGADORES_ABIERTOS`, `MIS_PUBLICACIONES_ABIERTAS`, `PUBLICACIONES_ABIERTAS`, `RECOMPENSAS_ABIERTAS`
