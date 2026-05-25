@@ -1,0 +1,27 @@
+@startuml abrirOpcionesCargaTrabajo-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoEntrada
+package abrirOpcionesCargaTrabajo as "abrirOpcionesCargaTrabajo()" {
+    rectangle #629EF9 DetalleCargaTrabajoView
+    rectangle #b5bd68 CargaTrabajoController
+    rectangle #F2AC4E CargaTrabajoRepository
+    rectangle #F2AC4E CargaTrabajo
+}
+
+rectangle #CDEBA5 ":OPCIONES_CARGA_TRABAJO_ABIERTAS" as EstadoSalida
+rectangle #CDEBA5 ":Collaboration EditarCargaTrabajo" as EditarCargaTrabajo
+rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanelPrincipal
+
+EstadoEntrada -r-> DetalleCargaTrabajoView: abrirOpcionesCargaTrabajo()
+
+DetalleCargaTrabajoView -d-> CargaTrabajoController: obtenerCargaTrabajo(id)
+DetalleCargaTrabajoView --> CargaTrabajoController: prepararAccionesDisponibles(investigador)
+CargaTrabajoController --> CargaTrabajoRepository: obtenerPorId(id)
+CargaTrabajoController --> CargaTrabajoRepository: verificarPermisos(actor)
+CargaTrabajoRepository -- CargaTrabajo
+DetalleCargaTrabajoView ..> EstadoSalida: continuarNavegacion()
+DetalleCargaTrabajoView ..> EditarCargaTrabajo: editarCargaTrabajo()
+DetalleCargaTrabajoView ..> AbrirPanelPrincipal: abrirPanelPrincipal()
+
+@enduml

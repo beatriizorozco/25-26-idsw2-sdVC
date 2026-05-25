@@ -1,0 +1,25 @@
+@startuml eliminarPerfil-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":SOLICITUD_ELIMINACION_PERFIL_ABIERTA" as EstadoEntrada
+package eliminarPerfil as "eliminarPerfil()" {
+    rectangle #629EF9 EliminarPerfilView
+    rectangle #b5bd68 PerfilController
+    rectangle #F2AC4E PerfilRepository
+    rectangle #F2AC4E Perfil
+}
+
+rectangle #CDEBA5 ":SOLICITUD_ELIMINACION_PERFIL_ABIERTA" as EstadoSalida
+rectangle #CDEBA5 ":Collaboration AbrirSolicitudesEliminacionPerfil" as AbrirSolicitudesEliminacionPerfil
+
+EstadoEntrada -r-> EliminarPerfilView: eliminarPerfil()
+
+EliminarPerfilView -d-> PerfilController: eliminarPerfil(id)
+EliminarPerfilView --> PerfilController: validarEliminacion(id)
+PerfilController --> PerfilRepository: obtenerPorId(id)
+PerfilController --> PerfilRepository: eliminar(id)
+PerfilRepository -- Perfil
+EliminarPerfilView ..> EstadoSalida: continuarNavegacion()
+EliminarPerfilView ..> AbrirSolicitudesEliminacionPerfil: abrirSolicitudesEliminacionPerfil()
+
+@enduml

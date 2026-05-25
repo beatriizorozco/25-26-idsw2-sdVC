@@ -1,0 +1,25 @@
+@startuml crearInvestigador-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":INVESTIGADORES_ABIERTOS" as EstadoEntrada
+package crearInvestigador as "crearInvestigador()" {
+    rectangle #629EF9 CrearInvestigadorView
+    rectangle #b5bd68 InvestigadorController
+    rectangle #F2AC4E InvestigadorRepository
+    rectangle #F2AC4E Investigador
+}
+
+rectangle #CDEBA5 ":INVESTIGADOR_ABIERTO" as EstadoSalida
+rectangle #CDEBA5 ":Collaboration AbrirOpcionesPerfil" as AbrirOpcionesPerfil
+
+EstadoEntrada -r-> CrearInvestigadorView: crearInvestigador()
+
+CrearInvestigadorView -d-> InvestigadorController: crearInvestigador(datos)
+CrearInvestigadorView --> InvestigadorController: validarInvestigador(datos)
+InvestigadorController --> InvestigadorRepository: existeDuplicado(datos)
+InvestigadorController --> InvestigadorRepository: guardar(entidad)
+InvestigadorRepository -- Investigador
+CrearInvestigadorView ..> EstadoSalida: continuarNavegacion()
+CrearInvestigadorView ..> AbrirOpcionesPerfil: abrirOpcionesPerfil()
+
+@enduml

@@ -1,0 +1,33 @@
+@startuml crearProyecto-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":PROYECTOS_ABIERTOS" as EstadoEntrada
+package crearProyecto as "crearProyecto()" {
+    rectangle #629EF9 CrearProyectoView
+    rectangle #b5bd68 ProyectoController
+    rectangle #F2AC4E ProyectoRepository
+    rectangle #F2AC4E Proyecto
+}
+
+rectangle #CDEBA5 ":PROYECTO_ABIERTO" as EstadoSalida
+rectangle #CDEBA5 ":Collaboration EditarProyecto" as EditarProyecto
+rectangle #CDEBA5 ":Collaboration EliminarProyecto" as EliminarProyecto
+rectangle #CDEBA5 ":Collaboration AgregarInvestigador" as AgregarInvestigador
+rectangle #CDEBA5 ":Collaboration EliminarInvestigador" as EliminarInvestigador
+rectangle #CDEBA5 ":Collaboration AbrirEntregables" as AbrirEntregables
+
+EstadoEntrada -r-> CrearProyectoView: crearProyecto()
+
+CrearProyectoView -d-> ProyectoController: crearProyecto(datos)
+CrearProyectoView --> ProyectoController: validarProyecto(datos)
+ProyectoController --> ProyectoRepository: existeDuplicado(datos)
+ProyectoController --> ProyectoRepository: guardar(entidad)
+ProyectoRepository -- Proyecto
+CrearProyectoView ..> EstadoSalida: continuarNavegacion()
+CrearProyectoView ..> EditarProyecto: editarProyecto()
+CrearProyectoView ..> EliminarProyecto: eliminarProyecto()
+CrearProyectoView ..> AgregarInvestigador: agregarInvestigador()
+CrearProyectoView ..> EliminarInvestigador: eliminarInvestigador()
+CrearProyectoView ..> AbrirEntregables: abrirEntregables()
+
+@enduml
