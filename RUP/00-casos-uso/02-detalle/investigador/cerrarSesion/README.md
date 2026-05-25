@@ -3,7 +3,7 @@
 > |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|**Detalle**|[Análisis](/RUP/01-analisis/README.md)|[Diseño](/RUP/02-diseño/README.md)|[Desarrollo](/RUP/03-desarrollo/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
-## información del artefacto
+## Información del artefacto
 
 - **Proyecto**: FUNIBER - Plataforma Interna de Investigación
 - **Fase RUP**: Inception (Inicio)
@@ -12,11 +12,11 @@
 - **Fecha**: 2026-05-25
 - **Autor**: Equipo de desarrollo
 
-## propósito
+## Propósito
 
 Especificación detallada del caso de uso `cerrarSesion()` mediante diagrama de estado, mostrando la conversación entre el Investigador y el Sistema para cerrar la sesión activa del investigador y devolver el sistema a un estado no autenticado.
 
-## información del caso de uso
+## Información del caso de uso
 
 |Atributo|Valor|
 |-|-|
@@ -29,7 +29,7 @@ Especificación detallada del caso de uso `cerrarSesion()` mediante diagrama de 
 |**Postcondición exitosa**|La sesión del Investigador queda cerrada.|
 |**Postcondición de fallo**|No se aplican cambios si la información solicitada no es válida o el actor cancela la operación.|
 
-## diagrama de especificación
+## Diagrama de especificación
 
 <div align=center>
 
@@ -39,14 +39,14 @@ Especificación detallada del caso de uso `cerrarSesion()` mediante diagrama de 
 
 </div>
 
-## prototipo de interfaz
+## Prototipo de interfaz
 
-### propósito del prototipo
+### Propósito del prototipo
 **Objetivo:** Que te digan que NO lo antes posible - validar la especificación antes de invertir en desarrollo.
 
-### wireframes
+### Wireframes
 
-#### pantalla 1: GIPF - CERRAR SESIÓN
+#### Pantalla 1: GIPF - CERRAR SESIÓN
 <div align=center>
 
 |![Wireframe: cerrarSesion](/images/RUP/00-casos-uso/02-detalle/investigador/cerrarSesion/cerrarSesion-wireframe.svg)|
@@ -61,7 +61,7 @@ Especificación detallada del caso de uso `cerrarSesion()` mediante diagrama de 
 - **Investigador** solicita confirmar o solicita cancelar el cierre
 - **Investigador** solicita cancelar cierre
 
-### validaciones del wireframe
+### Validaciones del wireframe
 - ¿El campo o bloque **Cerrar sesión** resulta claro para el Investigador?
 - ¿El campo o bloque **Investigador** resulta claro para el Investigador?
 - ¿Las acciones disponibles mantienen una navegación coherente con el rol Investigador?
@@ -69,9 +69,9 @@ Especificación detallada del caso de uso `cerrarSesion()` mediante diagrama de 
 
 **Código fuente:** [prototipo.puml](prototipo.puml)
 
-## conversación detallada
+## Conversación detallada
 
-### flujo principal
+### Flujo principal
 
 |Actor|Acción|Sistema|Respuesta|
 |-|-|-|-|
@@ -81,68 +81,68 @@ Especificación detallada del caso de uso `cerrarSesion()` mediante diagrama de 
 |**Investigador**|solicita cancelar cierre|| |
 ||**Sistema**|presenta sesión cerrada| |
 
-## estados internos del caso de uso
+## Estados internos del caso de uso
 
 |Estado|Descripción|Responsabilidad|
 |-|-|-|
 |**SolicitandoCierre**|Estado interno asociado a solicitando cierre.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
 |**ConfirmandoCierre**|Estado donde el sistema valida o confirma la eliminación de sesión.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
 
-## funcionalidad específica
+## Funcionalidad específica
 
-### conversación atómica
+### Conversación atómica
 
 - El caso de uso tiene un objetivo concreto y completo.
 - Actor y Sistema mantienen responsabilidades separadas.
 - La especificación evita decisiones de implementación.
 
-### información tratada
+### Información tratada
   - Credenciales
   - Estado de autenticación
   - Rol
 
-## opciones de navegación
+## Opciones de navegación
 
-### operaciones relacionadas
+### Operaciones relacionadas
 - El caso de uso finaliza y devuelve el control al estado indicado por el diagrama de especificación.
 
-### navegación del sistema
+### Navegación del sistema
 - **Estado de entrada**: PANEL_PRINCIPAL_ABIERTO.
 - **Estado de salida**: SESION_CERRADA.
 
-## conexión con diagrama de contexto
+## Conexión con diagrama de contexto
 
 Este caso de uso se integra en los diagramas de contexto del Investigador, manteniendo la trazabilidad entre navegación, estado del sistema y responsabilidad del actor.
 
-## vocabulario utilizado
+## Vocabulario utilizado
 
-### actor (Investigador)
+### Actor (Investigador)
 - **solicita**: expresa la intención de realizar una acción.
 - **visualiza**: observa la información presentada por el sistema.
 - **selecciona**: elige una entidad, acción o alternativa disponible.
 
-### sistema
+### Sistema
 - **presenta**: muestra información organizada al actor.
 - **permite**: habilita acciones disponibles sin imponer detalles de implementación.
 - **registra**: conserva la información indicada por el actor cuando el caso de uso lo requiere.
 
-## características metodológicas
+## Características metodológicas
 
-### separación de responsabilidades
+### Separación de responsabilidades
 - **Actor**: usuario que consulta proyectos asociados, gestiona sus entregables, publicaciones, perfil y carga de trabajo.
 - **Sistema**: presenta información, habilita acciones y mantiene la navegación del caso de uso.
 
-### ausencia de detalles de implementación
+### Ausencia de detalles de implementación
 - No especifica tecnología de interfaz.
 - No incluye estructura de base de datos.
 - No impone componentes concretos de desarrollo.
 
-### conversación atómica
+### Conversación atómica
 - El caso de uso representa una conversación completa.
 - Tiene un objetivo claro para el actor Investigador.
 - Termina con una acción, navegación o estado observable.
 
-## referencias
+## Referencias
 
 - [Diagramas de contexto](../../../01-actores-casos-uso/diagramas-contexto.md)
 - [Actores y casos de uso](../../../01-actores-casos-uso/actores-casos-uso.md)

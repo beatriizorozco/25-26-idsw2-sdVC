@@ -3,7 +3,7 @@
 > |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|**Detalle**|[Análisis](/RUP/01-analisis/README.md)|[Diseño](/RUP/02-diseño/README.md)|[Desarrollo](/RUP/03-desarrollo/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
-## información del artefacto
+## Información del artefacto
 
 - **Proyecto**: FUNIBER - Plataforma Interna de Investigación
 - **Fase RUP**: Inception (Inicio)
@@ -12,11 +12,11 @@
 - **Fecha**: 2026-05-25
 - **Autor**: Equipo de desarrollo
 
-## propósito
+## Propósito
 
 Especificación detallada del caso de uso `iniciarSesion()` mediante diagrama de estado, mostrando la conversación entre el Coordinador y el Sistema para autenticar al coordinador y abrir su acceso al panel principal.
 
-## información del caso de uso
+## Información del caso de uso
 
 |Atributo|Valor|
 |-|-|
@@ -29,7 +29,7 @@ Especificación detallada del caso de uso `iniciarSesion()` mediante diagrama de
 |**Postcondición exitosa**|El Coordinador accede al panel principal.|
 |**Postcondición de fallo**|El sistema no abre sesión y solicita revisar credenciales.|
 
-## diagrama de especificación
+## Diagrama de especificación
 
 <div align=center>
 
@@ -39,14 +39,14 @@ Especificación detallada del caso de uso `iniciarSesion()` mediante diagrama de
 
 </div>
 
-## prototipo de interfaz
+## Prototipo de interfaz
 
-### propósito del prototipo
+### Propósito del prototipo
 **Objetivo:** Que te digan que NO lo antes posible - validar la especificación antes de invertir en desarrollo.
 
-### wireframes
+### Wireframes
 
-#### pantalla 1: Pantalla principal
+#### Pantalla 1: Pantalla principal
 <div align=center>
 
 |![Wireframe: iniciarSesion](/images/RUP/00-casos-uso/02-detalle/coordinador/iniciarSesion/iniciarSesion-credenciales-correctas-wireframe.svg)|
@@ -61,16 +61,16 @@ Especificación detallada del caso de uso `iniciarSesion()` mediante diagrama de
 - **Coordinador** introduce<br>- usuario<br>- contraseña
 - credenciales incorrectas
 
-### validaciones del wireframe
+### Validaciones del wireframe
 - ¿La pantalla permite al Coordinador completar el objetivo del caso de uso?
 - ¿Las acciones disponibles mantienen una navegación coherente con el rol Coordinador?
 - ¿Falta información que el wireframe revela antes del análisis?
 
 **Código fuente:** [prototipo.puml](prototipo.puml)
 
-## conversación detallada
+## Conversación detallada
 
-### flujo principal
+### Flujo principal
 
 |Actor|Acción|Sistema|Respuesta|
 |-|-|-|-|
@@ -79,68 +79,68 @@ Especificación detallada del caso de uso `iniciarSesion()` mediante diagrama de
 |**Coordinador**|introduce<br>- usuario<br>- contraseña|| |
 |**Coordinador**|accede al panel principal|| |
 
-## estados internos del caso de uso
+## Estados internos del caso de uso
 
 |Estado|Descripción|Responsabilidad|
 |-|-|-|
 |**SolicitandoAcceso**|Estado interno asociado a solicitando acceso.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
 |**ProporcionandoCredenciales**|Estado interno asociado a proporcionando credenciales.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
 
-## funcionalidad específica
+## Funcionalidad específica
 
-### conversación atómica
+### Conversación atómica
 
 - El caso de uso tiene un objetivo concreto y completo.
 - Actor y Sistema mantienen responsabilidades separadas.
 - La especificación evita decisiones de implementación.
 
-### información tratada
+### Información tratada
   - Credenciales
   - Estado de autenticación
   - Rol
 
-## opciones de navegación
+## Opciones de navegación
 
-### operaciones relacionadas
+### Operaciones relacionadas
 - El caso de uso finaliza y devuelve el control al estado indicado por el diagrama de especificación.
 
-### navegación del sistema
+### Navegación del sistema
 - **Estado de entrada**: estado previo definido en el diagrama de contexto.
 - **Estado de salida**: PANEL_PRINCIPAL_ABIERTO.
 
-## conexión con diagrama de contexto
+## Conexión con diagrama de contexto
 
 Este caso de uso se integra en los diagramas de contexto del Coordinador, manteniendo la trazabilidad entre navegación, estado del sistema y responsabilidad del actor.
 
-## vocabulario utilizado
+## Vocabulario utilizado
 
-### actor (Coordinador)
+### Actor (Coordinador)
 - **solicita**: expresa la intención de realizar una acción.
 - **visualiza**: observa la información presentada por el sistema.
 - **selecciona**: elige una entidad, acción o alternativa disponible.
 
-### sistema
+### Sistema
 - **presenta**: muestra información organizada al actor.
 - **permite**: habilita acciones disponibles sin imponer detalles de implementación.
 - **registra**: conserva la información indicada por el actor cuando el caso de uso lo requiere.
 
-## características metodológicas
+## Características metodológicas
 
-### separación de responsabilidades
+### Separación de responsabilidades
 - **Actor**: usuario con visión global sobre proyectos, investigadores, convocatorias, publicaciones, entregables, recompensas y solicitudes de perfil.
 - **Sistema**: presenta información, habilita acciones y mantiene la navegación del caso de uso.
 
-### ausencia de detalles de implementación
+### Ausencia de detalles de implementación
 - No especifica tecnología de interfaz.
 - No incluye estructura de base de datos.
 - No impone componentes concretos de desarrollo.
 
-### conversación atómica
+### Conversación atómica
 - El caso de uso representa una conversación completa.
 - Tiene un objetivo claro para el actor Coordinador.
 - Termina con una acción, navegación o estado observable.
 
-## referencias
+## Referencias
 
 - [Diagramas de contexto](../../../01-actores-casos-uso/diagramas-contexto.md)
 - [Actores y casos de uso](../../../01-actores-casos-uso/actores-casos-uso.md)

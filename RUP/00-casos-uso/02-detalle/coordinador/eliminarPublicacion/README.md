@@ -3,7 +3,7 @@
 > |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|**Detalle**|[Análisis](/RUP/01-analisis/README.md)|[Diseño](/RUP/02-diseño/README.md)|[Desarrollo](/RUP/03-desarrollo/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
-## información del artefacto
+## Información del artefacto
 
 - **Proyecto**: FUNIBER - Plataforma Interna de Investigación
 - **Fase RUP**: Inception (Inicio)
@@ -12,11 +12,11 @@
 - **Fecha**: 2026-05-25
 - **Autor**: Equipo de desarrollo
 
-## propósito
+## Propósito
 
 Especificación detallada del caso de uso `eliminarPublicacion()` mediante diagrama de estado, mostrando la conversación entre el Coordinador y el Sistema para permitir al coordinador solicitar o confirmar la eliminación de publicación cuando su rol lo permite.
 
-## información del caso de uso
+## Información del caso de uso
 
 |Atributo|Valor|
 |-|-|
@@ -29,7 +29,7 @@ Especificación detallada del caso de uso `eliminarPublicacion()` mediante diagr
 |**Postcondición exitosa**|Publicación queda eliminado o marcado para eliminación según corresponda.|
 |**Postcondición de fallo**|No se aplican cambios si la información solicitada no es válida o el actor cancela la operación.|
 
-## diagrama de especificación
+## Diagrama de especificación
 
 <div align=center>
 
@@ -39,14 +39,14 @@ Especificación detallada del caso de uso `eliminarPublicacion()` mediante diagr
 
 </div>
 
-## prototipo de interfaz
+## Prototipo de interfaz
 
-### propósito del prototipo
+### Propósito del prototipo
 **Objetivo:** Que te digan que NO lo antes posible - validar la especificación antes de invertir en desarrollo.
 
-### wireframes
+### Wireframes
 
-#### pantalla 1: GIPF - ELIMINAR PUBLICACIÓN
+#### Pantalla 1: GIPF - ELIMINAR PUBLICACIÓN
 <div align=center>
 
 |![Wireframe: eliminarPublicacion](/images/RUP/00-casos-uso/02-detalle/coordinador/eliminarPublicacion/eliminarPublicacion-wireframe.svg)|
@@ -61,7 +61,7 @@ Especificación detallada del caso de uso `eliminarPublicacion()` mediante diagr
 - **Sistema** presenta confirmación de eliminación<br>**Coordinador** solicita confirmar eliminación<br>**Sistema** presenta la eliminación de la publicación
 - **Coordinador** solicita cancelar la operación
 
-### validaciones del wireframe
+### Validaciones del wireframe
 - ¿El campo o bloque **Confirmación de eliminación** resulta claro para el Coordinador?
 - ¿El campo o bloque **Resultado** resulta claro para el Coordinador?
 - ¿Las acciones disponibles mantienen una navegación coherente con el rol Coordinador?
@@ -69,9 +69,9 @@ Especificación detallada del caso de uso `eliminarPublicacion()` mediante diagr
 
 **Código fuente:** [prototipo.puml](prototipo.puml)
 
-## conversación detallada
+## Conversación detallada
 
-### flujo principal
+### Flujo principal
 
 |Actor|Acción|Sistema|Respuesta|
 |-|-|-|-|
@@ -81,69 +81,69 @@ Especificación detallada del caso de uso `eliminarPublicacion()` mediante diagr
 |**Coordinador**|solicita cancelar la operación|| |
 ||**Sistema**|presenta confirmación de eliminación| |
 
-## estados internos del caso de uso
+## Estados internos del caso de uso
 
 |Estado|Descripción|Responsabilidad|
 |-|-|-|
 |**ConfirmandoEliminacion**|Estado donde el sistema valida o confirma la eliminación de publicación.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
 |**PublicacionEliminada**|Estado interno asociado a publicacion eliminada.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
 
-## funcionalidad específica
+## Funcionalidad específica
 
-### patrón de eliminación segura
+### Patrón de eliminación segura
 
 - **Confirmación**: la conversación separa solicitud y eliminación.
 - **Sin detalle técnico**: no se define borrado físico ni lógico.
 - **Retorno al contexto**: el actor vuelve al listado o estado indicado por el diagrama.
 
-### información tratada
+### Información tratada
   - Título
   - Contenido
   - Autor
   - Respuestas
 
-## opciones de navegación
+## Opciones de navegación
 
-### operaciones relacionadas
+### Operaciones relacionadas
 - **abrirPublicaciones()** -> Navegar a `abrirPublicaciones()` cuando el actor solicita esa continuidad.
 
-### navegación del sistema
+### Navegación del sistema
 - **Estado de entrada**: PUBLICACION_ABIERTA.
 - **Estado de salida**: PUBLICACIONES_ABIERTAS.
 
-## conexión con diagrama de contexto
+## Conexión con diagrama de contexto
 
 Este caso de uso se integra en los diagramas de contexto del Coordinador, manteniendo la trazabilidad entre navegación, estado del sistema y responsabilidad del actor.
 
-## vocabulario utilizado
+## Vocabulario utilizado
 
-### actor (Coordinador)
+### Actor (Coordinador)
 - **solicita**: expresa la intención de realizar una acción.
 - **visualiza**: observa la información presentada por el sistema.
 - **selecciona**: elige una entidad, acción o alternativa disponible.
 
-### sistema
+### Sistema
 - **presenta**: muestra información organizada al actor.
 - **permite**: habilita acciones disponibles sin imponer detalles de implementación.
 - **registra**: conserva la información indicada por el actor cuando el caso de uso lo requiere.
 
-## características metodológicas
+## Características metodológicas
 
-### separación de responsabilidades
+### Separación de responsabilidades
 - **Actor**: usuario con visión global sobre proyectos, investigadores, convocatorias, publicaciones, entregables, recompensas y solicitudes de perfil.
 - **Sistema**: presenta información, habilita acciones y mantiene la navegación del caso de uso.
 
-### ausencia de detalles de implementación
+### Ausencia de detalles de implementación
 - No especifica tecnología de interfaz.
 - No incluye estructura de base de datos.
 - No impone componentes concretos de desarrollo.
 
-### conversación atómica
+### Conversación atómica
 - El caso de uso representa una conversación completa.
 - Tiene un objetivo claro para el actor Coordinador.
 - Termina con una acción, navegación o estado observable.
 
-## referencias
+## Referencias
 
 - [Diagramas de contexto](../../../01-actores-casos-uso/diagramas-contexto.md)
 - [Actores y casos de uso](../../../01-actores-casos-uso/actores-casos-uso.md)
