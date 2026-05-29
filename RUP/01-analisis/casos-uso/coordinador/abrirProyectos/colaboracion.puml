@@ -1,7 +1,9 @@
 @startuml abrirProyectos-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoEntrada
+rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoEntrada1
+rectangle #CDEBA5 ":PROYECTO_ABIERTO" as EstadoEntrada2
+rectangle #CDEBA5 ":INVESTIGADOR_ABIERTO" as EstadoEntrada3
 package abrirProyectos as "abrirProyectos()" {
     rectangle #629EF9 ListarProyectosView
     rectangle #b5bd68 ProyectoController
@@ -14,13 +16,21 @@ rectangle #CDEBA5 ":Collaboration AbrirProyecto" as AbrirProyecto
 rectangle #CDEBA5 ":Collaboration CrearProyecto" as CrearProyecto
 rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanelPrincipal
 
-EstadoEntrada -r-> ListarProyectosView: abrirProyectos()
+EstadoEntrada1 -r-> ListarProyectosView: abrirProyectos()
+EstadoEntrada2 -r-> ListarProyectosView: abrirProyectos(idProyecto)
+EstadoEntrada3 -r-> ListarProyectosView: abrirProyectos(idInvestigador)
 
-ListarProyectosView -d-> ProyectoController: listarProyectos()
+ListarProyectosView -d-> ProyectoController: listarProyectos(contexto)
 ListarProyectosView --> ProyectoController: filtrarProyectos(criterio)
 ProyectoController --> ProyectoRepository: obtenerTodos()
+ProyectoController --> ProyectoRepository: obtenerPorContexto(contexto)
 ProyectoController --> ProyectoRepository: buscarPorCriterio(criterio)
 ProyectoRepository -- Proyecto
+note right of ProyectoController
+Contexto opcional:
+- sin identificador: listado global
+- con identificador: listado acotado
+end note
 ListarProyectosView ..> EstadoSalida: continuarNavegacion()
 ListarProyectosView ..> AbrirProyecto: abrirProyecto()
 ListarProyectosView ..> CrearProyecto: crearProyecto()

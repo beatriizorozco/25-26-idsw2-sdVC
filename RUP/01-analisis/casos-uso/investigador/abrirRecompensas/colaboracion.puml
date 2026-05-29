@@ -1,7 +1,8 @@
 @startuml abrirRecompensas-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":RECOMPENSA_ABIERTA" as EstadoEntrada
+rectangle #CDEBA5 ":RECOMPENSA_ABIERTA" as EstadoEntrada1
+rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoEntrada2
 package abrirRecompensas as "abrirRecompensas()" {
     rectangle #629EF9 ListarRecompensasView
     rectangle #b5bd68 RecompensaController
@@ -13,13 +14,20 @@ rectangle #CDEBA5 ":RECOMPENSAS_ABIERTAS" as EstadoSalida
 rectangle #CDEBA5 ":Collaboration AbrirRecompensa" as AbrirRecompensa
 rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanelPrincipal
 
-EstadoEntrada -r-> ListarRecompensasView: abrirRecompensas()
+EstadoEntrada1 -r-> ListarRecompensasView: abrirRecompensas(idRecompensa)
+EstadoEntrada2 -r-> ListarRecompensasView: abrirRecompensas()
 
-ListarRecompensasView -d-> RecompensaController: listarRecompensas()
+ListarRecompensasView -d-> RecompensaController: listarRecompensas(contexto)
 ListarRecompensasView --> RecompensaController: filtrarRecompensas(criterio)
 RecompensaController --> RecompensaRepository: obtenerTodos()
+RecompensaController --> RecompensaRepository: obtenerPorContexto(contexto)
 RecompensaController --> RecompensaRepository: buscarPorCriterio(criterio)
 RecompensaRepository -- Recompensa
+note right of RecompensaController
+Contexto opcional:
+- sin identificador: listado propio
+- con identificador: listado propio acotado
+end note
 ListarRecompensasView ..> EstadoSalida: continuarNavegacion()
 ListarRecompensasView ..> AbrirRecompensa: abrirRecompensa()
 ListarRecompensasView ..> AbrirPanelPrincipal: abrirPanelPrincipal()

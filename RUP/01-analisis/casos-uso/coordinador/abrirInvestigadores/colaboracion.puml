@@ -1,7 +1,8 @@
 @startuml abrirInvestigadores-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoEntrada
+rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoEntrada1
+rectangle #CDEBA5 ":PROYECTO_ABIERTO" as EstadoEntrada2
 package abrirInvestigadores as "abrirInvestigadores()" {
     rectangle #629EF9 ListarInvestigadoresView
     rectangle #b5bd68 InvestigadorController
@@ -14,13 +15,20 @@ rectangle #CDEBA5 ":Collaboration AbrirInvestigador" as AbrirInvestigador
 rectangle #CDEBA5 ":Collaboration CrearInvestigador" as CrearInvestigador
 rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanelPrincipal
 
-EstadoEntrada -r-> ListarInvestigadoresView: abrirInvestigadores()
+EstadoEntrada1 -r-> ListarInvestigadoresView: abrirInvestigadores()
+EstadoEntrada2 -r-> ListarInvestigadoresView: abrirInvestigadores(idProyecto)
 
-ListarInvestigadoresView -d-> InvestigadorController: listarInvestigadores()
+ListarInvestigadoresView -d-> InvestigadorController: listarInvestigadores(contexto)
 ListarInvestigadoresView --> InvestigadorController: filtrarInvestigadores(criterio)
 InvestigadorController --> InvestigadorRepository: obtenerTodos()
+InvestigadorController --> InvestigadorRepository: obtenerPorContexto(contexto)
 InvestigadorController --> InvestigadorRepository: buscarPorCriterio(criterio)
 InvestigadorRepository -- Investigador
+note right of InvestigadorController
+Contexto opcional:
+- sin identificador: listado global
+- con identificador: listado acotado
+end note
 ListarInvestigadoresView ..> EstadoSalida: continuarNavegacion()
 ListarInvestigadoresView ..> AbrirInvestigador: abrirInvestigador()
 ListarInvestigadoresView ..> CrearInvestigador: crearInvestigador()

@@ -1,7 +1,14 @@
 @startuml abrirPanelPrincipal-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":INVESTIGADORES_ABIERTOS" as EstadoEntrada
+rectangle #CDEBA5 ":INVESTIGADORES_ABIERTOS" as EstadoEntrada1
+rectangle #CDEBA5 ":OPCIONES_CARGA_TRABAJO_ABIERTAS" as EstadoEntrada2
+rectangle #CDEBA5 ":OPCIONES_PERFIL_ABIERTO" as EstadoEntrada3
+rectangle #CDEBA5 ":MIS_PUBLICACIONES_ABIERTAS" as EstadoEntrada4
+rectangle #CDEBA5 ":PUBLICACIONES_ABIERTAS" as EstadoEntrada5
+rectangle #CDEBA5 ":CONVOCATORIAS_ABIERTAS" as EstadoEntrada6
+rectangle #CDEBA5 ":RECOMPENSAS_ABIERTAS" as EstadoEntrada7
+rectangle #CDEBA5 ":PROYECTOS_ABIERTOS" as EstadoEntrada8
 package abrirPanelPrincipal as "abrirPanelPrincipal()" {
     rectangle #629EF9 DetallePanelPrincipalView
     rectangle #b5bd68 PanelPrincipalController
@@ -16,7 +23,14 @@ rectangle #CDEBA5 ":Collaboration AbrirProyectos" as AbrirProyectos
 rectangle #CDEBA5 ":Collaboration AbrirInvestigadores" as AbrirInvestigadores
 rectangle #CDEBA5 ":Collaboration AbrirMisPublicaciones" as AbrirMisPublicaciones
 
-EstadoEntrada -r-> DetallePanelPrincipalView: abrirPanelPrincipal()
+EstadoEntrada1 -r-> DetallePanelPrincipalView: abrirPanelPrincipal()
+EstadoEntrada2 -r-> DetallePanelPrincipalView: abrirPanelPrincipal()
+EstadoEntrada3 -r-> DetallePanelPrincipalView: abrirPanelPrincipal()
+EstadoEntrada4 -r-> DetallePanelPrincipalView: abrirPanelPrincipal()
+EstadoEntrada5 -r-> DetallePanelPrincipalView: abrirPanelPrincipal()
+EstadoEntrada6 -r-> DetallePanelPrincipalView: abrirPanelPrincipal()
+EstadoEntrada7 -r-> DetallePanelPrincipalView: abrirPanelPrincipal()
+EstadoEntrada8 -r-> DetallePanelPrincipalView: abrirPanelPrincipal()
 
 DetallePanelPrincipalView -d-> PanelPrincipalController: obtenerPanelPrincipal(id)
 DetallePanelPrincipalView --> PanelPrincipalController: prepararAccionesDisponibles(coordinador)
