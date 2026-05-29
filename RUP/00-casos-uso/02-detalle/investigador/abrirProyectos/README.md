@@ -1,0 +1,161 @@
+# FUNIBER > Investigador > abrirProyectos > Detalle y prototipado
+
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|**Detalle**|[Análisis](/RUP/01-analisis/README.md)|[Diseño](/RUP/02-diseño/README.md)|[Desarrollo](/RUP/03-desarrollo/README.md)|Pruebas|
+> |-|-|-|-|-|-|-|
+
+## Información del artefacto
+
+- **Proyecto**: FUNIBER - Plataforma Interna de Investigación
+- **Fase RUP**: Inception (Inicio)
+- **Disciplina**: Requisitos
+- **Versión**: 1.0
+- **Fecha**: 2026-05-25
+- **Autor**: Equipo de desarrollo
+
+## Propósito
+
+Especificación detallada del caso de uso `abrirProyectos()` mediante diagrama de estado, mostrando la conversación entre el Investigador y el Sistema para presentar al investigador el listado de proyectos con opciones de consulta, filtrado y navegación.
+
+## Información del caso de uso
+
+|Atributo|Valor|
+|-|-|
+|**Nombre**|abrirProyectos()|
+|**Actor primario**|Investigador|
+|**Objetivo**|Presentar al Investigador el listado de proyectos con opciones de consulta, filtrado y navegación.|
+|**Tipo**|Primario, esencial|
+|**Nivel**|Objetivo de usuario|
+|**Precondición**|Usuario autenticado como Investigador y sistema disponible para navegación.|
+|**Postcondición exitosa**|El Investigador visualiza el listado de proyectos y puede continuar la navegación.|
+|**Postcondición de fallo**|No se modifica la información del sistema; el actor permanece en el punto de navegación anterior.|
+
+## Diagrama de especificación
+
+<div align=center>
+
+|![Caso de uso: abrirProyectos()](/images/RUP/00-casos-uso/02-detalle/investigador/abrirProyectos/abrirProyectos.svg)|
+|-|
+|Código fuente: [especificacion.puml](especificacion.puml)|
+
+</div>
+
+## Prototipo de interfaz
+
+### Propósito del prototipo
+**Objetivo:** Que te digan que NO lo antes posible - validar la especificación antes de invertir en desarrollo.
+
+### Wireframes
+
+#### Pantalla 1: GIPF - MIS PROYECTOS
+<div align=center>
+
+|![Wireframe: abrirProyectos](/images/RUP/00-casos-uso/02-detalle/investigador/abrirProyectos/abrirProyectos-wireframe.svg)|
+|-|
+|**Estado**: MostrandoLista / FiltrandoLista / SolicitandoAccion|
+
+</div>
+
+**Correspondencia con especificación:**
+- **Investigador** solicita abrir el listado de proyectos propios
+- **Sistema** presenta el listado de proyectos propios del investigador con sus datos<br>principales (ID, título, estado, inicio y fin) y permite solicitar la introducción de criterios de filtrado y búsqueda.
+- **Investigador** solicita introducir filtros y/o solicita introducir búsqueda<br>**Sistema** muestra el listado actualizado
+- **Investigador** solicita una acción disponible en el listado
+
+### Validaciones del wireframe
+- ¿El campo o bloque **Listado de mis proyectos** resulta claro para el Investigador?
+- ¿El campo o bloque **ID** resulta claro para el Investigador?
+- ¿El campo o bloque **Título** resulta claro para el Investigador?
+- ¿El campo o bloque **Estado** resulta claro para el Investigador?
+- ¿El campo o bloque **Inicio** resulta claro para el Investigador?
+- ¿El campo o bloque **Fin** resulta claro para el Investigador?
+- ¿El campo o bloque **Acción** resulta claro para el Investigador?
+- ¿El campo o bloque **Filtrar / buscar proyectos** resulta claro para el Investigador?
+- ¿Las acciones disponibles mantienen una navegación coherente con el rol Investigador?
+- ¿Falta información que el wireframe revela antes del análisis?
+
+**Código fuente:** [prototipo.puml](prototipo.puml)
+
+## Conversación detallada
+
+### Flujo principal
+
+|Actor|Acción|Sistema|Respuesta|
+|-|-|-|-|
+|**Investigador**|solicita abrir el listado de proyectos propios|| |
+||**Sistema**|presenta el listado de proyectos propios del investigador con sus datos<br>principales (ID, título, estado, inicio y fin) y permite solicitar la introducción de criterios de filtrado y búsqueda.| |
+|**Investigador**|solicita introducir filtros y/o solicita introducir búsqueda<br>|| |
+||**Sistema**|muestra el listado actualizado| |
+|**Investigador**|solicita una acción disponible en el listado|| |
+||**Sistema**|presenta la navegación solicitada| |
+
+## Estados internos del caso de uso
+
+|Estado|Descripción|Responsabilidad|
+|-|-|-|
+|**MostrandoLista**|Estado interno asociado a mostrando lista.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
+|**FiltrandoLista**|Estado interno asociado a filtrando lista.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
+|**SolicitandoAccion**|Estado interno asociado a solicitando accion.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
+
+## Funcionalidad específica
+
+### Funcionalidad unificada: listar = filtrar = buscar
+
+- **Listar**: muestra proyectos sin criterio aplicado.
+- **Filtrar/Buscar**: permite localizar proyectos por ID, título, estado, inicio y fin.
+- **Navegar**: permite abrir detalles u operaciones relacionadas según el rol.
+
+### Información tratada
+  - ID
+  - Título
+  - Estado
+  - Inicio y fin
+
+## Opciones de navegación
+
+### Operaciones relacionadas
+- **abrirProyecto()** -> Navegar a `abrirProyecto()` cuando el actor solicita esa continuidad.
+- **abrirPanelPrincipal()** -> Navegar a `abrirPanelPrincipal()` cuando el actor solicita esa continuidad.
+
+### Navegación del sistema
+- **Estado de entrada**: PANEL_PRINCIPAL_ABIERTO, PROYECTO_ABIERTO, INVESTIGADOR_ABIERTO.
+- **Estado de salida**: PROYECTOS_ABIERTOS, PROYECTO_ABIERTO, PANEL_PRINCIPAL_ABIERTO.
+
+## Conexión con diagrama de contexto
+
+Este caso de uso se integra en los diagramas de contexto del Investigador, manteniendo la trazabilidad entre navegación, estado del sistema y responsabilidad del actor.
+
+## Vocabulario utilizado
+
+### Actor (Investigador)
+- **solicita**: expresa la intención de realizar una acción.
+- **visualiza**: observa la información presentada por el sistema.
+- **selecciona**: elige una entidad, acción o alternativa disponible.
+
+### Sistema
+- **presenta**: muestra información organizada al actor.
+- **permite**: habilita acciones disponibles sin imponer detalles de implementación.
+- **registra**: conserva la información indicada por el actor cuando el caso de uso lo requiere.
+
+## Características metodológicas
+
+### Separación de responsabilidades
+- **Actor**: usuario que consulta proyectos asociados, gestiona sus entregables, publicaciones, perfil y carga de trabajo.
+- **Sistema**: presenta información, habilita acciones y mantiene la navegación del caso de uso.
+
+### Ausencia de detalles de implementación
+- No especifica tecnología de interfaz.
+- No incluye estructura de base de datos.
+- No impone componentes concretos de desarrollo.
+
+### Conversación atómica
+- El caso de uso representa una conversación completa.
+- Tiene un objetivo claro para el actor Investigador.
+- Termina con una acción, navegación o estado observable.
+
+## Referencias
+
+- [Diagramas de contexto](../../../01-actores-casos-uso/diagramas-contexto.md)
+- [Actores y casos de uso](../../../01-actores-casos-uso/actores-casos-uso.md)
+- [Modelo del dominio](../../../00-modelo-del-dominio/modelo-dominio.md)
+- [Detalle y prototipado](../../README.md)
+- [conversation-log.md](../../../../../conversation-log.md)

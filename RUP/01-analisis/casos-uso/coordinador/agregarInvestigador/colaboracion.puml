@@ -1,0 +1,27 @@
+@startuml agregarInvestigador-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":PROYECTO_ABIERTO" as EstadoEntrada
+package agregarInvestigador as "agregarInvestigador()" {
+    rectangle #629EF9 AgregarInvestigadorView
+    rectangle #b5bd68 InvestigadorController
+    rectangle #F2AC4E InvestigadorRepository
+    rectangle #F2AC4E Investigador
+}
+
+rectangle #CDEBA5 ":PROYECTO_ABIERTO" as EstadoSalida
+rectangle #CDEBA5 ":Collaboration AbrirEntregables" as AbrirEntregables
+rectangle #CDEBA5 ":Collaboration AbrirProyectos" as AbrirProyectos
+
+EstadoEntrada -r-> AgregarInvestigadorView: agregarInvestigador()
+
+AgregarInvestigadorView -d-> InvestigadorController: agregarInvestigador(proyecto, investigador)
+AgregarInvestigadorView --> InvestigadorController: validarDisponibilidad(investigador)
+InvestigadorController --> InvestigadorRepository: obtenerPorId(id)
+InvestigadorController --> InvestigadorRepository: asociarInvestigador(proyecto, investigador)
+InvestigadorRepository -- Investigador
+AgregarInvestigadorView ..> EstadoSalida: continuarNavegacion()
+AgregarInvestigadorView ..> AbrirEntregables: abrirEntregables()
+AgregarInvestigadorView ..> AbrirProyectos: abrirProyectos()
+
+@enduml

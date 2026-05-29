@@ -1,0 +1,25 @@
+@startuml responderPublicacion-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":PUBLICACION_ABIERTA" as EstadoEntrada
+package responderPublicacion as "responderPublicacion()" {
+    rectangle #629EF9 ResponderPublicacionView
+    rectangle #b5bd68 PublicacionController
+    rectangle #F2AC4E PublicacionRepository
+    rectangle #F2AC4E Publicacion
+}
+
+rectangle #CDEBA5 ":PUBLICACION_ABIERTA" as EstadoSalida
+rectangle #CDEBA5 ":Collaboration AbrirPublicaciones" as AbrirPublicaciones
+
+EstadoEntrada -r-> ResponderPublicacionView: responderPublicacion()
+
+ResponderPublicacionView -d-> PublicacionController: responderPublicacion(id, respuesta)
+ResponderPublicacionView --> PublicacionController: validarRespuesta(respuesta)
+PublicacionController --> PublicacionRepository: obtenerPorId(id)
+PublicacionController --> PublicacionRepository: guardarRespuesta(respuesta)
+PublicacionRepository -- Publicacion
+ResponderPublicacionView ..> EstadoSalida: continuarNavegacion()
+ResponderPublicacionView ..> AbrirPublicaciones: abrirPublicaciones()
+
+@enduml

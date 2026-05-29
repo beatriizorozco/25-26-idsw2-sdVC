@@ -1,0 +1,27 @@
+@startuml abrirPublicacion-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":PUBLICACIONES_ABIERTAS" as EstadoEntrada
+package abrirPublicacion as "abrirPublicacion()" {
+    rectangle #629EF9 DetallePublicacionView
+    rectangle #b5bd68 PublicacionController
+    rectangle #F2AC4E PublicacionRepository
+    rectangle #F2AC4E Publicacion
+}
+
+rectangle #CDEBA5 ":PUBLICACION_ABIERTA" as EstadoSalida
+rectangle #CDEBA5 ":Collaboration ResponderPublicacion" as ResponderPublicacion
+rectangle #CDEBA5 ":Collaboration AbrirPublicaciones" as AbrirPublicaciones
+
+EstadoEntrada -r-> DetallePublicacionView: abrirPublicacion()
+
+DetallePublicacionView -d-> PublicacionController: obtenerPublicacion(id)
+DetallePublicacionView --> PublicacionController: prepararAccionesDisponibles(investigador)
+PublicacionController --> PublicacionRepository: obtenerPorId(id)
+PublicacionController --> PublicacionRepository: verificarPermisos(actor)
+PublicacionRepository -- Publicacion
+DetallePublicacionView ..> EstadoSalida: continuarNavegacion()
+DetallePublicacionView ..> ResponderPublicacion: responderPublicacion()
+DetallePublicacionView ..> AbrirPublicaciones: abrirPublicaciones()
+
+@enduml

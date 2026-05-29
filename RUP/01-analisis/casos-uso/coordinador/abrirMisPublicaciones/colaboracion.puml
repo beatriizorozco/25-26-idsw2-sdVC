@@ -1,0 +1,29 @@
+@startuml abrirMisPublicaciones-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoEntrada
+package abrirMisPublicaciones as "abrirMisPublicaciones()" {
+    rectangle #629EF9 ListarPublicacionesView
+    rectangle #b5bd68 PublicacionController
+    rectangle #F2AC4E PublicacionRepository
+    rectangle #F2AC4E Publicacion
+}
+
+rectangle #CDEBA5 ":MIS_PUBLICACIONES_ABIERTAS" as EstadoSalida
+rectangle #CDEBA5 ":Collaboration AbrirMiPublicacion" as AbrirMiPublicacion
+rectangle #CDEBA5 ":Collaboration CrearPublicacion" as CrearPublicacion
+rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanelPrincipal
+
+EstadoEntrada -r-> ListarPublicacionesView: abrirMisPublicaciones()
+
+ListarPublicacionesView -d-> PublicacionController: listarPublicaciones()
+ListarPublicacionesView --> PublicacionController: filtrarPublicaciones(criterio)
+PublicacionController --> PublicacionRepository: obtenerTodos()
+PublicacionController --> PublicacionRepository: buscarPorCriterio(criterio)
+PublicacionRepository -- Publicacion
+ListarPublicacionesView ..> EstadoSalida: continuarNavegacion()
+ListarPublicacionesView ..> AbrirMiPublicacion: abrirMiPublicacion()
+ListarPublicacionesView ..> CrearPublicacion: crearPublicacion()
+ListarPublicacionesView ..> AbrirPanelPrincipal: abrirPanelPrincipal()
+
+@enduml

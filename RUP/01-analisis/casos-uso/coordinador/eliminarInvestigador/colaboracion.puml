@@ -1,0 +1,27 @@
+@startuml eliminarInvestigador-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":PROYECTO_ABIERTO" as EstadoEntrada
+package eliminarInvestigador as "eliminarInvestigador()" {
+    rectangle #629EF9 EliminarInvestigadorView
+    rectangle #b5bd68 InvestigadorController
+    rectangle #F2AC4E InvestigadorRepository
+    rectangle #F2AC4E Investigador
+}
+
+rectangle #CDEBA5 ":PROYECTO_ABIERTO" as EstadoSalida
+rectangle #CDEBA5 ":Collaboration AbrirEntregables" as AbrirEntregables
+rectangle #CDEBA5 ":Collaboration AbrirProyectos" as AbrirProyectos
+
+EstadoEntrada -r-> EliminarInvestigadorView: eliminarInvestigador()
+
+EliminarInvestigadorView -d-> InvestigadorController: eliminarInvestigador(id)
+EliminarInvestigadorView --> InvestigadorController: validarEliminacion(id)
+InvestigadorController --> InvestigadorRepository: obtenerPorId(id)
+InvestigadorController --> InvestigadorRepository: eliminar(id)
+InvestigadorRepository -- Investigador
+EliminarInvestigadorView ..> EstadoSalida: continuarNavegacion()
+EliminarInvestigadorView ..> AbrirEntregables: abrirEntregables()
+EliminarInvestigadorView ..> AbrirProyectos: abrirProyectos()
+
+@enduml

@@ -1,0 +1,27 @@
+@startuml editarPublicacion-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":PUBLICACION_ABIERTA" as EstadoEntrada
+package editarPublicacion as "editarPublicacion()" {
+    rectangle #629EF9 EditarPublicacionView
+    rectangle #b5bd68 PublicacionController
+    rectangle #F2AC4E PublicacionRepository
+    rectangle #F2AC4E Publicacion
+}
+
+rectangle #CDEBA5 ":PUBLICACION_ABIERTA" as EstadoSalida
+rectangle #CDEBA5 ":Collaboration EliminarPublicacion" as EliminarPublicacion
+rectangle #CDEBA5 ":Collaboration AbrirPublicaciones" as AbrirPublicaciones
+
+EstadoEntrada -r-> EditarPublicacionView: editarPublicacion()
+
+EditarPublicacionView -d-> PublicacionController: editarPublicacion(id, datos)
+EditarPublicacionView --> PublicacionController: validarCambios(datos)
+PublicacionController --> PublicacionRepository: obtenerPorId(id)
+PublicacionController --> PublicacionRepository: actualizar(entidad)
+PublicacionRepository -- Publicacion
+EditarPublicacionView ..> EstadoSalida: continuarNavegacion()
+EditarPublicacionView ..> EliminarPublicacion: eliminarPublicacion()
+EditarPublicacionView ..> AbrirPublicaciones: abrirPublicaciones()
+
+@enduml

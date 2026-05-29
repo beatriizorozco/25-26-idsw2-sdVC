@@ -1,0 +1,25 @@
+@startuml editarPerfil-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":OPCIONES_PERFIL_ABIERTO" as EstadoEntrada
+package editarPerfil as "editarPerfil()" {
+    rectangle #629EF9 EditarPerfilView
+    rectangle #b5bd68 PerfilController
+    rectangle #F2AC4E PerfilRepository
+    rectangle #F2AC4E Perfil
+}
+
+rectangle #CDEBA5 ":OPCIONES_PERFIL_ABIERTO" as EstadoSalida
+rectangle #CDEBA5 ":Collaboration AbrirOpcionesPerfil" as AbrirOpcionesPerfil
+
+EstadoEntrada -r-> EditarPerfilView: editarPerfil()
+
+EditarPerfilView -d-> PerfilController: editarPerfil(id, datos)
+EditarPerfilView --> PerfilController: validarCambios(datos)
+PerfilController --> PerfilRepository: obtenerPorId(id)
+PerfilController --> PerfilRepository: actualizar(entidad)
+PerfilRepository -- Perfil
+EditarPerfilView ..> EstadoSalida: continuarNavegacion()
+EditarPerfilView ..> AbrirOpcionesPerfil: abrirOpcionesPerfil()
+
+@enduml

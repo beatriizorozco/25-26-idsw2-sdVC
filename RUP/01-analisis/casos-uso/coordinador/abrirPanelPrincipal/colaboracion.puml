@@ -1,0 +1,33 @@
+@startuml abrirPanelPrincipal-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":INVESTIGADORES_ABIERTOS" as EstadoEntrada
+package abrirPanelPrincipal as "abrirPanelPrincipal()" {
+    rectangle #629EF9 DetallePanelPrincipalView
+    rectangle #b5bd68 PanelPrincipalController
+    rectangle #F2AC4E PanelPrincipalRepository
+    rectangle #F2AC4E PanelPrincipal
+}
+
+rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoSalida
+rectangle #CDEBA5 ":Collaboration AbrirOpcionesPerfil" as AbrirOpcionesPerfil
+rectangle #CDEBA5 ":Collaboration AbrirOpcionesCargaTrabajo" as AbrirOpcionesCargaTrabajo
+rectangle #CDEBA5 ":Collaboration AbrirProyectos" as AbrirProyectos
+rectangle #CDEBA5 ":Collaboration AbrirInvestigadores" as AbrirInvestigadores
+rectangle #CDEBA5 ":Collaboration AbrirMisPublicaciones" as AbrirMisPublicaciones
+
+EstadoEntrada -r-> DetallePanelPrincipalView: abrirPanelPrincipal()
+
+DetallePanelPrincipalView -d-> PanelPrincipalController: obtenerPanelPrincipal(id)
+DetallePanelPrincipalView --> PanelPrincipalController: prepararAccionesDisponibles(coordinador)
+PanelPrincipalController --> PanelPrincipalRepository: obtenerPorId(id)
+PanelPrincipalController --> PanelPrincipalRepository: verificarPermisos(actor)
+PanelPrincipalRepository -- PanelPrincipal
+DetallePanelPrincipalView ..> EstadoSalida: continuarNavegacion()
+DetallePanelPrincipalView ..> AbrirOpcionesPerfil: abrirOpcionesPerfil()
+DetallePanelPrincipalView ..> AbrirOpcionesCargaTrabajo: abrirOpcionesCargaTrabajo()
+DetallePanelPrincipalView ..> AbrirProyectos: abrirProyectos()
+DetallePanelPrincipalView ..> AbrirInvestigadores: abrirInvestigadores()
+DetallePanelPrincipalView ..> AbrirMisPublicaciones: abrirMisPublicaciones()
+
+@enduml

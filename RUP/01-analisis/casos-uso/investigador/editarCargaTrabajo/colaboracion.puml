@@ -1,0 +1,25 @@
+@startuml editarCargaTrabajo-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":OPCIONES_CARGA_TRABAJO_ABIERTAS" as EstadoEntrada
+package editarCargaTrabajo as "editarCargaTrabajo()" {
+    rectangle #629EF9 EditarCargaTrabajoView
+    rectangle #b5bd68 CargaTrabajoController
+    rectangle #F2AC4E CargaTrabajoRepository
+    rectangle #F2AC4E CargaTrabajo
+}
+
+rectangle #CDEBA5 ":OPCIONES_CARGA_TRABAJO_ABIERTAS" as EstadoSalida
+rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanelPrincipal
+
+EstadoEntrada -r-> EditarCargaTrabajoView: editarCargaTrabajo()
+
+EditarCargaTrabajoView -d-> CargaTrabajoController: editarCargaTrabajo(id, datos)
+EditarCargaTrabajoView --> CargaTrabajoController: validarCambios(datos)
+CargaTrabajoController --> CargaTrabajoRepository: obtenerPorId(id)
+CargaTrabajoController --> CargaTrabajoRepository: actualizar(entidad)
+CargaTrabajoRepository -- CargaTrabajo
+EditarCargaTrabajoView ..> EstadoSalida: continuarNavegacion()
+EditarCargaTrabajoView ..> AbrirPanelPrincipal: abrirPanelPrincipal()
+
+@enduml

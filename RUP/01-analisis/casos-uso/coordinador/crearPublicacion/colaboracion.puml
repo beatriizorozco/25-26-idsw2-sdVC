@@ -1,0 +1,29 @@
+@startuml crearPublicacion-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":MIS_PUBLICACIONES_ABIERTAS" as EstadoEntrada
+package crearPublicacion as "crearPublicacion()" {
+    rectangle #629EF9 CrearPublicacionView
+    rectangle #b5bd68 PublicacionController
+    rectangle #F2AC4E PublicacionRepository
+    rectangle #F2AC4E Publicacion
+}
+
+rectangle #CDEBA5 ":MI_PUBLICACION_ABIERTA" as EstadoSalida
+rectangle #CDEBA5 ":Collaboration EditarPublicacion" as EditarPublicacion
+rectangle #CDEBA5 ":Collaboration EliminarPublicacion" as EliminarPublicacion
+rectangle #CDEBA5 ":Collaboration AbrirMisPublicaciones" as AbrirMisPublicaciones
+
+EstadoEntrada -r-> CrearPublicacionView: crearPublicacion()
+
+CrearPublicacionView -d-> PublicacionController: crearPublicacion(datos)
+CrearPublicacionView --> PublicacionController: validarPublicacion(datos)
+PublicacionController --> PublicacionRepository: existeDuplicado(datos)
+PublicacionController --> PublicacionRepository: guardar(entidad)
+PublicacionRepository -- Publicacion
+CrearPublicacionView ..> EstadoSalida: continuarNavegacion()
+CrearPublicacionView ..> EditarPublicacion: editarPublicacion()
+CrearPublicacionView ..> EliminarPublicacion: eliminarPublicacion()
+CrearPublicacionView ..> AbrirMisPublicaciones: abrirMisPublicaciones()
+
+@enduml
