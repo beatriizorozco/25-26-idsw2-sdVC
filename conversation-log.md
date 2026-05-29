@@ -86,3 +86,15 @@ Se generaron 71 análisis de casos de uso: 44 para Coordinador y 27 para Investi
 **Decisión:** se mantiene la trazabilidad entre detalle de casos de uso, análisis MVC y diagramas SVG. La disciplina de requisitos queda suficientemente cerrada para continuar con análisis/diseño, y la primera iteración de análisis queda estructurada con el mismo patrón metodológico del ejemplo del profesor. Se validó que existen 71 carpetas de análisis, 71 `README.md`, 71 `colaboracion.puml`, 71 SVG esperados y 0 enlaces rotos hacia artefactos existentes. El repositorio estaba limpio al cerrar, con el commit reciente `4cf6ae0 feat: primera iteración de análisis`; tras esta entrada solo queda modificado `conversation-log.md`.
 
 ---
+
+## [2026-05-29 00:39] Fin de sesión (inicio aproximado: 2026-05-28 23:50)
+
+**Prompt:** el usuario inició sesión con `session-memory`, compartió una aclaración del profesor sobre casos de uso llamados desde varios estados y pidió ajustar los diagramas de colaboración de análisis teniendo esa regla en cuenta. Al cerrar, pidió registrar la sesión en `conversation-log.md`.
+
+**Resultado:** se utilizó la skill `session-memory`. Se revisó el contexto de la sesión y se corrigieron los análisis de los casos de uso que tenían varias entradas desde el diagrama de contexto. Se identificaron 18 casos afectados en `RUP/01-analisis/casos-uso`, repartidos entre Coordinador e Investigador. En sus `colaboracion.puml` se sustituyó la entrada única por todas las entradas reales, y en los casos donde el comportamiento depende del origen se modeló un parámetro de contexto, siguiendo la aproximación explicada por el profesor: por ejemplo, `abrirInvestigadores()` sin identificador mantiene el listado base, mientras que `abrirInvestigadores(idProyecto)` acota la consulta al proyecto. También se añadieron llamadas como `listar...(contexto)` y `obtenerPorContexto(contexto)` cuando el alcance podía cambiar.
+
+Además, se actualizaron los README de esos 18 análisis para explicar la entrada contextual y la decisión metodológica de no duplicar casos cuando basta con un parámetro de contexto. Se mantuvo el matiz funcional de roles: el Coordinador puede trabajar con alcance global, mientras que el Investigador conserva alcance propio cuando no recibe contexto. Finalmente se regeneraron los SVG afectados en `images/RUP/01-analisis/casos-uso`, se verificó que siguen existiendo 71 SVG de análisis, que hay 18 entradas contextuales documentadas y que no quedan enlaces rotos a imágenes. El repositorio estaba limpio antes de registrar este cierre.
+
+**Decisión:** se adopta una solución intermedia coherente con la respuesta del profesor: los casos de uso no se duplican automáticamente por tener varios estados de entrada, sino que el análisis explicita el origen y usa contexto cuando la navegación modifica el alcance funcional. Solo tendría sentido separar casos en el futuro si la casuística interna deja de ser una variación de listado/consulta y pasa a representar conversaciones claramente distintas.
+
+---
