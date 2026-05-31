@@ -98,3 +98,13 @@ Además, se actualizaron los README de esos 18 análisis para explicar la entrad
 **Decisión:** se adopta una solución intermedia coherente con la respuesta del profesor: los casos de uso no se duplican automáticamente por tener varios estados de entrada, sino que el análisis explicita el origen y usa contexto cuando la navegación modifica el alcance funcional. Solo tendría sentido separar casos en el futuro si la casuística interna deja de ser una variación de listado/consulta y pasa a representar conversaciones claramente distintas.
 
 ---
+
+## [2026-05-31 15:45] Inicio de sesión - Día 1 de revisión por bloques
+
+**Prompt:** el usuario inició sesión con `session-memory` y pidió comenzar el Día 1 del plan de trabajo, dedicado a pulir los casos de uso `iniciarSesion`, `abrirPanelPrincipal` y `cerrarSesion`. Solicitó revisar primero los diagramas de colaboración para detectar errores antes de continuar.
+
+**Resultado:** se utilizó la skill `session-memory`. Se revisó `conversation-log.md`, el estado de Git, la rama activa y los commits recientes. El repositorio se encuentra limpio en la rama `develop`. La documentación de requisitos está cerrada y existe una primera iteración completa de análisis MVC con 71 casos de uso. La sesión parte de los commits recientes `8d6ae56 feat: actualizo algunos diagramas de colaboración con la recomendación del profesor` y `66f89fa docs: actualizo conversation-log y se acaba la sesión`.
+
+**Decisión:** durante esta sesión se trabajará con un bloque manejable para evitar revisiones superficiales. Primero se auditarán los diagramas de colaboración de acceso y navegación principal para Coordinador e Investigador; después se corregirán los errores detectados y se dejará el bloque preparado para continuar con diseño o implementación.
+
+---
