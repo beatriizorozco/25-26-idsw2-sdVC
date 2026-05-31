@@ -1,10 +1,12 @@
 @startuml iniciarSesion-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":ESTADO_PREVIO" as EstadoEntrada
+rectangle #CDEBA5 ":SESION_CERRADA" as EstadoEntrada
 package iniciarSesion as "iniciarSesion()" {
     rectangle #629EF9 IniciarSesionView
     rectangle #b5bd68 SesionController
+    rectangle #F2AC4E UsuarioRepository
+    rectangle #F2AC4E Usuario
     rectangle #F2AC4E SesionRepository
     rectangle #F2AC4E Sesion
 }
@@ -15,11 +17,13 @@ rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoSalida
 EstadoEntrada -r-> IniciarSesionView: iniciarSesion()
 
 IniciarSesionView -d-> SesionController: iniciarSesion(credenciales)
-IniciarSesionView --> SesionController: validarCredenciales(credenciales)
-SesionController --> SesionRepository: obtenerPorCorreo(correo)
-SesionController --> SesionRepository: registrarSesion(usuario)
+SesionController --> UsuarioRepository: obtenerPorCorreo(correo)
+SesionController --> Usuario: validarCredenciales(credenciales) : boolean
+SesionController --> IniciarSesionView: presentarCredencialesIncorrectas() [credenciales incorrectas]
+SesionController --> SesionRepository: registrarSesion(usuario) [credenciales correctas]
+UsuarioRepository -- Usuario
 SesionRepository -- Sesion
-IniciarSesionView ..> EstadoSalida: continuarNavegacion()
+IniciarSesionView ..> EstadoSalida: presentarPanelPrincipal() [credenciales correctas]
 
 
 @enduml

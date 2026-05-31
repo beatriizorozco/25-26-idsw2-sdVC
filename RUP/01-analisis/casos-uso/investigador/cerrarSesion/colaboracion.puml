@@ -10,16 +10,18 @@ package cerrarSesion as "cerrarSesion()" {
 }
 
 rectangle #CDEBA5 ":SESION_CERRADA" as EstadoSalida
+rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoCancelacion
 
 
 EstadoEntrada -r-> CerrarSesionView: cerrarSesion()
 
-CerrarSesionView -d-> SesionController: cerrarSesion(sesion)
-CerrarSesionView --> SesionController: invalidarSesion(sesion)
+CerrarSesionView --> CerrarSesionView: solicitarConfirmacion()
+CerrarSesionView ..> EstadoCancelacion: cancelarCierre() [cancelacion]
+CerrarSesionView -d-> SesionController: confirmarCierre() [confirmacion]
 SesionController --> SesionRepository: obtenerSesionActiva(actor)
 SesionController --> SesionRepository: cerrar(sesion)
 SesionRepository -- Sesion
-CerrarSesionView ..> EstadoSalida: continuarNavegacion()
+CerrarSesionView ..> EstadoSalida: presentarSesionCerrada()
 
 
 @enduml
