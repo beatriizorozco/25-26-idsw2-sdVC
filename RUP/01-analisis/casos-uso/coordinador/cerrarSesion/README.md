@@ -33,13 +33,14 @@ Analizar el cierre de sesión solicitado por el Coordinador. El caso comienza en
 
 ## Flujo de colaboración
 
-1. `Coordinador` -> `CerrarSesionView.cerrarSesion()`.
-2. `CerrarSesionView` -> `CerrarSesionController.solicitarConfirmacion()`.
-3. `CerrarSesionController` -> `CerrarSesionView.presentarConfirmacion()`.
-4. Si el actor cancela, `CerrarSesionView` -> `PANEL_PRINCIPAL_ABIERTO`.
-5. Si el actor confirma, `CerrarSesionView` -> `CerrarSesionController.confirmarCierre()`.
-6. `CerrarSesionController` -> `Sesion.cerrarSesion()`.
-7. `CerrarSesionView` -> `SESION_CERRADA`.
+1. `PANEL_PRINCIPAL_ABIERTO` -> `CerrarSesionView.cerrarSesion()`.
+2. `Coordinador` -> `CerrarSesionView.cerrarSesion()`.
+3. `CerrarSesionView` -> `CerrarSesionController.solicitarConfirmacion()`.
+4. `CerrarSesionController` -> `CerrarSesionView.presentarConfirmacion()`.
+5. Si el actor cancela, `CerrarSesionView` -> `PANEL_PRINCIPAL_ABIERTO`.
+6. Si el actor confirma, `CerrarSesionView` -> `CerrarSesionController.confirmarCierre()`.
+7. `CerrarSesionController` -> `Sesion.cerrarSesion()`.
+8. `CerrarSesionView` -> `SESION_CERRADA`.
 
 ## Decisiones de análisis
 

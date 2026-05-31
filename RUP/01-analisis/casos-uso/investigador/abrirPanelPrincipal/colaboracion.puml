@@ -10,6 +10,13 @@ package abrirPanelPrincipal as "abrirPanelPrincipal()" {
 }
 
 rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as PanelPrincipalAbierto
+rectangle #CDEBA5 ":INVESTIGADORES_ABIERTOS" as InvestigadoresAbiertos
+rectangle #CDEBA5 ":OPCIONES_CARGA_TRABAJO_ABIERTAS" as OpcionesCargaTrabajoAbiertas
+rectangle #CDEBA5 ":OPCIONES_PERFIL_ABIERTO" as OpcionesPerfilAbierto
+rectangle #CDEBA5 ":MIS_PUBLICACIONES_ABIERTAS" as MisPublicacionesAbiertas
+rectangle #CDEBA5 ":PUBLICACIONES_ABIERTAS" as PublicacionesAbiertas
+rectangle #CDEBA5 ":RECOMPENSAS_ABIERTAS" as RecompensasAbiertas
+rectangle #CDEBA5 ":PROYECTOS_ABIERTOS" as ProyectosAbiertos
 rectangle #CDEBA5 ":Collaboration AbrirOpcionesPerfil" as AbrirOpcionesPerfil
 rectangle #CDEBA5 ":Collaboration AbrirOpcionesCargaTrabajo" as AbrirOpcionesCargaTrabajo
 rectangle #CDEBA5 ":Collaboration AbrirProyectos" as AbrirProyectos
@@ -20,6 +27,14 @@ rectangle #CDEBA5 ":Collaboration AbrirRecompensas" as AbrirRecompensas
 rectangle #CDEBA5 ":Collaboration CerrarSesion" as CerrarSesion
 
 Investigador -r-> PanelPrincipalView: abrirPanelPrincipal()
+
+InvestigadoresAbiertos -r-> PanelPrincipalView: abrirPanelPrincipal()
+OpcionesCargaTrabajoAbiertas -r-> PanelPrincipalView: abrirPanelPrincipal()
+OpcionesPerfilAbierto -r-> PanelPrincipalView: abrirPanelPrincipal()
+MisPublicacionesAbiertas -r-> PanelPrincipalView: abrirPanelPrincipal()
+PublicacionesAbiertas -r-> PanelPrincipalView: abrirPanelPrincipal()
+RecompensasAbiertas -r-> PanelPrincipalView: abrirPanelPrincipal()
+ProyectosAbiertos -r-> PanelPrincipalView: abrirPanelPrincipal()
 
 PanelPrincipalView -d-> AbrirPanelPrincipalController: obtenerAccionesDisponibles(sesion)
 

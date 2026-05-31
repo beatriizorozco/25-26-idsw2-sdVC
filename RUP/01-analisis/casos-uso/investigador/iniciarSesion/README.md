@@ -19,7 +19,8 @@ Analizar la autenticación de una persona cuyo rol aún no se conoce. El diagram
 - Solicita acceder al sistema antes de que se conozca su rol.
 
 ### IniciarSesionView (Boundary)
-- Recibe `iniciarSesion(usuario, contrasena)`.
+- Recibe `iniciarSesion()` desde `SESION_CERRADA`.
+- Recibe `introducirCredenciales(usuario, contrasena)` de `UsuarioNoAutenticado`.
 - Presenta el error cuando las credenciales son incorrectas.
 - Abre el panel principal cuando la autenticación es correcta.
 
@@ -35,12 +36,13 @@ Analizar la autenticación de una persona cuyo rol aún no se conoce. El diagram
 
 ## Flujo de colaboración
 
-1. `UsuarioNoAutenticado` -> `IniciarSesionView.iniciarSesion(usuario, contrasena)`.
-2. `IniciarSesionView` -> `IniciarSesionController.autenticar(usuario, contrasena)`.
-3. `IniciarSesionController` -> `UsuarioRepository.validarCredenciales(usuario, contrasena)`.
-4. Si las credenciales son incorrectas, `IniciarSesionController` -> `IniciarSesionView.presentarCredencialesIncorrectas()` y se permite reintentar.
-5. Si las credenciales son correctas, `IniciarSesionController` -> `Sesion.crearSesion(usuario)`.
-6. `IniciarSesionView` -> `PANEL_PRINCIPAL_ABIERTO`.
+1. `SESION_CERRADA` -> `IniciarSesionView.iniciarSesion()`.
+2. `UsuarioNoAutenticado` -> `IniciarSesionView.introducirCredenciales(usuario, contrasena)`.
+3. `IniciarSesionView` -> `IniciarSesionController.autenticar(usuario, contrasena)`.
+4. `IniciarSesionController` -> `UsuarioRepository.validarCredenciales(usuario, contrasena)`.
+5. Si las credenciales son incorrectas, `IniciarSesionController` -> `IniciarSesionView.presentarCredencialesIncorrectas()` y se permite reintentar.
+6. Si las credenciales son correctas, `IniciarSesionController` -> `Sesion.crearSesion(usuario)`.
+7. `IniciarSesionView` -> `PANEL_PRINCIPAL_ABIERTO`.
 
 ## Decisiones de análisis
 

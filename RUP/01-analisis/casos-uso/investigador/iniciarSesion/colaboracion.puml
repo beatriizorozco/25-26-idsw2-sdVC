@@ -2,6 +2,7 @@
 skinparam linetype polyline
 
 actor UsuarioNoAutenticado
+rectangle #CDEBA5 ":SESION_CERRADA" as SesionCerrada
 
 package iniciarSesion as "iniciarSesion()" {
     rectangle #629EF9 IniciarSesionView
@@ -13,7 +14,9 @@ package iniciarSesion as "iniciarSesion()" {
 
 rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as PanelPrincipalAbierto
 
-UsuarioNoAutenticado -r-> IniciarSesionView: iniciarSesion(usuario, contrasena)
+SesionCerrada -r-> IniciarSesionView: iniciarSesion()
+
+UsuarioNoAutenticado -r-> IniciarSesionView: introducirCredenciales(usuario, contrasena)
 
 IniciarSesionView -d-> IniciarSesionController: autenticar(usuario, contrasena) : Sesion
 
