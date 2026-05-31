@@ -1,27 +1,29 @@
 @startuml cerrarSesion-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoEntrada
+actor Investigador
+
 package cerrarSesion as "cerrarSesion()" {
     rectangle #629EF9 CerrarSesionView
-    rectangle #b5bd68 SesionController
-    rectangle #F2AC4E SesionRepository
+    rectangle #b5bd68 CerrarSesionController
     rectangle #F2AC4E Sesion
 }
 
-rectangle #CDEBA5 ":SESION_CERRADA" as EstadoSalida
-rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoCancelacion
+rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as PanelPrincipalAbierto
+rectangle #CDEBA5 ":SESION_CERRADA" as SesionCerrada
 
+Investigador -r-> CerrarSesionView: cerrarSesion()
 
-EstadoEntrada -r-> CerrarSesionView: cerrarSesion()
+CerrarSesionView -d-> CerrarSesionController: solicitarConfirmacion()
 
-CerrarSesionView --> CerrarSesionView: solicitarConfirmacion()
-CerrarSesionView ..> EstadoCancelacion: cancelarCierre() [cancelacion]
-CerrarSesionView -d-> SesionController: confirmarCierre() [confirmacion]
-SesionController --> SesionRepository: obtenerSesionActiva(actor)
-SesionController --> SesionRepository: cerrar(sesion)
-SesionRepository -- Sesion
-CerrarSesionView ..> EstadoSalida: presentarSesionCerrada()
+CerrarSesionController --> CerrarSesionView: presentarConfirmacion()
 
+CerrarSesionView -r-> PanelPrincipalAbierto: cancelarCierre()\n[cancelacion]
+
+CerrarSesionView --> CerrarSesionController: confirmarCierre()\n[confirmacion]
+
+CerrarSesionController --> Sesion: cerrarSesion()
+
+CerrarSesionView -r-> SesionCerrada: presentarSesionCerrada()
 
 @enduml

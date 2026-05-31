@@ -1,21 +1,15 @@
 @startuml abrirPanelPrincipal-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":INVESTIGADORES_ABIERTOS" as EstadoEntrada1
-rectangle #CDEBA5 ":OPCIONES_CARGA_TRABAJO_ABIERTAS" as EstadoEntrada2
-rectangle #CDEBA5 ":OPCIONES_PERFIL_ABIERTO" as EstadoEntrada3
-rectangle #CDEBA5 ":MIS_PUBLICACIONES_ABIERTAS" as EstadoEntrada4
-rectangle #CDEBA5 ":PUBLICACIONES_ABIERTAS" as EstadoEntrada5
-rectangle #CDEBA5 ":RECOMPENSAS_ABIERTAS" as EstadoEntrada6
-rectangle #CDEBA5 ":PROYECTOS_ABIERTOS" as EstadoEntrada7
+actor Investigador
+
 package abrirPanelPrincipal as "abrirPanelPrincipal()" {
-    rectangle #629EF9 DetallePanelPrincipalView
-    rectangle #b5bd68 PanelPrincipalController
-    rectangle #F2AC4E SesionRepository
+    rectangle #629EF9 PanelPrincipalView
+    rectangle #b5bd68 AbrirPanelPrincipalController
     rectangle #F2AC4E Sesion
 }
 
-rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoSalida
+rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as PanelPrincipalAbierto
 rectangle #CDEBA5 ":Collaboration AbrirOpcionesPerfil" as AbrirOpcionesPerfil
 rectangle #CDEBA5 ":Collaboration AbrirOpcionesCargaTrabajo" as AbrirOpcionesCargaTrabajo
 rectangle #CDEBA5 ":Collaboration AbrirProyectos" as AbrirProyectos
@@ -25,27 +19,22 @@ rectangle #CDEBA5 ":Collaboration AbrirPublicaciones" as AbrirPublicaciones
 rectangle #CDEBA5 ":Collaboration AbrirRecompensas" as AbrirRecompensas
 rectangle #CDEBA5 ":Collaboration CerrarSesion" as CerrarSesion
 
-EstadoEntrada1 -r-> DetallePanelPrincipalView: abrirPanelPrincipal()
-EstadoEntrada2 -r-> DetallePanelPrincipalView: abrirPanelPrincipal()
-EstadoEntrada3 -r-> DetallePanelPrincipalView: abrirPanelPrincipal()
-EstadoEntrada4 -r-> DetallePanelPrincipalView: abrirPanelPrincipal()
-EstadoEntrada5 -r-> DetallePanelPrincipalView: abrirPanelPrincipal()
-EstadoEntrada6 -r-> DetallePanelPrincipalView: abrirPanelPrincipal()
-EstadoEntrada7 -r-> DetallePanelPrincipalView: abrirPanelPrincipal()
+Investigador -r-> PanelPrincipalView: abrirPanelPrincipal()
 
-DetallePanelPrincipalView -d-> PanelPrincipalController: abrirPanelPrincipal()
-PanelPrincipalController --> SesionRepository: obtenerSesionActiva()
-PanelPrincipalController --> Sesion: obtenerRolActivo()
-PanelPrincipalController --> DetallePanelPrincipalView: presentarAccionesDisponibles(investigador)
-SesionRepository -- Sesion
-DetallePanelPrincipalView ..> EstadoSalida: continuarNavegacion()
-DetallePanelPrincipalView ..> AbrirOpcionesPerfil: abrirOpcionesPerfil()
-DetallePanelPrincipalView ..> AbrirOpcionesCargaTrabajo: abrirOpcionesCargaTrabajo()
-DetallePanelPrincipalView ..> AbrirProyectos: abrirProyectos()
-DetallePanelPrincipalView ..> AbrirInvestigadores: abrirInvestigadores()
-DetallePanelPrincipalView ..> AbrirMisPublicaciones: abrirMisPublicaciones()
-DetallePanelPrincipalView ..> AbrirPublicaciones: abrirPublicaciones()
-DetallePanelPrincipalView ..> AbrirRecompensas: abrirRecompensas()
-DetallePanelPrincipalView ..> CerrarSesion: cerrarSesion()
+PanelPrincipalView -d-> AbrirPanelPrincipalController: obtenerAccionesDisponibles(sesion)
+
+AbrirPanelPrincipalController --> Sesion: obtenerRolActivo() : Investigador
+
+AbrirPanelPrincipalController --> PanelPrincipalView: presentarAccionesDisponibles(investigador)
+
+PanelPrincipalView -r-> PanelPrincipalAbierto: panelPrincipalVisible()
+PanelPrincipalView ..> AbrirOpcionesPerfil: abrirOpcionesPerfil()
+PanelPrincipalView ..> AbrirOpcionesCargaTrabajo: abrirOpcionesCargaTrabajo()
+PanelPrincipalView ..> AbrirProyectos: abrirProyectos()
+PanelPrincipalView ..> AbrirInvestigadores: abrirInvestigadores()
+PanelPrincipalView ..> AbrirMisPublicaciones: abrirMisPublicaciones()
+PanelPrincipalView ..> AbrirPublicaciones: abrirPublicaciones()
+PanelPrincipalView ..> AbrirRecompensas: abrirRecompensas()
+PanelPrincipalView ..> CerrarSesion: cerrarSesion()
 
 @enduml

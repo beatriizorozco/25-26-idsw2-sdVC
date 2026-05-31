@@ -1,29 +1,30 @@
 @startuml iniciarSesion-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":SESION_CERRADA" as EstadoEntrada
+actor UsuarioNoAutenticado
+
 package iniciarSesion as "iniciarSesion()" {
     rectangle #629EF9 IniciarSesionView
-    rectangle #b5bd68 SesionController
+    rectangle #b5bd68 IniciarSesionController
     rectangle #F2AC4E UsuarioRepository
     rectangle #F2AC4E Usuario
-    rectangle #F2AC4E SesionRepository
     rectangle #F2AC4E Sesion
 }
 
-rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoSalida
+rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as PanelPrincipalAbierto
 
+UsuarioNoAutenticado -r-> IniciarSesionView: iniciarSesion(usuario, contrasena)
 
-EstadoEntrada -r-> IniciarSesionView: iniciarSesion()
+IniciarSesionView -d-> IniciarSesionController: autenticar(usuario, contrasena) : Sesion
 
-IniciarSesionView -d-> SesionController: iniciarSesion(credenciales)
-SesionController --> UsuarioRepository: obtenerPorCorreo(correo)
-SesionController --> Usuario: validarCredenciales(credenciales) : boolean
-SesionController --> IniciarSesionView: presentarCredencialesIncorrectas() [credenciales incorrectas]
-SesionController --> SesionRepository: registrarSesion(usuario) [credenciales correctas]
+IniciarSesionController --> UsuarioRepository: validarCredenciales(usuario, contrasena) : Usuario
+
 UsuarioRepository -- Usuario
-SesionRepository -- Sesion
-IniciarSesionView ..> EstadoSalida: presentarPanelPrincipal() [credenciales correctas]
 
+IniciarSesionController --> IniciarSesionView: presentarCredencialesIncorrectas()\n[credenciales incorrectas]
+
+IniciarSesionController --> Sesion: crearSesion(usuario) : Sesion\n[credenciales correctas]
+
+IniciarSesionView -r-> PanelPrincipalAbierto: abrirPanelPrincipal()\n[credenciales correctas]
 
 @enduml
