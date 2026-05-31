@@ -52,5 +52,5 @@ Analizar la autenticación de una persona cuyo rol aún no se conoce. El diagram
 
 ## Referencias
 
-- [Especificación detallada](../../../00-casos-uso/02-detalle/coordinador/iniciarSesion/README.md)
-- [Diagramas de contexto](../../../00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)
+- [Especificación detallada](/RUP/00-casos-uso/02-detalle/coordinador/iniciarSesion/README.md)
+- [Diagramas de contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)

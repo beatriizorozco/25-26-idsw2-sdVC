@@ -49,5 +49,5 @@ Analizar el cierre de sesión solicitado por el Investigador. El caso comienza e
 
 ## Referencias
 
-- [Especificación detallada](../../../00-casos-uso/02-detalle/investigador/cerrarSesion/README.md)
-- [Diagramas de contexto](../../../00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)
+- [Especificación detallada](/RUP/00-casos-uso/02-detalle/investigador/cerrarSesion/README.md)
+- [Diagramas de contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)
