@@ -108,3 +108,17 @@ Además, se actualizaron los README de esos 18 análisis para explicar la entrad
 **Decisión:** durante esta sesión se trabajará con un bloque manejable para evitar revisiones superficiales. Primero se auditarán los diagramas de colaboración de acceso y navegación principal para Coordinador e Investigador; después se corregirán los errores detectados y se dejará el bloque preparado para continuar con diseño o implementación.
 
 ---
+
+## [2026-05-31 17:22] Fin de sesión - Revisión del bloque de sesión y navegación
+
+**Prompt:** el usuario cerró la sesión usando la skill `session-memory` después de revisar el primer bloque de análisis, dedicado a `iniciarSesion`, `abrirPanelPrincipal` y `cerrarSesion` para Coordinador e Investigador.
+
+**Resultado:** se utilizó la skill `session-memory`. Durante la sesión se auditó el bloque inicial tomando como fuente principal los diagramas de especificación de `RUP/00-casos-uso/02-detalle`, además de los diagramas de contexto y el patrón de análisis MVC del repositorio `pySigHor` del profesor. Se detectaron y corrigieron simplificaciones de la primera generación automática: `iniciarSesion` debía representar el estado previo `SESION_CERRADA`, las credenciales incorrectas y el reintento; `cerrarSesion` debía distinguir confirmación y cancelación; y `abrirPanelPrincipal` debía incluir las acciones reales permitidas por cada rol.
+
+Se revisaron seis análisis: tres para Coordinador y tres para Investigador. Los `colaboracion.puml` quedaron con actores explícitos, estados de entrada y salida trazables, clases Boundary, Control y Entity ajustadas al caso y flujos alternativos relevantes. En `iniciarSesion`, `UsuarioNoAutenticado` introduce las credenciales mientras `SESION_CERRADA` permanece como estado de entrada; tras validar correctamente se crea `Sesion` y se alcanza `PANEL_PRINCIPAL_ABIERTO`. En `cerrarSesion`, el actor puede cancelar y volver a `PANEL_PRINCIPAL_ABIERTO` o confirmar y alcanzar `SESION_CERRADA`. En `abrirPanelPrincipal`, se conservaron los estados reales de retorno y las navegaciones específicas de cada rol.
+
+También se actualizaron los seis README de análisis para eliminar expresiones genéricas o subjetivas, se corrigieron sus referencias mediante rutas absolutas desde `/RUP`, y se reorganizaron los índices `RUP/01-analisis/casos-uso/coordinador/README.md` y `RUP/01-analisis/casos-uso/investigador/README.md` por familias funcionales. Se regeneraron los seis SVG correspondientes y se validó que no hubiera errores de PlantUML, que los enlaces del bloque fueran válidos y que los índices incluyeran los 44 casos del Coordinador y los 27 del Investigador sin omisiones.
+
+**Decisión:** queda cerrado el primer bloque de revisión manual de análisis. A partir de ahora cada familia debe revisarse contra sus `especificacion.puml` antes de aceptar o regenerar diagramas de colaboración, evitando reutilizar plantillas genéricas cuando oculten estados, alternativas o responsabilidades específicas. El siguiente bloque recomendado es la gestión de perfil. El repositorio queda limpio en la rama `develop`, con los commits recientes `2f89ab6 refactor(analisis): alinear bloque de sesión con especificaciones`, `a7f60bc refactor(analisis): recuperar estados y organizar índices por dominio` y `4eb3496 fix(analisis): corregir referencias del bloque de sesión`.
+
+---
