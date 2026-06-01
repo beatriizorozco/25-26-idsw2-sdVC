@@ -1,7 +1,8 @@
 @startuml abrirProyecto-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":PROYECTOS_ABIERTOS" as EstadoEntrada
+rectangle #CDEBA5 ":PROYECTOS_ABIERTOS" as EstadoEntrada1
+rectangle #CDEBA5 ":ENTREGABLES_ABIERTOS" as EstadoEntrada2
 package abrirProyecto as "abrirProyecto()" {
     rectangle #629EF9 DetalleProyectoView
     rectangle #b5bd68 ProyectoController
@@ -14,7 +15,8 @@ rectangle #CDEBA5 ":Collaboration AbrirEntregables" as AbrirEntregables
 rectangle #CDEBA5 ":Collaboration AbrirInvestigadores" as AbrirInvestigadores
 rectangle #CDEBA5 ":Collaboration AbrirProyectos" as AbrirProyectos
 
-EstadoEntrada -r-> DetalleProyectoView: abrirProyecto()
+EstadoEntrada1 -r-> DetalleProyectoView: abrirProyecto(idProyecto)
+EstadoEntrada2 -r-> DetalleProyectoView: abrirProyecto(idEntregable)
 
 DetalleProyectoView -d-> ProyectoController: obtenerProyecto(id)
 DetalleProyectoView --> ProyectoController: prepararAccionesDisponibles(investigador)

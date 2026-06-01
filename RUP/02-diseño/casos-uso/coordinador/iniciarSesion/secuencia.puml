@@ -1,0 +1,70 @@
+@startuml iniciarSesion-diseño
+title Diagrama de secuencia - Iniciar sesión
+
+actor Coordinador
+participant "LoginPage\n(React)" as Frontend
+participant "AuthController\n(Spring Boot)" as Api
+participant "Spring Security" as Security
+participant "AuthService" as Auth
+participant "UsuarioRepository" as Repo
+database "PostgreSQL" as Database
+participant "SesionService" as Sesion
+
+note over Coordinador, Frontend
+Estado previo: SESION_CERRADA
+end note
+
+Coordinador -> Frontend: Solicita acceder al sistema
+activate Frontend
+Frontend -> Api: GET /api/auth/csrf
+activate Api
+Api -> Security: obtenerTokenCsrf()
+activate Security
+Security --> Api: CsrfTokenResponse
+deactivate Security
+Api --> Frontend: 200 OK\nCsrfTokenResponse
+deactivate Api
+Frontend --> Coordinador: Presenta formulario de acceso
+Coordinador -> Frontend: Introduce usuario y contraseña
+Frontend -> Api: POST /api/auth/login\nLoginRequest + token CSRF
+activate Api
+Api -> Auth: autenticar(usuario, contrasena)
+activate Auth
+Auth -> Repo: findByNombreUsuario(usuario)
+activate Repo
+Repo -> Database: SELECT usuario
+activate Database
+Database --> Repo: Usuario o vacío
+deactivate Database
+Repo --> Auth: Optional<Usuario>
+deactivate Repo
+Auth -> Auth: validarCredenciales(usuario, contrasena, activo)
+
+alt Credenciales correctas y usuario activo
+    Auth --> Api: Usuario autenticado
+    deactivate Auth
+    Api -> Sesion: crearSesion(usuario, rol)
+    activate Sesion
+    Sesion --> Api: SesionResponse
+    deactivate Sesion
+    Api --> Frontend: 200 OK + cookie de sesión\nHttpOnly, Secure, SameSite=Lax\nSesionResponse
+    deactivate Api
+    Frontend -> Api: GET /api/auth/csrf\nRenovar token tras autenticación
+    activate Api
+    Api -> Security: obtenerTokenCsrf()
+    activate Security
+    Security --> Api: CsrfTokenResponse renovado
+    deactivate Security
+    Api --> Frontend: 200 OK\nCsrfTokenResponse renovado
+    deactivate Api
+    Frontend --> Coordinador: Abre PANEL_PRINCIPAL_ABIERTO
+else Credenciales incorrectas o usuario inactivo
+    Auth --> Api: CredencialesIncorrectasException
+    deactivate Auth
+    Api --> Frontend: 401 Unauthorized
+    deactivate Api
+    Frontend --> Coordinador: Presenta credenciales incorrectas\nPermite reintentar
+end
+deactivate Frontend
+
+@enduml

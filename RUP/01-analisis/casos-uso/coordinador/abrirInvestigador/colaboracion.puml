@@ -1,7 +1,8 @@
 @startuml abrirInvestigador-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":OPCIONES_PERFIL_ABIERTO" as EstadoEntrada
+rectangle #CDEBA5 ":OPCIONES_PERFIL_ABIERTO" as EstadoEntrada1
+rectangle #CDEBA5 ":INVESTIGADORES_ABIERTOS" as EstadoEntrada2
 package abrirInvestigador as "abrirInvestigador()" {
     rectangle #629EF9 DetalleInvestigadorView
     rectangle #b5bd68 InvestigadorController
@@ -14,7 +15,8 @@ rectangle #CDEBA5 ":Collaboration AbrirOpcionesPerfil" as AbrirOpcionesPerfil
 rectangle #CDEBA5 ":Collaboration AbrirInvestigadores" as AbrirInvestigadores
 rectangle #CDEBA5 ":Collaboration AbrirProyectos" as AbrirProyectos
 
-EstadoEntrada -r-> DetalleInvestigadorView: abrirInvestigador()
+EstadoEntrada1 -r-> DetalleInvestigadorView: abrirInvestigador(origen)
+EstadoEntrada2 -r-> DetalleInvestigadorView: abrirInvestigador(idInvestigador)
 
 DetalleInvestigadorView -d-> InvestigadorController: obtenerInvestigador(id)
 DetalleInvestigadorView --> InvestigadorController: prepararAccionesDisponibles(coordinador)

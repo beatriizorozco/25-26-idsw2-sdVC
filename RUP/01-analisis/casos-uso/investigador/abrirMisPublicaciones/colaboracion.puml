@@ -1,7 +1,8 @@
 @startuml abrirMisPublicaciones-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoEntrada
+rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoEntrada1
+rectangle #CDEBA5 ":MI_PUBLICACION_ABIERTA" as EstadoEntrada2
 package abrirMisPublicaciones as "abrirMisPublicaciones()" {
     rectangle #629EF9 ListarPublicacionesView
     rectangle #b5bd68 PublicacionController
@@ -14,13 +15,20 @@ rectangle #CDEBA5 ":Collaboration AbrirMiPublicacion" as AbrirMiPublicacion
 rectangle #CDEBA5 ":Collaboration CrearPublicacion" as CrearPublicacion
 rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanelPrincipal
 
-EstadoEntrada -r-> ListarPublicacionesView: abrirMisPublicaciones()
+EstadoEntrada1 -r-> ListarPublicacionesView: abrirMisPublicaciones()
+EstadoEntrada2 -r-> ListarPublicacionesView: abrirMisPublicaciones(idPublicacion)
 
-ListarPublicacionesView -d-> PublicacionController: listarPublicaciones()
+ListarPublicacionesView -d-> PublicacionController: listarPublicaciones(contexto)
 ListarPublicacionesView --> PublicacionController: filtrarPublicaciones(criterio)
 PublicacionController --> PublicacionRepository: obtenerPropios(investigador)
+PublicacionController --> PublicacionRepository: obtenerPorContexto(contexto)
 PublicacionController --> PublicacionRepository: buscarPorCriterio(criterio)
 PublicacionRepository -- Publicacion
+note right of PublicacionController
+Contexto opcional:
+- sin identificador: listado propio
+- con identificador: listado propio acotado
+end note
 ListarPublicacionesView ..> EstadoSalida: continuarNavegacion()
 ListarPublicacionesView ..> AbrirMiPublicacion: abrirMiPublicacion()
 ListarPublicacionesView ..> CrearPublicacion: crearPublicacion()

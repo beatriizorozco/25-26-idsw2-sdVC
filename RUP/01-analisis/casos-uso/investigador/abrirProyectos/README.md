@@ -95,7 +95,7 @@ Analizar la colaboración necesaria para presentar a Investigador el listado de 
 
 ### Patrón de colaboración establecido
 
-- **Entrada estándar**: Desde el estado activo del diagrama de contexto del Investigador.
+- **Entrada contextual**: Puede iniciarse desde `PANEL_PRINCIPAL_ABIERTO`, `PROYECTO_ABIERTO`, `INVESTIGADOR_ABIERTO`; la vista conserva el origen para que el controlador ajuste el alcance cuando exista identificador de contexto.
 - **Análisis MVC completo**: Vista, Control y Entidad claramente separados.
 - **Salida estándar**: Retorno a la navegación permitida o a una colaboración relacionada.
 

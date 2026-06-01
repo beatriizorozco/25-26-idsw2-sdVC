@@ -95,7 +95,7 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 
 ### Patrón de colaboración establecido
 
-- **Entrada estándar**: Desde el estado activo del diagrama de contexto del Investigador.
+- **Entrada contextual**: Puede iniciarse desde `PROYECTOS_ABIERTOS`, `ENTREGABLES_ABIERTOS`; la vista conserva el origen para que el controlador ajuste el alcance cuando exista identificador de contexto.
 - **Análisis MVC completo**: Vista, Control y Entidad claramente separados.
 - **Salida estándar**: Retorno a la navegación permitida o a una colaboración relacionada.
 
@@ -131,6 +131,8 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 
 - Mantener la separación entre presentación, coordinación y entidad para el rol Investigador.
 - Restringir operaciones de creación, edición y eliminación a publicaciones y entregables propios del Investigador.
+
+- Cuando el caso de uso se inicia desde un estado de detalle, el an?lisis modela un par?metro de contexto para ajustar el alcance sin duplicar el caso de uso. Si no se recibe identificador, el controlador conserva el comportamiento base del caso de uso; si se recibe, recupera o prepara la entidad acotada al contexto.
 
 ## Características del análisis
 

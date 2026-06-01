@@ -1,0 +1,121 @@
+@startuml clases-diseño
+skinparam linetype polyline
+
+title Clases de diseño - Iteración 1: Sesión y navegación principal
+
+package "Frontend React" {
+    class LoginPage
+    class PanelPrincipalPage
+    class ConfirmarCierreSesionModal
+    class AuthServiceClient {
+        +obtenerTokenCsrf(): CsrfTokenResponse
+        +iniciarSesion(credenciales): SesionResponse
+        +cerrarSesion(): void
+        +obtenerSesion(): SesionResponse
+    }
+    class PanelPrincipalClient {
+        +obtenerAcciones(): PanelPrincipalResponse
+    }
+}
+
+package "API REST Spring Boot" {
+    class AuthController {
+        +obtenerTokenCsrf(): CsrfTokenResponse
+        +iniciarSesion(LoginRequest): SesionResponse
+        +cerrarSesion(HttpSession): void
+        +obtenerSesion(): SesionResponse
+    }
+    class PanelPrincipalController {
+        +obtenerPanelPrincipal(): PanelPrincipalResponse
+    }
+}
+
+package "Servicios de aplicación" {
+    class AuthService {
+        +autenticar(usuario, contrasena): Usuario
+    }
+    class SesionService {
+        +crearSesion(usuario, rol): SesionResponse
+        +cerrarSesion(): void
+        +obtenerSesionActual(): SesionResponse
+    }
+    class PanelPrincipalService {
+        +obtenerAccionesDisponibles(rol): List<AccionPanel>
+    }
+}
+
+package "Seguridad" {
+    class SecurityConfig {
+        +configurarSesionesHttp()
+        +configurarCsrf()
+        +configurarAutorizacionPorRol()
+    }
+    class PasswordEncoder {
+        +matches(contrasena, hash): boolean
+    }
+}
+
+package "Persistencia y dominio" {
+    interface UsuarioRepository {
+        +findByNombreUsuario(usuario): Optional<Usuario>
+    }
+    class Usuario {
+        +id: Long
+        +nombreUsuario: String
+        +contrasenaHash: String
+        +rol: Rol
+        +activo: boolean
+    }
+    enum Rol {
+        COORDINADOR
+        INVESTIGADOR
+    }
+}
+
+package "Contratos API" {
+    class LoginRequest {
+        +usuario: String
+        +contrasena: String
+    }
+    class CsrfTokenResponse {
+        +headerName: String
+        +token: String
+    }
+    class SesionResponse {
+        +usuario: String
+        +rol: Rol
+    }
+    class PanelPrincipalResponse {
+        +rol: Rol
+        +acciones: List<AccionPanel>
+    }
+    class AccionPanel {
+        +codigo: String
+        +etiqueta: String
+        +ruta: String
+    }
+}
+
+LoginPage --> AuthServiceClient
+PanelPrincipalPage --> PanelPrincipalClient
+ConfirmarCierreSesionModal --> AuthServiceClient
+AuthServiceClient --> AuthController
+PanelPrincipalClient --> PanelPrincipalController
+AuthController --> AuthService
+AuthController --> SesionService
+PanelPrincipalController --> SesionService
+PanelPrincipalController --> PanelPrincipalService
+AuthService --> UsuarioRepository
+AuthService --> PasswordEncoder
+SecurityConfig ..> AuthController : protege
+SecurityConfig ..> PanelPrincipalController : protege
+SecurityConfig --> PasswordEncoder : configura
+UsuarioRepository --> Usuario
+Usuario --> Rol
+AuthController ..> LoginRequest
+AuthController ..> CsrfTokenResponse
+AuthController ..> SesionResponse
+PanelPrincipalController ..> PanelPrincipalResponse
+PanelPrincipalResponse --> AccionPanel
+
+@enduml

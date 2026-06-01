@@ -1,0 +1,18 @@
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Backend
+src/backend/target/
+src/backend/data/
+
+# Frontend
+src/frontend/node_modules/
+src/frontend/dist/
+src/frontend/*.tsbuildinfo
+
+# Environment
+.env
+.env.*
+!.env.example

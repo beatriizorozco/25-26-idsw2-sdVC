@@ -1,0 +1,37 @@
+@startuml cerrarSesion-coordinador-diseño
+title Diagrama de secuencia - Cerrar sesión del Coordinador
+
+actor Coordinador
+participant "PanelPrincipalPage\n(React)" as Frontend
+participant "ConfirmarCierreSesionModal\n(React)" as Modal
+participant "AuthController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+
+Coordinador -> Frontend: Solicita cerrar sesión
+activate Frontend
+Frontend -> Modal: abrir()
+activate Modal
+Modal --> Coordinador: Solicita confirmación
+
+alt Cancela el cierre
+    Coordinador -> Modal: cancelar()
+    Modal --> Frontend: cerrar()
+    deactivate Modal
+    Frontend --> Coordinador: Mantiene PANEL_PRINCIPAL_ABIERTO
+else Confirma el cierre
+    Coordinador -> Modal: confirmar()
+    Modal --> Frontend: confirmarCierre()
+    deactivate Modal
+    Frontend -> Api: POST /api/auth/logout\nCookie de sesión + token CSRF
+    activate Api
+    Api -> Sesion: cerrarSesion()
+    activate Sesion
+    Sesion --> Api: Sesión invalidada
+    deactivate Sesion
+    Api --> Frontend: 204 No Content\nCookie expirada
+    deactivate Api
+    Frontend --> Coordinador: Presenta SESION_CERRADA
+end
+deactivate Frontend
+
+@enduml

@@ -1,7 +1,8 @@
 @startuml abrirEntregables-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":PROYECTO_ABIERTO" as EstadoEntrada
+rectangle #CDEBA5 ":PROYECTO_ABIERTO" as EstadoEntrada1
+rectangle #CDEBA5 ":ENTREGABLE_ABIERTO" as EstadoEntrada2
 package abrirEntregables as "abrirEntregables()" {
     rectangle #629EF9 ListarEntregablesView
     rectangle #b5bd68 EntregableController
@@ -14,13 +15,20 @@ rectangle #CDEBA5 ":Collaboration AbrirEntregable" as AbrirEntregable
 rectangle #CDEBA5 ":Collaboration CrearEntregable" as CrearEntregable
 rectangle #CDEBA5 ":Collaboration AbrirProyecto" as AbrirProyecto
 
-EstadoEntrada -r-> ListarEntregablesView: abrirEntregables()
+EstadoEntrada1 -r-> ListarEntregablesView: abrirEntregables(idProyecto)
+EstadoEntrada2 -r-> ListarEntregablesView: abrirEntregables(idEntregable)
 
-ListarEntregablesView -d-> EntregableController: listarEntregables()
+ListarEntregablesView -d-> EntregableController: listarEntregables(contexto)
 ListarEntregablesView --> EntregableController: filtrarEntregables(criterio)
 EntregableController --> EntregableRepository: obtenerTodos()
+EntregableController --> EntregableRepository: obtenerPorContexto(contexto)
 EntregableController --> EntregableRepository: buscarPorCriterio(criterio)
 EntregableRepository -- Entregable
+note right of EntregableController
+Contexto opcional:
+- sin identificador: listado global
+- con identificador: listado acotado
+end note
 ListarEntregablesView ..> EstadoSalida: continuarNavegacion()
 ListarEntregablesView ..> AbrirEntregable: abrirEntregable()
 ListarEntregablesView ..> CrearEntregable: crearEntregable()

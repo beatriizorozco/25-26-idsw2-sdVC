@@ -1,33 +1,55 @@
 @startuml abrirPanelPrincipal-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":INVESTIGADORES_ABIERTOS" as EstadoEntrada
+actor Investigador
+
 package abrirPanelPrincipal as "abrirPanelPrincipal()" {
-    rectangle #629EF9 DetallePanelPrincipalView
-    rectangle #b5bd68 PanelPrincipalController
-    rectangle #F2AC4E PanelPrincipalRepository
-    rectangle #F2AC4E PanelPrincipal
+    rectangle #629EF9 PanelPrincipalView
+    rectangle #b5bd68 AbrirPanelPrincipalController
+    rectangle #F2AC4E Sesion
 }
 
-rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoSalida
+rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as PanelPrincipalAbierto
+rectangle #CDEBA5 ":INVESTIGADORES_ABIERTOS" as InvestigadoresAbiertos
+rectangle #CDEBA5 ":OPCIONES_CARGA_TRABAJO_ABIERTAS" as OpcionesCargaTrabajoAbiertas
+rectangle #CDEBA5 ":OPCIONES_PERFIL_ABIERTO" as OpcionesPerfilAbierto
+rectangle #CDEBA5 ":MIS_PUBLICACIONES_ABIERTAS" as MisPublicacionesAbiertas
+rectangle #CDEBA5 ":PUBLICACIONES_ABIERTAS" as PublicacionesAbiertas
+rectangle #CDEBA5 ":RECOMPENSAS_ABIERTAS" as RecompensasAbiertas
+rectangle #CDEBA5 ":PROYECTOS_ABIERTOS" as ProyectosAbiertos
 rectangle #CDEBA5 ":Collaboration AbrirOpcionesPerfil" as AbrirOpcionesPerfil
 rectangle #CDEBA5 ":Collaboration AbrirOpcionesCargaTrabajo" as AbrirOpcionesCargaTrabajo
 rectangle #CDEBA5 ":Collaboration AbrirProyectos" as AbrirProyectos
 rectangle #CDEBA5 ":Collaboration AbrirInvestigadores" as AbrirInvestigadores
 rectangle #CDEBA5 ":Collaboration AbrirMisPublicaciones" as AbrirMisPublicaciones
+rectangle #CDEBA5 ":Collaboration AbrirPublicaciones" as AbrirPublicaciones
+rectangle #CDEBA5 ":Collaboration AbrirRecompensas" as AbrirRecompensas
+rectangle #CDEBA5 ":Collaboration CerrarSesion" as CerrarSesion
 
-EstadoEntrada -r-> DetallePanelPrincipalView: abrirPanelPrincipal()
+Investigador -r-> PanelPrincipalView: abrirPanelPrincipal()
 
-DetallePanelPrincipalView -d-> PanelPrincipalController: obtenerPanelPrincipal(id)
-DetallePanelPrincipalView --> PanelPrincipalController: prepararAccionesDisponibles(investigador)
-PanelPrincipalController --> PanelPrincipalRepository: obtenerPorId(id)
-PanelPrincipalController --> PanelPrincipalRepository: verificarPermisos(actor)
-PanelPrincipalRepository -- PanelPrincipal
-DetallePanelPrincipalView ..> EstadoSalida: continuarNavegacion()
-DetallePanelPrincipalView ..> AbrirOpcionesPerfil: abrirOpcionesPerfil()
-DetallePanelPrincipalView ..> AbrirOpcionesCargaTrabajo: abrirOpcionesCargaTrabajo()
-DetallePanelPrincipalView ..> AbrirProyectos: abrirProyectos()
-DetallePanelPrincipalView ..> AbrirInvestigadores: abrirInvestigadores()
-DetallePanelPrincipalView ..> AbrirMisPublicaciones: abrirMisPublicaciones()
+InvestigadoresAbiertos -r-> PanelPrincipalView: abrirPanelPrincipal()
+OpcionesCargaTrabajoAbiertas -r-> PanelPrincipalView: abrirPanelPrincipal()
+OpcionesPerfilAbierto -r-> PanelPrincipalView: abrirPanelPrincipal()
+MisPublicacionesAbiertas -r-> PanelPrincipalView: abrirPanelPrincipal()
+PublicacionesAbiertas -r-> PanelPrincipalView: abrirPanelPrincipal()
+RecompensasAbiertas -r-> PanelPrincipalView: abrirPanelPrincipal()
+ProyectosAbiertos -r-> PanelPrincipalView: abrirPanelPrincipal()
+
+PanelPrincipalView -d-> AbrirPanelPrincipalController: obtenerAccionesDisponibles(sesion)
+
+AbrirPanelPrincipalController --> Sesion: obtenerRolActivo() : Investigador
+
+AbrirPanelPrincipalController --> PanelPrincipalView: presentarAccionesDisponibles(investigador)
+
+PanelPrincipalView -r-> PanelPrincipalAbierto: panelPrincipalVisible()
+PanelPrincipalView ..> AbrirOpcionesPerfil: abrirOpcionesPerfil()
+PanelPrincipalView ..> AbrirOpcionesCargaTrabajo: abrirOpcionesCargaTrabajo()
+PanelPrincipalView ..> AbrirProyectos: abrirProyectos()
+PanelPrincipalView ..> AbrirInvestigadores: abrirInvestigadores()
+PanelPrincipalView ..> AbrirMisPublicaciones: abrirMisPublicaciones()
+PanelPrincipalView ..> AbrirPublicaciones: abrirPublicaciones()
+PanelPrincipalView ..> AbrirRecompensas: abrirRecompensas()
+PanelPrincipalView ..> CerrarSesion: cerrarSesion()
 
 @enduml

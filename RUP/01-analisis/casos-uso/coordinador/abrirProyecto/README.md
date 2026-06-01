@@ -95,7 +95,7 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de p
 
 ### Patrón de colaboración establecido
 
-- **Entrada estándar**: Desde el estado activo del diagrama de contexto del Coordinador.
+- **Entrada contextual**: Puede iniciarse desde `PROYECTOS_ABIERTOS`, `ENTREGABLES_ABIERTOS`; la vista conserva el origen para que el controlador ajuste el alcance cuando exista identificador de contexto.
 - **Análisis MVC completo**: Vista, Control y Entidad claramente separados.
 - **Salida estándar**: Retorno a la navegación permitida o a una colaboración relacionada.
 
@@ -133,6 +133,8 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de p
 
 - Mantener la separación entre presentación, coordinación y entidad para el rol Coordinador.
 - Permitir al Coordinador acceso global sobre publicaciones, entregables, proyectos, investigadores, recompensas y perfiles según el caso de uso.
+
+- Cuando el caso de uso se inicia desde un estado de detalle, el an?lisis modela un par?metro de contexto para ajustar el alcance sin duplicar el caso de uso. Si no se recibe identificador, el controlador conserva el comportamiento base del caso de uso; si se recibe, recupera o prepara la entidad acotada al contexto.
 
 ## Características del análisis
 

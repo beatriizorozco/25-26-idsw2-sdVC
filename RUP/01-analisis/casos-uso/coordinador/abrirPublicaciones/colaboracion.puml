@@ -1,7 +1,8 @@
 @startuml abrirPublicaciones-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoEntrada
+rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoEntrada1
+rectangle #CDEBA5 ":PUBLICACION_ABIERTA" as EstadoEntrada2
 package abrirPublicaciones as "abrirPublicaciones()" {
     rectangle #629EF9 ListarPublicacionesView
     rectangle #b5bd68 PublicacionController
@@ -13,13 +14,20 @@ rectangle #CDEBA5 ":PUBLICACIONES_ABIERTAS" as EstadoSalida
 rectangle #CDEBA5 ":Collaboration AbrirPublicacion" as AbrirPublicacion
 rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanelPrincipal
 
-EstadoEntrada -r-> ListarPublicacionesView: abrirPublicaciones()
+EstadoEntrada1 -r-> ListarPublicacionesView: abrirPublicaciones()
+EstadoEntrada2 -r-> ListarPublicacionesView: abrirPublicaciones(idPublicacion)
 
-ListarPublicacionesView -d-> PublicacionController: listarPublicaciones()
+ListarPublicacionesView -d-> PublicacionController: listarPublicaciones(contexto)
 ListarPublicacionesView --> PublicacionController: filtrarPublicaciones(criterio)
 PublicacionController --> PublicacionRepository: obtenerTodos()
+PublicacionController --> PublicacionRepository: obtenerPorContexto(contexto)
 PublicacionController --> PublicacionRepository: buscarPorCriterio(criterio)
 PublicacionRepository -- Publicacion
+note right of PublicacionController
+Contexto opcional:
+- sin identificador: listado global
+- con identificador: listado acotado
+end note
 ListarPublicacionesView ..> EstadoSalida: continuarNavegacion()
 ListarPublicacionesView ..> AbrirPublicacion: abrirPublicacion()
 ListarPublicacionesView ..> AbrirPanelPrincipal: abrirPanelPrincipal()
