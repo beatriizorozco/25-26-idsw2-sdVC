@@ -8,6 +8,7 @@ package "Frontend React" {
     class PanelPrincipalPage
     class ConfirmarCierreSesionModal
     class AuthServiceClient {
+        +obtenerTokenCsrf(): CsrfTokenResponse
         +iniciarSesion(credenciales): SesionResponse
         +cerrarSesion(): void
         +obtenerSesion(): SesionResponse
@@ -19,6 +20,7 @@ package "Frontend React" {
 
 package "API REST Spring Boot" {
     class AuthController {
+        +obtenerTokenCsrf(): CsrfTokenResponse
         +iniciarSesion(LoginRequest): SesionResponse
         +cerrarSesion(HttpSession): void
         +obtenerSesion(): SesionResponse
@@ -33,12 +35,23 @@ package "Servicios de aplicación" {
         +autenticar(usuario, contrasena): Usuario
     }
     class SesionService {
-        +crearSesion(usuario): SesionResponse
+        +crearSesion(usuario, rol): SesionResponse
         +cerrarSesion(): void
         +obtenerSesionActual(): SesionResponse
     }
     class PanelPrincipalService {
         +obtenerAccionesDisponibles(rol): List<AccionPanel>
+    }
+}
+
+package "Seguridad" {
+    class SecurityConfig {
+        +configurarSesionesHttp()
+        +configurarCsrf()
+        +configurarAutorizacionPorRol()
+    }
+    class PasswordEncoder {
+        +matches(contrasena, hash): boolean
     }
 }
 
@@ -63,6 +76,10 @@ package "Contratos API" {
     class LoginRequest {
         +usuario: String
         +contrasena: String
+    }
+    class CsrfTokenResponse {
+        +headerName: String
+        +token: String
     }
     class SesionResponse {
         +usuario: String
@@ -89,12 +106,16 @@ AuthController --> SesionService
 PanelPrincipalController --> SesionService
 PanelPrincipalController --> PanelPrincipalService
 AuthService --> UsuarioRepository
+AuthService --> PasswordEncoder
+SecurityConfig ..> AuthController : protege
+SecurityConfig ..> PanelPrincipalController : protege
+SecurityConfig --> PasswordEncoder : configura
 UsuarioRepository --> Usuario
 Usuario --> Rol
 AuthController ..> LoginRequest
+AuthController ..> CsrfTokenResponse
 AuthController ..> SesionResponse
 PanelPrincipalController ..> PanelPrincipalResponse
 PanelPrincipalResponse --> AccionPanel
 
 @enduml
-

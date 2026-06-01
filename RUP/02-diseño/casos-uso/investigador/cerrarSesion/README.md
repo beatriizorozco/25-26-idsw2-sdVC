@@ -23,7 +23,7 @@ Detallar el cierre de sesión del Investigador desde `PANEL_PRINCIPAL_ABIERTO`. 
 ## Decisiones de Diseño
 
 - Cancelar no genera ninguna petición a la API y conserva `PANEL_PRINCIPAL_ABIERTO`.
-- Confirmar invalida la sesión, expira la cookie y presenta `SESION_CERRADA`.
+- Confirmar envía la cookie de sesión y el token CSRF, invalida la sesión, expira la cookie y presenta `SESION_CERRADA`.
 
 ## Referencias
 

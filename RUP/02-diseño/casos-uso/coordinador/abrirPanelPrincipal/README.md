@@ -25,6 +25,7 @@ Detallar la obtención y presentación del panel principal del Coordinador. La A
 - El panel no se persiste como entidad; se calcula desde el rol activo.
 - El Coordinador recibe acceso a convocatorias y operaciones globales.
 - La API devuelve códigos, etiquetas y rutas para que el frontend pueda presentar la navegación.
+- Si la sesión está ausente o ha caducado, la API responde `401 Unauthorized` y el frontend presenta `SESION_CERRADA`.
 
 ## Referencias
 

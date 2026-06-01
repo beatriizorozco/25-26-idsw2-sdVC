@@ -10,7 +10,7 @@ actor Investigador
 rectangle "Servicio web desplegable" {
     rectangle "Single Page Application\nReact + TypeScript + Vite" as Frontend #629EF9
     rectangle "API REST\nJava + Spring Boot" as Api #b5bd68
-    rectangle "Spring Security\nSesión HTTP + cookie segura" as Security #b5bd68
+    rectangle "Spring Security\nSesión HTTP + CSRF" as Security #b5bd68
 }
 
 database "PostgreSQL" as Database #F2AC4E
@@ -20,12 +20,17 @@ Investigador --> Frontend: Usa mediante HTTPS
 Frontend --> Api: Solicita /api/*\nJSON + cookie de sesión
 Api --> Security: Autentica y autoriza
 Api --> Database: Lee y escribe\nSpring Data JPA
-Security --> Database: Consulta usuarios
 
 note right of Frontend
 El frontend compilado se sirve
 desde el mismo origen que la API.
 end note
 
-@enduml
+note right of Security
+Cookie de sesión en producción:
+HttpOnly, Secure, SameSite=Lax.
+Las mutaciones requieren token CSRF.
+El token se renueva tras autenticar.
+end note
 
+@enduml

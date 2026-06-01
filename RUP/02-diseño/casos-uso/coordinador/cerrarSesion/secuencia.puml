@@ -16,12 +16,13 @@ Modal --> Coordinador: Solicita confirmación
 alt Cancela el cierre
     Coordinador -> Modal: cancelar()
     Modal --> Frontend: cerrar()
+    deactivate Modal
     Frontend --> Coordinador: Mantiene PANEL_PRINCIPAL_ABIERTO
 else Confirma el cierre
     Coordinador -> Modal: confirmar()
     Modal --> Frontend: confirmarCierre()
     deactivate Modal
-    Frontend -> Api: POST /api/auth/logout\nCookie de sesión
+    Frontend -> Api: POST /api/auth/logout\nCookie de sesión + token CSRF
     activate Api
     Api -> Sesion: cerrarSesion()
     activate Sesion
@@ -34,4 +35,3 @@ end
 deactivate Frontend
 
 @enduml
-

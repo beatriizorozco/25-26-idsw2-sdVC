@@ -25,6 +25,7 @@ Detallar la obtención y presentación del panel principal del Investigador. La 
 - El panel no se persiste como entidad; se calcula desde el rol activo.
 - El Investigador no recibe acceso a convocatorias ni a operaciones globales de coordinación.
 - La carga de trabajo mostrada al Investigador corresponde a su información propia.
+- Si la sesión está ausente o ha caducado, la API responde `401 Unauthorized` y el frontend presenta `SESION_CERRADA`.
 
 ## Referencias
 
