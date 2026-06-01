@@ -1,0 +1,48 @@
+@startuml iniciarSesion-diseño
+title Diagrama de secuencia - Iniciar sesión
+
+actor "Usuario no autenticado" as Usuario
+participant "LoginPage\n(React)" as Frontend
+participant "AuthController\n(Spring Boot)" as Api
+participant "AuthService" as Auth
+participant "UsuarioRepository" as Repo
+database "PostgreSQL" as Database
+participant "SesionService" as Sesion
+
+Usuario -> Frontend: Introduce usuario y contraseña
+activate Frontend
+Frontend -> Api: POST /api/auth/login\nLoginRequest
+activate Api
+Api -> Auth: autenticar(usuario, contrasena)
+activate Auth
+Auth -> Repo: findByNombreUsuario(usuario)
+activate Repo
+Repo -> Database: SELECT usuario
+activate Database
+Database --> Repo: Usuario o vacío
+deactivate Database
+Repo --> Auth: Optional<Usuario>
+deactivate Repo
+Auth -> Auth: comprobarContraseña(hash)
+
+alt Credenciales correctas y usuario activo
+    Auth --> Api: Usuario autenticado
+    deactivate Auth
+    Api -> Sesion: crearSesion(usuario)
+    activate Sesion
+    Sesion --> Api: SesionResponse
+    deactivate Sesion
+    Api --> Frontend: 200 OK + cookie de sesión segura\nSesionResponse
+    deactivate Api
+    Frontend --> Usuario: Abre PANEL_PRINCIPAL_ABIERTO
+else Credenciales incorrectas o usuario inactivo
+    Auth --> Api: CredencialesIncorrectasException
+    deactivate Auth
+    Api --> Frontend: 401 Unauthorized
+    deactivate Api
+    Frontend --> Usuario: Presenta credenciales incorrectas\nPermite reintentar
+end
+deactivate Frontend
+
+@enduml
+

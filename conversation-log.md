@@ -122,3 +122,13 @@ También se actualizaron los seis README de análisis para eliminar expresiones 
 **Decisión:** queda cerrado el primer bloque de revisión manual de análisis. A partir de ahora cada familia debe revisarse contra sus `especificacion.puml` antes de aceptar o regenerar diagramas de colaboración, evitando reutilizar plantillas genéricas cuando oculten estados, alternativas o responsabilidades específicas. El siguiente bloque recomendado es la gestión de perfil. El repositorio queda limpio en la rama `develop`, con los commits recientes `2f89ab6 refactor(analisis): alinear bloque de sesión con especificaciones`, `a7f60bc refactor(analisis): recuperar estados y organizar índices por dominio` y `4eb3496 fix(analisis): corregir referencias del bloque de sesión`.
 
 ---
+
+## [2026-06-01 21:23] Inicio de sesión - Diseño del bloque de sesión y navegación
+
+**Prompt:** el usuario inició sesión con `session-memory` y pidió continuar con el primer bloque, comenzando la disciplina de diseño y tomando como base la metodología del repositorio `pySigHor` del profesor antes de abordar el desarrollo funcional.
+
+**Resultado:** se utilizó la skill `session-memory`. Se revisó `conversation-log.md`, el estado de Git, la rama activa y los commits recientes. El repositorio se encuentra limpio en la rama `develop`. La disciplina de requisitos está cerrada, existe una primera iteración completa de análisis MVC con 71 casos de uso y el primer bloque de análisis ya fue revisado manualmente contra sus diagramas de especificación: `iniciarSesion`, `abrirPanelPrincipal` y `cerrarSesion`, tanto para Coordinador como para Investigador. La carpeta `RUP/02-diseño` todavía contiene únicamente su README inicial.
+
+**Decisión:** durante esta sesión se diseñará la primera iteración técnica del sistema manteniendo trazabilidad completa desde Detalle y Análisis. Se adaptará el patrón del profesor a la Plataforma Interna de Investigación de FUNIBER: arquitectura general, clases de diseño, configuración del proyecto y diagramas de secuencia del bloque de sesión y navegación. Después de validar estos artefactos se podrá iniciar el desarrollo funcional del mismo bloque.
+
+---

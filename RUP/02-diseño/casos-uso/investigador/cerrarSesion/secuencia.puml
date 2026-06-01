@@ -1,0 +1,37 @@
+@startuml cerrarSesion-investigador-diseño
+title Diagrama de secuencia - Cerrar sesión del Investigador
+
+actor Investigador
+participant "PanelPrincipalPage\n(React)" as Frontend
+participant "ConfirmarCierreSesionModal\n(React)" as Modal
+participant "AuthController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+
+Investigador -> Frontend: Solicita cerrar sesión
+activate Frontend
+Frontend -> Modal: abrir()
+activate Modal
+Modal --> Investigador: Solicita confirmación
+
+alt Cancela el cierre
+    Investigador -> Modal: cancelar()
+    Modal --> Frontend: cerrar()
+    Frontend --> Investigador: Mantiene PANEL_PRINCIPAL_ABIERTO
+else Confirma el cierre
+    Investigador -> Modal: confirmar()
+    Modal --> Frontend: confirmarCierre()
+    deactivate Modal
+    Frontend -> Api: POST /api/auth/logout\nCookie de sesión
+    activate Api
+    Api -> Sesion: cerrarSesion()
+    activate Sesion
+    Sesion --> Api: Sesión invalidada
+    deactivate Sesion
+    Api --> Frontend: 204 No Content\nCookie expirada
+    deactivate Api
+    Frontend --> Investigador: Presenta SESION_CERRADA
+end
+deactivate Frontend
+
+@enduml
+

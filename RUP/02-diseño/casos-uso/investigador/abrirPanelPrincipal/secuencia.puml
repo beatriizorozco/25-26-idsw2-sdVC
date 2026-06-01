@@ -1,0 +1,40 @@
+@startuml abrirPanelPrincipal-investigador-diseño
+title Diagrama de secuencia - Abrir panel principal del Investigador
+
+actor Investigador
+participant "PanelPrincipalPage\n(React)" as Frontend
+participant "PanelPrincipalController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "PanelPrincipalService" as Panel
+
+Investigador -> Frontend: Solicita abrir el panel principal
+activate Frontend
+Frontend -> Api: GET /api/panel-principal\nCookie de sesión
+activate Api
+Api -> Sesion: obtenerSesionActual()
+activate Sesion
+Sesion --> Api: SesionResponse(INVESTIGADOR)
+deactivate Sesion
+Api -> Panel: obtenerAccionesDisponibles(INVESTIGADOR)
+activate Panel
+Panel --> Api: Acciones del Investigador
+deactivate Panel
+Api --> Frontend: 200 OK\nPanelPrincipalResponse
+deactivate Api
+Frontend --> Investigador: Presenta PANEL_PRINCIPAL_ABIERTO
+
+note right of Frontend
+Acciones:
+- Perfil
+- Carga de trabajo propia
+- Proyectos
+- Investigadores
+- Mis publicaciones
+- Publicaciones
+- Recompensas
+- Cerrar sesión
+end note
+
+deactivate Frontend
+@enduml
+

@@ -1,0 +1,31 @@
+@startuml arquitectura
+skinparam linetype polyline
+skinparam componentStyle rectangle
+
+title Arquitectura técnica - Plataforma Interna de Investigación de FUNIBER
+
+actor Coordinador
+actor Investigador
+
+rectangle "Servicio web desplegable" {
+    rectangle "Single Page Application\nReact + TypeScript + Vite" as Frontend #629EF9
+    rectangle "API REST\nJava + Spring Boot" as Api #b5bd68
+    rectangle "Spring Security\nSesión HTTP + cookie segura" as Security #b5bd68
+}
+
+database "PostgreSQL" as Database #F2AC4E
+
+Coordinador --> Frontend: Usa mediante HTTPS
+Investigador --> Frontend: Usa mediante HTTPS
+Frontend --> Api: Solicita /api/*\nJSON + cookie de sesión
+Api --> Security: Autentica y autoriza
+Api --> Database: Lee y escribe\nSpring Data JPA
+Security --> Database: Consulta usuarios
+
+note right of Frontend
+El frontend compilado se sirve
+desde el mismo origen que la API.
+end note
+
+@enduml
+
