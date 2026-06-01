@@ -15,7 +15,7 @@ Definir las decisiones técnicas que permiten transformar el Diseño en una apli
 4. **Persistencia real**: PostgreSQL se utiliza en producción para evitar depender del disco efímero del servidor.
 5. **MVP evolutivo**: La primera iteración resuelve sesión y navegación antes de ampliar el dominio.
 
-## Estructura prevista
+## Estructura implementada
 
 ```text
 src/
@@ -35,10 +35,9 @@ src/
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
-│   │   ├── context/
 │   │   ├── pages/
 │   │   ├── services/
-│   │   └── types/
+│   │   └── types.ts
 │   ├── package.json
 │   └── vite.config.ts
 └── Dockerfile
@@ -78,6 +77,34 @@ Las operaciones que modifican estado requieren un token CSRF. El frontend obtien
 |`GET`|`/api/auth/me`|Recuperar el usuario y rol de la sesión activa.|
 |`GET`|`/api/panel-principal`|Obtener las acciones disponibles para el rol activo.|
 
+## Dependencias implementadas
+
+### Backend
+
+Las dependencias se encuentran en `src/backend/pom.xml`:
+
+- `spring-boot-starter-web`
+- `spring-boot-starter-security`
+- `spring-boot-starter-data-jpa`
+- `spring-boot-starter-validation`
+- `flyway-core`
+- `flyway-database-postgresql`
+- `postgresql`
+- `h2`
+- `spring-boot-starter-test`
+- `spring-security-test`
+
+### Frontend
+
+Las dependencias se encuentran en `src/frontend/package.json`:
+
+- `react`
+- `react-dom`
+- `lucide-react`
+- `typescript`
+- `vite`
+- `eslint`
+
 ## Modelo inicial de datos
 
 ### Tabla `usuarios`
@@ -91,6 +118,8 @@ Las operaciones que modifican estado requieren un token CSRF. El frontend obtien
 |`activo`|`BOOLEAN`|Obligatorio.|
 
 La sesión HTTP no necesita una tabla propia en la primera iteración. Si el despliegue futuro requiere varias instancias o persistencia compartida de sesiones, se podrá incorporar Spring Session.
+
+Flyway crea la tabla mediante `src/backend/src/main/resources/db/migration/V1__crear_tabla_usuarios.sql`. El perfil local utiliza H2 en modo compatible con PostgreSQL para facilitar el arranque inmediato. El perfil de producción utiliza PostgreSQL.
 
 ## Mapeo entre Diseño y código
 
@@ -107,7 +136,39 @@ La sesión HTTP no necesita una tabla propia en la primera iteración. Si el des
 |`LoginPage`|`src/frontend/src/pages/LoginPage.tsx`|
 |`PanelPrincipalPage`|`src/frontend/src/pages/PanelPrincipalPage.tsx`|
 
-## Despliegue previsto
+## Variables de entorno
+
+|Variable|Uso|
+|-|-|
+|`SPRING_PROFILES_ACTIVE`|Seleccionar `local` o `prod`.|
+|`DATABASE_URL`|URL JDBC de PostgreSQL en producción.|
+|`DATABASE_USERNAME`|Usuario de PostgreSQL.|
+|`DATABASE_PASSWORD`|Contraseña de PostgreSQL.|
+|`FRONTEND_ORIGIN`|Origen autorizado durante el desarrollo separado.|
+
+## Comandos comprobados
+
+### Backend
+
+```powershell
+cd src/backend
+.\mvnw.cmd test
+.\mvnw.cmd spring-boot:run
+```
+
+### Frontend
+
+```powershell
+cd src/frontend
+npm install
+npm run build
+npm run lint
+npm run dev
+```
+
+En desarrollo, la SPA queda disponible en `http://127.0.0.1:5173` y delega las rutas `/api` al backend local en `http://127.0.0.1:8080`.
+
+## Despliegue pendiente
 
 1. Vite compila el frontend.
 2. Docker copia los recursos compilados al backend.

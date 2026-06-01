@@ -1,6 +1,6 @@
 # FUNIBER > Investigador > iniciarSesion > Diseño
 
-> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/iniciarSesion/README.md)|[Análisis](/RUP/01-analisis/casos-uso/investigador/iniciarSesion/README.md)|**Diseño**|Desarrollo|Pruebas|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/iniciarSesion/README.md)|[Análisis](/RUP/01-analisis/casos-uso/investigador/iniciarSesion/README.md)|**Diseño**|[Desarrollo](/RUP/03-desarrollo/casos-uso/investigador/iniciarSesion/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
 ## Propósito

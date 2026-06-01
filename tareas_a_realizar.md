@@ -8,26 +8,26 @@ Documento de seguimiento para no olvidar actualizaciones documentales y técnica
 - [ ] Revisar los diagramas de colaboración antes de crear su Diseño.
 - [ ] Crear los `README.md` y `secuencia.puml` de Diseño para cada caso revisado.
 - [ ] Generar los SVG de Diseño en `images/RUP/02-diseño`.
-- [ ] Crear la documentación de Desarrollo de cada caso en `RUP/03-desarrollo/casos-uso`.
-- [ ] Añadir enlaces de Desarrollo a las cabeceras de Diseño cuando existan sus documentos.
+- [x] Crear la documentación de Desarrollo de cada caso en `RUP/03-desarrollo/casos-uso`.
+- [x] Añadir enlaces de Desarrollo a las cabeceras de Diseño cuando existan sus documentos.
 - [ ] Crear la documentación de Pruebas de cada caso en `RUP/04-pruebas/casos-uso`.
 - [ ] Añadir enlaces de Pruebas a las cabeceras cuando existan sus documentos.
-- [ ] Verificar que las rutas internas de los README no estén rotas.
+- [x] Verificar que las rutas internas de los README no estén rotas.
 
 ## Configuración del proyecto
 
 Actualizar [`RUP/02-diseño/configuracion-proyecto.md`](RUP/02-diseño/configuracion-proyecto.md) conforme exista código real:
 
-- [ ] Sustituir la estructura prevista de carpetas por la estructura definitiva.
-- [ ] Documentar las dependencias exactas de `pom.xml`.
-- [ ] Documentar las dependencias exactas de `package.json`.
-- [ ] Añadir la configuración real de Spring Security.
-- [ ] Añadir las variables de entorno necesarias.
-- [ ] Documentar la conexión real con PostgreSQL.
-- [ ] Documentar las migraciones de Flyway.
-- [ ] Añadir los comandos comprobados para ejecutar backend y frontend.
-- [ ] Añadir los comandos comprobados para ejecutar las pruebas.
-- [ ] Mantener actualizado el mapeo entre artefactos de Diseño y archivos de código.
+- [x] Sustituir la estructura prevista de carpetas por la estructura definitiva.
+- [x] Documentar las dependencias exactas de `pom.xml`.
+- [x] Documentar las dependencias exactas de `package.json`.
+- [x] Añadir la configuración real de Spring Security.
+- [x] Añadir las variables de entorno necesarias.
+- [x] Documentar la conexión real con PostgreSQL.
+- [x] Documentar las migraciones de Flyway.
+- [x] Añadir los comandos comprobados para ejecutar backend y frontend.
+- [x] Añadir los comandos comprobados para ejecutar las pruebas.
+- [x] Mantener actualizado el mapeo entre artefactos de Diseño y archivos de código.
 - [ ] Documentar Docker cuando se incorpore al proyecto.
 - [ ] Documentar el despliegue público y su URL cuando esté disponible.
 - [ ] Añadir los usuarios de demostración sin publicar contraseñas sensibles.
@@ -46,10 +46,12 @@ Actualizar [`RUP/02-diseño/README.md`](RUP/02-diseño/README.md) y sus diagrama
 
 Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante la construcción:
 
-- [ ] Documentar la estructura real del código.
-- [ ] Crear el índice de Desarrollo por actor y familia funcional.
-- [ ] Añadir trazabilidad desde cada caso desarrollado hacia Detalle, Análisis y Diseño.
-- [ ] Documentar endpoints, servicios y componentes implementados.
+- [x] Documentar la estructura real del código.
+- [x] Crear el índice de Desarrollo por actor y familia funcional.
+- [x] Añadir trazabilidad desde cada caso desarrollado hacia Detalle, Análisis y Diseño.
+- [x] Documentar endpoints, servicios y componentes implementados.
+- [x] Aplicar la identidad visual azul corporativa de FUNIBER.
+- [x] Incorporar el logotipo GIPF al login y a la cabecera del panel.
 - [ ] Añadir capturas o evidencias visuales relevantes cuando exista frontend funcional.
 
 ## Pruebas
@@ -58,8 +60,9 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [ ] Definir la estrategia de pruebas unitarias, de integración y de interfaz.
 - [ ] Documentar pruebas por caso de uso.
 - [ ] Añadir evidencias de ejecución y resultados.
-- [ ] Verificar permisos diferenciados de Coordinador e Investigador.
-- [ ] Probar credenciales incorrectas, reintento, sesión válida y cierre cancelado o confirmado.
+- [x] Verificar permisos diferenciados de Coordinador e Investigador.
+- [x] Probar credenciales incorrectas, sesión válida y cierre confirmado.
+- [ ] Probar desde la interfaz el reintento de acceso y la cancelación del cierre de sesión.
 
 ## Despliegue y entrega final
 
@@ -72,4 +75,3 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [ ] Documentar credenciales de demostración separadas de cualquier secreto real.
 - [ ] Revisar que `conversation-log.md` refleje las decisiones relevantes.
 - [ ] Comprobar que no quedan archivos temporales ni enlaces rotos.
-

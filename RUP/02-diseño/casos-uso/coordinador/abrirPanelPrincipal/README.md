@@ -1,6 +1,6 @@
 # FUNIBER > Coordinador > abrirPanelPrincipal > Diseño
 
-> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/abrirPanelPrincipal/README.md)|[Análisis](/RUP/01-analisis/casos-uso/coordinador/abrirPanelPrincipal/README.md)|**Diseño**|Desarrollo|Pruebas|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/abrirPanelPrincipal/README.md)|[Análisis](/RUP/01-analisis/casos-uso/coordinador/abrirPanelPrincipal/README.md)|**Diseño**|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/abrirPanelPrincipal/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
 ## Propósito
