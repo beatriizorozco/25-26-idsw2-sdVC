@@ -5,7 +5,7 @@
 
 ## Propósito
 
-Detallar la interacción técnica para autenticar a una persona antes de conocer su rol. El Diseño conserva `SESION_CERRADA` como estado previo, permite reintentar tras credenciales incorrectas y alcanza `PANEL_PRINCIPAL_ABIERTO` cuando la autenticación es válida.
+Detallar la interacción técnica para autenticar al Coordinador. El Diseño conserva `SESION_CERRADA` como estado previo, permite reintentar tras credenciales incorrectas y alcanza `PANEL_PRINCIPAL_ABIERTO` cuando la autenticación y el rol son válidos.
 
 ## Diagrama de secuencia
 
@@ -23,7 +23,8 @@ Detallar la interacción técnica para autenticar a una persona antes de conocer
 
 ## Decisiones de Diseño
 
-- La secuencia es común a ambos roles porque el rol aún no se conoce al iniciar.
+- El actor es `Coordinador` para mantener trazabilidad con la especificación funcional.
+- La lógica técnica se comparte con el inicio de sesión del Investigador, aunque cada carpeta conserva su actor correspondiente.
 - Las credenciales incorrectas producen `401 Unauthorized` y permiten reintentar.
 - La cookie segura evita almacenar tokens de acceso en el navegador.
 

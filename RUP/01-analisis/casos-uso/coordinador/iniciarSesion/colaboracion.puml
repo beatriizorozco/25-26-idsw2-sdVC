@@ -1,7 +1,7 @@
 @startuml iniciarSesion-analisis
 skinparam linetype polyline
 
-actor UsuarioNoAutenticado
+actor Coordinador
 rectangle #CDEBA5 ":SESION_CERRADA" as SesionCerrada
 
 package iniciarSesion as "iniciarSesion()" {
@@ -16,7 +16,7 @@ rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as PanelPrincipalAbierto
 
 SesionCerrada -r-> IniciarSesionView: iniciarSesion()
 
-UsuarioNoAutenticado -r-> IniciarSesionView: introducirCredenciales(usuario, contrasena)
+Coordinador -r-> IniciarSesionView: introducirCredenciales(usuario, contrasena)
 
 IniciarSesionView -d-> IniciarSesionController: autenticar(usuario, contrasena) : Sesion
 
