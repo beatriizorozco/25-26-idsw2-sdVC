@@ -35,11 +35,20 @@ npm run lint
 
 |Verificación|Resultado|
 |-|-|
-|Suite Maven|7 pruebas correctas|
+|Suite Maven|8 pruebas correctas|
 |Compilación frontend|Correcta|
 |Lint frontend|Correcto|
 |Token CSRF real|`X-XSRF-TOKEN` mediante cookie `XSRF-TOKEN`|
+|Origen local del navegador integrado|`http://127.0.0.1:5173` autorizado|
 |Credenciales incorrectas|`401 Unauthorized`|
 |Reintento posterior|Sesión creada correctamente|
 |Panel tras cerrar sesión|`401 Unauthorized`|
 
+## Evidencias visuales
+
+- [Formulario de inicio de sesión](/images/RUP/04-pruebas/iniciarSesion-formulario.png)
+- [Credenciales incorrectas](/images/RUP/04-pruebas/iniciarSesion-credenciales-incorrectas.png)
+- [Panel principal del Coordinador](/images/RUP/04-pruebas/coordinador-abrirPanelPrincipal.png)
+- [Confirmación de cierre del Coordinador](/images/RUP/04-pruebas/coordinador-cerrarSesion-confirmacion.png)
+- [Panel principal del Investigador](/images/RUP/04-pruebas/investigador-abrirPanelPrincipal.png)
+- [Confirmación de cierre del Investigador](/images/RUP/04-pruebas/investigador-cerrarSesion-confirmacion.png)

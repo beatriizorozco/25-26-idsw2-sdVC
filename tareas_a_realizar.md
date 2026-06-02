@@ -52,7 +52,7 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Documentar endpoints, servicios y componentes implementados.
 - [x] Aplicar la identidad visual azul corporativa de FUNIBER.
 - [x] Incorporar el logotipo GIPF al login y a la cabecera del panel.
-- [ ] Añadir capturas o evidencias visuales relevantes cuando exista frontend funcional.
+- [x] Añadir capturas o evidencias visuales relevantes cuando exista frontend funcional.
 
 ## Pruebas
 

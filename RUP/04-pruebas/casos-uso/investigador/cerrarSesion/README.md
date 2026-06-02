@@ -19,3 +19,9 @@ Comprobar que el Investigador puede cancelar el cierre y permanecer en `PANEL_PR
 - Abrir el modal, pulsar Cancelar y confirmar que el panel permanece visible.
 - Abrir de nuevo el modal, confirmar el cierre y comprobar que vuelve el formulario de acceso.
 
+## Evidencia visual
+
+|Confirmación de cierre del Investigador|
+|-|
+|![Confirmación de cierre del Investigador](/images/RUP/04-pruebas/investigador-cerrarSesion-confirmacion.png)|
+

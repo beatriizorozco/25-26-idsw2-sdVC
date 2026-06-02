@@ -14,7 +14,13 @@ Comprobar que el Investigador puede iniciar sesión desde `SESION_CERRADA` y alc
 |Iniciar sesión como Investigador|Sesión creada con rol `INVESTIGADOR`|Recorrido HTTP local y helper `iniciarSesion(...)`|
 |Solicitar token CSRF|Se entrega nombre de cabecera y token no vacíos|`exponeTokenCsrfParaLaSpa()`|
 
-## Evidencia visual pendiente
+## Evidencia visual
 
-- Captura del panel alcanzado tras iniciar sesión como Investigador.
+|Formulario inicial|
+|-|
+|![Formulario de inicio de sesión](/images/RUP/04-pruebas/iniciarSesion-formulario.png)|
+
+|Credenciales incorrectas|
+|-|
+|![Mensaje tras introducir credenciales incorrectas](/images/RUP/04-pruebas/iniciarSesion-credenciales-incorrectas.png)|
 

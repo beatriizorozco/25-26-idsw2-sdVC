@@ -14,7 +14,9 @@ Comprobar que una sesión válida de Investigador recibe únicamente las accione
 |Abrir panel como Investigador|Respuesta `200` con rol `INVESTIGADOR`|`investigadorNoRecibeConvocatoriasEnSuPanel()`|
 |Consultar Convocatorias|La acción `convocatorias` no está disponible|`investigadorNoRecibeConvocatoriasEnSuPanel()`|
 
-## Evidencia visual pendiente
+## Evidencia visual
 
-- Captura del panel principal del Investigador sin la acción Convocatorias.
+|Panel principal del Investigador|
+|-|
+|![Panel principal del Investigador](/images/RUP/04-pruebas/investigador-abrirPanelPrincipal.png)|
 

@@ -144,7 +144,7 @@ Flyway crea la tabla mediante `src/backend/src/main/resources/db/migration/V1__c
 |`DATABASE_URL`|URL JDBC de PostgreSQL en producción.|
 |`DATABASE_USERNAME`|Usuario de PostgreSQL.|
 |`DATABASE_PASSWORD`|Contraseña de PostgreSQL.|
-|`FRONTEND_ORIGIN`|Origen autorizado durante el desarrollo separado.|
+|`FRONTEND_ORIGINS`|Orígenes autorizados, separados por comas, durante el desarrollo separado.|
 
 ## Comandos comprobados
 

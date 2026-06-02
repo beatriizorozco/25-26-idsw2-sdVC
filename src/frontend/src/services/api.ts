@@ -31,12 +31,8 @@ export async function obtenerTokenCsrf(): Promise<CsrfToken> {
   return csrfToken
 }
 
-async function tokenCsrf(): Promise<CsrfToken> {
-  return csrfToken ?? obtenerTokenCsrf()
-}
-
 export async function iniciarSesion(usuario: string, contrasena: string): Promise<Sesion> {
-  const token = await tokenCsrf()
+  const token = await obtenerTokenCsrf()
   const sesion = await request<Sesion>('/auth/login', {
     method: 'POST',
     headers: { [token.headerName]: token.token },
@@ -55,7 +51,7 @@ export function obtenerPanelPrincipal(): Promise<PanelPrincipal> {
 }
 
 export async function cerrarSesion(): Promise<void> {
-  const token = await tokenCsrf()
+  const token = await obtenerTokenCsrf()
   await request<void>('/auth/logout', {
     method: 'POST',
     headers: { [token.headerName]: token.token },

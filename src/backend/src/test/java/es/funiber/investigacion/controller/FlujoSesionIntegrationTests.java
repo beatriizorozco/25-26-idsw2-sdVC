@@ -6,6 +6,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import jakarta.servlet.http.HttpSession;
@@ -32,6 +33,14 @@ class FlujoSesionIntegrationTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.headerName").isNotEmpty())
                 .andExpect(jsonPath("$.token").isNotEmpty());
+    }
+
+    @Test
+    void permiteOrigenLocalDelNavegadorIntegrado() throws Exception {
+        mockMvc.perform(get("/api/auth/csrf")
+                        .header("Origin", "http://127.0.0.1:5173"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Access-Control-Allow-Origin", "http://127.0.0.1:5173"));
     }
 
     @Test

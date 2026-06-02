@@ -14,7 +14,9 @@ Comprobar que una sesión válida de Coordinador recibe su panel principal y las
 |Abrir panel como Coordinador|Respuesta `200` con rol `COORDINADOR`|`coordinadorRecibeConvocatoriasEnSuPanel()`|
 |Consultar Convocatorias|La acción `convocatorias` está disponible|`coordinadorRecibeConvocatoriasEnSuPanel()`|
 
-## Evidencia visual pendiente
+## Evidencia visual
 
-- Captura del panel principal del Coordinador con la acción Convocatorias visible.
+|Panel principal del Coordinador|
+|-|
+|![Panel principal del Coordinador](/images/RUP/04-pruebas/coordinador-abrirPanelPrincipal.png)|
 
