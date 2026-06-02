@@ -89,7 +89,9 @@
 
 <div align=center>
 
+|![](/images/RUP/00-casos-uso/00-modelo-del-dominio/01-diagrama-estados/diagrama-estados-proyecto-gestion.svg)|![](/images/RUP/00-casos-uso/00-modelo-del-dominio/01-diagrama-estados/diagrama-estados-proyecto-red.svg)|
 |:-:|:-:|
+|**[código](/modelosUML/rup/00-casos-uso/00-modelo-del-dominio/01-diagrama-estados/diagrama-estados-proyecto-gestion.puml)**|**[código](/modelosUML/rup/00-casos-uso/00-modelo-del-dominio/01-diagrama-estados/diagrama-estados-proyecto-red.puml)**|
 
 </div>
 
@@ -97,7 +99,9 @@
 
 <div align=center>
 
+|![](/images/RUP/00-casos-uso/00-modelo-del-dominio/01-diagrama-estados/diagrama-estados-investigador-gestion.svg)|![](/images/RUP/00-casos-uso/00-modelo-del-dominio/01-diagrama-estados/diagrama-estados-investigador-red.svg)|
 |:-:|:-:|
+|**[código](/modelosUML/rup/00-casos-uso/00-modelo-del-dominio/01-diagrama-estados/diagrama-estados-investigador-gestion.puml)**|**[código](/modelosUML/rup/00-casos-uso/00-modelo-del-dominio/01-diagrama-estados/diagrama-estados-investigador-red.puml)**|
 
 </div>
 
@@ -107,7 +111,9 @@
 
 <div align=center>
 
+|![](/images/RUP/00-casos-uso/00-modelo-del-dominio/02-diagrama-objetos/diagrama-objetos-proyecto.svg)|
 |:-:|
+|**[código](/modelosUML/rup/00-casos-uso/00-modelo-del-dominio/02-diagrama-objetos/diagrama-objetos-proyecto.puml)**|
 
 </div>
 
@@ -115,7 +121,9 @@
 
 <div align=center>
 
+|![](/images/RUP/00-casos-uso/00-modelo-del-dominio/02-diagrama-objetos/diagrama-objetos-investigador.svg)|
 |:-:|
+|**[código](/modelosUML/rup/00-casos-uso/00-modelo-del-dominio/02-diagrama-objetos/diagrama-objetos-investigador.puml)**|
 
 </div>
 
@@ -124,6 +132,8 @@
 
 <div align=center>
 
+|![](/images/RUP/00-casos-uso/00-modelo-del-dominio/02-diagrama-objetos/diagrama-objetos-investigador-proyecto.svg)|
 |:-:|
+|**[código](/modelosUML/rup/00-casos-uso/00-modelo-del-dominio/02-diagrama-objetos/diagrama-objetos-investigador-proyecto.puml)**|
 
 </div>
