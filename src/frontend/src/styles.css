@@ -345,6 +345,10 @@ input {
   background: #f7fafc;
 }
 
+.action-row:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
 .action-icon {
   display: grid;
   width: 42px;

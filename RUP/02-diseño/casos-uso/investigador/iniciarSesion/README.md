@@ -15,7 +15,7 @@ Detallar la interacción técnica para autenticar al Investigador. El Diseño co
 
 ## Participantes
 
-- **LoginPage**: Obtiene el token CSRF, presenta el formulario, captura las credenciales y muestra el resultado.
+- **LoginPage**: Presenta el formulario, captura las credenciales, obtiene el token CSRF al enviarlas y muestra el resultado.
 - **AuthController**: Expone `GET /api/auth/csrf` y `POST /api/auth/login`.
 - **Spring Security**: Proporciona el token CSRF utilizado por la petición de autenticación.
 - **AuthService**: Valida la existencia, contraseña y estado activo del usuario.
@@ -27,7 +27,7 @@ Detallar la interacción técnica para autenticar al Investigador. El Diseño co
 - El actor es `Investigador` para mantener trazabilidad con la especificación funcional.
 - La lógica técnica se comparte con el inicio de sesión del Coordinador, aunque cada carpeta conserva su actor correspondiente.
 - Las credenciales incorrectas producen `401 Unauthorized` y permiten reintentar.
-- La sesión utiliza una cookie `HttpOnly`, `Secure` y `SameSite=Lax`.
+- La sesión utiliza una cookie `HttpOnly` y `SameSite=Lax`; en producción también se activa `Secure`.
 - El token CSRF protege la petición que crea la sesión.
 - Tras autenticar correctamente, el frontend solicita un token CSRF renovado para las operaciones posteriores.
 

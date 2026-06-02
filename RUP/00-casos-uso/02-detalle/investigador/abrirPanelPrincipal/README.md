@@ -1,6 +1,6 @@
 # FUNIBER > Investigador > abrirPanelPrincipal > Detalle y prototipado
 
-> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|**Detalle**|[Análisis](/RUP/01-analisis/README.md)|[Diseño](/RUP/02-diseño/README.md)|[Desarrollo](/RUP/03-desarrollo/README.md)|Pruebas|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|**Detalle**|[Análisis](/RUP/01-analisis/casos-uso/investigador/abrirPanelPrincipal/README.md)|[Diseño](/RUP/02-diseño/casos-uso/investigador/abrirPanelPrincipal/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/investigador/abrirPanelPrincipal/README.md)|[Pruebas](/RUP/04-pruebas/casos-uso/investigador/abrirPanelPrincipal/README.md)|
 > |-|-|-|-|-|-|-|
 
 ## Información del artefacto

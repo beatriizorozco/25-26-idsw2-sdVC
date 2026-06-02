@@ -6,6 +6,7 @@ Documento de seguimiento para no olvidar actualizaciones documentales y técnica
 
 - [ ] Revisar los diagramas de especificación antes de aceptar el Análisis de cada familia funcional.
 - [ ] Revisar los diagramas de colaboración antes de crear su Diseño.
+- [ ] Actualizar [`incidencias_y_soluciones.md`](incidencias_y_soluciones.md) con los problemas relevantes y su resolución.
 - [ ] Crear los `README.md` y `secuencia.puml` de Diseño para cada caso revisado.
 - [ ] Generar los SVG de Diseño en `images/RUP/02-diseño`.
 - [x] Crear la documentación de Desarrollo de cada caso en `RUP/03-desarrollo/casos-uso`.
@@ -53,6 +54,7 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Aplicar la identidad visual azul corporativa de FUNIBER.
 - [x] Incorporar el logotipo GIPF al login y a la cabecera del panel.
 - [x] Añadir capturas o evidencias visuales relevantes cuando exista frontend funcional.
+- [x] Sustituir la captura del panel del Investigador tras ajustar el último módulo a ancho completo.
 
 ## Pruebas
 
@@ -62,13 +64,14 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Añadir evidencias de ejecución y resultados.
 - [x] Verificar permisos diferenciados de Coordinador e Investigador.
 - [x] Probar credenciales incorrectas, sesión válida y cierre confirmado.
-- [ ] Probar desde la interfaz el reintento de acceso y la cancelación del cierre de sesión.
+- [x] Probar desde la interfaz el reintento de acceso y la cancelación del cierre de sesión.
 
 ## Despliegue y entrega final
 
 - [ ] Crear el `Dockerfile` definitivo.
 - [ ] Comprobar que la aplicación arranca desde un entorno limpio.
 - [ ] Configurar PostgreSQL en el proveedor de despliegue.
+- [ ] Sustituir las contraseñas de demostración incluidas en el código por variables de entorno o una inicialización administrativa.
 - [ ] Publicar la aplicación en una URL accesible para evaluación.
 - [ ] Verificar la URL pública desde un navegador sin sesión previa.
 - [ ] Actualizar [`README.md`](README.md) con presentación, instalación, ejecución y acceso público.

@@ -5,7 +5,7 @@
 
 ## Implementación
 
-El cierre comienza en un modal de confirmación. Cancelar conserva el panel; confirmar envía `POST /api/auth/logout` con CSRF e invalida la sesión.
+El cierre comienza en un modal de confirmación. Cancelar conserva el panel; confirmar obtiene un token CSRF vigente, envía `POST /api/auth/logout` e invalida la sesión.
 
 ## Código relacionado
 

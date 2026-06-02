@@ -22,13 +22,17 @@ else Confirma el cierre
     Investigador -> Modal: confirmar()
     Modal --> Frontend: confirmarCierre()
     deactivate Modal
+    Frontend -> Api: GET /api/auth/csrf\nObtener token vigente
+    activate Api
+    Api --> Frontend: 200 OK\nCsrfTokenResponse
+    deactivate Api
     Frontend -> Api: POST /api/auth/logout\nCookie de sesión + token CSRF
     activate Api
     Api -> Sesion: cerrarSesion()
     activate Sesion
     Sesion --> Api: Sesión invalidada
     deactivate Sesion
-    Api --> Frontend: 204 No Content\nCookie expirada
+    Api --> Frontend: 204 No Content\nSesión invalidada
     deactivate Api
     Frontend --> Investigador: Presenta SESION_CERRADA
 end

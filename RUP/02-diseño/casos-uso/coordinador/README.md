@@ -1,6 +1,6 @@
 # FUNIBER > Coordinador > Diseño
 
-> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/README.md)|[Análisis](/RUP/01-analisis/casos-uso/coordinador/README.md)|**Diseño**|Desarrollo|Pruebas|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/README.md)|[Análisis](/RUP/01-analisis/casos-uso/coordinador/README.md)|**Diseño**|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/README.md)|[Pruebas](/RUP/04-pruebas/casos-uso/coordinador/README.md)|
 > |-|-|-|-|-|-|-|
 
 ## Gestión de sesión y navegación principal

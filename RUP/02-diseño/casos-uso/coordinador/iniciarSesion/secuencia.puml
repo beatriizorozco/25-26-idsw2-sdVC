@@ -16,6 +16,8 @@ end note
 
 Coordinador -> Frontend: Solicita acceder al sistema
 activate Frontend
+Frontend --> Coordinador: Presenta formulario de acceso
+Coordinador -> Frontend: Introduce usuario y contraseña
 Frontend -> Api: GET /api/auth/csrf
 activate Api
 Api -> Security: obtenerTokenCsrf()
@@ -24,8 +26,6 @@ Security --> Api: CsrfTokenResponse
 deactivate Security
 Api --> Frontend: 200 OK\nCsrfTokenResponse
 deactivate Api
-Frontend --> Coordinador: Presenta formulario de acceso
-Coordinador -> Frontend: Introduce usuario y contraseña
 Frontend -> Api: POST /api/auth/login\nLoginRequest + token CSRF
 activate Api
 Api -> Auth: autenticar(usuario, contrasena)
@@ -47,7 +47,7 @@ alt Credenciales correctas y usuario activo
     activate Sesion
     Sesion --> Api: SesionResponse
     deactivate Sesion
-    Api --> Frontend: 200 OK + cookie de sesión\nHttpOnly, Secure, SameSite=Lax\nSesionResponse
+    Api --> Frontend: 200 OK + cookie de sesión\nHttpOnly, SameSite=Lax\nSecure en producción\nSesionResponse
     deactivate Api
     Frontend -> Api: GET /api/auth/csrf\nRenovar token tras autenticación
     activate Api
