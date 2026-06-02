@@ -10,8 +10,8 @@ Documento de seguimiento para no olvidar actualizaciones documentales y técnica
 - [ ] Generar los SVG de Diseño en `images/RUP/02-diseño`.
 - [x] Crear la documentación de Desarrollo de cada caso en `RUP/03-desarrollo/casos-uso`.
 - [x] Añadir enlaces de Desarrollo a las cabeceras de Diseño cuando existan sus documentos.
-- [ ] Crear la documentación de Pruebas de cada caso en `RUP/04-pruebas/casos-uso`.
-- [ ] Añadir enlaces de Pruebas a las cabeceras cuando existan sus documentos.
+- [x] Crear la documentación de Pruebas de cada caso en `RUP/04-pruebas/casos-uso`.
+- [x] Añadir enlaces de Pruebas a las cabeceras cuando existan sus documentos.
 - [x] Verificar que las rutas internas de los README no estén rotas.
 
 ## Configuración del proyecto
@@ -56,10 +56,10 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 
 ## Pruebas
 
-- [ ] Crear `RUP/04-pruebas/README.md`.
-- [ ] Definir la estrategia de pruebas unitarias, de integración y de interfaz.
-- [ ] Documentar pruebas por caso de uso.
-- [ ] Añadir evidencias de ejecución y resultados.
+- [x] Crear `RUP/04-pruebas/README.md`.
+- [x] Definir la estrategia de pruebas unitarias, de integración y de interfaz.
+- [x] Documentar pruebas por caso de uso.
+- [x] Añadir evidencias de ejecución y resultados.
 - [x] Verificar permisos diferenciados de Coordinador e Investigador.
 - [x] Probar credenciales incorrectas, sesión válida y cierre confirmado.
 - [ ] Probar desde la interfaz el reintento de acceso y la cancelación del cierre de sesión.

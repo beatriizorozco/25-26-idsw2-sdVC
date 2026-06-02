@@ -148,3 +148,13 @@ Se generó la documentación de Desarrollo bajo `RUP/03-desarrollo/casos-uso`, m
 **Decisión:** se considera completado y estable el primer bloque funcional. El repositorio queda limpio en la rama `develop`, con los commits recientes `5f405fb refactor(diseño): reforzar seguridad del bloque de sesión` y `dd92fc4 feat(desarrollo): implementar bloque inicial de sesión y panel principal`. Para la siguiente sesión conviene realizar una comprobación manual desde la interfaz del reintento de acceso y de la cancelación del cierre, añadir capturas o evidencias visuales y comenzar la documentación de Pruebas en `RUP/04-pruebas`. Después se podrá continuar con el siguiente bloque funcional, recomendado: gestión de perfil. El despliegue público, Docker y PostgreSQL remoto permanecen aplazados hasta que avance el MVP.
 
 ---
+
+## [2026-06-02 14:29] Inicio de sesión - Revisión final del primer desarrollo
+
+**Prompt:** el usuario inició sesión con `session-memory`, indicó que el pull request de `develop` ya se integró en `main` y pidió retomar las instrucciones finales de `conversation-log.md` para repasar el Desarrollo del primer bloque.
+
+**Resultado:** se utilizó la skill `session-memory`. Se revisó `conversation-log.md`, el estado de Git, la rama activa, los commits recientes y `tareas_a_realizar.md`. El repositorio está limpio en `main` tras el merge `aec941a Merge pull request #2 from beatriizorozco/develop`. El primer bloque funcional de sesión y panel principal está integrado; quedan pendientes la comprobación manual del reintento de acceso y de la cancelación del cierre, la recopilación de evidencias visuales y el inicio de la documentación bajo `RUP/04-pruebas`.
+
+**Decisión:** antes de comenzar la gestión de perfil se rematará el bloque inicial con una revisión breve pero completa de interfaz y trazabilidad de pruebas. Se mantendrán aplazados Docker, PostgreSQL remoto y el despliegue público hasta que avance el MVP.
+
+---

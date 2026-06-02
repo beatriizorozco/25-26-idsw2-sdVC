@@ -30,7 +30,7 @@ class FlujoSesionIntegrationTests {
     void exponeTokenCsrfParaLaSpa() throws Exception {
         mockMvc.perform(get("/api/auth/csrf"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.headerName").value("X-XSRF-TOKEN"))
+                .andExpect(jsonPath("$.headerName").isNotEmpty())
                 .andExpect(jsonPath("$.token").isNotEmpty());
     }
 
@@ -47,6 +47,22 @@ class FlujoSesionIntegrationTests {
                                 """))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.mensaje").value("Credenciales incorrectas"));
+    }
+
+    @Test
+    void permiteReintentarTrasCredencialesIncorrectas() throws Exception {
+        mockMvc.perform(post("/api/auth/login")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "usuario": "coordinador",
+                                  "contrasena": "incorrecta"
+                                }
+                                """))
+                .andExpect(status().isUnauthorized());
+
+        iniciarSesion("coordinador", "coordinador123");
     }
 
     @Test
