@@ -158,3 +158,21 @@ Se generó la documentación de Desarrollo bajo `RUP/03-desarrollo/casos-uso`, m
 **Decisión:** antes de comenzar la gestión de perfil se rematará el bloque inicial con una revisión breve pero completa de interfaz y trazabilidad de pruebas. Se mantendrán aplazados Docker, PostgreSQL remoto y el despliegue público hasta que avance el MVP.
 
 ---
+
+## [2026-06-02 16:26] Fin de sesión - Cierre verificado del primer bloque funcional
+
+**Prompt:** el usuario cerró la sesión usando la skill `session-memory` después de revisar de extremo a extremo el primer bloque funcional, completar su documentación de Pruebas y resolver las incidencias encontradas durante la comprobación manual.
+
+**Resultado:** se utilizó la skill `session-memory`. Durante la sesión se completó la disciplina de Pruebas del primer bloque mediante `RUP/04-pruebas`, con índices por actor, README trazables para `iniciarSesion`, `abrirPanelPrincipal` y `cerrarSesion`, evidencias visuales y resultados de ejecución. Se confirmó manualmente el reintento tras credenciales incorrectas, la cancelación del cierre y el cierre confirmado. También se incorporaron pruebas de integración para el reintento posterior a un acceso fallido y para el origen local usado por el navegador integrado.
+
+La revisión detectó un error `403 Forbidden` al acceder desde `http://127.0.0.1:5173`: la configuración CORS solo autorizaba `http://localhost:5173`. Se corrigió `SecurityConfig.java` para aceptar varios valores configurables mediante `FRONTEND_ORIGINS` y se autorizaron ambos orígenes locales por defecto. El frontend se ajustó para solicitar un token CSRF vigente antes de iniciar o cerrar sesión y para renovarlo después de autenticar correctamente. Se retiró del mensaje visible de credenciales incorrectas el detalle HTTP utilizado temporalmente durante el diagnóstico.
+
+Se auditó de nuevo la trazabilidad del bloque desde Detalle hasta Desarrollo. Los diagramas de Diseño se alinearon con el flujo real: el formulario se presenta antes de obtener el token CSRF necesario para enviar credenciales; el cierre obtiene un token vigente antes de ejecutar `POST /api/auth/logout`; la documentación garantiza la invalidación de la sesión sin afirmar que la cookie expira; y `Secure` se documenta como obligatorio en producción mediante HTTPS. Se regeneraron los cuatro SVG afectados y se completaron los enlaces directos entre Detalle, Análisis, Diseño, Desarrollo y Pruebas.
+
+En la interfaz se corrigió la cuadrícula impar del panel del Investigador para que `Recompensas` ocupe toda la última fila. Se sustituyó su captura de evidencia visual. También se creó `incidencias_y_soluciones.md`, que registra síntoma, causa, corrección y validación de los problemas relevantes, y se añadió a `tareas_a_realizar.md` el recordatorio de mantenerlo actualizado en cada bloque.
+
+La verificación final concluyó correctamente: 8 pruebas Maven superadas, lint del frontend correcto, build de producción correcto, SVG sincronizados, enlaces modificados válidos y `git diff --check` sin errores. El usuario recibió una descripción Conventional Commit para agrupar el cierre del bloque. Al registrar esta entrada quedan cambios pendientes de commit, incluido `conversation-log.md`.
+
+**Decisión:** el primer bloque funcional queda cerrado y suficientemente pulido para continuar con el segundo bloque recomendado: gestión de perfil. La aplicación está preparada arquitectónicamente para desplegarse mediante frontend compilado, backend Spring Boot, PostgreSQL y cookies seguras por HTTPS, pero el despliegue público permanece aplazado hasta avanzar el MVP. Antes de publicar se deberá crear el `Dockerfile`, configurar PostgreSQL remoto y sustituir las contraseñas de demostración incluidas en `DemoDataConfig.java` por variables de entorno o una inicialización administrativa; la base de datos ya almacena únicamente hashes BCrypt.
+
+---
