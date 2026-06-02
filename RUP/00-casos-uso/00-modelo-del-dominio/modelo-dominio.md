@@ -92,6 +92,7 @@
 |:-:|:-:|
 
 </div>
+
 #### En los siguientes diagramas de estado se modelan los diferentes comportamientos que puede tener un investigador.
 
 <div align=center>
@@ -117,6 +118,7 @@
 |:-:|
 
 </div>
+
 #### Por último el diagrama de objetos unificado, basado en el diagrama de clases de la red de investigadores + gestión de proyectos
 
 
