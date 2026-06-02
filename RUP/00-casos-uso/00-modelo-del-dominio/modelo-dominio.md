@@ -16,6 +16,7 @@
 [![](https://img.shields.io/badge/-Log_de_conversación-0A3B64?style=for-the-badge&logo=gnometerminal&logoColor=white)](/conversation-log.md)
 
 </div>
+
 # Modelo del dominio
 
 ## Objetivo
@@ -66,6 +67,7 @@
 |**[código](/modelosUML/rup/00-casos-uso/00-modelo-del-dominio/00-diagrama-clases/diagrama-clases-proyecto-red.puml)**| 
 
 </div>
+
 #### De este diagrama elaboramos dos subdiagramas, los cuales reflejan mejor las necesidades de nuestro sistema y en donde cada uno tiene un contexto muy diferenciado del otro, los cuales son: la gestión de proyectos para el primer diagrama y la red de investigadores para el segundo diagrama.
 
 
@@ -76,6 +78,7 @@
 |**[código](/modelosUML/rup/00-casos-uso/00-modelo-del-dominio/00-diagrama-clases/diagrama-clases-proyecto.puml)**| **[código](/modelosUML/rup/00-casos-uso/00-modelo-del-dominio/00-diagrama-clases/diagrama-clases-red.puml)**|
 
 </div>
+
 #### De estos dos diagramas elaboramos los siguientes diagramas de estados de las entidades principales de cada uno de ellos, es decir proyecto e investigador/docente, sin olvidarnos de los dos diferentes contextos que puede tener cada entidad.
 
 
@@ -96,6 +99,7 @@
 |:-:|:-:|
 
 </div>
+
 ## Diagrama de objetos
 
 #### En el siguiente diagrama se implementa una instancia del sistema de gestión de proyectos, en donde hay varios investigadores participando en un proyecto en donde destacan varios aspectos del proyecto como los entregables o las recompensas del mismo hacia los investigadores.
@@ -105,6 +109,7 @@
 |:-:|
 
 </div>
+
 #### En el siguiente diagrama se implementa una instancia del sistema de red de investigadores, en donde de nuevo hay varios investigadores participando en un proyecto pero en este caso destacan aspectos relacionados con los investigadores como los perfiles de los mismos.
 
 <div align=center>
