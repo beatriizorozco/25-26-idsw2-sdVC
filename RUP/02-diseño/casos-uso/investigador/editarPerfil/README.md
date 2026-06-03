@@ -15,8 +15,8 @@ Detallar la actualización del perfil propio del Investigador.
 
 ## Participantes
 
-- **EditarPerfilForm**: Captura los cambios del Investigador.
-- **PerfilController**: Expone `PUT /api/perfil`.
+- **EditarPerfilForm**: Precarga el formulario con los datos actuales y captura los cambios del Investigador.
+- **PerfilController**: Expone `PATCH /api/perfil`.
 - **SesionService**: Valida la sesión.
 - **PerfilService**: Valida que el perfil pertenezca al usuario autenticado.
 - **PerfilRepository**: Persiste los cambios.
@@ -24,6 +24,10 @@ Detallar la actualización del perfil propio del Investigador.
 ## Decisiones de Diseño
 
 - El Investigador solo puede editar su propio perfil.
+- El frontend precarga el formulario con el `PerfilResponse` disponible antes de enviar cambios.
+- El frontend comprueba la sesión local antes de invocar la API.
+- La actualización es parcial mediante `PATCH`; solo se sustituyen los campos modificados.
+- La vista actualiza los datos visibles y notifica éxito antes de volver a `OPCIONES_PERFIL_ABIERTO`.
 - La salida correcta vuelve a `OPCIONES_PERFIL_ABIERTO`.
 - Los errores de validación devuelven `400 Bad Request`.
 - La API no acepta identificadores externos para este rol.

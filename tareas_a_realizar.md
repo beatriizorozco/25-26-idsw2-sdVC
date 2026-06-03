@@ -8,6 +8,7 @@ Documento de seguimiento para no olvidar actualizaciones documentales y técnica
 - [ ] Revisar los diagramas de colaboración antes de crear su Diseño.
 - [ ] Actualizar [`incidencias_y_soluciones.md`](incidencias_y_soluciones.md) con los problemas relevantes y su resolución.
 - [ ] Crear los `README.md` y `secuencia.puml` de Diseño para cada caso revisado.
+- [ ] Revisar que los casos de uso `crear*` en Diseño sigan el patrón de `crearAula`: mostrar formulario, enviar `POST`, crear entidad desde el servicio/repositorio, devolver respuesta creada y notificar éxito.
 - [ ] Generar los SVG de Diseño en `images/RUP/02-diseño`.
 - [x] Crear la documentación de Desarrollo de cada caso en `RUP/03-desarrollo/casos-uso`.
 - [x] Añadir enlaces de Desarrollo a las cabeceras de Diseño cuando existan sus documentos.

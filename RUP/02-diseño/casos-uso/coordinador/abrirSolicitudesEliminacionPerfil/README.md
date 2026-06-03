@@ -24,6 +24,8 @@ Detallar el listado de solicitudes pendientes de eliminación de perfil accesibl
 ## Decisiones de Diseño
 
 - Solo el Coordinador puede abrir este listado.
+- El frontend comprueba la sesión local antes de solicitar el listado.
+- La vista renderiza las solicitudes recibidas antes de presentar `SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS`.
 - El filtrado viaja como parámetro de consulta opcional.
 - La salida correcta es `SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS`.
 - Desde el listado se puede abrir una solicitud concreta.

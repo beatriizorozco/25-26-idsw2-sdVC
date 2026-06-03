@@ -10,6 +10,7 @@ participant "PerfilRepository" as PerfilRepository
 
 Investigador -> Frontend: Solicita abrir opciones de perfil
 activate Frontend
+Frontend -> Frontend: Comprobar sesión local
 Frontend -> Api: GET /api/perfil\nCookie de sesión
 activate Api
 Api -> Sesion: obtenerSesionActual(authentication)
@@ -27,6 +28,7 @@ alt Sesión activa
     deactivate PerfilService
     Api --> Frontend: 200 OK\nPerfilOpcionesResponse
     deactivate Api
+    Frontend -> Frontend: Renderizar opciones de perfil
     Frontend --> Investigador: Presenta OPCIONES_PERFIL_ABIERTO
 else Sesión ausente
     Sesion --> Api: SesionNoValidaException

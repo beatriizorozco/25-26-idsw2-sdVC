@@ -24,6 +24,8 @@ Detallar la obtención de las opciones de perfil propias del Investigador.
 ## Decisiones de Diseño
 
 - El Investigador no envía `perfilId`; solo puede abrir su propio perfil.
+- El frontend comprueba la sesión local antes de solicitar los datos.
+- La vista renderiza las opciones recibidas antes de presentar `OPCIONES_PERFIL_ABIERTO`.
 - La respuesta incluye acciones propias: editar, solicitar eliminación y volver al panel.
 - La salida correcta es `OPCIONES_PERFIL_ABIERTO`.
 - Si no hay sesión activa, la API responde `401 Unauthorized`.

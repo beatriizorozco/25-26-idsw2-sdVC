@@ -9,6 +9,7 @@ participant "PanelPrincipalService" as Panel
 
 Investigador -> Frontend: Solicita abrir el panel principal
 activate Frontend
+Frontend -> Frontend: Comprobar sesión local
 Frontend -> Api: GET /api/panel-principal\nCookie de sesión
 activate Api
 Api -> Sesion: obtenerSesionActual()
@@ -22,6 +23,7 @@ alt Sesión activa
     deactivate Panel
     Api --> Frontend: 200 OK\nPanelPrincipalResponse
     deactivate Api
+    Frontend -> Frontend: Renderizar acciones del Investigador
     Frontend --> Investigador: Presenta PANEL_PRINCIPAL_ABIERTO
 
     note right of Frontend

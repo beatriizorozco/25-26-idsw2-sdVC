@@ -24,6 +24,8 @@ Detallar la consulta del detalle de una solicitud de eliminación de perfil pend
 ## Decisiones de Diseño
 
 - La solicitud solo se abre desde el listado de solicitudes pendientes.
+- El frontend comprueba la sesión local antes de solicitar el detalle.
+- La vista renderiza los datos recibidos antes de presentar `SOLICITUD_ELIMINACION_PERFIL_ABIERTA`.
 - La respuesta incluye perfil afectado, solicitante, motivo y estado.
 - Desde el detalle se puede volver al listado o ejecutar `eliminarPerfil()`.
 - La salida correcta es `SOLICITUD_ELIMINACION_PERFIL_ABIERTA`.

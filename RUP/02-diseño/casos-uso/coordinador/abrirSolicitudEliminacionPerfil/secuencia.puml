@@ -10,6 +10,7 @@ participant "SolicitudEliminacionPerfilRepository" as SolicitudRepository
 
 Coordinador -> Frontend: Selecciona solicitud de eliminación
 activate Frontend
+Frontend -> Frontend: Comprobar sesión local
 Frontend -> Api: GET /api/solicitudes-eliminacion-perfil/{id}\nCookie de sesión
 activate Api
 Api -> Sesion: obtenerSesionActual(authentication)
@@ -27,6 +28,7 @@ alt Sesión de Coordinador activa
     deactivate SolicitudService
     Api --> Frontend: 200 OK\nSolicitudEliminacionPerfilDetalleResponse
     deactivate Api
+    Frontend -> Frontend: Renderizar detalle de solicitud
     Frontend --> Coordinador: Presenta SOLICITUD_ELIMINACION_PERFIL_ABIERTA
 else Solicitud no encontrada o sesión no válida
     Sesion --> Api: SesionNoValidaException / error de acceso

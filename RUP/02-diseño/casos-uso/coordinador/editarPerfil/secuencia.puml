@@ -8,9 +8,13 @@ participant "SesionService" as Sesion
 participant "PerfilService" as PerfilService
 participant "PerfilRepository" as PerfilRepository
 
-Coordinador -> Frontend: Modifica datos de perfil
+Coordinador -> Frontend: Solicita editar perfil
 activate Frontend
-Frontend -> Api: PUT /api/perfiles/{perfilId}\nPerfilUpdateRequest + cookie
+Frontend -> Frontend: Precargar formulario con PerfilResponse actual
+Frontend --> Coordinador: Muestra formulario con datos precargados
+Coordinador -> Frontend: Modifica datos y guarda
+Frontend -> Frontend: Comprobar sesión local
+Frontend -> Api: PATCH /api/perfiles/{perfilId}\nPerfilUpdateRequest + cookie
 activate Api
 Api -> Sesion: obtenerSesionActual(authentication)
 activate Sesion
@@ -23,6 +27,7 @@ alt Sesión de Coordinador activa
     PerfilService -> PerfilRepository: obtenerPorId(perfilId)
     activate PerfilRepository
     PerfilRepository --> PerfilService: Perfil
+    PerfilService -> PerfilService: actualizarCampos(perfil, datos)
     PerfilService -> PerfilRepository: guardar(perfilActualizado)
     PerfilRepository --> PerfilService: Perfil actualizado
     deactivate PerfilRepository
@@ -30,6 +35,7 @@ alt Sesión de Coordinador activa
     deactivate PerfilService
     Api --> Frontend: 200 OK\nPerfilResponse
     deactivate Api
+    Frontend -> Frontend: Actualizar datos de perfil y notificar éxito
     Frontend --> Coordinador: Presenta OPCIONES_PERFIL_ABIERTO actualizado
 else Datos inválidos o sesión ausente
     Sesion --> Api: SesionNoValidaException / validación fallida

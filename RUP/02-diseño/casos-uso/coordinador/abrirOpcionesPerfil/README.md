@@ -24,6 +24,8 @@ Detallar la obtención de las opciones de perfil disponibles para el Coordinador
 ## Decisiones de Diseño
 
 - El contexto de entrada determina si se usa perfil propio o `perfilId`.
+- El frontend comprueba la sesión local antes de solicitar los datos.
+- La vista renderiza las opciones recibidas antes de presentar `OPCIONES_PERFIL_ABIERTO`.
 - El Coordinador puede acceder a perfil propio y perfiles de investigadores.
 - La respuesta incluye datos del perfil y acciones disponibles.
 - Si no hay sesión activa, la API responde `401 Unauthorized`.
