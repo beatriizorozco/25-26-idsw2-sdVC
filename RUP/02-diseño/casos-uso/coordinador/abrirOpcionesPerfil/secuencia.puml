@@ -1,0 +1,43 @@
+@startuml abrirOpcionesPerfil-coordinador-diseño
+title Diagrama de secuencia - Abrir opciones de perfil del Coordinador
+
+actor Coordinador
+participant "PerfilPage\n(React)" as Frontend
+participant "PerfilController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "PerfilService" as PerfilService
+participant "PerfilRepository" as PerfilRepository
+
+Coordinador -> Frontend: Solicita abrir opciones de perfil
+activate Frontend
+alt Perfil propio
+    Frontend -> Api: GET /api/perfil\nCookie de sesión
+else Perfil de investigador
+    Frontend -> Api: GET /api/perfiles/{perfilId}\nCookie de sesión
+end
+activate Api
+Api -> Sesion: obtenerSesionActual(authentication)
+activate Sesion
+alt Sesión de Coordinador activa
+    Sesion --> Api: SesionResponse(COORDINADOR)
+    deactivate Sesion
+    Api -> PerfilService: obtenerOpcionesPerfil(coordinador, perfilId?)
+    activate PerfilService
+    PerfilService -> PerfilRepository: obtenerPerfilPropioOInvestigador(contexto)
+    activate PerfilRepository
+    PerfilRepository --> PerfilService: Perfil
+    deactivate PerfilRepository
+    PerfilService --> Api: PerfilOpcionesResponse
+    deactivate PerfilService
+    Api --> Frontend: 200 OK\nPerfilOpcionesResponse
+    deactivate Api
+    Frontend --> Coordinador: Presenta OPCIONES_PERFIL_ABIERTO
+else Sesión ausente o rol no autorizado
+    Sesion --> Api: SesionNoValidaException / AccesoDenegado
+    deactivate Sesion
+    Api --> Frontend: 401 Unauthorized / 403 Forbidden
+    deactivate Api
+    Frontend --> Coordinador: Presenta SESION_CERRADA o acceso no permitido
+end
+deactivate Frontend
+@enduml

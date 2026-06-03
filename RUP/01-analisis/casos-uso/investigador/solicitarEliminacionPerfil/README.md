@@ -42,7 +42,7 @@ Analizar la colaboración necesaria para registrar una solicitud de eliminación
 **Colaboraciones**:
 - **Entrada**: Recibe `solicitarEliminacionPerfil()` desde el estado de contexto correspondiente.
 - **Control**: Se comunica con `PerfilController`.
-- **Salida**: Devuelve el control a la navegación definida para el Investigador.
+- **Salida**: Si confirma, pasa a `SESION_CERRADA`; si cancela, vuelve a `OPCIONES_PERFIL_ABIERTO`.
 
 ### Clases de control
 
@@ -56,21 +56,42 @@ Analizar la colaboración necesaria para registrar una solicitud de eliminación
 
 **Colaboraciones**:
 - **Vista**: Responde a solicitudes de `SolicitarEliminacionPerfilView`.
-- **Repositorio**: Delega operaciones de datos a `PerfilRepository`.
+- **Repositorio**: Consulta `PerfilRepository` y registra la solicitud en `SolicitudEliminacionPerfilRepository`.
 
 ### Clases de entidad (entity)
 
 #### PerfilRepository
-**Estereotipo**: Entidad  
+**Estereotipo**: Entidad
 **Responsabilidades**:
 - Abstraer el acceso a datos de perfiles.
-- Proporcionar operaciones `existeSolicitudPendiente(perfil)` y `guardar(solicitud)`.
+- Proporcionar la operación `existeSolicitudPendiente(perfil)`.
 - Mantener la consistencia conceptual de perfiles.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
 **Colaboraciones**:
 - **Control**: Responde a `PerfilController`.
 - **Entidad**: Gestiona instancias de `Perfil`.
+
+#### SolicitudEliminacionPerfilRepository
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Abstraer el registro de solicitudes de eliminación de perfil.
+- Proporcionar la operación `guardar(solicitud)`.
+- Mantener la consistencia conceptual de las solicitudes pendientes.
+
+**Colaboraciones**:
+- **Control**: Responde a `PerfilController`.
+- **Entidad**: Gestiona instancias de `SolicitudEliminacionPerfil`.
+
+#### SolicitudEliminacionPerfil
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Representar la solicitud de eliminación de perfil.
+- Encapsular solicitante, motivo, fecha y estado de la solicitud.
+- Mantener la integridad de los datos usados para revisión posterior.
+
+**Colaboraciones**:
+- **Repositorio**: Es gestionada por `SolicitudEliminacionPerfilRepository`.
 
 #### Perfil
 **Estereotipo**: Entidad  
@@ -90,8 +111,8 @@ Analizar la colaboración necesaria para registrar una solicitud de eliminación
 2. **Solicitud principal**: `SolicitarEliminacionPerfilView` -> `PerfilController.solicitarEliminacionPerfil(datos)`.
 3. **Validación previa**: `SolicitarEliminacionPerfilView` -> `PerfilController.validarSolicitud(datos)`.
 4. **Consulta de consistencia**: `PerfilController` -> `PerfilRepository.existeSolicitudPendiente(perfil)`.
-5. **Registro de solicitud**: `PerfilController` -> `PerfilRepository.guardar(solicitud)`.
-6. **Finalización**: `SolicitarEliminacionPerfilView` devuelve el control al estado de navegación definido.
+5. **Registro de solicitud**: `PerfilController` -> `SolicitudEliminacionPerfilRepository.guardar(solicitud)`.
+6. **Finalización**: `SolicitarEliminacionPerfilView` dirige a `SESION_CERRADA` si confirma o a `OPCIONES_PERFIL_ABIERTO` si cancela.
 
 ### Patrón de colaboración establecido
 
@@ -108,7 +129,8 @@ Analizar la colaboración necesaria para registrar una solicitud de eliminación
 |Atender la solicitud `solicitarEliminacionPerfil()`|`SolicitarEliminacionPerfilView`|Recibe la acción del Investigador|
 |Coordinar reglas del caso de uso|`PerfilController`|`solicitarEliminacionPerfil(datos)`|
 |Aplicar permisos y validaciones|`PerfilController`|`validarSolicitud(datos)`|
-|Acceder a datos de perfiles|`PerfilRepository`|`existeSolicitudPendiente(perfil)`, `guardar(solicitud)`|
+|Consultar solicitudes pendientes|`PerfilRepository`|`existeSolicitudPendiente(perfil)`|
+|Registrar solicitud|`SolicitudEliminacionPerfilRepository`|`guardar(solicitud)`|
 |Representar atributos de dominio|`Perfil`|Entidad conceptual|
 
 ### Atributos tratados
@@ -122,7 +144,7 @@ Analizar la colaboración necesaria para registrar una solicitud de eliminación
 
 ## Colaboraciones relacionadas
 
-- No requiere colaboraciones adicionales; finaliza devolviendo el control al estado de navegación definido.
+- No requiere colaboraciones adicionales; finaliza en `SESION_CERRADA` o vuelve a `OPCIONES_PERFIL_ABIERTO` según la decisión del Investigador.
 
 ## Reglas funcionales consideradas
 

@@ -14,7 +14,7 @@
 
 ## Propósito
 
-Analizar la colaboración necesaria para eliminar un elemento de perfil. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `eliminarPerfil()`.
+Analizar la colaboración necesaria para eliminar un perfil desde una solicitud de eliminación abierta. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `eliminarPerfil()`.
 
 ## Diagrama de colaboración
 
@@ -42,7 +42,7 @@ Analizar la colaboración necesaria para eliminar un elemento de perfil. El aná
 **Colaboraciones**:
 - **Entrada**: Recibe `eliminarPerfil()` desde el estado de contexto correspondiente.
 - **Control**: Se comunica con `PerfilController`.
-- **Salida**: Devuelve el control a la navegación definida para el Coordinador.
+- **Salida**: Si confirma, pasa a `SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS`; si cancela, permanece en `SOLICITUD_ELIMINACION_PERFIL_ABIERTA`.
 
 ### Clases de control
 
@@ -56,21 +56,42 @@ Analizar la colaboración necesaria para eliminar un elemento de perfil. El aná
 
 **Colaboraciones**:
 - **Vista**: Responde a solicitudes de `EliminarPerfilView`.
-- **Repositorio**: Delega operaciones de datos a `PerfilRepository`.
+- **Repositorio**: Delega operaciones de datos a `PerfilRepository` y `SolicitudEliminacionPerfilRepository`.
 
 ### Clases de entidad (entity)
 
 #### PerfilRepository
-**Estereotipo**: Entidad  
+**Estereotipo**: Entidad
 **Responsabilidades**:
 - Abstraer el acceso a datos de perfiles.
-- Proporcionar operaciones `obtenerPorId(id)` y `eliminar(id)`.
+- Proporcionar operaciones `obtenerPorId(idPerfil)` y `eliminar(idPerfil)`.
 - Mantener la consistencia conceptual de perfiles.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
 **Colaboraciones**:
 - **Control**: Responde a `PerfilController`.
 - **Entidad**: Gestiona instancias de `Perfil`.
+
+#### SolicitudEliminacionPerfilRepository
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Abstraer el acceso a la solicitud de eliminación que origina la operación.
+- Proporcionar operaciones `obtenerPorId(idSolicitud)` y `marcarResuelta(idSolicitud)`.
+- Mantener la trazabilidad conceptual entre solicitud pendiente y perfil eliminado.
+
+**Colaboraciones**:
+- **Control**: Responde a `PerfilController`.
+- **Entidad**: Gestiona instancias de `SolicitudEliminacionPerfil`.
+
+#### SolicitudEliminacionPerfil
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Representar la solicitud que autoriza la eliminación del perfil.
+- Encapsular solicitante, perfil afectado, motivo y estado.
+- Mantener la integridad de la decisión tomada por el Coordinador.
+
+**Colaboraciones**:
+- **Repositorio**: Es gestionada por `SolicitudEliminacionPerfilRepository`.
 
 #### Perfil
 **Estereotipo**: Entidad  
@@ -86,12 +107,12 @@ Analizar la colaboración necesaria para eliminar un elemento de perfil. El aná
 
 ### Secuencia de operaciones
 
-1. **Inicio**: Estado de contexto -> `EliminarPerfilView.eliminarPerfil()`.
-2. **Solicitud principal**: `EliminarPerfilView` -> `PerfilController.eliminarPerfil(id)`.
-3. **Acceso a datos**: `EliminarPerfilView` -> `PerfilController.validarEliminacion(id)`.
-4. **Validación de eliminación**: `PerfilController` -> `PerfilRepository.obtenerPorId(id)`.
-5. **Persistencia**: `PerfilController` -> `PerfilRepository.eliminar(id)`.
-6. **Finalización**: `EliminarPerfilView` devuelve el control al estado de navegación definido.
+1. **Inicio**: `SOLICITUD_ELIMINACION_PERFIL_ABIERTA` -> `EliminarPerfilView.eliminarPerfil()`.
+2. **Solicitud principal**: `EliminarPerfilView` -> `PerfilController.eliminarPerfil(idSolicitud, idPerfil)`.
+3. **Validación de eliminación**: `EliminarPerfilView` -> `PerfilController.validarEliminacion(idPerfil)`.
+4. **Acceso a solicitud**: `PerfilController` -> `SolicitudEliminacionPerfilRepository.obtenerPorId(idSolicitud)`.
+5. **Persistencia**: `PerfilController` -> `PerfilRepository.eliminar(idPerfil)` y `SolicitudEliminacionPerfilRepository.marcarResuelta(idSolicitud)`.
+6. **Finalización**: `EliminarPerfilView` dirige a `SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS` si confirma o a `SOLICITUD_ELIMINACION_PERFIL_ABIERTA` si cancela.
 
 ### Patrón de colaboración establecido
 
@@ -106,9 +127,10 @@ Analizar la colaboración necesaria para eliminar un elemento de perfil. El aná
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
 |Atender la solicitud `eliminarPerfil()`|`EliminarPerfilView`|Recibe la acción del Coordinador|
-|Coordinar reglas del caso de uso|`PerfilController`|`eliminarPerfil(id)`|
-|Aplicar permisos y validaciones|`PerfilController`|`validarEliminacion(id)`|
-|Acceder a datos de perfiles|`PerfilRepository`|`obtenerPorId(id)`, `eliminar(id)`|
+|Coordinar reglas del caso de uso|`PerfilController`|`eliminarPerfil(idSolicitud, idPerfil)`|
+|Aplicar permisos y validaciones|`PerfilController`|`validarEliminacion(idPerfil)`|
+|Acceder a datos de perfiles|`PerfilRepository`|`obtenerPorId(idPerfil)`, `eliminar(idPerfil)`|
+|Resolver la solicitud asociada|`SolicitudEliminacionPerfilRepository`|`obtenerPorId(idSolicitud)`, `marcarResuelta(idSolicitud)`|
 |Representar atributos de dominio|`Perfil`|Entidad conceptual|
 
 ### Atributos tratados

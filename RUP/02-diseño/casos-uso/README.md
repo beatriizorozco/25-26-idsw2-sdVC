@@ -12,6 +12,11 @@ Organizar los diagramas de secuencia que convierten las colaboraciones de Análi
 - [Coordinador](coordinador/README.md)
 - [Investigador](investigador/README.md)
 
+## Bloques diseñados
+
+- **Gestión de sesión y navegación principal**: `iniciarSesion()`, `abrirPanelPrincipal()` y `cerrarSesion()`.
+- **Gestión de perfil**: opciones de perfil, edición, solicitud de eliminación y revisión de solicitudes por Coordinador.
+
 ## Convenciones
 
 Cada carpeta de caso de uso contiene:

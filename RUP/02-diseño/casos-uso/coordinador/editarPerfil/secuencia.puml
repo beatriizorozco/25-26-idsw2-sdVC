@@ -1,0 +1,42 @@
+@startuml editarPerfil-coordinador-diseño
+title Diagrama de secuencia - Editar perfil por Coordinador
+
+actor Coordinador
+participant "EditarPerfilForm\n(React)" as Frontend
+participant "PerfilController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "PerfilService" as PerfilService
+participant "PerfilRepository" as PerfilRepository
+
+Coordinador -> Frontend: Modifica datos de perfil
+activate Frontend
+Frontend -> Api: PUT /api/perfiles/{perfilId}\nPerfilUpdateRequest + cookie
+activate Api
+Api -> Sesion: obtenerSesionActual(authentication)
+activate Sesion
+alt Sesión de Coordinador activa
+    Sesion --> Api: SesionResponse(COORDINADOR)
+    deactivate Sesion
+    Api -> PerfilService: editarPerfil(coordinador, perfilId, datos)
+    activate PerfilService
+    PerfilService -> PerfilService: validarCambios(datos)
+    PerfilService -> PerfilRepository: obtenerPorId(perfilId)
+    activate PerfilRepository
+    PerfilRepository --> PerfilService: Perfil
+    PerfilService -> PerfilRepository: guardar(perfilActualizado)
+    PerfilRepository --> PerfilService: Perfil actualizado
+    deactivate PerfilRepository
+    PerfilService --> Api: PerfilResponse
+    deactivate PerfilService
+    Api --> Frontend: 200 OK\nPerfilResponse
+    deactivate Api
+    Frontend --> Coordinador: Presenta OPCIONES_PERFIL_ABIERTO actualizado
+else Datos inválidos o sesión ausente
+    Sesion --> Api: SesionNoValidaException / validación fallida
+    deactivate Sesion
+    Api --> Frontend: 400 Bad Request / 401 Unauthorized
+    deactivate Api
+    Frontend --> Coordinador: Presenta error de edición
+end
+deactivate Frontend
+@enduml

@@ -1,0 +1,39 @@
+@startuml abrirOpcionesPerfil-investigador-diseño
+title Diagrama de secuencia - Abrir opciones de perfil del Investigador
+
+actor Investigador
+participant "PerfilPage\n(React)" as Frontend
+participant "PerfilController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "PerfilService" as PerfilService
+participant "PerfilRepository" as PerfilRepository
+
+Investigador -> Frontend: Solicita abrir opciones de perfil
+activate Frontend
+Frontend -> Api: GET /api/perfil\nCookie de sesión
+activate Api
+Api -> Sesion: obtenerSesionActual(authentication)
+activate Sesion
+alt Sesión activa
+    Sesion --> Api: SesionResponse(INVESTIGADOR)
+    deactivate Sesion
+    Api -> PerfilService: obtenerPerfilPropio(investigador)
+    activate PerfilService
+    PerfilService -> PerfilRepository: obtenerPorUsuario(investigador)
+    activate PerfilRepository
+    PerfilRepository --> PerfilService: Perfil
+    deactivate PerfilRepository
+    PerfilService --> Api: PerfilOpcionesResponse
+    deactivate PerfilService
+    Api --> Frontend: 200 OK\nPerfilOpcionesResponse
+    deactivate Api
+    Frontend --> Investigador: Presenta OPCIONES_PERFIL_ABIERTO
+else Sesión ausente
+    Sesion --> Api: SesionNoValidaException
+    deactivate Sesion
+    Api --> Frontend: 401 Unauthorized
+    deactivate Api
+    Frontend --> Investigador: Presenta SESION_CERRADA
+end
+deactivate Frontend
+@enduml

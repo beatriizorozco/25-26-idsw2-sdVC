@@ -1,25 +1,29 @@
 @startuml abrirSolicitudesEliminacionPerfil-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":OPCIONES_PERFIL_ABIERTO" as EstadoEntrada
+rectangle #CDEBA5 ":OPCIONES_PERFIL_ABIERTO" as EstadoEntradaOpciones
+rectangle #CDEBA5 ":SOLICITUD_ELIMINACION_PERFIL_ABIERTA" as EstadoEntradaSolicitud
 package abrirSolicitudesEliminacionPerfil as "abrirSolicitudesEliminacionPerfil()" {
-    rectangle #629EF9 DetalleSolicitudEliminacionPerfilView
+    rectangle #629EF9 ListarSolicitudesEliminacionPerfilView
     rectangle #b5bd68 SolicitudEliminacionPerfilController
     rectangle #F2AC4E SolicitudEliminacionPerfilRepository
     rectangle #F2AC4E SolicitudEliminacionPerfil
 }
 
-rectangle #CDEBA5 ":SOLICITUD_ELIMINACION_PERFIL_ABIERTA" as EstadoSalida
+rectangle #CDEBA5 ":SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS" as EstadoSalida
 rectangle #CDEBA5 ":Collaboration AbrirSolicitudEliminacionPerfil" as AbrirSolicitudEliminacionPerfil
+rectangle #CDEBA5 ":Collaboration AbrirOpcionesPerfil" as AbrirOpcionesPerfil
 
-EstadoEntrada -r-> DetalleSolicitudEliminacionPerfilView: abrirSolicitudesEliminacionPerfil()
+EstadoEntradaOpciones -r-> ListarSolicitudesEliminacionPerfilView: abrirSolicitudesEliminacionPerfil()
+EstadoEntradaSolicitud -d-> ListarSolicitudesEliminacionPerfilView: abrirSolicitudesEliminacionPerfil()
 
-DetalleSolicitudEliminacionPerfilView -d-> SolicitudEliminacionPerfilController: obtenerSolicitudEliminacionPerfil(id)
-DetalleSolicitudEliminacionPerfilView --> SolicitudEliminacionPerfilController: prepararAccionesDisponibles(coordinador)
-SolicitudEliminacionPerfilController --> SolicitudEliminacionPerfilRepository: obtenerPorId(id)
-SolicitudEliminacionPerfilController --> SolicitudEliminacionPerfilRepository: verificarPermisos(actor)
+ListarSolicitudesEliminacionPerfilView -d-> SolicitudEliminacionPerfilController: listarSolicitudesPendientes()
+ListarSolicitudesEliminacionPerfilView --> SolicitudEliminacionPerfilController: filtrarSolicitudes(criterio)
+SolicitudEliminacionPerfilController --> SolicitudEliminacionPerfilRepository: obtenerPendientes() : List<SolicitudEliminacionPerfil>
+SolicitudEliminacionPerfilController --> SolicitudEliminacionPerfilRepository: buscarPorCriterio(criterio) : List<SolicitudEliminacionPerfil>
 SolicitudEliminacionPerfilRepository -- SolicitudEliminacionPerfil
-DetalleSolicitudEliminacionPerfilView ..> EstadoSalida: continuarNavegacion()
-DetalleSolicitudEliminacionPerfilView ..> AbrirSolicitudEliminacionPerfil: abrirSolicitudEliminacionPerfil()
+ListarSolicitudesEliminacionPerfilView ..> EstadoSalida: solicitudesEliminacionPerfilAbiertas()
+ListarSolicitudesEliminacionPerfilView ..> AbrirSolicitudEliminacionPerfil: abrirSolicitudEliminacionPerfil(id)
+ListarSolicitudesEliminacionPerfilView ..> AbrirOpcionesPerfil: abrirOpcionesPerfil()
 
 @enduml

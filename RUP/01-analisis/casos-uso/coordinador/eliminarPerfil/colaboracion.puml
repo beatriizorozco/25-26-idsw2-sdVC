@@ -7,19 +7,27 @@ package eliminarPerfil as "eliminarPerfil()" {
     rectangle #b5bd68 PerfilController
     rectangle #F2AC4E PerfilRepository
     rectangle #F2AC4E Perfil
+    rectangle #F2AC4E SolicitudEliminacionPerfilRepository
+    rectangle #F2AC4E SolicitudEliminacionPerfil
 }
 
-rectangle #CDEBA5 ":SOLICITUD_ELIMINACION_PERFIL_ABIERTA" as EstadoSalida
+rectangle #CDEBA5 ":SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS" as EstadoSalidaExitosa
+rectangle #CDEBA5 ":SOLICITUD_ELIMINACION_PERFIL_ABIERTA" as EstadoSalidaCancelada
 rectangle #CDEBA5 ":Collaboration AbrirSolicitudesEliminacionPerfil" as AbrirSolicitudesEliminacionPerfil
 
 EstadoEntrada -r-> EliminarPerfilView: eliminarPerfil()
 
-EliminarPerfilView -d-> PerfilController: eliminarPerfil(id)
-EliminarPerfilView --> PerfilController: validarEliminacion(id)
-PerfilController --> PerfilRepository: obtenerPorId(id)
-PerfilController --> PerfilRepository: eliminar(id)
+EliminarPerfilView -d-> PerfilController: eliminarPerfil(idSolicitud, idPerfil)
+EliminarPerfilView --> PerfilController: validarEliminacion(idPerfil)
+EliminarPerfilView --> PerfilController: cancelarEliminacion()
+PerfilController --> SolicitudEliminacionPerfilRepository: obtenerPorId(idSolicitud)
+PerfilController --> PerfilRepository: obtenerPorId(idPerfil)
+PerfilController --> PerfilRepository: eliminar(idPerfil)
+PerfilController --> SolicitudEliminacionPerfilRepository: marcarResuelta(idSolicitud)
 PerfilRepository -- Perfil
-EliminarPerfilView ..> EstadoSalida: continuarNavegacion()
+SolicitudEliminacionPerfilRepository -- SolicitudEliminacionPerfil
+EliminarPerfilView ..> EstadoSalidaExitosa: perfilEliminado()
+EliminarPerfilView ..> EstadoSalidaCancelada: eliminacionCancelada()
 EliminarPerfilView ..> AbrirSolicitudesEliminacionPerfil: abrirSolicitudesEliminacionPerfil()
 
 @enduml

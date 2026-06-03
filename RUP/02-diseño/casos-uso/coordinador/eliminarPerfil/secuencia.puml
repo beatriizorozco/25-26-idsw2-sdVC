@@ -1,0 +1,41 @@
+@startuml eliminarPerfil-coordinador-diseño
+title Diagrama de secuencia - Eliminar perfil desde solicitud
+
+actor Coordinador
+participant "EliminarPerfilModal\n(React)" as Frontend
+participant "SolicitudEliminacionPerfilController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "PerfilService" as PerfilService
+participant "SolicitudEliminacionPerfilRepository" as SolicitudRepository
+participant "PerfilRepository" as PerfilRepository
+
+Coordinador -> Frontend: Solicita eliminar perfil
+activate Frontend
+alt Cancela eliminación
+    Frontend --> Coordinador: Presenta SOLICITUD_ELIMINACION_PERFIL_ABIERTA
+else Confirma eliminación
+    Frontend -> Api: DELETE /api/solicitudes-eliminacion-perfil/{idSolicitud}/perfil\nCookie de sesión
+    activate Api
+    Api -> Sesion: obtenerSesionActual(authentication)
+    activate Sesion
+    Sesion --> Api: SesionResponse(COORDINADOR)
+    deactivate Sesion
+    Api -> PerfilService: eliminarPerfilDesdeSolicitud(coordinador, idSolicitud)
+    activate PerfilService
+    PerfilService -> SolicitudRepository: obtenerPorId(idSolicitud)
+    activate SolicitudRepository
+    SolicitudRepository --> PerfilService: SolicitudEliminacionPerfil
+    deactivate SolicitudRepository
+    PerfilService -> PerfilRepository: eliminar(idPerfil)
+    activate PerfilRepository
+    PerfilRepository --> PerfilService: Perfil eliminado
+    deactivate PerfilRepository
+    PerfilService -> SolicitudRepository: marcarResuelta(idSolicitud)
+    PerfilService --> Api: EliminacionPerfilResponse
+    deactivate PerfilService
+    Api --> Frontend: 200 OK\nEliminacionPerfilResponse
+    deactivate Api
+    Frontend --> Coordinador: Presenta SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS
+end
+deactivate Frontend
+@enduml

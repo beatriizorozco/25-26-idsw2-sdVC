@@ -1,0 +1,39 @@
+@startuml abrirSolicitudEliminacionPerfil-coordinador-diseño
+title Diagrama de secuencia - Abrir solicitud de eliminación de perfil
+
+actor Coordinador
+participant "SolicitudEliminacionPerfilDetallePage\n(React)" as Frontend
+participant "SolicitudEliminacionPerfilController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "SolicitudEliminacionPerfilService" as SolicitudService
+participant "SolicitudEliminacionPerfilRepository" as SolicitudRepository
+
+Coordinador -> Frontend: Selecciona solicitud de eliminación
+activate Frontend
+Frontend -> Api: GET /api/solicitudes-eliminacion-perfil/{id}\nCookie de sesión
+activate Api
+Api -> Sesion: obtenerSesionActual(authentication)
+activate Sesion
+alt Sesión de Coordinador activa
+    Sesion --> Api: SesionResponse(COORDINADOR)
+    deactivate Sesion
+    Api -> SolicitudService: obtenerSolicitud(id)
+    activate SolicitudService
+    SolicitudService -> SolicitudRepository: obtenerPorId(id)
+    activate SolicitudRepository
+    SolicitudRepository --> SolicitudService: SolicitudEliminacionPerfil
+    deactivate SolicitudRepository
+    SolicitudService --> Api: SolicitudEliminacionPerfilDetalleResponse
+    deactivate SolicitudService
+    Api --> Frontend: 200 OK\nSolicitudEliminacionPerfilDetalleResponse
+    deactivate Api
+    Frontend --> Coordinador: Presenta SOLICITUD_ELIMINACION_PERFIL_ABIERTA
+else Solicitud no encontrada o sesión no válida
+    Sesion --> Api: SesionNoValidaException / error de acceso
+    deactivate Sesion
+    Api --> Frontend: 401 Unauthorized / 404 Not Found
+    deactivate Api
+    Frontend --> Coordinador: Presenta error de consulta
+end
+deactivate Frontend
+@enduml

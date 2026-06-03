@@ -20,7 +20,7 @@ DetalleSolicitudEliminacionPerfilView --> SolicitudEliminacionPerfilController: 
 SolicitudEliminacionPerfilController --> SolicitudEliminacionPerfilRepository: obtenerPorId(id)
 SolicitudEliminacionPerfilController --> SolicitudEliminacionPerfilRepository: verificarPermisos(actor)
 SolicitudEliminacionPerfilRepository -- SolicitudEliminacionPerfil
-DetalleSolicitudEliminacionPerfilView ..> EstadoSalida: continuarNavegacion()
+DetalleSolicitudEliminacionPerfilView ..> EstadoSalida: solicitudEliminacionPerfilAbierta()
 DetalleSolicitudEliminacionPerfilView ..> AbrirSolicitudesEliminacionPerfil: abrirSolicitudesEliminacionPerfil()
 DetalleSolicitudEliminacionPerfilView ..> EliminarPerfil: eliminarPerfil()
 

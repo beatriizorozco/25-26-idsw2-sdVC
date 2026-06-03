@@ -1,0 +1,42 @@
+@startuml editarPerfil-investigador-diseño
+title Diagrama de secuencia - Editar perfil del Investigador
+
+actor Investigador
+participant "EditarPerfilForm\n(React)" as Frontend
+participant "PerfilController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "PerfilService" as PerfilService
+participant "PerfilRepository" as PerfilRepository
+
+Investigador -> Frontend: Modifica su perfil
+activate Frontend
+Frontend -> Api: PUT /api/perfil\nPerfilUpdateRequest + cookie
+activate Api
+Api -> Sesion: obtenerSesionActual(authentication)
+activate Sesion
+alt Sesión activa
+    Sesion --> Api: SesionResponse(INVESTIGADOR)
+    deactivate Sesion
+    Api -> PerfilService: editarPerfilPropio(investigador, datos)
+    activate PerfilService
+    PerfilService -> PerfilService: validarCambios(datos)
+    PerfilService -> PerfilRepository: obtenerPorUsuario(investigador)
+    activate PerfilRepository
+    PerfilRepository --> PerfilService: Perfil
+    PerfilService -> PerfilRepository: guardar(perfilActualizado)
+    PerfilRepository --> PerfilService: Perfil actualizado
+    deactivate PerfilRepository
+    PerfilService --> Api: PerfilResponse
+    deactivate PerfilService
+    Api --> Frontend: 200 OK\nPerfilResponse
+    deactivate Api
+    Frontend --> Investigador: Presenta OPCIONES_PERFIL_ABIERTO actualizado
+else Datos inválidos o sesión ausente
+    Sesion --> Api: SesionNoValidaException / validación fallida
+    deactivate Sesion
+    Api --> Frontend: 400 Bad Request / 401 Unauthorized
+    deactivate Api
+    Frontend --> Investigador: Presenta error de edición
+end
+deactivate Frontend
+@enduml

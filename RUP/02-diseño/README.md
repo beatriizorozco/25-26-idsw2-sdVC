@@ -64,7 +64,7 @@ La aplicación se plantea como una SPA con API REST y despliegue unificado.
 
 ## Diseño de casos de uso
 
-La primera iteración implementable se centra en sesión y navegación principal:
+La primera iteración implementable se centra en sesión y navegación principal. El segundo bloque añade la gestión de perfil:
 
 - [Casos de uso de Diseño](casos-uso/README.md)
 - [Coordinador](casos-uso/coordinador/README.md)

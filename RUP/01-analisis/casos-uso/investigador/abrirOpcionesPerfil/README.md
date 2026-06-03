@@ -14,7 +14,7 @@
 
 ## Propósito
 
-Analizar la colaboración necesaria para presentar a Investigador el detalle de perfil y sus acciones disponibles. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `abrirOpcionesPerfil()`.
+Analizar la colaboración necesaria para presentar al Investigador sus opciones de perfil. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `abrirOpcionesPerfil()`.
 
 ## Diagrama de colaboración
 
@@ -30,7 +30,7 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 
 ### Clases de vista (boundary)
 
-#### DetallePerfilView
+#### OpcionesPerfilView
 **Estereotipo**: Vista (Boundary)  
 **Responsabilidades**:
 - Recibir la solicitud `abrirOpcionesPerfil()` del Investigador.
@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `abrirOpcionesPerfil()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `abrirOpcionesPerfil()` desde `PANEL_PRINCIPAL_ABIERTO`.
 - **Control**: Se comunica con `PerfilController`.
-- **Salida**: Devuelve el control a la navegación definida para el Investigador.
+- **Salida**: Presenta `OPCIONES_PERFIL_ABIERTO` y permite navegar a `editarPerfil()`, `solicitarEliminacionPerfil()` o `abrirPanelPrincipal()`.
 
 ### Clases de control
 
@@ -55,7 +55,7 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 - Servir como intermediario entre la vista y el repositorio.
 
 **Colaboraciones**:
-- **Vista**: Responde a solicitudes de `DetallePerfilView`.
+- **Vista**: Responde a solicitudes de `OpcionesPerfilView`.
 - **Repositorio**: Delega operaciones de datos a `PerfilRepository`.
 
 ### Clases de entidad (entity)
@@ -64,7 +64,7 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Abstraer el acceso a datos de perfiles.
-- Proporcionar operaciones `obtenerPorId(id)` y `verificarPermisos(actor)`.
+- Proporcionar operaciones `obtenerPorUsuario(actor)` y `verificarPermisos(actor)`.
 - Mantener la consistencia conceptual de perfiles.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
@@ -86,12 +86,12 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 
 ### Secuencia de operaciones
 
-1. **Inicio**: Estado de contexto -> `DetallePerfilView.abrirOpcionesPerfil()`.
-2. **Solicitud principal**: `DetallePerfilView` -> `PerfilController.obtenerPerfil(id)`.
-3. **Acceso a datos**: `DetallePerfilView` -> `PerfilController.prepararAccionesDisponibles(investigador)`.
-4. **Preparación de acciones**: `PerfilController` -> `PerfilRepository.obtenerPorId(id)`.
+1. **Inicio**: `PANEL_PRINCIPAL_ABIERTO` -> `OpcionesPerfilView.abrirOpcionesPerfil()`.
+2. **Solicitud principal**: `OpcionesPerfilView` -> `PerfilController.obtenerPerfilPropio()`.
+3. **Acceso a datos**: `OpcionesPerfilView` -> `PerfilController.prepararAccionesDisponibles(investigador)`.
+4. **Preparación de acciones**: `PerfilController` -> `PerfilRepository.obtenerPorUsuario(actor)`.
 5. **Verificación de permisos**: `PerfilController` -> `PerfilRepository.verificarPermisos(actor)`.
-6. **Finalización**: `DetallePerfilView` devuelve el control al estado de navegación definido.
+6. **Finalización**: `OpcionesPerfilView` presenta `OPCIONES_PERFIL_ABIERTO` o deriva a la colaboración solicitada.
 
 ### Patrón de colaboración establecido
 
@@ -105,10 +105,10 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
-|Atender la solicitud `abrirOpcionesPerfil()`|`DetallePerfilView`|Recibe la acción del Investigador|
-|Coordinar reglas del caso de uso|`PerfilController`|`obtenerPerfil(id)`|
+|Atender la solicitud `abrirOpcionesPerfil()`|`OpcionesPerfilView`|Recibe la acción del Investigador|
+|Coordinar reglas del caso de uso|`PerfilController`|`obtenerPerfilPropio()`|
 |Aplicar permisos y validaciones|`PerfilController`|`prepararAccionesDisponibles(investigador)`|
-|Acceder a datos de perfiles|`PerfilRepository`|`obtenerPorId(id)`, `verificarPermisos(actor)`|
+|Acceder a datos de perfiles|`PerfilRepository`|`obtenerPorUsuario(actor)`, `verificarPermisos(actor)`|
 |Representar atributos de dominio|`Perfil`|Entidad conceptual|
 
 ### Atributos tratados
@@ -157,7 +157,7 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 `PerfilRepository` abstrae el acceso a datos de perfiles, permitiendo cambiar la implementación sin afectar al controlador.
 
 ### MVC pattern
-Separación clara entre presentación (`DetallePerfilView`), lógica de aplicación (`PerfilController`) y datos (`Perfil`, `PerfilRepository`).
+Separación clara entre presentación (`OpcionesPerfilView`), lógica de aplicación (`PerfilController`) y datos (`Perfil`, `PerfilRepository`).
 
 ### Sistema de estados
 Mantiene coherencia con el diagrama de contexto del Investigador, respetando las transiciones de estado establecidas.

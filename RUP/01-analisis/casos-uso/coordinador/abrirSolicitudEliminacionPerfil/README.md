@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de s
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `abrirSolicitudEliminacionPerfil()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `abrirSolicitudEliminacionPerfil()` desde `SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS`.
 - **Control**: Se comunica con `SolicitudEliminacionPerfilController`.
-- **Salida**: Devuelve el control a la navegación definida para el Coordinador.
+- **Salida**: Presenta `SOLICITUD_ELIMINACION_PERFIL_ABIERTA` y permite volver a `abrirSolicitudesEliminacionPerfil()` o continuar con `eliminarPerfil()`.
 
 ### Clases de control
 
@@ -86,12 +86,12 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de s
 
 ### Secuencia de operaciones
 
-1. **Inicio**: Estado de contexto -> `DetalleSolicitudEliminacionPerfilView.abrirSolicitudEliminacionPerfil()`.
+1. **Inicio**: `SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS` -> `DetalleSolicitudEliminacionPerfilView.abrirSolicitudEliminacionPerfil()`.
 2. **Solicitud principal**: `DetalleSolicitudEliminacionPerfilView` -> `SolicitudEliminacionPerfilController.obtenerSolicitudEliminacionPerfil(id)`.
 3. **Acceso a datos**: `DetalleSolicitudEliminacionPerfilView` -> `SolicitudEliminacionPerfilController.prepararAccionesDisponibles(coordinador)`.
 4. **Preparación de acciones**: `SolicitudEliminacionPerfilController` -> `SolicitudEliminacionPerfilRepository.obtenerPorId(id)`.
 5. **Verificación de permisos**: `SolicitudEliminacionPerfilController` -> `SolicitudEliminacionPerfilRepository.verificarPermisos(actor)`.
-6. **Finalización**: `DetalleSolicitudEliminacionPerfilView` devuelve el control al estado de navegación definido.
+6. **Finalización**: `DetalleSolicitudEliminacionPerfilView` presenta `SOLICITUD_ELIMINACION_PERFIL_ABIERTA` o deriva a la colaboración solicitada.
 
 ### Patrón de colaboración establecido
 

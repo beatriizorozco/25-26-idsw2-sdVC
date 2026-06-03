@@ -1,0 +1,38 @@
+@startuml solicitarEliminacionPerfil-investigador-diseño
+title Diagrama de secuencia - Solicitar eliminación de perfil del Investigador
+
+actor Investigador
+participant "SolicitudEliminacionPerfilModal\n(React)" as Frontend
+participant "PerfilController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "PerfilService" as PerfilService
+participant "SolicitudEliminacionPerfilRepository" as SolicitudRepository
+
+Investigador -> Frontend: Solicita eliminar su perfil
+activate Frontend
+alt Cancela solicitud
+    Frontend --> Investigador: Presenta OPCIONES_PERFIL_ABIERTO
+else Confirma solicitud
+    Frontend -> Api: POST /api/perfil/solicitud-eliminacion\nSolicitudEliminacionRequest + cookie
+    activate Api
+    Api -> Sesion: obtenerSesionActual(authentication)
+    activate Sesion
+    Sesion --> Api: SesionResponse(INVESTIGADOR)
+    deactivate Sesion
+    Api -> PerfilService: solicitarEliminacionPerfil(investigador, datos)
+    activate PerfilService
+    PerfilService -> PerfilService: validarSolicitud(datos)
+    PerfilService -> SolicitudRepository: existePendiente(perfil)
+    PerfilService -> SolicitudRepository: guardar(solicitud)
+    activate SolicitudRepository
+    SolicitudRepository --> PerfilService: Solicitud registrada
+    deactivate SolicitudRepository
+    PerfilService --> Api: SolicitudEliminacionResponse
+    deactivate PerfilService
+    Api -> Sesion: cerrarSesion(request, response, authentication)
+    Api --> Frontend: 201 Created\nSesión cerrada
+    deactivate Api
+    Frontend --> Investigador: Presenta SESION_CERRADA
+end
+deactivate Frontend
+@enduml

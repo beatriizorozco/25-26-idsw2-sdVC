@@ -176,3 +176,13 @@ La verificación final concluyó correctamente: 8 pruebas Maven superadas, lint 
 **Decisión:** el primer bloque funcional queda cerrado y suficientemente pulido para continuar con el segundo bloque recomendado: gestión de perfil. La aplicación está preparada arquitectónicamente para desplegarse mediante frontend compilado, backend Spring Boot, PostgreSQL y cookies seguras por HTTPS, pero el despliegue público permanece aplazado hasta avanzar el MVP. Antes de publicar se deberá crear el `Dockerfile`, configurar PostgreSQL remoto y sustituir las contraseñas de demostración incluidas en `DemoDataConfig.java` por variables de entorno o una inicialización administrativa; la base de datos ya almacena únicamente hashes BCrypt.
 
 ---
+
+## [2026-06-03 13:14] Inicio de sesión - Preparación del segundo bloque
+
+**Prompt:** el usuario inició sesión con `session-memory` y pidió continuar desde el punto anterior: terminar lo que quede por revisar del Desarrollo del primer bloque y pasar al bloque 2.
+
+**Resultado:** se utilizó la skill `session-memory`. Se revisó `conversation-log.md`, `tareas_a_realizar.md`, la rama activa, el estado de Git y los commits recientes. El repositorio está en `main` y parte del commit reciente `3a6274b docs(dominio): añadir diagramas de estados y objetos`, después de haber añadido al modelo del dominio los diagramas de estados y objetos con sus SVG. El primer bloque funcional (`iniciarSesion`, `abrirPanelPrincipal`, `cerrarSesion`) ya quedó verificado con 8 pruebas Maven, lint, build de frontend, evidencias visuales, documentación de Pruebas e incidencias registradas.
+
+**Decisión:** el Desarrollo del primer bloque no requiere nuevas correcciones funcionales antes de avanzar. La sesión se enfocará en delimitar y revisar el segundo bloque recomendado, gestión de perfil, manteniendo la metodología acordada: revisar primero Detalle y Análisis contra los diagramas de especificación, después crear Diseño, Desarrollo y Pruebas en un bloque pequeño.
+
+---

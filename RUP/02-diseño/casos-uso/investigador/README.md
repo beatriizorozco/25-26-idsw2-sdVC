@@ -8,3 +8,9 @@
 - [Iniciar Sesión](iniciarSesion/README.md)
 - [Abrir Panel Principal](abrirPanelPrincipal/README.md)
 - [Cerrar Sesión](cerrarSesion/README.md)
+
+## Gestión de perfil
+
+- [Abrir Opciones Perfil](abrirOpcionesPerfil/README.md)
+- [Editar Perfil](editarPerfil/README.md)
+- [Solicitar Eliminación Perfil](solicitarEliminacionPerfil/README.md)

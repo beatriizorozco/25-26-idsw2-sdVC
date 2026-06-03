@@ -3,7 +3,7 @@ skinparam linetype polyline
 
 rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoEntrada
 package abrirOpcionesPerfil as "abrirOpcionesPerfil()" {
-    rectangle #629EF9 DetallePerfilView
+    rectangle #629EF9 OpcionesPerfilView
     rectangle #b5bd68 PerfilController
     rectangle #F2AC4E PerfilRepository
     rectangle #F2AC4E Perfil
@@ -14,16 +14,16 @@ rectangle #CDEBA5 ":Collaboration EditarPerfil" as EditarPerfil
 rectangle #CDEBA5 ":Collaboration SolicitarEliminacionPerfil" as SolicitarEliminacionPerfil
 rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanelPrincipal
 
-EstadoEntrada -r-> DetallePerfilView: abrirOpcionesPerfil()
+EstadoEntrada -r-> OpcionesPerfilView: abrirOpcionesPerfil()
 
-DetallePerfilView -d-> PerfilController: obtenerPerfil(id)
-DetallePerfilView --> PerfilController: prepararAccionesDisponibles(investigador)
-PerfilController --> PerfilRepository: obtenerPorId(id)
+OpcionesPerfilView -d-> PerfilController: obtenerPerfilPropio()
+OpcionesPerfilView --> PerfilController: prepararAccionesDisponibles(investigador)
+PerfilController --> PerfilRepository: obtenerPorUsuario(actor)
 PerfilController --> PerfilRepository: verificarPermisos(actor)
 PerfilRepository -- Perfil
-DetallePerfilView ..> EstadoSalida: continuarNavegacion()
-DetallePerfilView ..> EditarPerfil: editarPerfil()
-DetallePerfilView ..> SolicitarEliminacionPerfil: solicitarEliminacionPerfil()
-DetallePerfilView ..> AbrirPanelPrincipal: abrirPanelPrincipal()
+OpcionesPerfilView ..> EstadoSalida: opcionesPerfilAbierto()
+OpcionesPerfilView ..> EditarPerfil: editarPerfil()
+OpcionesPerfilView ..> SolicitarEliminacionPerfil: solicitarEliminacionPerfil()
+OpcionesPerfilView ..> AbrirPanelPrincipal: abrirPanelPrincipal()
 
 @enduml

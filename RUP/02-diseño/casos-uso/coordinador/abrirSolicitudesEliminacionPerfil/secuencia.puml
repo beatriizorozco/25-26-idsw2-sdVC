@@ -1,0 +1,43 @@
+@startuml abrirSolicitudesEliminacionPerfil-coordinador-diseño
+title Diagrama de secuencia - Abrir solicitudes de eliminación de perfil
+
+actor Coordinador
+participant "SolicitudesEliminacionPerfilPage\n(React)" as Frontend
+participant "SolicitudEliminacionPerfilController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "SolicitudEliminacionPerfilService" as SolicitudService
+participant "SolicitudEliminacionPerfilRepository" as SolicitudRepository
+
+Coordinador -> Frontend: Solicita abrir solicitudes de eliminación
+activate Frontend
+Frontend -> Api: GET /api/solicitudes-eliminacion-perfil?criterio={criterio}\nCookie de sesión
+activate Api
+Api -> Sesion: obtenerSesionActual(authentication)
+activate Sesion
+alt Sesión de Coordinador activa
+    Sesion --> Api: SesionResponse(COORDINADOR)
+    deactivate Sesion
+    Api -> SolicitudService: listarSolicitudesPendientes(criterio)
+    activate SolicitudService
+    alt Sin criterio
+        SolicitudService -> SolicitudRepository: obtenerPendientes()
+    else Con criterio
+        SolicitudService -> SolicitudRepository: buscarPorCriterio(criterio)
+    end
+    activate SolicitudRepository
+    SolicitudRepository --> SolicitudService: List<SolicitudEliminacionPerfil>
+    deactivate SolicitudRepository
+    SolicitudService --> Api: SolicitudesEliminacionPerfilResponse
+    deactivate SolicitudService
+    Api --> Frontend: 200 OK\nSolicitudesEliminacionPerfilResponse
+    deactivate Api
+    Frontend --> Coordinador: Presenta SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS
+else Sesión ausente o rol no autorizado
+    Sesion --> Api: SesionNoValidaException / AccesoDenegado
+    deactivate Sesion
+    Api --> Frontend: 401 Unauthorized / 403 Forbidden
+    deactivate Api
+    Frontend --> Coordinador: Presenta error de acceso
+end
+deactivate Frontend
+@enduml

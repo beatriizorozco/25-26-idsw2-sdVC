@@ -14,7 +14,7 @@
 
 ## Propósito
 
-Analizar la colaboración necesaria para presentar a Coordinador el detalle de solicitud de eliminación de perfil y sus acciones disponibles. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `abrirSolicitudesEliminacionPerfil()`.
+Analizar la colaboración necesaria para presentar al Coordinador el listado de solicitudes de eliminación de perfil pendientes. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `abrirSolicitudesEliminacionPerfil()`.
 
 ## Diagrama de colaboración
 
@@ -30,7 +30,7 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de s
 
 ### Clases de vista (boundary)
 
-#### DetalleSolicitudEliminacionPerfilView
+#### ListarSolicitudesEliminacionPerfilView
 **Estereotipo**: Vista (Boundary)  
 **Responsabilidades**:
 - Recibir la solicitud `abrirSolicitudesEliminacionPerfil()` del Coordinador.
@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de s
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `abrirSolicitudesEliminacionPerfil()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `abrirSolicitudesEliminacionPerfil()` desde `OPCIONES_PERFIL_ABIERTO` o `SOLICITUD_ELIMINACION_PERFIL_ABIERTA`.
 - **Control**: Se comunica con `SolicitudEliminacionPerfilController`.
-- **Salida**: Devuelve el control a la navegación definida para el Coordinador.
+- **Salida**: Presenta `SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS` y permite abrir una solicitud concreta o volver a opciones de perfil.
 
 ### Clases de control
 
@@ -55,7 +55,7 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de s
 - Servir como intermediario entre la vista y el repositorio.
 
 **Colaboraciones**:
-- **Vista**: Responde a solicitudes de `DetalleSolicitudEliminacionPerfilView`.
+- **Vista**: Responde a solicitudes de `ListarSolicitudesEliminacionPerfilView`.
 - **Repositorio**: Delega operaciones de datos a `SolicitudEliminacionPerfilRepository`.
 
 ### Clases de entidad (entity)
@@ -64,7 +64,7 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de s
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Abstraer el acceso a datos de solicitudes de eliminación de perfil.
-- Proporcionar operaciones `obtenerPorId(id)` y `verificarPermisos(actor)`.
+- Proporcionar operaciones `obtenerPendientes()` y `buscarPorCriterio(criterio)`.
 - Mantener la consistencia conceptual de solicitudes de eliminación de perfil.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
@@ -86,12 +86,12 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de s
 
 ### Secuencia de operaciones
 
-1. **Inicio**: Estado de contexto -> `DetalleSolicitudEliminacionPerfilView.abrirSolicitudesEliminacionPerfil()`.
-2. **Solicitud principal**: `DetalleSolicitudEliminacionPerfilView` -> `SolicitudEliminacionPerfilController.obtenerSolicitudEliminacionPerfil(id)`.
-3. **Acceso a datos**: `DetalleSolicitudEliminacionPerfilView` -> `SolicitudEliminacionPerfilController.prepararAccionesDisponibles(coordinador)`.
-4. **Preparación de acciones**: `SolicitudEliminacionPerfilController` -> `SolicitudEliminacionPerfilRepository.obtenerPorId(id)`.
-5. **Verificación de permisos**: `SolicitudEliminacionPerfilController` -> `SolicitudEliminacionPerfilRepository.verificarPermisos(actor)`.
-6. **Finalización**: `DetalleSolicitudEliminacionPerfilView` devuelve el control al estado de navegación definido.
+1. **Inicio**: `OPCIONES_PERFIL_ABIERTO` o `SOLICITUD_ELIMINACION_PERFIL_ABIERTA` -> `ListarSolicitudesEliminacionPerfilView.abrirSolicitudesEliminacionPerfil()`.
+2. **Listado inicial**: `ListarSolicitudesEliminacionPerfilView` -> `SolicitudEliminacionPerfilController.listarSolicitudesPendientes()`.
+3. **Filtrado opcional**: `ListarSolicitudesEliminacionPerfilView` -> `SolicitudEliminacionPerfilController.filtrarSolicitudes(criterio)`.
+4. **Acceso a datos**: `SolicitudEliminacionPerfilController` -> `SolicitudEliminacionPerfilRepository.obtenerPendientes()`.
+5. **Búsqueda**: `SolicitudEliminacionPerfilController` -> `SolicitudEliminacionPerfilRepository.buscarPorCriterio(criterio)`.
+6. **Finalización**: `ListarSolicitudesEliminacionPerfilView` presenta `SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS`.
 
 ### Patrón de colaboración establecido
 
@@ -105,10 +105,10 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de s
 
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
-|Atender la solicitud `abrirSolicitudesEliminacionPerfil()`|`DetalleSolicitudEliminacionPerfilView`|Recibe la acción del Coordinador|
-|Coordinar reglas del caso de uso|`SolicitudEliminacionPerfilController`|`obtenerSolicitudEliminacionPerfil(id)`|
-|Aplicar permisos y validaciones|`SolicitudEliminacionPerfilController`|`prepararAccionesDisponibles(coordinador)`|
-|Acceder a datos de solicitudes de eliminación de perfil|`SolicitudEliminacionPerfilRepository`|`obtenerPorId(id)`, `verificarPermisos(actor)`|
+|Atender la solicitud `abrirSolicitudesEliminacionPerfil()`|`ListarSolicitudesEliminacionPerfilView`|Recibe la acción del Coordinador|
+|Coordinar reglas del caso de uso|`SolicitudEliminacionPerfilController`|`listarSolicitudesPendientes()`|
+|Permitir filtrado|`SolicitudEliminacionPerfilController`|`filtrarSolicitudes(criterio)`|
+|Acceder a datos de solicitudes de eliminación de perfil|`SolicitudEliminacionPerfilRepository`|`obtenerPendientes()`, `buscarPorCriterio(criterio)`|
 |Representar atributos de dominio|`SolicitudEliminacionPerfil`|Entidad conceptual|
 
 ### Atributos tratados
@@ -124,6 +124,7 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de s
 ## Colaboraciones relacionadas
 
 - **abrirSolicitudEliminacionPerfil()**: colaboración relacionada desde la navegación del caso de uso.
+- **abrirOpcionesPerfil()**: colaboración relacionada desde la navegación del caso de uso.
 
 ## Reglas funcionales consideradas
 
@@ -156,7 +157,7 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de s
 `SolicitudEliminacionPerfilRepository` abstrae el acceso a datos de solicitudes de eliminación de perfil, permitiendo cambiar la implementación sin afectar al controlador.
 
 ### MVC pattern
-Separación clara entre presentación (`DetalleSolicitudEliminacionPerfilView`), lógica de aplicación (`SolicitudEliminacionPerfilController`) y datos (`SolicitudEliminacionPerfil`, `SolicitudEliminacionPerfilRepository`).
+Separación clara entre presentación (`ListarSolicitudesEliminacionPerfilView`), lógica de aplicación (`SolicitudEliminacionPerfilController`) y datos (`SolicitudEliminacionPerfil`, `SolicitudEliminacionPerfilRepository`).
 
 ### Sistema de estados
 Mantiene coherencia con el diagrama de contexto del Coordinador, respetando las transiciones de estado establecidas.
