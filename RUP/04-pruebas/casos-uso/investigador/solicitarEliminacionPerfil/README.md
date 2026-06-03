@@ -5,4 +5,11 @@
 
 ## Estado
 
-Pendiente de verificar cancelación, solicitud con motivo obligatorio y cierre de sesión confirmado.
+Verificado mediante `PerfilIntegrationTests.investigadorSolicitaEliminacionConCreatedYCierraSesion`.
+
+## Resultado
+
+- Se valida que la solicitud se registra con `201 Created`.
+- Se comprueba que queda en estado `PENDIENTE`.
+- Se confirma que la sesión queda cerrada después de solicitar la eliminación.
+- Queda pendiente completar evidencia visual manual del modal.

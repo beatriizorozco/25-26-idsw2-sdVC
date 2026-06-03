@@ -14,7 +14,7 @@
 
 ## Propósito
 
-Especificación detallada del caso de uso `abrirOpcionesPerfil()` mediante diagrama de estado, mostrando la conversación entre el Coordinador y el Sistema para presentar al coordinador el detalle de opciones de perfil y las acciones disponibles según su rol.
+Especificación detallada del caso de uso `abrirOpcionesPerfil()` mediante diagrama de estado, mostrando la conversación entre el Coordinador y el Sistema para presentar el perfil propio y las acciones disponibles según su rol.
 
 ## Información del caso de uso
 
@@ -22,7 +22,7 @@ Especificación detallada del caso de uso `abrirOpcionesPerfil()` mediante diagr
 |-|-|
 |**Nombre**|abrirOpcionesPerfil()|
 |**Actor primario**|Coordinador|
-|**Objetivo**|Presentar al Coordinador el detalle de opciones de perfil y las acciones disponibles según su rol.|
+|**Objetivo**|Presentar al Coordinador su perfil propio y las acciones disponibles según su rol.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
 |**Precondición**|Usuario autenticado como Coordinador y sistema disponible para navegación.|
@@ -56,16 +56,15 @@ Especificación detallada del caso de uso `abrirOpcionesPerfil()` mediante diagr
 </div>
 
 **Correspondencia con especificación:**
-- abrirOpcionesPerfil(ID)
 - abrirOpcionesPerfil()
 - abrirOpcionesPerfil()
 - **Coordinador** solicita abrir opciones perfil
 
 ### Validaciones del wireframe
-- ¿El campo o bloque **Investigador seleccionado** resulta claro para el Coordinador?
-- ¿El campo o bloque **ID** resulta claro para el Coordinador?
-- ¿El campo o bloque **Nombre** resulta claro para el Coordinador?
-- ¿El campo o bloque **Campo** resulta claro para el Coordinador?
+- ¿El campo o bloque **Perfil propio** resulta claro para el Coordinador?
+- ¿El campo o bloque **Nombre completo** resulta claro para el Coordinador?
+- ¿El campo o bloque **Correo** resulta claro para el Coordinador?
+- ¿El campo o bloque **Unidad** resulta claro para el Coordinador?
 - ¿El campo o bloque **Opciones disponibles** resulta claro para el Coordinador?
 - ¿Las acciones disponibles mantienen una navegación coherente con el rol Coordinador?
 - ¿Falta información que el wireframe revela antes del análisis?
@@ -79,7 +78,7 @@ Especificación detallada del caso de uso `abrirOpcionesPerfil()` mediante diagr
 |Actor|Acción|Sistema|Respuesta|
 |-|-|-|-|
 |**Coordinador**|solicita abrir opciones perfil|| |
-||**Sistema**|presenta las opciones disponibles en perfil<br>- ID, nombre, campo de cada investigador<br>- Permite solicitar editar perfil<br>- Permite solicitar resolver solicitud eliminacion<br>- Permite solicitar volver al panel principal<br>- Permite solicitar volver al investigador| |
+||**Sistema**|presenta las opciones disponibles en perfil<br>- nombre completo, correo, unidad, línea de investigación y biografía<br>- Permite solicitar editar perfil<br>- Permite solicitar solicitar eliminación de perfil<br>- Permite solicitar revisar solicitudes de eliminación pendientes<br>- Permite solicitar volver al panel principal| |
 |**Coordinador**|solicita una de las opciones|| |
 
 ## Estados internos del caso de uso

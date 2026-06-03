@@ -1,5 +1,5 @@
-@startuml abrirOpcionesPerfil-coordinador-diseño
-title Diagrama de secuencia - Abrir opciones de perfil del Coordinador
+@startuml abrirOpcionesPerfil-coordinador-diseno
+title Diagrama de secuencia - Abrir opciones de perfil propio del Coordinador
 
 actor Coordinador
 participant "PerfilPage\n(React)" as Frontend
@@ -10,36 +10,32 @@ participant "PerfilRepository" as PerfilRepository
 
 Coordinador -> Frontend: Solicita abrir opciones de perfil
 activate Frontend
-Frontend -> Frontend: Comprobar sesión local
-alt Perfil propio
-    Frontend -> Api: GET /api/perfil\nCookie de sesión
-else Perfil de investigador
-    Frontend -> Api: GET /api/perfiles/{perfilId}\nCookie de sesión
-end
+Frontend -> Frontend: Comprobar sesion local
+Frontend -> Api: GET /api/perfil\nCookie de sesion
 activate Api
 Api -> Sesion: obtenerSesionActual(authentication)
 activate Sesion
-alt Sesión de Coordinador activa
+alt Sesion de Coordinador activa
     Sesion --> Api: SesionResponse(COORDINADOR)
     deactivate Sesion
-    Api -> PerfilService: obtenerOpcionesPerfil(coordinador, perfilId?)
+    Api -> PerfilService: obtenerPerfilPropio(coordinador)
     activate PerfilService
-    PerfilService -> PerfilRepository: obtenerPerfilPropioOInvestigador(contexto)
+    PerfilService -> PerfilRepository: obtenerPorUsuario(coordinador)
     activate PerfilRepository
     PerfilRepository --> PerfilService: Perfil
     deactivate PerfilRepository
-    PerfilService --> Api: PerfilOpcionesResponse
+    PerfilService --> Api: PerfilResponse
     deactivate PerfilService
-    Api --> Frontend: 200 OK\nPerfilOpcionesResponse
+    Api --> Frontend: 200 OK\nPerfilResponse
     deactivate Api
-    Frontend -> Frontend: Renderizar opciones de perfil
+    Frontend -> Frontend: Renderizar perfil y opciones disponibles
     Frontend --> Coordinador: Presenta OPCIONES_PERFIL_ABIERTO
-else Sesión ausente o rol no autorizado
-    Sesion --> Api: SesionNoValidaException / AccesoDenegado
+else Sesion ausente
+    Sesion --> Api: SesionNoValidaException
     deactivate Sesion
-    Api --> Frontend: 401 Unauthorized / 403 Forbidden
+    Api --> Frontend: 401 Unauthorized
     deactivate Api
-    Frontend --> Coordinador: Presenta SESION_CERRADA o acceso no permitido
+    Frontend --> Coordinador: Presenta SESION_CERRADA
 end
 deactivate Frontend
 @enduml

@@ -5,4 +5,11 @@
 
 ## Estado
 
-Pendiente de verificar listado, filtrado y restricción de acceso al rol Coordinador.
+Verificado mediante `PerfilIntegrationTests.coordinadorPuedeListarSolicitudesPendientes` y `PerfilIntegrationTests.investigadorNoPuedeListarSolicitudesDeEliminacion`.
+
+## Resultado
+
+- Se valida que el Coordinador puede listar solicitudes pendientes.
+- Se valida que el Investigador recibe `403 Forbidden` al intentar listar solicitudes.
+- Se comprueba que las solicitudes resueltas dejan de aparecer en el listado pendiente.
+- Queda pendiente completar evidencia visual manual del listado filtrable.

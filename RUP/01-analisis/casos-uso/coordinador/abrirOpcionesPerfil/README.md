@@ -14,7 +14,7 @@
 
 ## Propósito
 
-Analizar la colaboración necesaria para presentar al Coordinador las opciones de perfil disponibles según el contexto de entrada. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `abrirOpcionesPerfil()`.
+Analizar la colaboración necesaria para presentar al Coordinador las opciones de su perfil propio. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `abrirOpcionesPerfil()`.
 
 ## Diagrama de colaboración
 
@@ -34,15 +34,15 @@ Analizar la colaboración necesaria para presentar al Coordinador las opciones d
 **Estereotipo**: Vista (Boundary)  
 **Responsabilidades**:
 - Recibir la solicitud `abrirOpcionesPerfil()` del Coordinador.
-- Presentar la información de perfiles necesaria para el caso de uso.
+- Presentar la información del perfil propio necesaria para el caso de uso.
 - Capturar datos, criterios o confirmaciones introducidos por el Coordinador.
 - Invocar al controlador para ejecutar la operación de análisis.
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `abrirOpcionesPerfil(id)` desde `INVESTIGADOR_ABIERTO`, o `abrirOpcionesPerfil()` desde `PANEL_PRINCIPAL_ABIERTO` y `SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS`.
+- **Entrada**: Recibe `abrirOpcionesPerfil()` desde `PANEL_PRINCIPAL_ABIERTO` o `SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS`.
 - **Control**: Se comunica con `PerfilController`.
-- **Salida**: Presenta `OPCIONES_PERFIL_ABIERTO` y permite navegar a `editarPerfil()`, `solicitarEliminacionPerfil()`, `abrirPanelPrincipal()`, `abrirInvestigador(id)` o `abrirSolicitudesEliminacionPerfil()`.
+- **Salida**: Presenta `OPCIONES_PERFIL_ABIERTO` y permite navegar a `editarPerfil()`, `solicitarEliminacionPerfil()`, `abrirPanelPrincipal()` o `abrirSolicitudesEliminacionPerfil()`.
 
 ### Clases de control
 
@@ -64,7 +64,7 @@ Analizar la colaboración necesaria para presentar al Coordinador las opciones d
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Abstraer el acceso a datos de perfiles.
-- Proporcionar operaciones `obtenerPerfilPropioOInvestigador(contexto)` y `verificarPermisos(actor)`.
+- Proporcionar operaciones `obtenerPorUsuario(usuario)` y `verificarPermisos(actor)`.
 - Mantener la consistencia conceptual de perfiles.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
@@ -86,10 +86,10 @@ Analizar la colaboración necesaria para presentar al Coordinador las opciones d
 
 ### Secuencia de operaciones
 
-1. **Inicio**: `INVESTIGADOR_ABIERTO`, `PANEL_PRINCIPAL_ABIERTO` o `SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS` -> `OpcionesPerfilView.abrirOpcionesPerfil()`.
-2. **Solicitud principal**: `OpcionesPerfilView` -> `PerfilController.obtenerPerfil(contexto)`.
-3. **Acceso a datos**: `OpcionesPerfilView` -> `PerfilController.prepararAccionesDisponibles(coordinador, contexto)`.
-4. **Preparación de acciones**: `PerfilController` -> `PerfilRepository.obtenerPerfilPropioOInvestigador(contexto)`.
+1. **Inicio**: `PANEL_PRINCIPAL_ABIERTO` o `SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS` -> `OpcionesPerfilView.abrirOpcionesPerfil()`.
+2. **Solicitud principal**: `OpcionesPerfilView` -> `PerfilController.obtenerPerfilPropio(coordinador)`.
+3. **Acceso a datos**: `OpcionesPerfilView` -> `PerfilController.prepararAccionesDisponibles(coordinador)`.
+4. **Preparación de acciones**: `PerfilController` -> `PerfilRepository.obtenerPorUsuario(coordinador)`.
 5. **Verificación de permisos**: `PerfilController` -> `PerfilRepository.verificarPermisos(actor)`.
 6. **Finalización**: `OpcionesPerfilView` presenta `OPCIONES_PERFIL_ABIERTO` o deriva a la colaboración solicitada.
 
@@ -106,9 +106,9 @@ Analizar la colaboración necesaria para presentar al Coordinador las opciones d
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
 |Atender la solicitud `abrirOpcionesPerfil()`|`OpcionesPerfilView`|Recibe la acción del Coordinador|
-|Coordinar reglas del caso de uso|`PerfilController`|`obtenerPerfil(contexto)`|
-|Aplicar permisos y validaciones|`PerfilController`|`prepararAccionesDisponibles(coordinador, contexto)`|
-|Acceder a datos de perfiles|`PerfilRepository`|`obtenerPerfilPropioOInvestigador(contexto)`, `verificarPermisos(actor)`|
+|Coordinar reglas del caso de uso|`PerfilController`|`obtenerPerfilPropio(coordinador)`|
+|Aplicar permisos y validaciones|`PerfilController`|`prepararAccionesDisponibles(coordinador)`|
+|Acceder a datos de perfiles|`PerfilRepository`|`obtenerPorUsuario(coordinador)`, `verificarPermisos(actor)`|
 |Representar atributos de dominio|`Perfil`|Entidad conceptual|
 
 ### Atributos tratados
@@ -125,7 +125,6 @@ Analizar la colaboración necesaria para presentar al Coordinador las opciones d
 - **editarPerfil()**: colaboración relacionada desde la navegación del caso de uso.
 - **solicitarEliminacionPerfil()**: colaboración relacionada desde la navegación del caso de uso.
 - **abrirPanelPrincipal()**: colaboración relacionada desde la navegación del caso de uso.
-- **abrirInvestigador(id)**: colaboración relacionada cuando el Coordinador vuelve al investigador abierto.
 - **abrirSolicitudesEliminacionPerfil()**: colaboración relacionada cuando el Coordinador vuelve al listado de solicitudes.
 
 ## Reglas funcionales consideradas

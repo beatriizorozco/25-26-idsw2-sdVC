@@ -5,4 +5,10 @@
 
 ## Estado
 
-Pendiente de verificar actualización correcta, validación de campos y conservación de sesión.
+Verificado mediante `PerfilIntegrationTests.coordinadorPuedeActualizarSuPerfilPropio`.
+
+## Resultado
+
+- Se valida que `PATCH /api/perfil` actualiza el perfil propio del Coordinador.
+- Se comprueba que la respuesta devuelve los datos modificados.
+- Queda pendiente completar evidencia visual manual del formulario.

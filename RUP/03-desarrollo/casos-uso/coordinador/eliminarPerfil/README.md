@@ -5,7 +5,7 @@
 
 ## Implementación
 
-La eliminación requiere confirmación. El frontend envía `DELETE /api/solicitudes-eliminacion-perfil/{idSolicitud}/perfil`; el backend exige rol Coordinador, desactiva el perfil y marca la solicitud como resuelta.
+La eliminación requiere confirmación. El frontend envía `DELETE /api/solicitudes-eliminacion-perfil/{idSolicitud}/perfil`; el backend exige rol Coordinador, desactiva el perfil y marca la solicitud como resuelta. Si la solicitud corresponde al único Coordinador activo, la eliminación se rechaza para no dejar el sistema sin coordinación.
 
 ## Código relacionado
 

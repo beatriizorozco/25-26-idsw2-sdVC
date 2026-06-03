@@ -5,4 +5,11 @@
 
 ## Estado
 
-Pendiente de verificar cancelación, registro de solicitud y cierre de sesión tras confirmar.
+Verificado indirectamente mediante `PerfilIntegrationTests.noPermiteEliminarElUnicoCoordinadorActivo`.
+
+## Resultado
+
+- Se valida que el Coordinador puede registrar una solicitud de eliminación propia con `201 Created`.
+- Se comprueba que la solicitud queda pendiente para revisión.
+- La eliminación posterior se rechaza si implicaría desactivar al único Coordinador activo.
+- Queda pendiente completar evidencia visual manual del modal.

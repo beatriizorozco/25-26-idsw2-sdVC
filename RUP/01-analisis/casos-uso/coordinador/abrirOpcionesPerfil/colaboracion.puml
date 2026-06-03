@@ -1,7 +1,6 @@
 @startuml abrirOpcionesPerfil-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":INVESTIGADOR_ABIERTO" as EstadoEntradaInvestigador
 rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoEntradaPanel
 rectangle #CDEBA5 ":SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS" as EstadoEntradaSolicitudes
 package abrirOpcionesPerfil as "abrirOpcionesPerfil()" {
@@ -15,23 +14,20 @@ rectangle #CDEBA5 ":OPCIONES_PERFIL_ABIERTO" as EstadoSalida
 rectangle #CDEBA5 ":Collaboration EditarPerfil" as EditarPerfil
 rectangle #CDEBA5 ":Collaboration SolicitarEliminacionPerfil" as SolicitarEliminacionPerfil
 rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanelPrincipal
-rectangle #CDEBA5 ":Collaboration AbrirInvestigador" as AbrirInvestigador
 rectangle #CDEBA5 ":Collaboration AbrirSolicitudesEliminacionPerfil" as AbrirSolicitudesEliminacionPerfil
 
-EstadoEntradaInvestigador -r-> OpcionesPerfilView: abrirOpcionesPerfil(id)
 EstadoEntradaPanel -d-> OpcionesPerfilView: abrirOpcionesPerfil()
 EstadoEntradaSolicitudes -d-> OpcionesPerfilView: abrirOpcionesPerfil()
 
-OpcionesPerfilView -d-> PerfilController: obtenerPerfil(contexto)
-OpcionesPerfilView --> PerfilController: prepararAccionesDisponibles(coordinador, contexto)
-PerfilController --> PerfilRepository: obtenerPerfilPropioOInvestigador(contexto)
+OpcionesPerfilView -d-> PerfilController: obtenerPerfilPropio(coordinador)
+OpcionesPerfilView --> PerfilController: prepararAccionesDisponibles(coordinador)
+PerfilController --> PerfilRepository: obtenerPorUsuario(coordinador)
 PerfilController --> PerfilRepository: verificarPermisos(actor)
 PerfilRepository -- Perfil
 OpcionesPerfilView ..> EstadoSalida: opcionesPerfilAbierto()
 OpcionesPerfilView ..> EditarPerfil: editarPerfil()
 OpcionesPerfilView ..> SolicitarEliminacionPerfil: solicitarEliminacionPerfil()
 OpcionesPerfilView ..> AbrirPanelPrincipal: abrirPanelPrincipal()
-OpcionesPerfilView ..> AbrirInvestigador: abrirInvestigador(id)
 OpcionesPerfilView ..> AbrirSolicitudesEliminacionPerfil: abrirSolicitudesEliminacionPerfil()
 
 @enduml

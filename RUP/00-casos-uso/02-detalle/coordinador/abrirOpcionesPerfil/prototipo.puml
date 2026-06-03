@@ -4,12 +4,12 @@
     <b>GIPF - OPCIONES DE PERFIL</b>
     ====
     {
-        <b>Investigador seleccionado</b>
+        <b>Perfil propio</b>
         --
         {
-            {<b>ID:</b>     | INV-001}
-            {<b>Nombre:</b> | Ana López}
-            {<b>Campo:</b>  | Inteligencia Artificial}
+            {<b>Nombre:</b> | Coordinador FUNIBER}
+            {<b>Correo:</b> | coordinador@funiber.org}
+            {<b>Unidad:</b> | Coordinacion de investigacion}
         }
 
         ~~
@@ -18,8 +18,8 @@
         --
         {
             {[Editar perfil]}
-            {[Abrir solicitudes de eliminación]}
-            {[Solicitar eliminación perfil]}
+            {[Abrir solicitudes de eliminacion]}
+            {[Solicitar eliminacion perfil]}
         }
 
         ~~

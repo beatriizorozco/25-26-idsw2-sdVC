@@ -5,7 +5,7 @@
 
 ## Implementación
 
-La edición usa un formulario precargado con `PerfilResponse`. Al guardar, el frontend envía `PATCH /api/perfil` con `PerfilUpdateRequest`; el backend valida la sesión, actualiza los campos del usuario y devuelve el perfil actualizado.
+La edición usa un formulario precargado con `PerfilResponse` del perfil propio del Coordinador. Al guardar, el frontend envía `PATCH /api/perfil` con `PerfilUpdateRequest`; el backend valida la sesión, actualiza los campos del usuario autenticado y devuelve el perfil actualizado.
 
 ## Código relacionado
 

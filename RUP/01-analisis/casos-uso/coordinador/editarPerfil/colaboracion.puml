@@ -14,9 +14,9 @@ rectangle #CDEBA5 ":Collaboration AbrirOpcionesPerfil" as AbrirOpcionesPerfil
 
 EstadoEntrada -r-> EditarPerfilView: editarPerfil()
 
-EditarPerfilView -d-> PerfilController: editarPerfil(id, datos)
+EditarPerfilView -d-> PerfilController: editarPerfilPropio(coordinador, datos)
 EditarPerfilView --> PerfilController: validarCambios(datos)
-PerfilController --> PerfilRepository: obtenerPorId(id)
+PerfilController --> PerfilRepository: obtenerPorUsuario(coordinador)
 PerfilController --> PerfilRepository: actualizar(entidad)
 PerfilRepository -- Perfil
 EditarPerfilView ..> EstadoSalida: continuarNavegacion()

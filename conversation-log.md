@@ -202,3 +202,13 @@ La documentación de Desarrollo se amplió en `RUP/03-desarrollo`, con README po
 La verificación frontend quedó correcta: `npm run build` y `npm run lint` terminaron sin errores. También se comprobó que las rutas internas de Desarrollo y Pruebas existieran y que `git diff --check` no mostrara errores reales, solo avisos normales de CRLF. No se pudieron ejecutar pruebas backend porque `src/backend/mvnw.cmd` falla antes de arrancar Maven con `No se puede indizar en una matriz nula`, y no hay `mvn` global disponible en el entorno.
 
 **Decisión:** el bloque de perfil ya tiene Diseño cerrado, Desarrollo implementado y documentación de Desarrollo trazable. El siguiente paso recomendado es resolver o sustituir el wrapper de Maven para poder validar backend, arrancar la aplicación completa y probar manualmente el flujo de perfil: abrir perfil, editar datos, solicitar eliminación, listar solicitudes como Coordinador, abrir detalle y confirmar eliminación. Después conviene completar la documentación real de Pruebas del bloque con evidencias y resultados, sustituyendo las páginas provisionales creadas durante esta sesión.
+
+---
+
+## [23:20] Inicio de sesión - Revisión del Desarrollo del bloque de perfil
+
+**Prompt:** el usuario inició sesión usando la skill `session-memory` y pidió revisar la parte de Desarrollo del segundo bloque, dedicado a la gestión de perfil.
+
+**Resultado:** se utilizó la skill `session-memory`. Se revisó el estado del repositorio, los commits recientes, la última entrada de `conversation-log.md` y la implementación del bloque de perfil en frontend, backend y documentación RUP. El repositorio estaba limpio antes de iniciar las correcciones. La revisión detectó tres puntos a corregir antes de cerrar el bloque: la trazabilidad de `editarPerfil` del Coordinador no coincidía entre Detalle/Diseño y Desarrollo, la solicitud de eliminación documentaba `201 Created` pero el controlador devolvía `200 OK`, y la eliminación de perfil podía desactivar al único Coordinador activo.
+
+**Decisión:** la sesión se centrará en corregir esos errores, reforzar las pruebas del bloque de perfil y dejar el Desarrollo alineado con la documentación antes de avanzar al siguiente bloque funcional.

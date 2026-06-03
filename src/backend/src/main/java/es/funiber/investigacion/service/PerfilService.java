@@ -98,6 +98,7 @@ public class PerfilService {
         exigirCoordinador(nombreUsuario);
         SolicitudEliminacionPerfil solicitud = buscarSolicitudPendiente(solicitudId);
         Usuario perfil = solicitud.getUsuario();
+        validarEliminacionSegura(perfil);
         perfil.desactivar();
         solicitud.marcarResuelta();
         usuarioRepository.save(perfil);
@@ -119,6 +120,14 @@ public class PerfilService {
         Usuario usuario = buscarUsuarioActivo(nombreUsuario);
         if (usuario.getRol() != Rol.COORDINADOR) {
             throw new AccesoNoPermitidoException();
+        }
+    }
+
+    private void validarEliminacionSegura(Usuario perfil) {
+        if (perfil.getRol() == Rol.COORDINADOR
+                && usuarioRepository.countByRolAndActivoTrue(Rol.COORDINADOR) <= 1) {
+            throw new AccesoNoPermitidoException(
+                    "No se puede eliminar el unico coordinador activo del sistema.");
         }
     }
 

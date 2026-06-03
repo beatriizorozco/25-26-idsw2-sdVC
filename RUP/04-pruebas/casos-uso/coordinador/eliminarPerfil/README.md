@@ -5,4 +5,12 @@
 
 ## Estado
 
-Pendiente de verificar confirmación, eliminación lógica del perfil y resolución de la solicitud.
+Verificado mediante `PerfilIntegrationTests.coordinadorPuedeEliminarPerfilDeInvestigadorDesdeSolicitud`, `PerfilIntegrationTests.solicitudesResueltasNoAparecenEnListadoPendiente` y `PerfilIntegrationTests.noPermiteEliminarElUnicoCoordinadorActivo`.
+
+## Resultado
+
+- Se valida que el Coordinador puede confirmar una solicitud pendiente y desactivar el perfil asociado.
+- Se comprueba que la solicitud queda marcada como `RESUELTA`.
+- Se valida que una solicitud resuelta deja de mostrarse en el listado pendiente.
+- Se protege el sistema frente a la eliminación del único Coordinador activo.
+- Queda pendiente completar evidencia visual manual del modal de confirmación.

@@ -1,5 +1,5 @@
 @startuml editarPerfil-coordinador-diseño
-title Diagrama de secuencia - Editar perfil por Coordinador
+title Diagrama de secuencia - Editar perfil propio del Coordinador
 
 actor Coordinador
 participant "EditarPerfilForm\n(React)" as Frontend
@@ -14,17 +14,17 @@ Frontend -> Frontend: Precargar formulario con PerfilResponse actual
 Frontend --> Coordinador: Muestra formulario con datos precargados
 Coordinador -> Frontend: Modifica datos y guarda
 Frontend -> Frontend: Comprobar sesión local
-Frontend -> Api: PATCH /api/perfiles/{perfilId}\nPerfilUpdateRequest + cookie
+Frontend -> Api: PATCH /api/perfil\nPerfilUpdateRequest + cookie
 activate Api
 Api -> Sesion: obtenerSesionActual(authentication)
 activate Sesion
 alt Sesión de Coordinador activa
     Sesion --> Api: SesionResponse(COORDINADOR)
     deactivate Sesion
-    Api -> PerfilService: editarPerfil(coordinador, perfilId, datos)
+    Api -> PerfilService: editarPerfilPropio(coordinador, datos)
     activate PerfilService
     PerfilService -> PerfilService: validarCambios(datos)
-    PerfilService -> PerfilRepository: obtenerPorId(perfilId)
+    PerfilService -> PerfilRepository: obtenerPorUsuario(coordinador)
     activate PerfilRepository
     PerfilRepository --> PerfilService: Perfil
     PerfilService -> PerfilService: actualizarCampos(perfil, datos)

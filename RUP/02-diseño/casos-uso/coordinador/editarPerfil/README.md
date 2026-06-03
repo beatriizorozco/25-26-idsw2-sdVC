@@ -5,7 +5,7 @@
 
 ## Propósito
 
-Detallar la actualización de datos de perfil realizada por el Coordinador. La operación valida sesión, permisos y datos antes de persistir los cambios.
+Detallar la actualización de los datos del perfil propio del Coordinador. La operación valida sesión, permisos y datos antes de persistir los cambios.
 
 ## Diagrama de secuencia
 
@@ -16,17 +16,17 @@ Detallar la actualización de datos de perfil realizada por el Coordinador. La o
 ## Participantes
 
 - **EditarPerfilForm**: Precarga el formulario con los datos actuales, captura y envía los cambios.
-- **PerfilController**: Expone `PATCH /api/perfiles/{perfilId}`.
+- **PerfilController**: Expone `PATCH /api/perfil`.
 - **SesionService**: Valida la sesión del Coordinador.
-- **PerfilService**: Valida permisos y reglas de actualización.
+- **PerfilService**: Actualiza el perfil asociado a la sesión actual.
 - **PerfilRepository**: Obtiene y persiste el perfil actualizado.
 
 ## Decisiones de Diseño
 
-- El Coordinador puede editar perfiles autorizados desde `OPCIONES_PERFIL_ABIERTO`.
+- El Coordinador edita su perfil propio desde `OPCIONES_PERFIL_ABIERTO`.
 - El frontend precarga el formulario con el `PerfilResponse` disponible antes de enviar cambios.
 - El frontend comprueba la sesión local antes de invocar la API.
-- La actualización es parcial mediante `PATCH`; solo se sustituyen los campos modificados.
+- La actualización es parcial mediante `PATCH`.
 - La API devuelve el perfil actualizado para refrescar la vista.
 - La vista actualiza los datos visibles y notifica éxito antes de volver a `OPCIONES_PERFIL_ABIERTO`.
 - Los errores de validación devuelven `400 Bad Request`.

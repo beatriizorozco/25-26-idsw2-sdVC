@@ -5,7 +5,7 @@
 
 ## Propósito
 
-Detallar la obtención de las opciones de perfil disponibles para el Coordinador. El diseño contempla que el caso puede abrir el perfil propio o el perfil de un investigador según el contexto de entrada.
+Detallar la obtención de las opciones de perfil disponibles para el Coordinador en el MVP actual. El caso abre el perfil propio del Coordinador y presenta, además, el acceso a las solicitudes de eliminación pendientes que solo este rol puede revisar.
 
 ## Diagrama de secuencia
 
@@ -15,19 +15,18 @@ Detallar la obtención de las opciones de perfil disponibles para el Coordinador
 
 ## Participantes
 
-- **PerfilPage**: Solicita y presenta la información de perfil.
-- **PerfilController**: Expone `GET /api/perfil` y `GET /api/perfiles/{perfilId}`.
+- **PerfilPage**: Solicita y presenta la información de perfil propio.
+- **PerfilController**: Expone `GET /api/perfil`.
 - **SesionService**: Valida la sesión activa y el rol `COORDINADOR`.
-- **PerfilService**: Decide si se consulta el perfil propio o el perfil indicado.
+- **PerfilService**: Obtiene el perfil asociado a la sesión actual.
 - **PerfilRepository**: Recupera los datos del perfil.
 
 ## Decisiones de Diseño
 
-- El contexto de entrada determina si se usa perfil propio o `perfilId`.
 - El frontend comprueba la sesión local antes de solicitar los datos.
-- La vista renderiza las opciones recibidas antes de presentar `OPCIONES_PERFIL_ABIERTO`.
-- El Coordinador puede acceder a perfil propio y perfiles de investigadores.
-- La respuesta incluye datos del perfil y acciones disponibles.
+- La vista renderiza el perfil propio antes de presentar `OPCIONES_PERFIL_ABIERTO`.
+- El Coordinador puede editar su perfil propio, solicitar eliminación y revisar solicitudes pendientes.
+- La respuesta incluye los datos del perfil de la sesión actual.
 - Si no hay sesión activa, la API responde `401 Unauthorized`.
 
 ## Referencias

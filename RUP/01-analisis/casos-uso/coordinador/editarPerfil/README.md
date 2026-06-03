@@ -14,7 +14,7 @@
 
 ## Propósito
 
-Analizar la colaboración necesaria para actualizar los datos de perfil. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `editarPerfil()`.
+Analizar la colaboración necesaria para actualizar los datos del perfil propio del Coordinador. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `editarPerfil()`.
 
 ## Diagrama de colaboración
 
@@ -34,7 +34,7 @@ Analizar la colaboración necesaria para actualizar los datos de perfil. El aná
 **Estereotipo**: Vista (Boundary)  
 **Responsabilidades**:
 - Recibir la solicitud `editarPerfil()` del Coordinador.
-- Presentar la información de perfiles necesaria para el caso de uso.
+- Presentar la información del perfil propio necesaria para el caso de uso.
 - Capturar datos, criterios o confirmaciones introducidos por el Coordinador.
 - Invocar al controlador para ejecutar la operación de análisis.
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
@@ -64,7 +64,7 @@ Analizar la colaboración necesaria para actualizar los datos de perfil. El aná
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Abstraer el acceso a datos de perfiles.
-- Proporcionar operaciones `obtenerPorId(id)` y `actualizar(entidad)`.
+- Proporcionar operaciones `obtenerPorUsuario(usuario)` y `actualizar(entidad)`.
 - Mantener la consistencia conceptual de perfiles.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
@@ -87,9 +87,9 @@ Analizar la colaboración necesaria para actualizar los datos de perfil. El aná
 ### Secuencia de operaciones
 
 1. **Inicio**: Estado de contexto -> `EditarPerfilView.editarPerfil()`.
-2. **Solicitud principal**: `EditarPerfilView` -> `PerfilController.editarPerfil(id, datos)`.
+2. **Solicitud principal**: `EditarPerfilView` -> `PerfilController.editarPerfilPropio(coordinador, datos)`.
 3. **Acceso a datos**: `EditarPerfilView` -> `PerfilController.validarCambios(datos)`.
-4. **Validación de cambios**: `PerfilController` -> `PerfilRepository.obtenerPorId(id)`.
+4. **Validación de cambios**: `PerfilController` -> `PerfilRepository.obtenerPorUsuario(coordinador)`.
 5. **Persistencia**: `PerfilController` -> `PerfilRepository.actualizar(entidad)`.
 6. **Finalización**: `EditarPerfilView` devuelve el control al estado de navegación definido.
 
@@ -106,9 +106,9 @@ Analizar la colaboración necesaria para actualizar los datos de perfil. El aná
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
 |Atender la solicitud `editarPerfil()`|`EditarPerfilView`|Recibe la acción del Coordinador|
-|Coordinar reglas del caso de uso|`PerfilController`|`editarPerfil(id, datos)`|
+|Coordinar reglas del caso de uso|`PerfilController`|`editarPerfilPropio(coordinador, datos)`|
 |Aplicar permisos y validaciones|`PerfilController`|`validarCambios(datos)`|
-|Acceder a datos de perfiles|`PerfilRepository`|`obtenerPorId(id)`, `actualizar(entidad)`|
+|Acceder a datos de perfiles|`PerfilRepository`|`obtenerPorUsuario(coordinador)`, `actualizar(entidad)`|
 |Representar atributos de dominio|`Perfil`|Entidad conceptual|
 
 ### Atributos tratados

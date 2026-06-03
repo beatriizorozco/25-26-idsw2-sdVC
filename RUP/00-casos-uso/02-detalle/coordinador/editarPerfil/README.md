@@ -14,7 +14,7 @@
 
 ## Propósito
 
-Especificación detallada del caso de uso `editarPerfil()` mediante diagrama de estado, mostrando la conversación entre el Coordinador y el Sistema para permitir al coordinador actualizar la información de perfil manteniendo la trazabilidad del sistema.
+Especificación detallada del caso de uso `editarPerfil()` mediante diagrama de estado, mostrando la conversación entre el Coordinador y el Sistema para permitir al coordinador actualizar la información de su propio perfil manteniendo la trazabilidad del sistema.
 
 ## Información del caso de uso
 
@@ -22,7 +22,7 @@ Especificación detallada del caso de uso `editarPerfil()` mediante diagrama de 
 |-|-|
 |**Nombre**|editarPerfil()|
 |**Actor primario**|Coordinador|
-|**Objetivo**|Permitir al Coordinador actualizar la información de perfil manteniendo la trazabilidad del sistema.|
+|**Objetivo**|Permitir al Coordinador actualizar la información de su propio perfil manteniendo la trazabilidad del sistema.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
 |**Precondición**|Usuario autenticado como Coordinador y sistema disponible para navegación.|
@@ -46,7 +46,7 @@ Especificación detallada del caso de uso `editarPerfil()` mediante diagrama de 
 
 ### Wireframes
 
-#### Pantalla 1: GIPF - EDITAR PERFIL DE INVESTIGADOR
+#### Pantalla 1: GIPF - EDITAR PERFIL DEL COORDINADOR
 <div align=center>
 
 |![Wireframe: editarPerfil](/images/RUP/00-casos-uso/02-detalle/coordinador/editarPerfil/editarPerfil-wireframe.svg)|
@@ -58,18 +58,16 @@ Especificación detallada del caso de uso `editarPerfil()` mediante diagrama de 
 **Correspondencia con especificación:**
 - editarPerfil()
 - **Coordinador** solicita editar perfil
-- **Sistema** presenta datos de perfil<br>- ID, nombre, apellido, campo, carrera, master, rol<br>**Sistema** permite solicitar:<br>- modificar atributos<br>- guardar cambios<br>- cancelar edición
+- **Sistema** presenta datos de perfil propio<br>- nombre completo, correo, unidad, línea de investigación y biografía<br>**Sistema** permite solicitar:<br>- modificar atributos<br>- guardar cambios<br>- cancelar edición
 - **Coordinador** solicita modificar atributos
 
 ### Validaciones del wireframe
-- ¿El campo o bloque **Datos del investigador** resulta claro para el Coordinador?
-- ¿El campo o bloque **ID** resulta claro para el Coordinador?
-- ¿El campo o bloque **Nombre** resulta claro para el Coordinador?
-- ¿El campo o bloque **Apellido** resulta claro para el Coordinador?
-- ¿El campo o bloque **Campo** resulta claro para el Coordinador?
-- ¿El campo o bloque **Carrera** resulta claro para el Coordinador?
-- ¿El campo o bloque **Máster** resulta claro para el Coordinador?
-- ¿El campo o bloque **Rol** resulta claro para el Coordinador?
+- ¿El campo o bloque **Datos del perfil propio** resulta claro para el Coordinador?
+- ¿El campo o bloque **Nombre completo** resulta claro para el Coordinador?
+- ¿El campo o bloque **Correo** resulta claro para el Coordinador?
+- ¿El campo o bloque **Unidad** resulta claro para el Coordinador?
+- ¿El campo o bloque **Línea de investigación** resulta claro para el Coordinador?
+- ¿El campo o bloque **Biografía** resulta claro para el Coordinador?
 - ¿Las acciones disponibles mantienen una navegación coherente con el rol Coordinador?
 - ¿Falta información que el wireframe revela antes del análisis?
 
@@ -82,7 +80,7 @@ Especificación detallada del caso de uso `editarPerfil()` mediante diagrama de 
 |Actor|Acción|Sistema|Respuesta|
 |-|-|-|-|
 |**Coordinador**|solicita editar perfil|| |
-||**Sistema**|presenta datos de perfil<br>- ID, nombre, apellido, campo, carrera, master, rol<br>**Sistema** permite solicitar:<br>- modificar atributos<br>- guardar cambios<br>- cancelar edición| |
+||**Sistema**|presenta datos de perfil propio<br>- nombre completo, correo, unidad, línea de investigación y biografía<br>**Sistema** permite solicitar:<br>- modificar atributos<br>- guardar cambios<br>- cancelar edición| |
 |**Coordinador**|solicita modificar atributos|| |
 |**Coordinador**|solicita guardar y salir|| |
 |**Coordinador**|solicita cancelar edición|| |
