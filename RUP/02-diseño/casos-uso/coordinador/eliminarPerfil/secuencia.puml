@@ -17,6 +17,7 @@ alt Cancela eliminación
     Frontend --> Coordinador: Presenta SOLICITUD_ELIMINACION_PERFIL_ABIERTA
 else Confirma eliminación
     Coordinador -> Frontend: Confirma eliminación
+    Frontend -> Frontend: Comprobar sesión local
     Frontend -> Api: DELETE /api/solicitudes-eliminacion-perfil/{idSolicitud}/perfil\nCookie de sesión
     activate Api
     Api -> Sesion: obtenerSesionActual(authentication)

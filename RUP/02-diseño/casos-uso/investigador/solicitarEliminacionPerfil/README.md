@@ -24,8 +24,9 @@ Detallar la solicitud de eliminación del perfil propio del Investigador. La sol
 ## Decisiones de Diseño
 
 - El Investigador solo solicita eliminación de su propio perfil.
-- Cancelar mantiene `OPCIONES_PERFIL_ABIERTO`.
-- Confirmar registra la solicitud y cierra sesión.
+- El frontend muestra confirmación antes de registrar la solicitud.
+- Cancelar no invoca la API y mantiene `OPCIONES_PERFIL_ABIERTO`.
+- Confirmar comprueba la sesión local, registra la solicitud y cierra sesión.
 - La salida confirmada es `SESION_CERRADA`.
 
 ## Referencias

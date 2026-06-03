@@ -10,9 +10,13 @@ participant "SolicitudEliminacionPerfilRepository" as SolicitudRepository
 
 Investigador -> Frontend: Solicita eliminar su perfil
 activate Frontend
+Frontend --> Investigador: Muestra confirmación de solicitud
 alt Cancela solicitud
+    Investigador -> Frontend: Cancela solicitud
     Frontend --> Investigador: Presenta OPCIONES_PERFIL_ABIERTO
 else Confirma solicitud
+    Investigador -> Frontend: Confirma solicitud
+    Frontend -> Frontend: Comprobar sesión local
     Frontend -> Api: POST /api/perfil/solicitud-eliminacion\nSolicitudEliminacionRequest + cookie
     activate Api
     Api -> Sesion: obtenerSesionActual(authentication)

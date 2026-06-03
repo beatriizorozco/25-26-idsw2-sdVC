@@ -27,7 +27,7 @@ Detallar la eliminación de un perfil solicitada previamente. El Coordinador con
 - Solo el Coordinador puede eliminar perfiles desde una solicitud abierta.
 - El frontend muestra confirmación antes de invocar la API.
 - Cancelar no invoca la API y mantiene `SOLICITUD_ELIMINACION_PERFIL_ABIERTA`.
-- Confirmar invoca la API, elimina el perfil y vuelve a `SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS`.
+- Confirmar comprueba la sesión local, invoca la API, elimina el perfil y vuelve a `SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS`.
 - No se diseña flujo de rechazo.
 
 ## Referencias

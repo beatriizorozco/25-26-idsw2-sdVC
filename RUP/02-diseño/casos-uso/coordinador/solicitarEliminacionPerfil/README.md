@@ -23,8 +23,9 @@ Detallar el registro de una solicitud de eliminación de perfil desde las opcion
 
 ## Decisiones de Diseño
 
+- El frontend muestra confirmación antes de registrar la solicitud.
 - La cancelación no llama a la API y mantiene `OPCIONES_PERFIL_ABIERTO`.
-- La confirmación crea una solicitud pendiente.
+- La confirmación comprueba la sesión local y crea una solicitud pendiente.
 - Tras confirmar, la sesión queda cerrada y la salida es `SESION_CERRADA`.
 - No existe flujo de rechazo en este caso.
 
