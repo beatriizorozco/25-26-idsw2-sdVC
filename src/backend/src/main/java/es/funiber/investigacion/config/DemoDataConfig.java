@@ -16,8 +16,28 @@ public class DemoDataConfig {
             UsuarioRepository usuarioRepository,
             PasswordEncoder passwordEncoder) {
         return args -> {
-            crearSiNoExiste(usuarioRepository, passwordEncoder, "coordinador", "coordinador123", Rol.COORDINADOR);
-            crearSiNoExiste(usuarioRepository, passwordEncoder, "investigador", "investigador123", Rol.INVESTIGADOR);
+            crearSiNoExiste(
+                    usuarioRepository,
+                    passwordEncoder,
+                    "coordinador",
+                    "coordinador123",
+                    Rol.COORDINADOR,
+                    "Coordinador FUNIBER",
+                    "coordinador@funiber.org",
+                    "Coordinación de investigación",
+                    "Gestión académica e investigación",
+                    "Perfil coordinador con acceso a gestión global de la plataforma.");
+            crearSiNoExiste(
+                    usuarioRepository,
+                    passwordEncoder,
+                    "investigador",
+                    "investigador123",
+                    Rol.INVESTIGADOR,
+                    "Investigador FUNIBER",
+                    "investigador@funiber.org",
+                    "Investigación",
+                    "Producción científica",
+                    "Perfil investigador con acceso a sus proyectos, publicaciones y entregables.");
         };
     }
 
@@ -26,13 +46,20 @@ public class DemoDataConfig {
             PasswordEncoder passwordEncoder,
             String nombreUsuario,
             String contrasena,
-            Rol rol) {
+            Rol rol,
+            String nombreCompleto,
+            String email,
+            String unidad,
+            String lineaInvestigacion,
+            String biografia) {
         if (usuarioRepository.findByNombreUsuario(nombreUsuario).isEmpty()) {
-            usuarioRepository.save(new Usuario(
+            Usuario usuario = new Usuario(
                     nombreUsuario,
                     passwordEncoder.encode(contrasena),
                     rol,
-                    true));
+                    true);
+            usuario.actualizarPerfil(nombreCompleto, email, unidad, lineaInvestigacion, biografia);
+            usuarioRepository.save(usuario);
         }
     }
 }

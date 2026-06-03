@@ -57,7 +57,7 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(Arrays.stream(frontendOrigins.split(","))
                 .map(String::trim)
                 .toList());
-        configuration.setAllowedMethods(List.of("GET", "POST", "OPTIONS"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Content-Type", "X-XSRF-TOKEN"));
         configuration.setAllowCredentials(true);
 

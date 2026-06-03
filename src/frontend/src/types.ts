@@ -21,3 +21,32 @@ export interface CsrfToken {
   token: string
 }
 
+export interface Perfil {
+  id: number
+  usuario: string
+  rol: Rol
+  nombreCompleto: string
+  email: string
+  unidad: string
+  lineaInvestigacion: string
+  biografia: string
+}
+
+export interface PerfilUpdate {
+  nombreCompleto: string
+  email: string
+  unidad: string
+  lineaInvestigacion: string
+  biografia: string
+}
+
+export interface SolicitudEliminacionPerfil {
+  id: number
+  perfilId: number
+  usuario: string
+  nombreCompleto: string
+  motivo: string
+  estado: 'PENDIENTE' | 'RESUELTA'
+  fechaCreacion: string
+}
+

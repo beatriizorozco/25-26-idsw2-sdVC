@@ -3,7 +3,10 @@ import { ConfirmarCierreSesionModal } from './components/ConfirmarCierreSesionMo
 import { cerrarSesion, iniciarSesion, obtenerPanelPrincipal, obtenerSesion } from './services/api'
 import { LoginPage } from './pages/LoginPage'
 import { PanelPrincipalPage } from './pages/PanelPrincipalPage'
+import { PerfilPage } from './pages/PerfilPage'
 import type { PanelPrincipal, Sesion } from './types'
+
+type Vista = 'panel' | 'perfil'
 
 export default function App() {
   const [sesion, setSesion] = useState<Sesion | null>(null)
@@ -11,6 +14,7 @@ export default function App() {
   const [cargando, setCargando] = useState(true)
   const [confirmandoCierre, setConfirmandoCierre] = useState(false)
   const [cerrando, setCerrando] = useState(false)
+  const [vista, setVista] = useState<Vista>('panel')
 
   useEffect(() => {
     async function recuperarSesion() {
@@ -42,6 +46,7 @@ export default function App() {
       await cerrarSesion()
       setSesion(null)
       setPanel(null)
+      setVista('panel')
       setConfirmandoCierre(false)
     } finally {
       setCerrando(false)
@@ -58,7 +63,29 @@ export default function App() {
 
   return (
     <>
-      <PanelPrincipalPage sesion={sesion} panel={panel} onCerrarSesion={() => setConfirmandoCierre(true)} />
+      {vista === 'panel' && (
+        <PanelPrincipalPage
+          sesion={sesion}
+          panel={panel}
+          onCerrarSesion={() => setConfirmandoCierre(true)}
+          onAbrirModulo={(codigo) => {
+            if (codigo === 'perfil') {
+              setVista('perfil')
+            }
+          }}
+        />
+      )}
+      {vista === 'perfil' && (
+        <PerfilPage
+          rol={sesion.rol}
+          onVolver={() => setVista('panel')}
+          onSesionCerrada={() => {
+            setSesion(null)
+            setPanel(null)
+            setVista('panel')
+          }}
+        />
+      )}
       {confirmandoCierre && (
         <ConfirmarCierreSesionModal
           procesando={cerrando}

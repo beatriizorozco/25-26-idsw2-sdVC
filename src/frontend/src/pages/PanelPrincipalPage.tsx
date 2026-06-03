@@ -16,6 +16,7 @@ interface Props {
   sesion: Sesion
   panel: PanelPrincipal
   onCerrarSesion: () => void
+  onAbrirModulo: (codigo: string) => void
 }
 
 const icons = {
@@ -29,10 +30,10 @@ const icons = {
   recompensas: Award,
 }
 
-function Accion({ accion }: { accion: AccionPanel }) {
+function Accion({ accion, onAbrirModulo }: { accion: AccionPanel; onAbrirModulo: (codigo: string) => void }) {
   const Icon = icons[accion.codigo as keyof typeof icons] ?? ChevronRight
   return (
-    <button className="action-row" type="button" title={`Abrir ${accion.etiqueta}`}>
+    <button className="action-row" type="button" title={`Abrir ${accion.etiqueta}`} onClick={() => onAbrirModulo(accion.codigo)}>
       <span className="action-icon"><Icon size={20} /></span>
       <span>
         <strong>{accion.etiqueta}</strong>
@@ -43,7 +44,7 @@ function Accion({ accion }: { accion: AccionPanel }) {
   )
 }
 
-export function PanelPrincipalPage({ sesion, panel, onCerrarSesion }: Props) {
+export function PanelPrincipalPage({ sesion, panel, onCerrarSesion, onAbrirModulo }: Props) {
   const rol = sesion.rol === 'COORDINADOR' ? 'Coordinador' : 'Investigador'
 
   return (
@@ -78,7 +79,9 @@ export function PanelPrincipalPage({ sesion, panel, onCerrarSesion }: Props) {
         </div>
 
         <section className="module-grid" aria-label="Áreas disponibles">
-          {panel.acciones.map((accion) => <Accion key={accion.codigo} accion={accion} />)}
+          {panel.acciones.map((accion) => (
+            <Accion key={accion.codigo} accion={accion} onAbrirModulo={onAbrirModulo} />
+          ))}
         </section>
       </section>
     </main>

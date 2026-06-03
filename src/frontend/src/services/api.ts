@@ -1,4 +1,11 @@
-import type { CsrfToken, PanelPrincipal, Sesion } from '../types'
+import type {
+  CsrfToken,
+  PanelPrincipal,
+  Perfil,
+  PerfilUpdate,
+  Sesion,
+  SolicitudEliminacionPerfil,
+} from '../types'
 
 const API_URL = import.meta.env.VITE_API_URL ?? '/api'
 
@@ -48,6 +55,47 @@ export function obtenerSesion(): Promise<Sesion> {
 
 export function obtenerPanelPrincipal(): Promise<PanelPrincipal> {
   return request<PanelPrincipal>('/panel-principal')
+}
+
+export function obtenerPerfil(): Promise<Perfil> {
+  return request<Perfil>('/perfil')
+}
+
+export async function actualizarPerfil(perfil: PerfilUpdate): Promise<Perfil> {
+  const token = await obtenerTokenCsrf()
+  return request<Perfil>('/perfil', {
+    method: 'PATCH',
+    headers: { [token.headerName]: token.token },
+    body: JSON.stringify(perfil),
+  })
+}
+
+export async function solicitarEliminacionPerfil(motivo: string): Promise<SolicitudEliminacionPerfil> {
+  const token = await obtenerTokenCsrf()
+  const solicitud = await request<SolicitudEliminacionPerfil>('/perfil/solicitud-eliminacion', {
+    method: 'POST',
+    headers: { [token.headerName]: token.token },
+    body: JSON.stringify({ motivo }),
+  })
+  csrfToken = null
+  return solicitud
+}
+
+export function listarSolicitudesEliminacionPerfil(criterio = ''): Promise<SolicitudEliminacionPerfil[]> {
+  const query = criterio.trim() ? `?criterio=${encodeURIComponent(criterio.trim())}` : ''
+  return request<SolicitudEliminacionPerfil[]>(`/solicitudes-eliminacion-perfil${query}`)
+}
+
+export function obtenerSolicitudEliminacionPerfil(id: number): Promise<SolicitudEliminacionPerfil> {
+  return request<SolicitudEliminacionPerfil>(`/solicitudes-eliminacion-perfil/${id}`)
+}
+
+export async function eliminarPerfilDesdeSolicitud(id: number): Promise<void> {
+  const token = await obtenerTokenCsrf()
+  await request<void>(`/solicitudes-eliminacion-perfil/${id}/perfil`, {
+    method: 'DELETE',
+    headers: { [token.headerName]: token.token },
+  })
 }
 
 export async function cerrarSesion(): Promise<void> {

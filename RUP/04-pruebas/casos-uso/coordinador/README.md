@@ -8,3 +8,12 @@
 - [iniciarSesion](iniciarSesion/README.md)
 - [abrirPanelPrincipal](abrirPanelPrincipal/README.md)
 - [cerrarSesion](cerrarSesion/README.md)
+
+## Gestión de perfil
+
+- [abrirOpcionesPerfil](abrirOpcionesPerfil/README.md)
+- [editarPerfil](editarPerfil/README.md)
+- [solicitarEliminacionPerfil](solicitarEliminacionPerfil/README.md)
+- [abrirSolicitudesEliminacionPerfil](abrirSolicitudesEliminacionPerfil/README.md)
+- [abrirSolicitudEliminacionPerfil](abrirSolicitudEliminacionPerfil/README.md)
+- [eliminarPerfil](eliminarPerfil/README.md)

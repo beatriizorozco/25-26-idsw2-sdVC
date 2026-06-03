@@ -30,6 +30,21 @@ public class Usuario {
     @Column(nullable = false)
     private boolean activo;
 
+    @Column(name = "nombre_completo", length = 120)
+    private String nombreCompleto;
+
+    @Column(length = 120)
+    private String email;
+
+    @Column(length = 120)
+    private String unidad;
+
+    @Column(name = "linea_investigacion", length = 160)
+    private String lineaInvestigacion;
+
+    @Column(length = 500)
+    private String biografia;
+
     protected Usuario() {
     }
 
@@ -38,6 +53,7 @@ public class Usuario {
         this.contrasenaHash = contrasenaHash;
         this.rol = rol;
         this.activo = activo;
+        this.nombreCompleto = nombreUsuario;
     }
 
     public Long getId() {
@@ -58,6 +74,43 @@ public class Usuario {
 
     public boolean isActivo() {
         return activo;
+    }
+
+    public String getNombreCompleto() {
+        return nombreCompleto;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getUnidad() {
+        return unidad;
+    }
+
+    public String getLineaInvestigacion() {
+        return lineaInvestigacion;
+    }
+
+    public String getBiografia() {
+        return biografia;
+    }
+
+    public void actualizarPerfil(
+            String nombreCompleto,
+            String email,
+            String unidad,
+            String lineaInvestigacion,
+            String biografia) {
+        this.nombreCompleto = nombreCompleto;
+        this.email = email;
+        this.unidad = unidad;
+        this.lineaInvestigacion = lineaInvestigacion;
+        this.biografia = biografia;
+    }
+
+    public void desactivar() {
+        this.activo = false;
     }
 }
 

@@ -14,6 +14,14 @@ La primera iteración implementa sesión y navegación principal:
 - [Casos de uso desarrollados](casos-uso/README.md)
 - [Código fuente](/src/README.md)
 
+## Segunda iteración
+
+La segunda iteración implementa la gestión de perfil:
+
+- Consulta y edición del perfil propio.
+- Solicitud de eliminación de perfil con cierre de sesión.
+- Consulta y resolución de solicitudes de eliminación por Coordinador.
+
 ## Stack implementado
 
 - **Backend**: Java 17, Spring Boot, Spring Security, Spring Data JPA y Flyway.
