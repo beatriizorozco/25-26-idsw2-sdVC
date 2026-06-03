@@ -15,12 +15,16 @@ rectangle #CDEBA5 ":Collaboration AbrirProyectos" as AbrirProyectos
 
 EstadoEntrada -r-> EliminarInvestigadorView: eliminarInvestigador()
 
-EliminarInvestigadorView -d-> InvestigadorController: eliminarInvestigador(id)
+EliminarInvestigadorView -d-> InvestigadorController: solicitarConfirmacion(id)
+InvestigadorController --> EliminarInvestigadorView: presentarConfirmacion()
+EliminarInvestigadorView --> InvestigadorController: confirmarEliminacion(id)
+EliminarInvestigadorView --> InvestigadorController: cancelarEliminacion()
 EliminarInvestigadorView --> InvestigadorController: validarEliminacion(id)
 InvestigadorController --> InvestigadorRepository: obtenerPorId(id)
 InvestigadorController --> InvestigadorRepository: eliminar(id)
 InvestigadorRepository -- Investigador
-EliminarInvestigadorView ..> EstadoSalida: continuarNavegacion()
+EliminarInvestigadorView ..> EstadoSalida: investigadorEliminado()
+EliminarInvestigadorView ..> EstadoSalida: eliminacionCancelada()
 EliminarInvestigadorView ..> AbrirEntregables: abrirEntregables()
 EliminarInvestigadorView ..> AbrirProyectos: abrirProyectos()
 

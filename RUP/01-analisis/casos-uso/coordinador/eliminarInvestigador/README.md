@@ -87,11 +87,11 @@ Analizar la colaboración necesaria para eliminar un elemento de investigador. E
 ### Secuencia de operaciones
 
 1. **Inicio**: Estado de contexto -> `EliminarInvestigadorView.eliminarInvestigador()`.
-2. **Solicitud principal**: `EliminarInvestigadorView` -> `InvestigadorController.eliminarInvestigador(id)`.
-3. **Acceso a datos**: `EliminarInvestigadorView` -> `InvestigadorController.validarEliminacion(id)`.
-4. **Validación de eliminación**: `InvestigadorController` -> `InvestigadorRepository.obtenerPorId(id)`.
-5. **Persistencia**: `InvestigadorController` -> `InvestigadorRepository.eliminar(id)`.
-6. **Finalización**: `EliminarInvestigadorView` devuelve el control al estado de navegación definido.
+2. **Confirmación previa**: `EliminarInvestigadorView` -> `InvestigadorController.solicitarConfirmacion(id)`.
+3. **Presentación de confirmación**: `InvestigadorController` -> `EliminarInvestigadorView.presentarConfirmacion()`.
+4. **Decisión del actor**: si confirma, `EliminarInvestigadorView` -> `InvestigadorController.confirmarEliminacion(id)`; si cancela, `EliminarInvestigadorView` -> `InvestigadorController.cancelarEliminacion()`.
+5. **Validación y persistencia**: `InvestigadorController` -> `InvestigadorRepository.obtenerPorId(id)` y `InvestigadorRepository.eliminar(id)`.
+6. **Finalización**: si confirma, se actualiza `PROYECTO_ABIERTO`; si cancela, se mantiene `PROYECTO_ABIERTO` sin cambios.
 
 ### Patrón de colaboración establecido
 
@@ -106,8 +106,8 @@ Analizar la colaboración necesaria para eliminar un elemento de investigador. E
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
 |Atender la solicitud `eliminarInvestigador()`|`EliminarInvestigadorView`|Recibe la acción del Coordinador|
-|Coordinar reglas del caso de uso|`InvestigadorController`|`eliminarInvestigador(id)`|
-|Aplicar permisos y validaciones|`InvestigadorController`|`validarEliminacion(id)`|
+|Coordinar reglas del caso de uso|`InvestigadorController`|`solicitarConfirmacion(id)`, `confirmarEliminacion(id)`|
+|Aplicar permisos, validaciones y cancelación|`InvestigadorController`|`validarEliminacion(id)`, `cancelarEliminacion()`|
 |Acceder a datos de investigadores|`InvestigadorRepository`|`obtenerPorId(id)`, `eliminar(id)`|
 |Representar atributos de dominio|`Investigador`|Entidad conceptual|
 

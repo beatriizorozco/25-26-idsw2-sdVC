@@ -87,11 +87,11 @@ Analizar la colaboración necesaria para eliminar un elemento de recompensa. El 
 ### Secuencia de operaciones
 
 1. **Inicio**: Estado de contexto -> `EliminarRecompensaView.eliminarRecompensa()`.
-2. **Solicitud principal**: `EliminarRecompensaView` -> `RecompensaController.eliminarRecompensa(id)`.
-3. **Acceso a datos**: `EliminarRecompensaView` -> `RecompensaController.validarEliminacion(id)`.
-4. **Validación de eliminación**: `RecompensaController` -> `RecompensaRepository.obtenerPorId(id)`.
-5. **Persistencia**: `RecompensaController` -> `RecompensaRepository.eliminar(id)`.
-6. **Finalización**: `EliminarRecompensaView` devuelve el control al estado de navegación definido.
+2. **Confirmación previa**: `EliminarRecompensaView` -> `RecompensaController.solicitarConfirmacion(id)`.
+3. **Presentación de confirmación**: `RecompensaController` -> `EliminarRecompensaView.presentarConfirmacion()`.
+4. **Decisión del actor**: si confirma, `EliminarRecompensaView` -> `RecompensaController.confirmarEliminacion(id)`; si cancela, `EliminarRecompensaView` -> `RecompensaController.cancelarEliminacion()`.
+5. **Validación y persistencia**: `RecompensaController` -> `RecompensaRepository.obtenerPorId(id)` y `RecompensaRepository.eliminar(id)`.
+6. **Finalización**: si confirma, se presenta el listado de recompensas; si cancela, se mantiene la recompensa abierta.
 
 ### Patrón de colaboración establecido
 
@@ -106,8 +106,8 @@ Analizar la colaboración necesaria para eliminar un elemento de recompensa. El 
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
 |Atender la solicitud `eliminarRecompensa()`|`EliminarRecompensaView`|Recibe la acción del Coordinador|
-|Coordinar reglas del caso de uso|`RecompensaController`|`eliminarRecompensa(id)`|
-|Aplicar permisos y validaciones|`RecompensaController`|`validarEliminacion(id)`|
+|Coordinar reglas del caso de uso|`RecompensaController`|`solicitarConfirmacion(id)`, `confirmarEliminacion(id)`|
+|Aplicar permisos, validaciones y cancelación|`RecompensaController`|`validarEliminacion(id)`, `cancelarEliminacion()`|
 |Acceder a datos de recompensas|`RecompensaRepository`|`obtenerPorId(id)`, `eliminar(id)`|
 |Representar atributos de dominio|`Recompensa`|Entidad conceptual|
 

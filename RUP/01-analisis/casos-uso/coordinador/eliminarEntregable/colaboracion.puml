@@ -9,18 +9,23 @@ package eliminarEntregable as "eliminarEntregable()" {
     rectangle #F2AC4E Entregable
 }
 
-rectangle #CDEBA5 ":ENTREGABLES_ABIERTOS" as EstadoSalida
+rectangle #CDEBA5 ":ENTREGABLES_ABIERTOS" as EstadoSalidaExitosa
+rectangle #CDEBA5 ":ENTREGABLE_ABIERTO" as EstadoSalidaCancelada
 rectangle #CDEBA5 ":Collaboration AbrirEntregables" as AbrirEntregables
 rectangle #CDEBA5 ":Collaboration AbrirEntregable" as AbrirEntregable
 
 EstadoEntrada -r-> EliminarEntregableView: eliminarEntregable()
 
-EliminarEntregableView -d-> EntregableController: eliminarEntregable(id)
+EliminarEntregableView -d-> EntregableController: solicitarConfirmacion(id)
+EntregableController --> EliminarEntregableView: presentarConfirmacion()
+EliminarEntregableView --> EntregableController: confirmarEliminacion(id)
+EliminarEntregableView --> EntregableController: cancelarEliminacion()
 EliminarEntregableView --> EntregableController: validarEliminacion(id)
 EntregableController --> EntregableRepository: obtenerPorId(id)
 EntregableController --> EntregableRepository: eliminar(id)
 EntregableRepository -- Entregable
-EliminarEntregableView ..> EstadoSalida: continuarNavegacion()
+EliminarEntregableView ..> EstadoSalidaExitosa: entregableEliminado()
+EliminarEntregableView ..> EstadoSalidaCancelada: eliminacionCancelada()
 EliminarEntregableView ..> AbrirEntregables: abrirEntregables()
 EliminarEntregableView ..> AbrirEntregable: abrirEntregable()
 

@@ -87,11 +87,11 @@ Analizar la colaboración necesaria para eliminar un elemento de publicación pr
 ### Secuencia de operaciones
 
 1. **Inicio**: Estado de contexto -> `EliminarPublicacionView.eliminarMiPublicacion()`.
-2. **Solicitud principal**: `EliminarPublicacionView` -> `PublicacionController.eliminarPublicacion(id)`.
-3. **Acceso a datos**: `EliminarPublicacionView` -> `PublicacionController.validarEliminacion(id)`.
-4. **Validación de eliminación**: `PublicacionController` -> `PublicacionRepository.obtenerPorId(id)`.
-5. **Persistencia**: `PublicacionController` -> `PublicacionRepository.eliminar(id)`.
-6. **Finalización**: `EliminarPublicacionView` devuelve el control al estado de navegación definido.
+2. **Confirmación previa**: `EliminarPublicacionView` -> `PublicacionController.solicitarConfirmacion(id)`.
+3. **Presentación de confirmación**: `PublicacionController` -> `EliminarPublicacionView.presentarConfirmacion()`.
+4. **Decisión del actor**: si confirma, `EliminarPublicacionView` -> `PublicacionController.confirmarEliminacion(id)`; si cancela, `EliminarPublicacionView` -> `PublicacionController.cancelarEliminacion()`.
+5. **Validación y persistencia**: `PublicacionController` -> `PublicacionRepository.obtenerPorId(id)` y `PublicacionRepository.eliminar(id)`.
+6. **Finalización**: si confirma, se presenta el listado de publicaciones propias; si cancela, se mantiene la publicación abierta.
 
 ### Patrón de colaboración establecido
 
@@ -106,8 +106,8 @@ Analizar la colaboración necesaria para eliminar un elemento de publicación pr
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
 |Atender la solicitud `eliminarMiPublicacion()`|`EliminarPublicacionView`|Recibe la acción del Coordinador|
-|Coordinar reglas del caso de uso|`PublicacionController`|`eliminarPublicacion(id)`|
-|Aplicar permisos y validaciones|`PublicacionController`|`validarEliminacion(id)`|
+|Coordinar reglas del caso de uso|`PublicacionController`|`solicitarConfirmacion(id)`, `confirmarEliminacion(id)`|
+|Aplicar permisos, validaciones y cancelación|`PublicacionController`|`validarEliminacion(id)`, `cancelarEliminacion()`|
 |Acceder a datos de publicaciones propias|`PublicacionRepository`|`obtenerPorId(id)`, `eliminar(id)`|
 |Representar atributos de dominio|`Publicacion`|Entidad conceptual|
 

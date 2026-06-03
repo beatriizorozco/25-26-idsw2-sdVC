@@ -87,11 +87,11 @@ Analizar la colaboración necesaria para eliminar un elemento de proyecto. El an
 ### Secuencia de operaciones
 
 1. **Inicio**: Estado de contexto -> `EliminarProyectoView.eliminarProyecto()`.
-2. **Solicitud principal**: `EliminarProyectoView` -> `ProyectoController.eliminarProyecto(id)`.
-3. **Acceso a datos**: `EliminarProyectoView` -> `ProyectoController.validarEliminacion(id)`.
-4. **Validación de eliminación**: `ProyectoController` -> `ProyectoRepository.obtenerPorId(id)`.
-5. **Persistencia**: `ProyectoController` -> `ProyectoRepository.eliminar(id)`.
-6. **Finalización**: `EliminarProyectoView` devuelve el control al estado de navegación definido.
+2. **Confirmación previa**: `EliminarProyectoView` -> `ProyectoController.solicitarConfirmacion(id)`.
+3. **Presentación de confirmación**: `ProyectoController` -> `EliminarProyectoView.presentarConfirmacion()`.
+4. **Decisión del actor**: si confirma, `EliminarProyectoView` -> `ProyectoController.confirmarEliminacion(id)`; si cancela, `EliminarProyectoView` -> `ProyectoController.cancelarEliminacion()`.
+5. **Validación y persistencia**: `ProyectoController` -> `ProyectoRepository.obtenerPorId(id)` y `ProyectoRepository.eliminar(id)`.
+6. **Finalización**: si confirma, se actualiza la navegación del proyecto; si cancela, se mantiene el proyecto abierto sin cambios.
 
 ### Patrón de colaboración establecido
 
@@ -106,8 +106,8 @@ Analizar la colaboración necesaria para eliminar un elemento de proyecto. El an
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
 |Atender la solicitud `eliminarProyecto()`|`EliminarProyectoView`|Recibe la acción del Coordinador|
-|Coordinar reglas del caso de uso|`ProyectoController`|`eliminarProyecto(id)`|
-|Aplicar permisos y validaciones|`ProyectoController`|`validarEliminacion(id)`|
+|Coordinar reglas del caso de uso|`ProyectoController`|`solicitarConfirmacion(id)`, `confirmarEliminacion(id)`|
+|Aplicar permisos, validaciones y cancelación|`ProyectoController`|`validarEliminacion(id)`, `cancelarEliminacion()`|
 |Acceder a datos de proyectos|`ProyectoRepository`|`obtenerPorId(id)`, `eliminar(id)`|
 |Representar atributos de dominio|`Proyecto`|Entidad conceptual|
 

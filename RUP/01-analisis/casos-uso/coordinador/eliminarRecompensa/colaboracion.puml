@@ -9,17 +9,22 @@ package eliminarRecompensa as "eliminarRecompensa()" {
     rectangle #F2AC4E Recompensa
 }
 
-rectangle #CDEBA5 ":RECOMPENSAS_ABIERTAS" as EstadoSalida
+rectangle #CDEBA5 ":RECOMPENSAS_ABIERTAS" as EstadoSalidaExitosa
+rectangle #CDEBA5 ":RECOMPENSA_ABIERTA" as EstadoSalidaCancelada
 rectangle #CDEBA5 ":Collaboration AbrirRecompensas" as AbrirRecompensas
 
 EstadoEntrada -r-> EliminarRecompensaView: eliminarRecompensa()
 
-EliminarRecompensaView -d-> RecompensaController: eliminarRecompensa(id)
+EliminarRecompensaView -d-> RecompensaController: solicitarConfirmacion(id)
+RecompensaController --> EliminarRecompensaView: presentarConfirmacion()
+EliminarRecompensaView --> RecompensaController: confirmarEliminacion(id)
+EliminarRecompensaView --> RecompensaController: cancelarEliminacion()
 EliminarRecompensaView --> RecompensaController: validarEliminacion(id)
 RecompensaController --> RecompensaRepository: obtenerPorId(id)
 RecompensaController --> RecompensaRepository: eliminar(id)
 RecompensaRepository -- Recompensa
-EliminarRecompensaView ..> EstadoSalida: continuarNavegacion()
+EliminarRecompensaView ..> EstadoSalidaExitosa: recompensaEliminada()
+EliminarRecompensaView ..> EstadoSalidaCancelada: eliminacionCancelada()
 EliminarRecompensaView ..> AbrirRecompensas: abrirRecompensas()
 
 @enduml

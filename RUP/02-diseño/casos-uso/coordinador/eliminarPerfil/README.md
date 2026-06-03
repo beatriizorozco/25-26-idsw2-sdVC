@@ -15,7 +15,7 @@ Detallar la eliminación de un perfil solicitada previamente. El Coordinador con
 
 ## Participantes
 
-- **EliminarPerfilModal**: Captura confirmación o cancelación.
+- **EliminarPerfilModal**: Muestra la confirmación de eliminación y captura confirmación o cancelación.
 - **SolicitudEliminacionPerfilController**: Expone `DELETE /api/solicitudes-eliminacion-perfil/{idSolicitud}/perfil`.
 - **SesionService**: Valida el rol Coordinador.
 - **PerfilService**: Coordina la eliminación y la resolución de la solicitud.
@@ -25,8 +25,9 @@ Detallar la eliminación de un perfil solicitada previamente. El Coordinador con
 ## Decisiones de Diseño
 
 - Solo el Coordinador puede eliminar perfiles desde una solicitud abierta.
+- El frontend muestra confirmación antes de invocar la API.
 - Cancelar no invoca la API y mantiene `SOLICITUD_ELIMINACION_PERFIL_ABIERTA`.
-- Confirmar elimina el perfil y vuelve a `SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS`.
+- Confirmar invoca la API, elimina el perfil y vuelve a `SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS`.
 - No se diseña flujo de rechazo.
 
 ## Referencias

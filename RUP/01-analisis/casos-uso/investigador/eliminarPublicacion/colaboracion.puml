@@ -9,17 +9,22 @@ package eliminarPublicacion as "eliminarPublicacion()" {
     rectangle #F2AC4E Publicacion
 }
 
-rectangle #CDEBA5 ":MIS_PUBLICACIONES_ABIERTAS" as EstadoSalida
+rectangle #CDEBA5 ":MIS_PUBLICACIONES_ABIERTAS" as EstadoSalidaExitosa
+rectangle #CDEBA5 ":MI_PUBLICACION_ABIERTA" as EstadoSalidaCancelada
 
 
 EstadoEntrada -r-> EliminarPublicacionView: eliminarPublicacion()
 
-EliminarPublicacionView -d-> PublicacionController: eliminarPublicacion(id)
+EliminarPublicacionView -d-> PublicacionController: solicitarConfirmacion(id)
+PublicacionController --> EliminarPublicacionView: presentarConfirmacion()
+EliminarPublicacionView --> PublicacionController: confirmarEliminacion(id)
+EliminarPublicacionView --> PublicacionController: cancelarEliminacion()
 EliminarPublicacionView --> PublicacionController: validarEliminacion(id)
 PublicacionController --> PublicacionRepository: obtenerPorId(id)
 PublicacionController --> PublicacionRepository: eliminar(id)
 PublicacionRepository -- Publicacion
-EliminarPublicacionView ..> EstadoSalida: continuarNavegacion()
+EliminarPublicacionView ..> EstadoSalidaExitosa: publicacionEliminada()
+EliminarPublicacionView ..> EstadoSalidaCancelada: eliminacionCancelada()
 
 
 @enduml

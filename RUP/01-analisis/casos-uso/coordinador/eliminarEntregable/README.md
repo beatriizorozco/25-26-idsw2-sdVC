@@ -87,11 +87,11 @@ Analizar la colaboración necesaria para eliminar un elemento de entregable. El 
 ### Secuencia de operaciones
 
 1. **Inicio**: Estado de contexto -> `EliminarEntregableView.eliminarEntregable()`.
-2. **Solicitud principal**: `EliminarEntregableView` -> `EntregableController.eliminarEntregable(id)`.
-3. **Acceso a datos**: `EliminarEntregableView` -> `EntregableController.validarEliminacion(id)`.
-4. **Validación de eliminación**: `EntregableController` -> `EntregableRepository.obtenerPorId(id)`.
-5. **Persistencia**: `EntregableController` -> `EntregableRepository.eliminar(id)`.
-6. **Finalización**: `EliminarEntregableView` devuelve el control al estado de navegación definido.
+2. **Confirmación previa**: `EliminarEntregableView` -> `EntregableController.solicitarConfirmacion(id)`.
+3. **Presentación de confirmación**: `EntregableController` -> `EliminarEntregableView.presentarConfirmacion()`.
+4. **Decisión del actor**: si confirma, `EliminarEntregableView` -> `EntregableController.confirmarEliminacion(id)`; si cancela, `EliminarEntregableView` -> `EntregableController.cancelarEliminacion()`.
+5. **Validación y persistencia**: `EntregableController` -> `EntregableRepository.obtenerPorId(id)` y `EntregableRepository.eliminar(id)`.
+6. **Finalización**: si confirma, se presenta el estado de listado; si cancela, se mantiene el entregable abierto.
 
 ### Patrón de colaboración establecido
 
@@ -106,8 +106,8 @@ Analizar la colaboración necesaria para eliminar un elemento de entregable. El 
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
 |Atender la solicitud `eliminarEntregable()`|`EliminarEntregableView`|Recibe la acción del Coordinador|
-|Coordinar reglas del caso de uso|`EntregableController`|`eliminarEntregable(id)`|
-|Aplicar permisos y validaciones|`EntregableController`|`validarEliminacion(id)`|
+|Coordinar reglas del caso de uso|`EntregableController`|`solicitarConfirmacion(id)`, `confirmarEliminacion(id)`|
+|Aplicar permisos, validaciones y cancelación|`EntregableController`|`validarEliminacion(id)`, `cancelarEliminacion()`|
 |Acceder a datos de entregables|`EntregableRepository`|`obtenerPorId(id)`, `eliminar(id)`|
 |Representar atributos de dominio|`Entregable`|Entidad conceptual|
 

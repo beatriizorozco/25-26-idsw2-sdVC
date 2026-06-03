@@ -17,9 +17,11 @@ rectangle #CDEBA5 ":Collaboration AbrirSolicitudesEliminacionPerfil" as AbrirSol
 
 EstadoEntrada -r-> EliminarPerfilView: eliminarPerfil()
 
-EliminarPerfilView -d-> PerfilController: eliminarPerfil(idSolicitud, idPerfil)
-EliminarPerfilView --> PerfilController: validarEliminacion(idPerfil)
+EliminarPerfilView -d-> PerfilController: solicitarConfirmacion(idSolicitud, idPerfil)
+PerfilController --> EliminarPerfilView: presentarConfirmacion()
+EliminarPerfilView --> PerfilController: confirmarEliminacion(idSolicitud, idPerfil)
 EliminarPerfilView --> PerfilController: cancelarEliminacion()
+EliminarPerfilView --> PerfilController: validarEliminacion(idPerfil)
 PerfilController --> SolicitudEliminacionPerfilRepository: obtenerPorId(idSolicitud)
 PerfilController --> PerfilRepository: obtenerPorId(idPerfil)
 PerfilController --> PerfilRepository: eliminar(idPerfil)

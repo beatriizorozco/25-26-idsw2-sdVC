@@ -14,12 +14,16 @@ rectangle #CDEBA5 ":Collaboration AbrirProyectos" as AbrirProyectos
 
 EstadoEntrada -r-> EliminarProyectoView: eliminarProyecto()
 
-EliminarProyectoView -d-> ProyectoController: eliminarProyecto(id)
+EliminarProyectoView -d-> ProyectoController: solicitarConfirmacion(id)
+ProyectoController --> EliminarProyectoView: presentarConfirmacion()
+EliminarProyectoView --> ProyectoController: confirmarEliminacion(id)
+EliminarProyectoView --> ProyectoController: cancelarEliminacion()
 EliminarProyectoView --> ProyectoController: validarEliminacion(id)
 ProyectoController --> ProyectoRepository: obtenerPorId(id)
 ProyectoController --> ProyectoRepository: eliminar(id)
 ProyectoRepository -- Proyecto
-EliminarProyectoView ..> EstadoSalida: continuarNavegacion()
+EliminarProyectoView ..> EstadoSalida: proyectoEliminado()
+EliminarProyectoView ..> EstadoSalida: eliminacionCancelada()
 EliminarProyectoView ..> AbrirProyectos: abrirProyectos()
 
 @enduml
