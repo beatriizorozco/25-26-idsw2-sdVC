@@ -37,6 +37,7 @@ Cada diagrama define los **estados de pantalla** y las **transiciones** permitid
 
 
 </div>
+
 ### Estados principales resumidos
 - `SESION_CERRADA` / `PANEL_PRINCIPAL_ABIERTO`
 - Accesos desde panel: `OPCIONES_PERFIL_ABIERTO`, `OPCIONES_CARGA_TRABAJO_ABIERTAS`, `PROYECTOS_ABIERTOS`, `INVESTIGADORES_ABIERTOS`, `MIS_PUBLICACIONES_ABIERTAS`, `PUBLICACIONES_ABIERTAS`, `CONVOCATORIAS_ABIERTAS`, `RECOMPENSAS_ABIERTAS`
