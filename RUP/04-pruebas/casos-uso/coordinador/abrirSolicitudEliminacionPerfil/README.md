@@ -12,4 +12,10 @@ Verificado dentro del flujo de revision de solicitudes pendientes.
 - Se valida que el Coordinador puede consultar el detalle de una solicitud pendiente desde el listado.
 - Se comprueba que una solicitud resuelta deja de aparecer en el listado pendiente.
 - Se confirma que el Investigador no puede acceder al listado de solicitudes de eliminacion.
-- Queda pendiente completar evidencia visual manual del detalle de solicitud.
+- Se completa evidencia visual manual del detalle de solicitud mostrado en el modal de eliminación.
+
+## Evidencia visual
+
+|Detalle de solicitud de eliminación|
+|-|
+|![Detalle de solicitud](/images/RUP/04-pruebas/coordinador-confirmar-eliminacion-perfil.png)|

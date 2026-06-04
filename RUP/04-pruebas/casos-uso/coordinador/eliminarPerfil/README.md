@@ -13,4 +13,10 @@ Verificado mediante `PerfilIntegrationTests.coordinadorPuedeEliminarPerfilDeInve
 - Se comprueba que la solicitud queda marcada como `RESUELTA`.
 - Se valida que una solicitud resuelta deja de mostrarse en el listado pendiente.
 - Se protege el sistema frente a la eliminación del único Coordinador activo.
-- Queda pendiente completar evidencia visual manual del modal de confirmación.
+- Se completa evidencia visual manual del modal de confirmación y del estado final sin solicitudes pendientes.
+
+## Evidencia visual
+
+|Confirmación de eliminación|Resultado sin solicitudes pendientes|
+|-|-|
+|![Confirmación de eliminación](/images/RUP/04-pruebas/coordinador-confirmar-eliminacion-perfil.png)|![Perfil eliminado](/images/RUP/04-pruebas/coordinador-perfil-eliminado-sin-pendientes.png)|

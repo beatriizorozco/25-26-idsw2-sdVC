@@ -6,11 +6,15 @@
 # Backend
 src/backend/target/
 src/backend/data/
+src/backend/*-run.log
+src/backend/*-run.err.log
 
 # Frontend
 src/frontend/node_modules/
 src/frontend/dist/
 src/frontend/*.tsbuildinfo
+src/frontend/*-run.log
+src/frontend/*-run.err.log
 
 # Environment
 .env

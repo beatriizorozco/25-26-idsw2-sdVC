@@ -12,4 +12,14 @@ Verificado mediante `PerfilIntegrationTests.investigadorSolicitaEliminacionConCr
 - Se valida que la solicitud se registra con `201 Created`.
 - Se comprueba que queda en estado `PENDIENTE`.
 - Se confirma que la sesión queda cerrada después de solicitar la eliminación.
-- Queda pendiente completar evidencia visual manual del modal.
+- Se completa evidencia visual manual del modal de solicitud y del intento posterior de acceso con la cuenta eliminada.
+
+## Evidencia visual
+
+|Modal de solicitud vacío|Motivo de eliminación informado|
+|-|-|
+|![Modal vacío](/images/RUP/04-pruebas/investigador-solicitar-eliminacion-modal-vacio.png)|![Motivo informado](/images/RUP/04-pruebas/investigador-solicitar-eliminacion-motivo.png)|
+
+|Acceso bloqueado tras eliminación|
+|-|
+|![Login bloqueado](/images/RUP/04-pruebas/investigador-login-bloqueado-tras-eliminacion.png)|

@@ -82,9 +82,9 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 
 ## Próxima sesión
 
-- [ ] Revisar una última vez el Análisis del bloque 3 de carga de trabajo.
-- [ ] Confirmar que la regla de proyectos libres queda aplicada: asignar o sugerir investigadores-docentes con menor carga.
-- [ ] Confirmar que el límite de 16 horas semanales de docencia y la compensación económica están reflejados sin contradicciones.
-- [ ] Empezar el Diseño del bloque 3 siguiendo el patrón del profesor: `README.md`, `secuencia.puml` y SVG por caso.
-- [ ] Preparar los casos de Diseño de `abrirOpcionesCargaTrabajo` y `editarCargaTrabajo` para Coordinador e Investigador.
-- [ ] Añadir o completar capturas pendientes del bloque de perfil si se quiere dejar la evidencia visual cerrada.
+- [x] Revisar una última vez el Análisis del bloque 3 de carga de trabajo.
+- [x] Confirmar que la regla de proyectos libres queda aplicada: asignar o sugerir investigadores-docentes con menor carga.
+- [x] Confirmar que el límite de 16 horas semanales de docencia y la compensación económica están reflejados sin contradicciones.
+- [x] Empezar el Diseño del bloque 3 siguiendo el patrón del profesor: `README.md`, `secuencia.puml` y SVG por caso.
+- [x] Preparar los casos de Diseño de `abrirOpcionesCargaTrabajo` y `editarCargaTrabajo` para Coordinador e Investigador.
+- [x] Añadir o completar capturas pendientes del bloque de perfil si se quiere dejar la evidencia visual cerrada.

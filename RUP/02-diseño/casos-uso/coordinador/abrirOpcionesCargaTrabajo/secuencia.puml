@@ -1,0 +1,55 @@
+@startuml abrirOpcionesCargaTrabajo-coordinador-diseno
+title Diagrama de secuencia - Abrir opciones de carga de trabajo del Coordinador
+
+actor Coordinador
+participant "CargaTrabajoPage\n(React)" as Frontend
+participant "CargaTrabajoController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "CargaTrabajoService" as Service
+participant "CargaTrabajoRepository" as CargaRepo
+participant "ProyectoRepository" as ProyectoRepo
+participant "RecompensaRepository" as RecompensaRepo
+
+Coordinador -> Frontend: Solicita abrir carga de trabajo
+activate Frontend
+Frontend -> Frontend: Comprobar sesion local
+Frontend -> Api: GET /api/carga-trabajo\nFiltros + cookie
+activate Api
+Api -> Sesion: obtenerSesionActual(authentication)
+activate Sesion
+alt Sesion de Coordinador activa
+    Sesion --> Api: SesionResponse(COORDINADOR)
+    deactivate Sesion
+    Api -> Service: obtenerPanelCargaTrabajo(coordinador, filtros)
+    activate Service
+    Service -> CargaRepo: obtenerResumenGlobal(filtros)
+    activate CargaRepo
+    CargaRepo --> Service: ResumenCargaTrabajo
+    Service -> CargaRepo: obtenerDetallePorPersona(filtros)
+    CargaRepo --> Service: List<CargaTrabajoPersona>
+    Service -> ProyectoRepo: obtenerProyectosLibres()
+    activate ProyectoRepo
+    ProyectoRepo --> Service: List<ProyectoLibre>
+    deactivate ProyectoRepo
+    Service -> CargaRepo: sugerirInvestigadoresDocentesConMenorCarga(proyectosLibres)
+    CargaRepo --> Service: List<SugerenciaAsignacion>
+    deactivate CargaRepo
+    Service -> RecompensaRepo: obtenerCompensacionesPendientes(filtros)
+    activate RecompensaRepo
+    RecompensaRepo --> Service: List<RecompensaPendiente>
+    deactivate RecompensaRepo
+    Service --> Api: PanelCargaTrabajoResponse
+    deactivate Service
+    Api --> Frontend: 200 OK\nPanelCargaTrabajoResponse
+    deactivate Api
+    Frontend -> Frontend: Renderizar resumen, detalle y sugerencias
+    Frontend --> Coordinador: Presenta OPCIONES_CARGA_TRABAJO_ABIERTAS
+else Sesion ausente o rol invalido
+    Sesion --> Api: SesionNoValidaException / AccesoDenegadoException
+    deactivate Sesion
+    Api --> Frontend: 401 Unauthorized / 403 Forbidden
+    deactivate Api
+    Frontend --> Coordinador: Presenta error de acceso
+end
+deactivate Frontend
+@enduml

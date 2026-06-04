@@ -252,3 +252,13 @@ Después se avanzó al Análisis del tercer bloque, dedicado a carga de trabajo.
 Finalmente se actualizó `tareas_a_realizar.md` con el plan inmediato para mañana: revisar una última vez el Análisis del bloque 3, confirmar la coherencia de las reglas de carga, proyectos libres y compensaciones, y empezar el Diseño del bloque con `README.md`, `secuencia.puml` y SVG por caso.
 
 **Decisión:** mañana se recomienda cerrar formalmente la revisión del Análisis del bloque 3 y pasar al Diseño de carga de trabajo, manteniendo la pauta de bloques pequeños. Las capturas pendientes del bloque de perfil pueden completarse antes o después, pero no bloquean avanzar si el objetivo es mantener ritmo.
+
+---
+
+## [23:01] Inicio de sesión - Credenciales y continuidad del bloque 3
+
+**Prompt:** el usuario inició sesión usando la skill `session-memory`, pidió continuar con las tareas de la próxima sesión recogidas en `tareas_a_realizar.md`, pero priorizando corregir de nuevo el problema de credenciales.
+
+**Resultado:** se utilizó la skill `session-memory`. Se revisó la última entrada de `conversation-log.md`, el plan de `tareas_a_realizar.md` y el estado inicial del repositorio, que estaba limpio al empezar. La prioridad inmediata queda fijada en diagnosticar el acceso a la plataforma antes de continuar con el Diseño del bloque 3.
+
+**Decisión:** se revisarán primero backend, frontend, datos demo, estado de la base local, CSRF y CORS. Cuando el login funcione de forma estable, se retomará el plan de la próxima sesión: cerrar Análisis del bloque 3 y pasar a Diseño de carga de trabajo.

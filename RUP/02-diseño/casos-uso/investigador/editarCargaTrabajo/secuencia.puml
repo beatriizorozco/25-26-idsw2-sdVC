@@ -1,0 +1,58 @@
+@startuml editarCargaTrabajo-investigador-diseno
+title Diagrama de secuencia - Editar carga de trabajo propia del Investigador
+
+actor Investigador
+participant "EditarCargaTrabajoPropiaForm\n(React)" as Frontend
+participant "CargaTrabajoController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "CargaTrabajoService" as Service
+participant "CargaTrabajoRepository" as CargaRepo
+participant "RecompensaRepository" as RecompensaRepo
+
+Investigador -> Frontend: Solicita editar su carga de trabajo
+activate Frontend
+Frontend -> Frontend: Precargar formulario con carga actual
+Frontend --> Investigador: Muestra formulario con datos precargados
+Investigador -> Frontend: Modifica horas y guarda
+Frontend -> Frontend: Comprobar sesion local
+Frontend -> Api: PATCH /api/carga-trabajo/me\nCargaTrabajoUpdateRequest + cookie
+activate Api
+Api -> Sesion: obtenerSesionActual(authentication)
+activate Sesion
+alt Sesion activa
+    Sesion --> Api: SesionResponse(INVESTIGADOR)
+    deactivate Sesion
+    Api -> Service: actualizarCargaPropia(investigador, datos)
+    activate Service
+    Service -> Service: validarHoras(datos)
+    Service -> CargaRepo: obtenerPorUsuario(investigador)
+    activate CargaRepo
+    CargaRepo --> Service: CargaTrabajo
+    Service -> Service: actualizarCampos(cargaTrabajo, datos)
+    Service -> Service: calcularExcesoDocente(maximo16h)
+    Service -> CargaRepo: guardar(cargaTrabajoActualizada)
+    CargaRepo --> Service: CargaTrabajo actualizada
+    deactivate CargaRepo
+    alt Excede 16 horas docentes
+        Service -> RecompensaRepo: registrarCompensacionPendienteSiExcede(cargaTrabajo)
+        activate RecompensaRepo
+        RecompensaRepo --> Service: Recompensa pendiente
+        deactivate RecompensaRepo
+    else No excede limite docente
+        Service -> Service: Mantener carga sin compensacion nueva
+    end
+    Service --> Api: CargaTrabajoPropiaResponse
+    deactivate Service
+    Api --> Frontend: 200 OK\nCargaTrabajoPropiaResponse
+    deactivate Api
+    Frontend -> Frontend: Actualizar resumen y notificar exito
+    Frontend --> Investigador: Presenta OPCIONES_CARGA_TRABAJO_ABIERTAS
+else Datos invalidos o sesion ausente
+    Sesion --> Api: SesionNoValidaException / validacion fallida
+    deactivate Sesion
+    Api --> Frontend: 400 Bad Request / 401 Unauthorized
+    deactivate Api
+    Frontend --> Investigador: Presenta error de edicion
+end
+deactivate Frontend
+@enduml

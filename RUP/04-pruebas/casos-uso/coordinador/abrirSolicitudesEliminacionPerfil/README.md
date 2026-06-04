@@ -12,4 +12,10 @@ Verificado mediante `PerfilIntegrationTests.coordinadorPuedeListarSolicitudesPen
 - Se valida que el Coordinador puede listar solicitudes pendientes.
 - Se valida que el Investigador recibe `403 Forbidden` al intentar listar solicitudes.
 - Se comprueba que las solicitudes resueltas dejan de aparecer en el listado pendiente.
-- Queda pendiente completar evidencia visual manual del listado filtrable.
+- Se completa evidencia visual manual del listado filtrable con una solicitud pendiente del Investigador.
+
+## Evidencia visual
+
+|Listado de solicitudes pendientes|
+|-|
+|![Listado de solicitudes pendientes](/images/RUP/04-pruebas/coordinador-listado-solicitudes-eliminacion.png)|
