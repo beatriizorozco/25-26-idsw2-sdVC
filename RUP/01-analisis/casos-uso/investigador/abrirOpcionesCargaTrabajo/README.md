@@ -34,7 +34,8 @@ Analizar la colaboracion necesaria para que el Investigador consulte su propia c
 **Responsabilidades**:
 - Recibir `abrirOpcionesCargaTrabajo()` desde `PANEL_PRINCIPAL_ABIERTO`.
 - Presentar resumen personal y detalle semanal.
-- Mostrar docencia, investigacion, actividades academicas, total semanal y margen docente.
+- Mostrar investigacion, actividades academicas y total semanal.
+- Mostrar docencia y margen docente solo si la sede clasifica al usuario como investigador-docente.
 - Permitir navegar a `editarCargaTrabajo()` o volver al panel principal.
 
 ### CargaTrabajoController
@@ -58,7 +59,7 @@ Analizar la colaboracion necesaria para que el Investigador consulte su propia c
 **Estereotipo**: Entidad
 
 **Responsabilidades**:
-- Consultar si el Investigador tiene compensacion pendiente por exceso docente.
+- Consultar si el Investigador tiene compensacion pendiente por exceso docente, solo cuando aplica por sede.
 - Mantener la relacion entre carga de trabajo y recompensa economica.
 
 ### CargaTrabajo
@@ -67,13 +68,13 @@ Analizar la colaboracion necesaria para que el Investigador consulte su propia c
 **Responsabilidades**:
 - Representar horas de docencia, investigacion y actividades academicas.
 - Mantener total semanal, margen docente y observaciones.
-- Calcular margen o exceso respecto al limite de 16 horas semanales de docencia.
+- Calcular margen o exceso respecto al limite de 16 horas semanales de docencia solo si la sede permite docencia.
 
 ### Recompensa
 **Estereotipo**: Entidad
 
 **Responsabilidades**:
-- Representar la compensacion economica pendiente si la docencia supera el limite.
+- Representar la compensacion economica pendiente si la docencia supera el limite y aplica por sede.
 
 ## Flujo de colaboracion
 
@@ -101,8 +102,9 @@ Analizar la colaboracion necesaria para que el Investigador consulte su propia c
 
 - El Investigador solo consulta su carga de trabajo propia.
 - No existe seleccion de persona ni filtros globales en este caso.
-- Si el Investigador es investigador-docente, el sistema muestra su margen respecto a 16 horas semanales de docencia.
-- Si supera 16 horas semanales de docencia, el sistema puede mostrar que existe compensacion economica pendiente.
+- Si el Investigador es investigador-docente segun su sede, el sistema muestra su margen respecto a 16 horas semanales de docencia.
+- Si supera 16 horas semanales de docencia en una sede con docencia investigadora, el sistema puede mostrar que existe compensacion economica pendiente.
+- Si pertenece a una sede donde solo es investigador, el sistema no calcula exceso docente ni recompensa por docencia.
 - El caso no modifica datos; solo presenta informacion y opciones.
 - La edicion posterior tambien debe operar sobre el usuario autenticado.
 

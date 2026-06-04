@@ -25,11 +25,15 @@ alt Sesion activa
     activate CargaRepo
     CargaRepo --> Service: CargaTrabajo
     deactivate CargaRepo
-    Service -> Service: calcularResumenPersonal(cargaTrabajo, maximo16h)
-    Service -> RecompensaRepo: obtenerCompensacionPendiente(investigador)
-    activate RecompensaRepo
-    RecompensaRepo --> Service: RecompensaPendiente
-    deactivate RecompensaRepo
+    Service -> Service: calcularResumenPersonal(cargaTrabajo, sede, maximo16h)
+    alt Sede con docencia investigadora
+        Service -> RecompensaRepo: obtenerCompensacionPendiente(investigador)
+        activate RecompensaRepo
+        RecompensaRepo --> Service: RecompensaPendiente
+        deactivate RecompensaRepo
+    else Sede solo investigadora
+        Service -> Service: Omitir margen docente y compensacion
+    end
     Service --> Api: CargaTrabajoPropiaResponse
     deactivate Service
     Api --> Frontend: 200 OK\nCargaTrabajoPropiaResponse

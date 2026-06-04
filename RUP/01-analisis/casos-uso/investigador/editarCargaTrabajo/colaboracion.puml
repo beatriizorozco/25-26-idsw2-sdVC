@@ -20,7 +20,7 @@ EditarCargaTrabajoPropiaView -d-> CargaTrabajoController: obtenerCargaPropia(inv
 EditarCargaTrabajoPropiaView --> CargaTrabajoController: validarHoras(datos)
 EditarCargaTrabajoPropiaView --> CargaTrabajoController: actualizarCargaPropia(investigador, datos)
 CargaTrabajoController --> CargaTrabajoRepository: obtenerPorUsuario(investigador)
-CargaTrabajoController --> CargaTrabajo: calcularExcesoDocente(maximo16h)
+CargaTrabajoController --> CargaTrabajo: calcularExcesoDocenteSiAplica(maximo16h)
 CargaTrabajoController --> CargaTrabajoRepository: actualizar(cargaTrabajo)
 CargaTrabajoController --> RecompensaRepository: registrarCompensacionPendienteSiExcede(cargaTrabajo)
 CargaTrabajoRepository -- CargaTrabajo

@@ -60,6 +60,7 @@ Analizar la colaboracion necesaria para que el Coordinador consulte la carga de 
 **Responsabilidades**:
 - Obtener la persona seleccionada por el Coordinador.
 - Mantener la trazabilidad entre carga de trabajo y persona.
+- Identificar si una persona pertenece a una sede con perfil investigador-docente.
 
 ### ProyectoRepository
 **Estereotipo**: Entidad
@@ -81,7 +82,7 @@ Analizar la colaboracion necesaria para que el Coordinador consulte la carga de 
 **Responsabilidades**:
 - Representar dedicacion, disponibilidad, horas semanales y observaciones.
 - Relacionar la carga con la persona responsable.
-- Calcular margen o exceso respecto al maximo de 16 horas semanales de docencia.
+- Calcular margen o exceso respecto al maximo de 16 horas semanales de docencia solo cuando aplica por sede.
 
 ### Persona
 **Estereotipo**: Entidad
@@ -89,6 +90,7 @@ Analizar la colaboracion necesaria para que el Coordinador consulte la carga de 
 **Responsabilidades**:
 - Representar los datos basicos de la persona cuya carga se consulta.
 - Aportar sede, perfil y area de investigacion al resumen.
+- Diferenciar si actua como investigadora-docente o solo investigadora segun la sede FUNIBER.
 
 ### Proyecto
 **Estereotipo**: Entidad
@@ -112,10 +114,11 @@ Analizar la colaboracion necesaria para que el Coordinador consulte la carga de 
 4. El controlador consulta `CargaTrabajoRepository.obtenerResumenGlobal(filtros)`.
 5. El controlador consulta `CargaTrabajoRepository.obtenerDetallePorPersona(filtros)`.
 6. El controlador consulta `ProyectoRepository.obtenerProyectosLibres()`.
-7. Si existe un proyecto libre, el controlador consulta `CargaTrabajoRepository.sugerirInvestigadoresDocentesConMenorCarga(proyectoLibre)`.
-8. El controlador consulta `RecompensaRepository.obtenerCompensacionesPendientes(filtros)` para mostrar excesos docentes compensables.
-9. Si el Coordinador selecciona una persona, el controlador consulta `PersonaRepository.obtenerPorId(idPersona)`.
-10. La vista presenta `OPCIONES_CARGA_TRABAJO_ABIERTAS` y permite editar o volver al panel.
+7. El controlador consulta `PersonaRepository.obtenerInvestigadoresDocentesPorSede()` para identificar que sedes aplican docencia.
+8. Si existe un proyecto libre, el controlador consulta `CargaTrabajoRepository.sugerirInvestigadoresDocentesConMenorCarga(proyectoLibre, sedesDocentes)`.
+9. El controlador consulta `RecompensaRepository.obtenerCompensacionesPendientes(filtros)` para mostrar excesos docentes compensables.
+10. Si el Coordinador selecciona una persona, el controlador consulta `PersonaRepository.obtenerPorId(idPersona)`.
+11. La vista presenta `OPCIONES_CARGA_TRABAJO_ABIERTAS` y permite editar o volver al panel.
 
 ## Correspondencia con requisitos
 
@@ -126,7 +129,8 @@ Analizar la colaboracion necesaria para que el Coordinador consulte la carga de 
 |Mostrar detalle por persona|`CargaTrabajoRepository`|`obtenerDetallePorPersona(filtros)`|
 |Mostrar detalle de persona seleccionada|`PersonaRepository`|`obtenerPorId(idPersona)`|
 |Consultar proyectos libres|`ProyectoRepository`|`obtenerProyectosLibres()`|
-|Sugerir investigadores-docentes con menor carga|`CargaTrabajoRepository`|`sugerirInvestigadoresDocentesConMenorCarga(proyectoLibre)`|
+|Identificar investigadores-docentes por sede|`PersonaRepository`|`obtenerInvestigadoresDocentesPorSede()`|
+|Sugerir investigadores-docentes con menor carga|`CargaTrabajoRepository`|`sugerirInvestigadoresDocentesConMenorCarga(proyectoLibre, sedesDocentes)`|
 |Mostrar exceso docente compensable|`RecompensaRepository`|`obtenerCompensacionesPendientes(filtros)`|
 |Permitir editar carga de trabajo|`PanelCargaTrabajoView`|Navega a `editarCargaTrabajo(idPersona)`|
 
@@ -134,11 +138,13 @@ Analizar la colaboracion necesaria para que el Coordinador consulte la carga de 
 
 - El Coordinador tiene vision global de cargas de trabajo.
 - La consulta puede filtrarse por sede, perfil, investigador-docente, area o proyecto.
-- Cuando hay un proyecto libre, el sistema debe sugerir investigadores-docentes con menor carga de trabajo para evitar asignaciones arbitrarias.
+- La condicion de investigador-docente depende de la sede FUNIBER: por ejemplo, Santander puede operar con investigadores-docentes y Barcelona con investigadores sin docencia.
+- Cuando hay un proyecto libre, el sistema debe sugerir investigadores-docentes con menor carga de trabajo para evitar asignaciones arbitrarias, respetando la sede donde aplica la docencia.
 - La carga de trabajo debe evitar asignaciones arbitrarias que sobrecarguen siempre a las mismas personas.
 - Un investigador-docente suele impartir 4 asignaturas por cuatrimestre.
 - El maximo ordinario de docencia es 16 horas semanales.
-- Si una persona supera 16 horas semanales de docencia, el sistema debe identificarla como compensable economicamente.
+- Si una persona de una sede con docencia investigadora supera 16 horas semanales de docencia, el sistema debe identificarla como compensable economicamente.
+- Si la persona pertenece a una sede donde solo es investigadora, no se calcula exceso docente ni recompensa por docencia.
 - La edicion se realiza sobre una persona concreta seleccionada desde el listado.
 - El caso no asigna el proyecto; solo prepara informacion para decidir la asignacion en el flujo de proyectos.
 

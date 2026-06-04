@@ -29,16 +29,16 @@ alt Sesion activa
     activate CargaRepo
     CargaRepo --> Service: CargaTrabajo
     Service -> Service: actualizarCampos(cargaTrabajo, datos)
-    Service -> Service: calcularExcesoDocente(maximo16h)
+    Service -> Service: calcularExcesoDocenteSiAplica(cargaTrabajo, sede, maximo16h)
     Service -> CargaRepo: guardar(cargaTrabajoActualizada)
     CargaRepo --> Service: CargaTrabajo actualizada
     deactivate CargaRepo
-    alt Excede 16 horas docentes
+    alt Sede con docencia y excede 16 horas docentes
         Service -> RecompensaRepo: registrarCompensacionPendienteSiExcede(cargaTrabajo)
         activate RecompensaRepo
         RecompensaRepo --> Service: Recompensa pendiente
         deactivate RecompensaRepo
-    else No excede limite docente
+    else Sede sin docencia o no excede limite docente
         Service -> Service: Mantener carga sin compensacion nueva
     end
     Service --> Api: CargaTrabajoPropiaResponse

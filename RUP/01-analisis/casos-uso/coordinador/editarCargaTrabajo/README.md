@@ -61,12 +61,13 @@ Analizar la colaboracion necesaria para que el Coordinador actualice la carga de
 **Responsabilidades**:
 - Localizar la persona cuya carga se va a editar.
 - Permitir validar que la persona existe antes de modificar su carga.
+- Aportar su sede para saber si aplica docencia investigadora.
 
 ### RecompensaRepository
 **Estereotipo**: Entidad
 
 **Responsabilidades**:
-- Registrar una compensacion pendiente solo cuando la carga supera el limite docente.
+- Registrar una compensacion pendiente solo cuando la carga supera el limite docente y la sede permite docencia investigadora.
 - Mantener la relacion entre exceso docente y recompensa economica.
 
 ### CargaTrabajo
@@ -75,13 +76,14 @@ Analizar la colaboracion necesaria para que el Coordinador actualice la carga de
 **Responsabilidades**:
 - Representar horas de docencia, investigacion y actividades academicas.
 - Encapsular observaciones y disponibilidad.
-- Calcular exceso docente cuando las horas de docencia superan 16 horas semanales.
+- Calcular exceso docente cuando las horas de docencia superan 16 horas semanales y aplica por sede.
 
 ### Persona
 **Estereotipo**: Entidad
 
 **Responsabilidades**:
 - Representar la persona propietaria de la carga modificada.
+- Diferenciar si la persona es investigadora-docente o solo investigadora segun su sede.
 
 ### Recompensa
 **Estereotipo**: Entidad
@@ -97,11 +99,12 @@ Analizar la colaboracion necesaria para que el Coordinador actualice la carga de
 4. El controlador obtiene su carga con `CargaTrabajoRepository.obtenerPorPersona(idPersona)`.
 5. La vista envia datos modificados y el controlador ejecuta `validarHoras(datos)`.
 6. Si los datos son validos, el controlador ejecuta `actualizarCargaDePersona(coordinador, idPersona, datos)`.
-7. La entidad calcula `calcularExcesoDocente(maximo16h)`.
-8. El repositorio persiste `actualizar(cargaTrabajo)`.
-9. El repositorio ejecuta `recalcularPrioridadParaProyectosLibres(idPersona)` para mantener actualizada la prioridad de asignacion.
-10. Si hay exceso docente, `RecompensaRepository.registrarCompensacionPendienteSiExcede(cargaTrabajo)` deja la compensacion preparada.
-11. La vista vuelve a `OPCIONES_CARGA_TRABAJO_ABIERTAS`; si el actor cancela, vuelve sin cambios.
+7. La entidad valida si la persona `esInvestigadorDocenteSegunSede()`.
+8. La entidad calcula `calcularExcesoDocenteSiAplica(maximo16h)`.
+9. El repositorio persiste `actualizar(cargaTrabajo)`.
+10. El repositorio ejecuta `recalcularPrioridadParaProyectosLibres(idPersona)` para mantener actualizada la prioridad de asignacion.
+11. Si hay exceso docente aplicable por sede, `RecompensaRepository.registrarCompensacionPendienteSiExcede(cargaTrabajo)` deja la compensacion preparada.
+12. La vista vuelve a `OPCIONES_CARGA_TRABAJO_ABIERTAS`; si el actor cancela, vuelve sin cambios.
 
 ## Correspondencia con requisitos
 
@@ -110,6 +113,7 @@ Analizar la colaboracion necesaria para que el Coordinador actualice la carga de
 |Editar carga de una persona|`EditarCargaTrabajoView`|Recibe `editarCargaTrabajo(idPersona)`|
 |Presentar carga actual|`CargaTrabajoController`|`obtenerCargaDePersona(coordinador, idPersona)`|
 |Validar datos introducidos|`CargaTrabajoController`|`validarHoras(datos)`|
+|Validar docencia por sede|`Persona`|`esInvestigadorDocenteSegunSede()`|
 |Persistir cambios|`CargaTrabajoRepository`|`actualizar(cargaTrabajo)`|
 |Actualizar prioridad para proyectos libres|`CargaTrabajoRepository`|`recalcularPrioridadParaProyectosLibres(idPersona)`|
 |Registrar compensacion por exceso docente|`RecompensaRepository`|`registrarCompensacionPendienteSiExcede(cargaTrabajo)`|
@@ -121,9 +125,11 @@ Analizar la colaboracion necesaria para que el Coordinador actualice la carga de
 - La persona debe existir antes de modificar su carga.
 - Las horas introducidas deben validarse antes de persistir.
 - La carga actualizada influye en la prioridad de asignacion de proyectos libres a investigadores-docentes con menor carga.
+- La condicion de investigador-docente depende de la sede FUNIBER.
 - Un investigador-docente suele impartir 4 asignaturas por cuatrimestre.
 - El maximo ordinario de docencia es 16 horas semanales.
-- Si se supera ese limite, el sistema registra una compensacion economica pendiente.
+- Si se supera ese limite en una sede con docencia investigadora, el sistema registra una compensacion economica pendiente.
+- Si la sede clasifica a la persona como solo investigadora, no se genera compensacion docente.
 - La cancelacion no modifica la informacion existente.
 - La salida natural vuelve a `OPCIONES_CARGA_TRABAJO_ABIERTAS`.
 
