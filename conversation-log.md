@@ -205,7 +205,7 @@ La verificación frontend quedó correcta: `npm run build` y `npm run lint` term
 
 ---
 
-## [23:20] Inicio de sesión - Revisión del Desarrollo del bloque de perfil
+## [2026-06-03 23:20] Inicio de sesión - Revisión del Desarrollo del bloque de perfil
 
 **Prompt:** el usuario inició sesión usando la skill `session-memory` y pidió revisar la parte de Desarrollo del segundo bloque, dedicado a la gestión de perfil.
 
@@ -215,7 +215,7 @@ La verificación frontend quedó correcta: `npm run build` y `npm run lint` term
 
 ---
 
-## [23:55] Fin de sesión - Revisión corregida del bloque de perfil
+## [2026-06-03 23:55] Fin de sesión - Revisión corregida del bloque de perfil
 
 **Prompt:** cierre de sesión solicitado con la skill `session-memory` después de revisar el Desarrollo del segundo bloque y de perder el límite antes de poder registrar el resumen completo.
 
@@ -231,7 +231,7 @@ La verificación final quedó correcta: `mvnw.cmd test` ejecutó 15 pruebas back
 
 ---
 
-## [02:02] Inicio de sesión - Diagnóstico de credenciales
+## [2026-06-04 02:02] Inicio de sesión - Diagnóstico de credenciales
 
 **Prompt:** el usuario inició una nueva sesión usando la skill `session-memory` e indicó que las credenciales de la plataforma no funcionan.
 
@@ -241,7 +241,7 @@ La verificación final quedó correcta: `mvnw.cmd test` ejecutó 15 pruebas back
 
 ---
 
-## [03:20] Fin de sesión - Cierre del diagnóstico y avance del bloque 3
+## [2026-06-04 03:20] Fin de sesión - Cierre del diagnóstico y avance del bloque 3
 
 **Prompt:** cierre de sesión solicitado con la skill `session-memory`, pidiendo actualizar también las tareas para continuar mañana.
 
@@ -255,10 +255,14 @@ Finalmente se actualizó `tareas_a_realizar.md` con el plan inmediato para maña
 
 ---
 
-## [23:01] Inicio de sesión - Credenciales y continuidad del bloque 3
+## [2026-06-04 23:01] Inicio de sesión - Credenciales y continuidad del bloque 3
 
 **Prompt:** el usuario inició sesión usando la skill `session-memory`, pidió continuar con las tareas de la próxima sesión recogidas en `tareas_a_realizar.md`, pero priorizando corregir de nuevo el problema de credenciales.
 
 **Resultado:** se utilizó la skill `session-memory`. Se revisó la última entrada de `conversation-log.md`, el plan de `tareas_a_realizar.md` y el estado inicial del repositorio, que estaba limpio al empezar. La prioridad inmediata queda fijada en diagnosticar el acceso a la plataforma antes de continuar con el Diseño del bloque 3.
 
 **Decisión:** se revisarán primero backend, frontend, datos demo, estado de la base local, CSRF y CORS. Cuando el login funcione de forma estable, se retomará el plan de la próxima sesión: cerrar Análisis del bloque 3 y pasar a Diseño de carga de trabajo.
+
+---
+
+## [2026-06-05 01:38] Fin de sesión
