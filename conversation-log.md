@@ -238,3 +238,17 @@ La verificación final quedó correcta: `mvnw.cmd test` ejecutó 15 pruebas back
 **Resultado:** se utilizó la skill `session-memory`. Se revisó el estado inicial del repositorio, la rama activa y la última entrada de memoria. El repositorio está en `main`, sincronizado con `origin/main`, y únicamente `conversation-log.md` estaba modificado por el cierre de sesión pendiente. La sesión parte del bloque de perfil corregido y validado, con el objetivo inmediato de diagnosticar el fallo de autenticación en la plataforma.
 
 **Decisión:** se revisará primero la configuración de autenticación, los usuarios demo, el estado de la base H2 local, CSRF y CORS antes de modificar código, porque el fallo puede estar causado por datos persistentes locales y no por las credenciales documentadas.
+
+---
+
+## [03:20] Fin de sesión - Cierre del diagnóstico y avance del bloque 3
+
+**Prompt:** cierre de sesión solicitado con la skill `session-memory`, pidiendo actualizar también las tareas para continuar mañana.
+
+**Resultado:** se utilizó la skill `session-memory`. Durante la sesión se diagnosticó el problema de credenciales de la plataforma, diferenciando entre fallo real de autenticación y estado local de ejecución. Se verificó que los usuarios demo de Coordinador e Investigador funcionan contra el backend y a través del proxy del frontend cuando la aplicación está correctamente arrancada. También se revisó el estado del segundo bloque de perfil y se concluyó que el Desarrollo está funcionalmente cerrado, quedando solo evidencias visuales opcionales para reforzar Pruebas.
+
+Después se avanzó al Análisis del tercer bloque, dedicado a carga de trabajo. Se actualizaron los casos `abrirOpcionesCargaTrabajo` y `editarCargaTrabajo` para Coordinador e Investigador, con sus README de Análisis, diagramas `colaboracion.puml` y SVG en `images/RUP/01-analisis`. A partir de la aclaración del usuario sobre el dominio, el análisis incorporó dos reglas centrales: si existe un proyecto libre, debe sugerirse o asignarse a investigadores-docentes con menor carga de trabajo; y si un investigador-docente supera el límite ordinario de 16 horas semanales de docencia, debe quedar reflejada la compensación económica correspondiente.
+
+Finalmente se actualizó `tareas_a_realizar.md` con el plan inmediato para mañana: revisar una última vez el Análisis del bloque 3, confirmar la coherencia de las reglas de carga, proyectos libres y compensaciones, y empezar el Diseño del bloque con `README.md`, `secuencia.puml` y SVG por caso.
+
+**Decisión:** mañana se recomienda cerrar formalmente la revisión del Análisis del bloque 3 y pasar al Diseño de carga de trabajo, manteniendo la pauta de bloques pequeños. Las capturas pendientes del bloque de perfil pueden completarse antes o después, pero no bloquean avanzar si el objetivo es mantener ritmo.
