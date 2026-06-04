@@ -3,25 +3,39 @@ skinparam linetype polyline
 
 rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoEntrada
 package abrirOpcionesCargaTrabajo as "abrirOpcionesCargaTrabajo()" {
-    rectangle #629EF9 DetalleCargaTrabajoView
+    rectangle #629EF9 PanelCargaTrabajoView
     rectangle #b5bd68 CargaTrabajoController
     rectangle #F2AC4E CargaTrabajoRepository
+    rectangle #F2AC4E PersonaRepository
+    rectangle #F2AC4E ProyectoRepository
+    rectangle #F2AC4E RecompensaRepository
     rectangle #F2AC4E CargaTrabajo
+    rectangle #F2AC4E Persona
+    rectangle #F2AC4E Proyecto
+    rectangle #F2AC4E Recompensa
 }
 
 rectangle #CDEBA5 ":OPCIONES_CARGA_TRABAJO_ABIERTAS" as EstadoSalida
 rectangle #CDEBA5 ":Collaboration EditarCargaTrabajo" as EditarCargaTrabajo
 rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanelPrincipal
 
-EstadoEntrada -r-> DetalleCargaTrabajoView: abrirOpcionesCargaTrabajo()
+EstadoEntrada -r-> PanelCargaTrabajoView: abrirOpcionesCargaTrabajo()
 
-DetalleCargaTrabajoView -d-> CargaTrabajoController: obtenerCargaTrabajo(id)
-DetalleCargaTrabajoView --> CargaTrabajoController: prepararAccionesDisponibles(coordinador)
-CargaTrabajoController --> CargaTrabajoRepository: obtenerPorId(id)
-CargaTrabajoController --> CargaTrabajoRepository: verificarPermisos(actor)
+PanelCargaTrabajoView -d-> CargaTrabajoController: obtenerResumenGlobal(coordinador, filtros)
+PanelCargaTrabajoView --> CargaTrabajoController: listarCargaPorPersona(filtros)
+PanelCargaTrabajoView --> CargaTrabajoController: seleccionarPersona(idPersona)
+CargaTrabajoController --> CargaTrabajoRepository: obtenerResumenGlobal(filtros)
+CargaTrabajoController --> CargaTrabajoRepository: obtenerDetallePorPersona(filtros)
+CargaTrabajoController --> ProyectoRepository: obtenerProyectosLibres()
+CargaTrabajoController --> CargaTrabajoRepository: sugerirInvestigadoresDocentesConMenorCarga(proyectoLibre)
+CargaTrabajoController --> RecompensaRepository: obtenerCompensacionesPendientes(filtros)
+CargaTrabajoController --> PersonaRepository: obtenerPorId(idPersona)
 CargaTrabajoRepository -- CargaTrabajo
-DetalleCargaTrabajoView ..> EstadoSalida: continuarNavegacion()
-DetalleCargaTrabajoView ..> EditarCargaTrabajo: editarCargaTrabajo()
-DetalleCargaTrabajoView ..> AbrirPanelPrincipal: abrirPanelPrincipal()
+PersonaRepository -- Persona
+ProyectoRepository -- Proyecto
+RecompensaRepository -- Recompensa
+PanelCargaTrabajoView ..> EstadoSalida: opcionesCargaTrabajoAbiertas()
+PanelCargaTrabajoView ..> EditarCargaTrabajo: editarCargaTrabajo(idPersona)
+PanelCargaTrabajoView ..> AbrirPanelPrincipal: abrirPanelPrincipal()
 
 @enduml

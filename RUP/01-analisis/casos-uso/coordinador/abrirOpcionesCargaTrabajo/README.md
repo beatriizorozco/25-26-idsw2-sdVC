@@ -1,170 +1,150 @@
-# FUNIBER > Coordinador > abrirOpcionesCargaTrabajo > Análisis
+# FUNIBER > Coordinador > abrirOpcionesCargaTrabajo > Analisis
 
-> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/abrirOpcionesCargaTrabajo/README.md)|**Análisis**|[Diseño](/RUP/02-diseño/casos-uso/coordinador/abrirOpcionesCargaTrabajo/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/abrirOpcionesCargaTrabajo/README.md)|[Pruebas](/RUP/04-pruebas/casos-uso/coordinador/abrirOpcionesCargaTrabajo/README.md)|
+> |[Inicio](/README.md)|[Contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/abrirOpcionesCargaTrabajo/README.md)|**Analisis**|[Diseno](/RUP/02-diseño/casos-uso/coordinador/abrirOpcionesCargaTrabajo/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/abrirOpcionesCargaTrabajo/README.md)|[Pruebas](/RUP/04-pruebas/casos-uso/coordinador/abrirOpcionesCargaTrabajo/README.md)|
 > |-|-|-|-|-|-|-|
 
-## Información del artefacto
+## Informacion del artefacto
 
-- **Proyecto**: FUNIBER - Plataforma Interna de Investigación
-- **Fase RUP**: Elaboration (Elaboración)
-- **Disciplina**: Análisis y Diseño
-- **Versión**: 1.0
-- **Fecha**: 2026-05-25
+- **Proyecto**: FUNIBER - Plataforma Interna de Investigacion
+- **Fase RUP**: Elaboration (Elaboracion)
+- **Disciplina**: Analisis y Diseno
+- **Version**: 1.0
+- **Fecha**: 2026-06-04
 - **Autor**: Equipo de desarrollo
 
-## Propósito
+## Proposito
 
-Analizar la colaboración necesaria para presentar a Coordinador el detalle de carga de trabajo y sus acciones disponibles. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `abrirOpcionesCargaTrabajo()`.
+Analizar la colaboracion necesaria para que el Coordinador consulte la carga de trabajo global, aplique filtros y visualice el detalle por persona antes de decidir si edita una carga concreta.
 
-## Diagrama de colaboración
+## Diagrama de colaboracion
 
 <div align=center>
 
-|![Análisis: abrirOpcionesCargaTrabajo()](/images/RUP/01-analisis/casos-uso/coordinador/abrirOpcionesCargaTrabajo/abrirOpcionesCargaTrabajo-analisis.svg)|
+|![Analisis: abrirOpcionesCargaTrabajo()](/images/RUP/01-analisis/casos-uso/coordinador/abrirOpcionesCargaTrabajo/abrirOpcionesCargaTrabajo-analisis.svg)|
 |-|
-|Código fuente: [colaboracion.puml](colaboracion.puml)|
+|Codigo fuente: [colaboracion.puml](colaboracion.puml)|
 
 </div>
 
-## Clases de análisis identificadas
+## Clases de analisis identificadas
 
-### Clases de vista (boundary)
+### PanelCargaTrabajoView
+**Estereotipo**: Vista (Boundary)
 
-#### DetalleCargaTrabajoView
-**Estereotipo**: Vista (Boundary)  
 **Responsabilidades**:
-- Recibir la solicitud `abrirOpcionesCargaTrabajo()` del Coordinador.
-- Presentar la información de cargas de trabajo necesaria para el caso de uso.
-- Capturar datos, criterios o confirmaciones introducidos por el Coordinador.
-- Invocar al controlador para ejecutar la operación de análisis.
-- Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
+- Recibir `abrirOpcionesCargaTrabajo()` desde `PANEL_PRINCIPAL_ABIERTO`.
+- Presentar filtros, resumen global, detalle por persona y detalle de la persona seleccionada.
+- Capturar criterios de filtrado y seleccion de persona.
+- Permitir navegar a `editarCargaTrabajo(idPersona)` o volver al panel principal.
 
-**Colaboraciones**:
-- **Entrada**: Recibe `abrirOpcionesCargaTrabajo()` desde el estado de contexto correspondiente.
-- **Control**: Se comunica con `CargaTrabajoController`.
-- **Salida**: Devuelve el control a la navegación definida para el Coordinador.
+### CargaTrabajoController
+**Estereotipo**: Control
 
-### Clases de control
-
-#### CargaTrabajoController
-**Estereotipo**: Control  
 **Responsabilidades**:
-- Coordinar la ejecución del caso de uso `abrirOpcionesCargaTrabajo()`.
-- Aplicar reglas de permisos del Coordinador.
-- Validar datos o criterios antes de acceder a las entidades.
-- Servir como intermediario entre la vista y el repositorio.
+- Coordinar la consulta global de carga de trabajo.
+- Aplicar los filtros solicitados por el Coordinador.
+- Solicitar el resumen global y el detalle por persona.
+- Preparar la seleccion de una persona para su posible edicion.
 
-**Colaboraciones**:
-- **Vista**: Responde a solicitudes de `DetalleCargaTrabajoView`.
-- **Repositorio**: Delega operaciones de datos a `CargaTrabajoRepository`.
+### CargaTrabajoRepository
+**Estereotipo**: Entidad
 
-### Clases de entidad (entity)
-
-#### CargaTrabajoRepository
-**Estereotipo**: Entidad  
 **Responsabilidades**:
-- Abstraer el acceso a datos de cargas de trabajo.
-- Proporcionar operaciones `obtenerPorId(id)` y `verificarPermisos(actor)`.
-- Mantener la consistencia conceptual de cargas de trabajo.
-- Encapsular restricciones de consulta o modificación asociadas al rol.
+- Obtener el resumen global de carga de trabajo.
+- Obtener el detalle por persona segun filtros.
+- Gestionar instancias de `CargaTrabajo`.
 
-**Colaboraciones**:
-- **Control**: Responde a `CargaTrabajoController`.
-- **Entidad**: Gestiona instancias de `CargaTrabajo`.
+### PersonaRepository
+**Estereotipo**: Entidad
 
-#### CargaTrabajo
-**Estereotipo**: Entidad  
 **Responsabilidades**:
-- Representar la información de carga de trabajo.
-- Encapsular atributos relevantes del dominio.
-- Mantener la integridad de los datos usados por el caso de uso.
+- Obtener la persona seleccionada por el Coordinador.
+- Mantener la trazabilidad entre carga de trabajo y persona.
 
-**Colaboraciones**:
-- **Repositorio**: Es gestionado por `CargaTrabajoRepository`.
+### ProyectoRepository
+**Estereotipo**: Entidad
 
-## Flujo de colaboración
+**Responsabilidades**:
+- Consultar proyectos libres o pendientes de asignacion.
+- Aportar contexto para sugerir investigadores-docentes con menor carga cuando exista un proyecto libre.
 
-### Secuencia de operaciones
+### RecompensaRepository
+**Estereotipo**: Entidad
 
-1. **Inicio**: Estado de contexto -> `DetalleCargaTrabajoView.abrirOpcionesCargaTrabajo()`.
-2. **Solicitud principal**: `DetalleCargaTrabajoView` -> `CargaTrabajoController.obtenerCargaTrabajo(id)`.
-3. **Acceso a datos**: `DetalleCargaTrabajoView` -> `CargaTrabajoController.prepararAccionesDisponibles(coordinador)`.
-4. **Preparación de acciones**: `CargaTrabajoController` -> `CargaTrabajoRepository.obtenerPorId(id)`.
-5. **Verificación de permisos**: `CargaTrabajoController` -> `CargaTrabajoRepository.verificarPermisos(actor)`.
-6. **Finalización**: `DetalleCargaTrabajoView` devuelve el control al estado de navegación definido.
+**Responsabilidades**:
+- Consultar compensaciones economicas pendientes por exceso de docencia.
+- Relacionar la carga de trabajo con recompensas derivadas.
 
-### Patrón de colaboración establecido
+### CargaTrabajo
+**Estereotipo**: Entidad
 
-- **Entrada estándar**: Desde el estado activo del diagrama de contexto del Coordinador.
-- **Análisis MVC completo**: Vista, Control y Entidad claramente separados.
-- **Salida estándar**: Retorno a la navegación permitida o a una colaboración relacionada.
+**Responsabilidades**:
+- Representar dedicacion, disponibilidad, horas semanales y observaciones.
+- Relacionar la carga con la persona responsable.
+- Calcular margen o exceso respecto al maximo de 16 horas semanales de docencia.
+
+### Persona
+**Estereotipo**: Entidad
+
+**Responsabilidades**:
+- Representar los datos basicos de la persona cuya carga se consulta.
+- Aportar sede, perfil y area de investigacion al resumen.
+
+### Proyecto
+**Estereotipo**: Entidad
+
+**Responsabilidades**:
+- Representar un proyecto libre o pendiente de asignacion.
+- Aportar criterios para seleccionar candidatos adecuados.
+
+### Recompensa
+**Estereotipo**: Entidad
+
+**Responsabilidades**:
+- Representar la compensacion economica asociada a exceso docente.
+- Mantener el estado de la compensacion para su gestion posterior.
+
+## Flujo de colaboracion
+
+1. `PANEL_PRINCIPAL_ABIERTO` envia `abrirOpcionesCargaTrabajo()` a `PanelCargaTrabajoView`.
+2. La vista solicita `obtenerResumenGlobal(coordinador, filtros)` al controlador.
+3. La vista solicita `listarCargaPorPersona(filtros)` para poblar el detalle.
+4. El controlador consulta `CargaTrabajoRepository.obtenerResumenGlobal(filtros)`.
+5. El controlador consulta `CargaTrabajoRepository.obtenerDetallePorPersona(filtros)`.
+6. El controlador consulta `ProyectoRepository.obtenerProyectosLibres()`.
+7. Si existe un proyecto libre, el controlador consulta `CargaTrabajoRepository.sugerirInvestigadoresDocentesConMenorCarga(proyectoLibre)`.
+8. El controlador consulta `RecompensaRepository.obtenerCompensacionesPendientes(filtros)` para mostrar excesos docentes compensables.
+9. Si el Coordinador selecciona una persona, el controlador consulta `PersonaRepository.obtenerPorId(idPersona)`.
+10. La vista presenta `OPCIONES_CARGA_TRABAJO_ABIERTAS` y permite editar o volver al panel.
 
 ## Correspondencia con requisitos
 
-### Mapeado con especificación detallada
-
-|Requisito del caso de uso|Clase responsable|Método/Colaboración|
+|Requisito del caso de uso|Clase responsable|Metodo/Colaboracion|
 |-|-|-|
-|Atender la solicitud `abrirOpcionesCargaTrabajo()`|`DetalleCargaTrabajoView`|Recibe la acción del Coordinador|
-|Coordinar reglas del caso de uso|`CargaTrabajoController`|`obtenerCargaTrabajo(id)`|
-|Aplicar permisos y validaciones|`CargaTrabajoController`|`prepararAccionesDisponibles(coordinador)`|
-|Acceder a datos de cargas de trabajo|`CargaTrabajoRepository`|`obtenerPorId(id)`, `verificarPermisos(actor)`|
-|Representar atributos de dominio|`CargaTrabajo`|Entidad conceptual|
-
-### Atributos tratados
-
-|Atributo conceptual|Entidad responsable|Observación|
-|-|-|-|
-|dedicación|`CargaTrabajo`|Atributo conceptual tratado por la entidad de dominio.|
-|disponibilidad|`CargaTrabajo`|Atributo conceptual tratado por la entidad de dominio.|
-|proyectos asociados|`CargaTrabajo`|Atributo conceptual tratado por la entidad de dominio.|
-|observaciones|`CargaTrabajo`|Atributo conceptual tratado por la entidad de dominio.|
-
-## Colaboraciones relacionadas
-
-- **editarCargaTrabajo()**: colaboración relacionada desde la navegación del caso de uso.
-- **abrirPanelPrincipal()**: colaboración relacionada desde la navegación del caso de uso.
+|Mostrar filtros disponibles|`PanelCargaTrabajoView`|Presenta criterios de filtrado|
+|Mostrar resumen global|`CargaTrabajoController`|`obtenerResumenGlobal(coordinador, filtros)`|
+|Mostrar detalle por persona|`CargaTrabajoRepository`|`obtenerDetallePorPersona(filtros)`|
+|Mostrar detalle de persona seleccionada|`PersonaRepository`|`obtenerPorId(idPersona)`|
+|Consultar proyectos libres|`ProyectoRepository`|`obtenerProyectosLibres()`|
+|Sugerir investigadores-docentes con menor carga|`CargaTrabajoRepository`|`sugerirInvestigadoresDocentesConMenorCarga(proyectoLibre)`|
+|Mostrar exceso docente compensable|`RecompensaRepository`|`obtenerCompensacionesPendientes(filtros)`|
+|Permitir editar carga de trabajo|`PanelCargaTrabajoView`|Navega a `editarCargaTrabajo(idPersona)`|
 
 ## Reglas funcionales consideradas
 
-- Mantener la separación entre presentación, coordinación y entidad para el rol Coordinador.
-- Permitir al Coordinador acceso global sobre publicaciones, entregables, proyectos, investigadores, recompensas y perfiles según el caso de uso.
-
-## Características del análisis
-
-### Separación de responsabilidades MVC
-
-- **Vista**: Solo presentación e interacción con el Coordinador.
-- **Control**: Solo coordinación, permisos y lógica de aplicación.
-- **Entidad**: Solo datos, repositorios y reglas conceptuales del dominio.
-
-### Agnóstico tecnológicamente
-
-- No especifica tecnología de interfaz de usuario.
-- No asume implementación concreta de base de datos.
-- Mantiene independencia de frameworks.
-
-### Trazabilidad completa
-
-- **Origen**: Caso de uso detallado `abrirOpcionesCargaTrabajo()`.
-- **Destino**: Base para diseño arquitectónico posterior.
-- **Conexión**: Diagrama de contexto -> Análisis de colaboración -> Diseño.
-
-## Patrones aplicados
-
-### Repository pattern
-`CargaTrabajoRepository` abstrae el acceso a datos de cargas de trabajo, permitiendo cambiar la implementación sin afectar al controlador.
-
-### MVC pattern
-Separación clara entre presentación (`DetalleCargaTrabajoView`), lógica de aplicación (`CargaTrabajoController`) y datos (`CargaTrabajo`, `CargaTrabajoRepository`).
-
-### Sistema de estados
-Mantiene coherencia con el diagrama de contexto del Coordinador, respetando las transiciones de estado establecidas.
+- El Coordinador tiene vision global de cargas de trabajo.
+- La consulta puede filtrarse por sede, perfil, investigador-docente, area o proyecto.
+- Cuando hay un proyecto libre, el sistema debe sugerir investigadores-docentes con menor carga de trabajo para evitar asignaciones arbitrarias.
+- La carga de trabajo debe evitar asignaciones arbitrarias que sobrecarguen siempre a las mismas personas.
+- Un investigador-docente suele impartir 4 asignaturas por cuatrimestre.
+- El maximo ordinario de docencia es 16 horas semanales.
+- Si una persona supera 16 horas semanales de docencia, el sistema debe identificarla como compensable economicamente.
+- La edicion se realiza sobre una persona concreta seleccionada desde el listado.
+- El caso no asigna el proyecto; solo prepara informacion para decidir la asignacion en el flujo de proyectos.
 
 ## Referencias
 
-- [Especificación detallada: abrirOpcionesCargaTrabajo()](/RUP/00-casos-uso/02-detalle/coordinador/abrirOpcionesCargaTrabajo/README.md)
+- [Especificacion detallada](/RUP/00-casos-uso/02-detalle/coordinador/abrirOpcionesCargaTrabajo/README.md)
 - [Diagramas de contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)
-- [Actores y casos de uso](/RUP/00-casos-uso/01-actores-casos-uso/actores-casos-uso.md)
 - [Modelo del dominio](/RUP/00-casos-uso/00-modelo-del-dominio/modelo-dominio.md)
-- [Log de conversaciones](/conversation-log.md)
+- [conversation-log.md](/conversation-log.md)

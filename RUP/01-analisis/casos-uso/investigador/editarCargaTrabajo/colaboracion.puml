@@ -3,23 +3,30 @@ skinparam linetype polyline
 
 rectangle #CDEBA5 ":OPCIONES_CARGA_TRABAJO_ABIERTAS" as EstadoEntrada
 package editarCargaTrabajo as "editarCargaTrabajo()" {
-    rectangle #629EF9 EditarCargaTrabajoView
+    rectangle #629EF9 EditarCargaTrabajoPropiaView
     rectangle #b5bd68 CargaTrabajoController
     rectangle #F2AC4E CargaTrabajoRepository
+    rectangle #F2AC4E RecompensaRepository
     rectangle #F2AC4E CargaTrabajo
+    rectangle #F2AC4E Recompensa
 }
 
 rectangle #CDEBA5 ":OPCIONES_CARGA_TRABAJO_ABIERTAS" as EstadoSalida
 rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanelPrincipal
 
-EstadoEntrada -r-> EditarCargaTrabajoView: editarCargaTrabajo()
+EstadoEntrada -r-> EditarCargaTrabajoPropiaView: editarCargaTrabajo()
 
-EditarCargaTrabajoView -d-> CargaTrabajoController: editarCargaTrabajo(id, datos)
-EditarCargaTrabajoView --> CargaTrabajoController: validarCambios(datos)
-CargaTrabajoController --> CargaTrabajoRepository: obtenerPorId(id)
-CargaTrabajoController --> CargaTrabajoRepository: actualizar(entidad)
+EditarCargaTrabajoPropiaView -d-> CargaTrabajoController: obtenerCargaPropia(investigador)
+EditarCargaTrabajoPropiaView --> CargaTrabajoController: validarHoras(datos)
+EditarCargaTrabajoPropiaView --> CargaTrabajoController: actualizarCargaPropia(investigador, datos)
+CargaTrabajoController --> CargaTrabajoRepository: obtenerPorUsuario(investigador)
+CargaTrabajoController --> CargaTrabajo: calcularExcesoDocente(maximo16h)
+CargaTrabajoController --> CargaTrabajoRepository: actualizar(cargaTrabajo)
+CargaTrabajoController --> RecompensaRepository: registrarCompensacionPendienteSiExcede(cargaTrabajo)
 CargaTrabajoRepository -- CargaTrabajo
-EditarCargaTrabajoView ..> EstadoSalida: continuarNavegacion()
-EditarCargaTrabajoView ..> AbrirPanelPrincipal: abrirPanelPrincipal()
+RecompensaRepository -- Recompensa
+EditarCargaTrabajoPropiaView ..> EstadoSalida: cargaTrabajoActualizada()
+EditarCargaTrabajoPropiaView ..> EstadoSalida: cancelarEdicion()
+EditarCargaTrabajoPropiaView ..> AbrirPanelPrincipal: abrirPanelPrincipal()
 
 @enduml

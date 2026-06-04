@@ -212,3 +212,29 @@ La verificación frontend quedó correcta: `npm run build` y `npm run lint` term
 **Resultado:** se utilizó la skill `session-memory`. Se revisó el estado del repositorio, los commits recientes, la última entrada de `conversation-log.md` y la implementación del bloque de perfil en frontend, backend y documentación RUP. El repositorio estaba limpio antes de iniciar las correcciones. La revisión detectó tres puntos a corregir antes de cerrar el bloque: la trazabilidad de `editarPerfil` del Coordinador no coincidía entre Detalle/Diseño y Desarrollo, la solicitud de eliminación documentaba `201 Created` pero el controlador devolvía `200 OK`, y la eliminación de perfil podía desactivar al único Coordinador activo.
 
 **Decisión:** la sesión se centrará en corregir esos errores, reforzar las pruebas del bloque de perfil y dejar el Desarrollo alineado con la documentación antes de avanzar al siguiente bloque funcional.
+
+---
+
+## [23:55] Fin de sesión - Revisión corregida del bloque de perfil
+
+**Prompt:** cierre de sesión solicitado con la skill `session-memory` después de revisar el Desarrollo del segundo bloque y de perder el límite antes de poder registrar el resumen completo.
+
+**Resultado:** se utilizó la skill `session-memory`. Durante la sesión se revisó el bloque funcional de perfil de extremo a extremo, comparando Desarrollo con Detalle, Análisis, Diseño y Pruebas. Se corrigió la trazabilidad de `abrirOpcionesPerfil` y `editarPerfil` del Coordinador para dejar claro que, en el MVP actual, trabajan sobre el perfil propio del Coordinador y no sobre un perfil de investigador seleccionado. Con ese ajuste se actualizaron los README de Detalle, Análisis, Diseño, Desarrollo y Pruebas, los diagramas `colaboracion.puml`, los diagramas `secuencia.puml`, el prototipo del caso y los SVG asociados en `images/RUP`.
+
+En backend se corrigieron tres incidencias relevantes. Primero, `POST /api/perfil/solicitud-eliminacion` quedó alineado con la documentación y ahora devuelve `201 Created`. Segundo, se añadió protección para impedir la eliminación del único Coordinador activo del sistema, evitando dejar la aplicación sin actor con permisos de administración. Tercero, se corrigió `mvnw.cmd`, que fallaba con `No se puede indizar en una matriz nula`, permitiendo volver a ejecutar las pruebas de Maven desde Windows.
+
+También se añadieron pruebas de integración del bloque de perfil en `PerfilIntegrationTests`. Estas cubren la actualización del perfil propio del Coordinador, la solicitud de eliminación del Investigador con cierre de sesión, la restricción de acceso del Investigador al listado de solicitudes, el listado de solicitudes pendientes por parte del Coordinador, la resolución de solicitudes, la eliminación segura de perfiles y el bloqueo de la eliminación del único Coordinador activo. Se completaron además las páginas de Pruebas que todavía estaban demasiado provisionales, distinguiendo entre verificación automática ya cubierta y evidencia visual manual pendiente.
+
+La verificación final quedó correcta: `mvnw.cmd test` ejecutó 15 pruebas backend sin fallos ni errores. También se comprobó que no quedaran referencias contradictorias del antiguo flujo del Coordinador sobre perfiles de investigador en los casos corregidos, que no hubiera SVG sueltos dentro de `RUP` y que `git diff --check` no mostrara errores reales, solo avisos normales de CRLF.
+
+**Decisión:** el bloque de perfil queda mucho más consistente y preparado para continuar. Antes de avanzar al siguiente bloque conviene, si se quiere dejarlo redondo visualmente, probar manualmente la pantalla de perfil en navegador y añadir capturas de evidencia para `abrirOpcionesPerfil`, `editarPerfil`, `solicitarEliminacionPerfil`, `abrirSolicitudesEliminacionPerfil`, `abrirSolicitudEliminacionPerfil` y `eliminarPerfil`. Después se puede pasar al siguiente bloque funcional manteniendo el método recomendado: revisar pocos casos por tanda, validar su especificación y solo entonces avanzar a Diseño, Desarrollo y Pruebas.
+
+---
+
+## [02:02] Inicio de sesión - Diagnóstico de credenciales
+
+**Prompt:** el usuario inició una nueva sesión usando la skill `session-memory` e indicó que las credenciales de la plataforma no funcionan.
+
+**Resultado:** se utilizó la skill `session-memory`. Se revisó el estado inicial del repositorio, la rama activa y la última entrada de memoria. El repositorio está en `main`, sincronizado con `origin/main`, y únicamente `conversation-log.md` estaba modificado por el cierre de sesión pendiente. La sesión parte del bloque de perfil corregido y validado, con el objetivo inmediato de diagnosticar el fallo de autenticación en la plataforma.
+
+**Decisión:** se revisará primero la configuración de autenticación, los usuarios demo, el estado de la base H2 local, CSRF y CORS antes de modificar código, porque el fallo puede estar causado por datos persistentes locales y no por las credenciales documentadas.

@@ -6,20 +6,32 @@ package editarCargaTrabajo as "editarCargaTrabajo()" {
     rectangle #629EF9 EditarCargaTrabajoView
     rectangle #b5bd68 CargaTrabajoController
     rectangle #F2AC4E CargaTrabajoRepository
+    rectangle #F2AC4E PersonaRepository
+    rectangle #F2AC4E RecompensaRepository
     rectangle #F2AC4E CargaTrabajo
+    rectangle #F2AC4E Persona
+    rectangle #F2AC4E Recompensa
 }
 
 rectangle #CDEBA5 ":OPCIONES_CARGA_TRABAJO_ABIERTAS" as EstadoSalida
 rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanelPrincipal
 
-EstadoEntrada -r-> EditarCargaTrabajoView: editarCargaTrabajo()
+EstadoEntrada -r-> EditarCargaTrabajoView: editarCargaTrabajo(idPersona)
 
-EditarCargaTrabajoView -d-> CargaTrabajoController: editarCargaTrabajo(id, datos)
-EditarCargaTrabajoView --> CargaTrabajoController: validarCambios(datos)
-CargaTrabajoController --> CargaTrabajoRepository: obtenerPorId(id)
-CargaTrabajoController --> CargaTrabajoRepository: actualizar(entidad)
+EditarCargaTrabajoView -d-> CargaTrabajoController: obtenerCargaDePersona(coordinador, idPersona)
+EditarCargaTrabajoView --> CargaTrabajoController: validarHoras(datos)
+EditarCargaTrabajoView --> CargaTrabajoController: actualizarCargaDePersona(coordinador, idPersona, datos)
+CargaTrabajoController --> PersonaRepository: obtenerPorId(idPersona)
+CargaTrabajoController --> CargaTrabajoRepository: obtenerPorPersona(idPersona)
+CargaTrabajoController --> CargaTrabajo: calcularExcesoDocente(maximo16h)
+CargaTrabajoController --> CargaTrabajoRepository: actualizar(cargaTrabajo)
+CargaTrabajoController --> CargaTrabajoRepository: recalcularPrioridadParaProyectosLibres(idPersona)
+CargaTrabajoController --> RecompensaRepository: registrarCompensacionPendienteSiExcede(cargaTrabajo)
+PersonaRepository -- Persona
 CargaTrabajoRepository -- CargaTrabajo
-EditarCargaTrabajoView ..> EstadoSalida: continuarNavegacion()
+RecompensaRepository -- Recompensa
+EditarCargaTrabajoView ..> EstadoSalida: cargaTrabajoActualizada()
+EditarCargaTrabajoView ..> EstadoSalida: cancelarEdicion()
 EditarCargaTrabajoView ..> AbrirPanelPrincipal: abrirPanelPrincipal()
 
 @enduml

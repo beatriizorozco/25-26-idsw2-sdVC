@@ -1,169 +1,118 @@
-# FUNIBER > Investigador > editarCargaTrabajo > Análisis
+# FUNIBER > Investigador > editarCargaTrabajo > Analisis
 
-> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/editarCargaTrabajo/README.md)|**Análisis**|[Diseño](/RUP/02-diseño/casos-uso/investigador/editarCargaTrabajo/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/investigador/editarCargaTrabajo/README.md)|[Pruebas](/RUP/04-pruebas/casos-uso/investigador/editarCargaTrabajo/README.md)|
+> |[Inicio](/README.md)|[Contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/editarCargaTrabajo/README.md)|**Analisis**|[Diseno](/RUP/02-diseño/casos-uso/investigador/editarCargaTrabajo/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/investigador/editarCargaTrabajo/README.md)|[Pruebas](/RUP/04-pruebas/casos-uso/investigador/editarCargaTrabajo/README.md)|
 > |-|-|-|-|-|-|-|
 
-## Información del artefacto
+## Informacion del artefacto
 
-- **Proyecto**: FUNIBER - Plataforma Interna de Investigación
-- **Fase RUP**: Elaboration (Elaboración)
-- **Disciplina**: Análisis y Diseño
-- **Versión**: 1.0
-- **Fecha**: 2026-05-25
+- **Proyecto**: FUNIBER - Plataforma Interna de Investigacion
+- **Fase RUP**: Elaboration (Elaboracion)
+- **Disciplina**: Analisis y Diseno
+- **Version**: 1.0
+- **Fecha**: 2026-06-04
 - **Autor**: Equipo de desarrollo
 
-## Propósito
+## Proposito
 
-Analizar la colaboración necesaria para actualizar sus propios datos de carga de trabajo. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `editarCargaTrabajo()`.
+Analizar la colaboracion necesaria para que el Investigador actualice su propia carga de trabajo, validando las horas introducidas y permitiendo cancelar sin modificar datos.
 
-## Diagrama de colaboración
+## Diagrama de colaboracion
 
 <div align=center>
 
-|![Análisis: editarCargaTrabajo()](/images/RUP/01-analisis/casos-uso/investigador/editarCargaTrabajo/editarCargaTrabajo-analisis.svg)|
+|![Analisis: editarCargaTrabajo()](/images/RUP/01-analisis/casos-uso/investigador/editarCargaTrabajo/editarCargaTrabajo-analisis.svg)|
 |-|
-|Código fuente: [colaboracion.puml](colaboracion.puml)|
+|Codigo fuente: [colaboracion.puml](colaboracion.puml)|
 
 </div>
 
-## Clases de análisis identificadas
+## Clases de analisis identificadas
 
-### Clases de vista (boundary)
+### EditarCargaTrabajoPropiaView
+**Estereotipo**: Vista (Boundary)
 
-#### EditarCargaTrabajoView
-**Estereotipo**: Vista (Boundary)  
 **Responsabilidades**:
-- Recibir la solicitud `editarCargaTrabajo()` del Investigador.
-- Presentar la información de cargas de trabajo necesaria para el caso de uso.
-- Capturar datos, criterios o confirmaciones introducidos por el Investigador.
-- Invocar al controlador para ejecutar la operación de análisis.
-- Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
+- Recibir `editarCargaTrabajo()` desde `OPCIONES_CARGA_TRABAJO_ABIERTAS`.
+- Presentar la carga actual del Investigador autenticado.
+- Capturar modificaciones de horas y observaciones.
+- Presentar errores de validacion o confirmacion de actualizacion.
+- Permitir cancelar la edicion sin cambios.
 
-**Colaboraciones**:
-- **Entrada**: Recibe `editarCargaTrabajo()` desde el estado de contexto correspondiente.
-- **Control**: Se comunica con `CargaTrabajoController`.
-- **Salida**: Devuelve el control a la navegación definida para el Investigador.
+### CargaTrabajoController
+**Estereotipo**: Control
 
-### Clases de control
-
-#### CargaTrabajoController
-**Estereotipo**: Control  
 **Responsabilidades**:
-- Coordinar la ejecución del caso de uso `editarCargaTrabajo()`.
-- Aplicar reglas de permisos del Investigador.
-- Validar datos o criterios antes de acceder a las entidades.
-- Servir como intermediario entre la vista y el repositorio.
+- Coordinar la obtencion de la carga propia.
+- Validar horas y datos introducidos.
+- Garantizar que la actualizacion se aplica solo al Investigador autenticado.
+- Solicitar la persistencia de la carga actualizada.
 
-**Colaboraciones**:
-- **Vista**: Responde a solicitudes de `EditarCargaTrabajoView`.
-- **Repositorio**: Delega operaciones de datos a `CargaTrabajoRepository`.
+### CargaTrabajoRepository
+**Estereotipo**: Entidad
 
-### Clases de entidad (entity)
-
-#### CargaTrabajoRepository
-**Estereotipo**: Entidad  
 **Responsabilidades**:
-- Abstraer el acceso a datos de cargas de trabajo.
-- Proporcionar operaciones `obtenerPorId(id)` y `actualizar(entidad)`.
-- Mantener la consistencia conceptual de cargas de trabajo.
-- Encapsular restricciones de consulta o modificación asociadas al rol.
+- Obtener la carga de trabajo por usuario autenticado.
+- Persistir la carga de trabajo actualizada.
+- Mantener la consistencia de las horas semanales.
 
-**Colaboraciones**:
-- **Control**: Responde a `CargaTrabajoController`.
-- **Entidad**: Gestiona instancias de `CargaTrabajo`.
+### RecompensaRepository
+**Estereotipo**: Entidad
 
-#### CargaTrabajo
-**Estereotipo**: Entidad  
 **Responsabilidades**:
-- Representar la información de carga de trabajo.
-- Encapsular atributos relevantes del dominio.
-- Mantener la integridad de los datos usados por el caso de uso.
+- Registrar una compensacion pendiente solo cuando la carga propia supera el limite docente.
+- Mantener la relacion entre exceso docente y recompensa economica.
 
-**Colaboraciones**:
-- **Repositorio**: Es gestionado por `CargaTrabajoRepository`.
+### CargaTrabajo
+**Estereotipo**: Entidad
 
-## Flujo de colaboración
+**Responsabilidades**:
+- Representar docencia, investigacion, actividades academicas y observaciones.
+- Mantener el total semanal y las reglas conceptuales de carga.
+- Calcular exceso docente cuando las horas de docencia superan 16 horas semanales.
 
-### Secuencia de operaciones
+### Recompensa
+**Estereotipo**: Entidad
 
-1. **Inicio**: Estado de contexto -> `EditarCargaTrabajoView.editarCargaTrabajo()`.
-2. **Solicitud principal**: `EditarCargaTrabajoView` -> `CargaTrabajoController.editarCargaTrabajo(id, datos)`.
-3. **Acceso a datos**: `EditarCargaTrabajoView` -> `CargaTrabajoController.validarCambios(datos)`.
-4. **Validación de cambios**: `CargaTrabajoController` -> `CargaTrabajoRepository.obtenerPorId(id)`.
-5. **Persistencia**: `CargaTrabajoController` -> `CargaTrabajoRepository.actualizar(entidad)`.
-6. **Finalización**: `EditarCargaTrabajoView` devuelve el control al estado de navegación definido.
+**Responsabilidades**:
+- Representar la compensacion economica pendiente por exceso docente.
 
-### Patrón de colaboración establecido
+## Flujo de colaboracion
 
-- **Entrada estándar**: Desde el estado activo del diagrama de contexto del Investigador.
-- **Análisis MVC completo**: Vista, Control y Entidad claramente separados.
-- **Salida estándar**: Retorno a la navegación permitida o a una colaboración relacionada.
+1. `OPCIONES_CARGA_TRABAJO_ABIERTAS` envia `editarCargaTrabajo()` a `EditarCargaTrabajoPropiaView`.
+2. La vista solicita `obtenerCargaPropia(investigador)`.
+3. El controlador consulta `CargaTrabajoRepository.obtenerPorUsuario(investigador)`.
+4. La vista envia los cambios y el controlador ejecuta `validarHoras(datos)`.
+5. Si los datos son validos, el controlador ejecuta `actualizarCargaPropia(investigador, datos)`.
+6. La entidad calcula `calcularExcesoDocente(maximo16h)`.
+7. El repositorio persiste `actualizar(cargaTrabajo)`.
+8. Si hay exceso docente, `RecompensaRepository.registrarCompensacionPendienteSiExcede(cargaTrabajo)` deja la compensacion preparada.
+9. La vista vuelve a `OPCIONES_CARGA_TRABAJO_ABIERTAS`; si el actor cancela, vuelve sin cambios.
 
 ## Correspondencia con requisitos
 
-### Mapeado con especificación detallada
-
-|Requisito del caso de uso|Clase responsable|Método/Colaboración|
+|Requisito del caso de uso|Clase responsable|Metodo/Colaboracion|
 |-|-|-|
-|Atender la solicitud `editarCargaTrabajo()`|`EditarCargaTrabajoView`|Recibe la acción del Investigador|
-|Coordinar reglas del caso de uso|`CargaTrabajoController`|`editarCargaTrabajo(id, datos)`|
-|Aplicar permisos y validaciones|`CargaTrabajoController`|`validarCambios(datos)`|
-|Acceder a datos de cargas de trabajo|`CargaTrabajoRepository`|`obtenerPorId(id)`, `actualizar(entidad)`|
-|Representar atributos de dominio|`CargaTrabajo`|Entidad conceptual|
-
-### Atributos tratados
-
-|Atributo conceptual|Entidad responsable|Observación|
-|-|-|-|
-|dedicación|`CargaTrabajo`|Atributo conceptual tratado por la entidad de dominio.|
-|disponibilidad|`CargaTrabajo`|Atributo conceptual tratado por la entidad de dominio.|
-|proyectos asociados|`CargaTrabajo`|Atributo conceptual tratado por la entidad de dominio.|
-|observaciones|`CargaTrabajo`|Atributo conceptual tratado por la entidad de dominio.|
-
-## Colaboraciones relacionadas
-
-- **abrirPanelPrincipal()**: colaboración relacionada desde la navegación del caso de uso.
+|Editar carga propia|`EditarCargaTrabajoPropiaView`|Recibe `editarCargaTrabajo()`|
+|Presentar carga actual|`CargaTrabajoController`|`obtenerCargaPropia(investigador)`|
+|Validar datos introducidos|`CargaTrabajoController`|`validarHoras(datos)`|
+|Persistir cambios propios|`CargaTrabajoRepository`|`actualizar(cargaTrabajo)`|
+|Registrar compensacion por exceso docente|`RecompensaRepository`|`registrarCompensacionPendienteSiExcede(cargaTrabajo)`|
+|Cancelar sin cambios|`EditarCargaTrabajoPropiaView`|`cancelarEdicion()`|
 
 ## Reglas funcionales consideradas
 
-- Mantener la separación entre presentación, coordinación y entidad para el rol Investigador.
-- Restringir operaciones de creación, edición y eliminación a publicaciones y entregables propios del Investigador.
-
-## Características del análisis
-
-### Separación de responsabilidades MVC
-
-- **Vista**: Solo presentación e interacción con el Investigador.
-- **Control**: Solo coordinación, permisos y lógica de aplicación.
-- **Entidad**: Solo datos, repositorios y reglas conceptuales del dominio.
-
-### Agnóstico tecnológicamente
-
-- No especifica tecnología de interfaz de usuario.
-- No asume implementación concreta de base de datos.
-- Mantiene independencia de frameworks.
-
-### Trazabilidad completa
-
-- **Origen**: Caso de uso detallado `editarCargaTrabajo()`.
-- **Destino**: Base para diseño arquitectónico posterior.
-- **Conexión**: Diagrama de contexto -> Análisis de colaboración -> Diseño.
-
-## Patrones aplicados
-
-### Repository pattern
-`CargaTrabajoRepository` abstrae el acceso a datos de cargas de trabajo, permitiendo cambiar la implementación sin afectar al controlador.
-
-### MVC pattern
-Separación clara entre presentación (`EditarCargaTrabajoView`), lógica de aplicación (`CargaTrabajoController`) y datos (`CargaTrabajo`, `CargaTrabajoRepository`).
-
-### Sistema de estados
-Mantiene coherencia con el diagrama de contexto del Investigador, respetando las transiciones de estado establecidas.
+- El Investigador solo puede editar su propia carga de trabajo.
+- No se recibe `idPersona` desde la vista en este caso.
+- Las horas deben validarse antes de guardar.
+- Un investigador-docente suele impartir 4 asignaturas por cuatrimestre.
+- El maximo ordinario de docencia es 16 horas semanales.
+- Si se supera ese limite, el sistema registra una compensacion economica pendiente.
+- La cancelacion no altera la carga existente.
+- La salida natural vuelve a `OPCIONES_CARGA_TRABAJO_ABIERTAS`.
 
 ## Referencias
 
-- [Especificación detallada: editarCargaTrabajo()](/RUP/00-casos-uso/02-detalle/investigador/editarCargaTrabajo/README.md)
+- [Especificacion detallada](/RUP/00-casos-uso/02-detalle/investigador/editarCargaTrabajo/README.md)
 - [Diagramas de contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)
-- [Actores y casos de uso](/RUP/00-casos-uso/01-actores-casos-uso/actores-casos-uso.md)
 - [Modelo del dominio](/RUP/00-casos-uso/00-modelo-del-dominio/modelo-dominio.md)
-- [Log de conversaciones](/conversation-log.md)
+- [conversation-log.md](/conversation-log.md)
