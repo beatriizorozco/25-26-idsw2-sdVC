@@ -27,6 +27,10 @@ public class Usuario {
     @Column(nullable = false, length = 30)
     private Rol rol;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 30)
+    private SedeFuniber sede;
+
     @Column(nullable = false)
     private boolean activo;
 
@@ -53,6 +57,7 @@ public class Usuario {
         this.contrasenaHash = contrasenaHash;
         this.rol = rol;
         this.activo = activo;
+        this.sede = rol == Rol.COORDINADOR ? SedeFuniber.GLOBAL : SedeFuniber.BARCELONA;
         this.nombreCompleto = nombreUsuario;
     }
 
@@ -70,6 +75,10 @@ public class Usuario {
 
     public Rol getRol() {
         return rol;
+    }
+
+    public SedeFuniber getSede() {
+        return sede;
     }
 
     public boolean isActivo() {
@@ -107,6 +116,14 @@ public class Usuario {
         this.unidad = unidad;
         this.lineaInvestigacion = lineaInvestigacion;
         this.biografia = biografia;
+    }
+
+    public void actualizarSede(SedeFuniber sede) {
+        this.sede = sede;
+    }
+
+    public boolean esInvestigadorDocente() {
+        return rol == Rol.INVESTIGADOR && sede.esInvestigadorDocente();
     }
 
     public void desactivar() {

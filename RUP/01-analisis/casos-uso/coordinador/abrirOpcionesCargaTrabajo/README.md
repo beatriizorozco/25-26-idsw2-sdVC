@@ -69,20 +69,13 @@ Analizar la colaboracion necesaria para que el Coordinador consulte la carga de 
 - Consultar proyectos libres o pendientes de asignacion.
 - Aportar contexto para sugerir investigadores-docentes con menor carga cuando exista un proyecto libre.
 
-### RecompensaRepository
-**Estereotipo**: Entidad
-
-**Responsabilidades**:
-- Consultar compensaciones economicas pendientes por exceso de docencia.
-- Relacionar la carga de trabajo con recompensas derivadas.
-
 ### CargaTrabajo
 **Estereotipo**: Entidad
 
 **Responsabilidades**:
 - Representar dedicacion, disponibilidad, horas semanales y observaciones.
 - Relacionar la carga con la persona responsable.
-- Calcular margen o exceso respecto al maximo de 16 horas semanales de docencia solo cuando aplica por sede.
+- Calcular margen respecto al maximo de 16 horas semanales de docencia solo cuando aplica por sede.
 
 ### Persona
 **Estereotipo**: Entidad
@@ -99,13 +92,6 @@ Analizar la colaboracion necesaria para que el Coordinador consulte la carga de 
 - Representar un proyecto libre o pendiente de asignacion.
 - Aportar criterios para seleccionar candidatos adecuados.
 
-### Recompensa
-**Estereotipo**: Entidad
-
-**Responsabilidades**:
-- Representar la compensacion economica asociada a exceso docente.
-- Mantener el estado de la compensacion para su gestion posterior.
-
 ## Flujo de colaboracion
 
 1. `PANEL_PRINCIPAL_ABIERTO` envia `abrirOpcionesCargaTrabajo()` a `PanelCargaTrabajoView`.
@@ -116,9 +102,8 @@ Analizar la colaboracion necesaria para que el Coordinador consulte la carga de 
 6. El controlador consulta `ProyectoRepository.obtenerProyectosLibres()`.
 7. El controlador consulta `PersonaRepository.obtenerInvestigadoresDocentesPorSede()` para identificar que sedes aplican docencia.
 8. Si existe un proyecto libre, el controlador consulta `CargaTrabajoRepository.sugerirInvestigadoresDocentesConMenorCarga(proyectoLibre, sedesDocentes)`.
-9. El controlador consulta `RecompensaRepository.obtenerCompensacionesPendientes(filtros)` para mostrar excesos docentes compensables.
-10. Si el Coordinador selecciona una persona, el controlador consulta `PersonaRepository.obtenerPorId(idPersona)`.
-11. La vista presenta `OPCIONES_CARGA_TRABAJO_ABIERTAS` y permite editar o volver al panel.
+9. Si el Coordinador selecciona una persona, el controlador consulta `PersonaRepository.obtenerPorId(idPersona)`.
+10. La vista presenta `OPCIONES_CARGA_TRABAJO_ABIERTAS` y permite editar o volver al panel.
 
 ## Correspondencia con requisitos
 
@@ -131,7 +116,6 @@ Analizar la colaboracion necesaria para que el Coordinador consulte la carga de 
 |Consultar proyectos libres|`ProyectoRepository`|`obtenerProyectosLibres()`|
 |Identificar investigadores-docentes por sede|`PersonaRepository`|`obtenerInvestigadoresDocentesPorSede()`|
 |Sugerir investigadores-docentes con menor carga|`CargaTrabajoRepository`|`sugerirInvestigadoresDocentesConMenorCarga(proyectoLibre, sedesDocentes)`|
-|Mostrar exceso docente compensable|`RecompensaRepository`|`obtenerCompensacionesPendientes(filtros)`|
 |Permitir editar carga de trabajo|`PanelCargaTrabajoView`|Navega a `editarCargaTrabajo(idPersona)`|
 
 ## Reglas funcionales consideradas
@@ -143,8 +127,9 @@ Analizar la colaboracion necesaria para que el Coordinador consulte la carga de 
 - La carga de trabajo debe evitar asignaciones arbitrarias que sobrecarguen siempre a las mismas personas.
 - Un investigador-docente suele impartir 4 asignaturas por cuatrimestre.
 - El maximo ordinario de docencia es 16 horas semanales.
-- Si una persona de una sede con docencia investigadora supera 16 horas semanales de docencia, el sistema debe identificarla como compensable economicamente.
-- Si la persona pertenece a una sede donde solo es investigadora, no se calcula exceso docente ni recompensa por docencia.
+- Si una persona de una sede con docencia investigadora alcanza ese limite, el sistema no debe permitir registrar mas horas docentes.
+- Si la persona pertenece a una sede donde solo es investigadora, no se calcula margen docente ni se aplica limite de docencia.
+- Las recompensas no nacen por exceso de docencia; se gestionan cuando se completa un proyecto, con opcion economica o reduccion docente posterior.
 - La edicion se realiza sobre una persona concreta seleccionada desde el listado.
 - El caso no asigna el proyecto; solo prepara informacion para decidir la asignacion en el flujo de proyectos.
 

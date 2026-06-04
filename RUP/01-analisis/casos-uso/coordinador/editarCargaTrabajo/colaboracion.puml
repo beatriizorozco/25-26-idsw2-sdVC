@@ -7,10 +7,8 @@ package editarCargaTrabajo as "editarCargaTrabajo()" {
     rectangle #b5bd68 CargaTrabajoController
     rectangle #F2AC4E CargaTrabajoRepository
     rectangle #F2AC4E PersonaRepository
-    rectangle #F2AC4E RecompensaRepository
     rectangle #F2AC4E CargaTrabajo
     rectangle #F2AC4E Persona
-    rectangle #F2AC4E Recompensa
 }
 
 rectangle #CDEBA5 ":OPCIONES_CARGA_TRABAJO_ABIERTAS" as EstadoSalida
@@ -24,13 +22,11 @@ EditarCargaTrabajoView --> CargaTrabajoController: actualizarCargaDePersona(coor
 CargaTrabajoController --> PersonaRepository: obtenerPorId(idPersona)
 CargaTrabajoController --> CargaTrabajoRepository: obtenerPorPersona(idPersona)
 CargaTrabajoController --> Persona: esInvestigadorDocenteSegunSede()
-CargaTrabajoController --> CargaTrabajo: calcularExcesoDocenteSiAplica(maximo16h)
+CargaTrabajoController --> CargaTrabajo: validarLimiteDocente(maximo16h)
 CargaTrabajoController --> CargaTrabajoRepository: actualizar(cargaTrabajo)
 CargaTrabajoController --> CargaTrabajoRepository: recalcularPrioridadParaProyectosLibres(idPersona)
-CargaTrabajoController --> RecompensaRepository: registrarCompensacionPendienteSiExcede(cargaTrabajo)
 PersonaRepository -- Persona
 CargaTrabajoRepository -- CargaTrabajo
-RecompensaRepository -- Recompensa
 EditarCargaTrabajoView ..> EstadoSalida: cargaTrabajoActualizada()
 EditarCargaTrabajoView ..> EstadoSalida: cancelarEdicion()
 EditarCargaTrabajoView ..> AbrirPanelPrincipal: abrirPanelPrincipal()

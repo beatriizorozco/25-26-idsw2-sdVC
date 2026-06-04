@@ -6,9 +6,7 @@ package abrirOpcionesCargaTrabajo as "abrirOpcionesCargaTrabajo()" {
     rectangle #629EF9 CargaTrabajoPropiaView
     rectangle #b5bd68 CargaTrabajoController
     rectangle #F2AC4E CargaTrabajoRepository
-    rectangle #F2AC4E RecompensaRepository
     rectangle #F2AC4E CargaTrabajo
-    rectangle #F2AC4E Recompensa
 }
 
 rectangle #CDEBA5 ":OPCIONES_CARGA_TRABAJO_ABIERTAS" as EstadoSalida
@@ -21,9 +19,8 @@ CargaTrabajoPropiaView -d-> CargaTrabajoController: obtenerCargaPropia(investiga
 CargaTrabajoPropiaView --> CargaTrabajoController: prepararAccionesPropias(investigador)
 CargaTrabajoController --> CargaTrabajoRepository: obtenerPorUsuario(investigador)
 CargaTrabajoController --> CargaTrabajoRepository: calcularResumenPersonal(cargaTrabajo)
-CargaTrabajoController --> RecompensaRepository: obtenerCompensacionPendiente(investigador)
+CargaTrabajoController --> CargaTrabajo: calcularMargenDocente(maximo16h)
 CargaTrabajoRepository -- CargaTrabajo
-RecompensaRepository -- Recompensa
 CargaTrabajoPropiaView ..> EstadoSalida: opcionesCargaTrabajoAbiertas()
 CargaTrabajoPropiaView ..> EditarCargaTrabajo: editarCargaTrabajo()
 CargaTrabajoPropiaView ..> AbrirPanelPrincipal: abrirPanelPrincipal()

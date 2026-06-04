@@ -7,7 +7,6 @@ participant "CargaTrabajoController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "CargaTrabajoService" as Service
 participant "CargaTrabajoRepository" as CargaRepo
-participant "RecompensaRepository" as RecompensaRepo
 
 Investigador -> Frontend: Solicita editar su carga de trabajo
 activate Frontend
@@ -24,29 +23,26 @@ alt Sesion activa
     deactivate Sesion
     Api -> Service: actualizarCargaPropia(investigador, datos)
     activate Service
-    Service -> Service: validarHoras(datos)
-    Service -> CargaRepo: obtenerPorUsuario(investigador)
-    activate CargaRepo
-    CargaRepo --> Service: CargaTrabajo
-    Service -> Service: actualizarCampos(cargaTrabajo, datos)
-    Service -> Service: calcularExcesoDocenteSiAplica(cargaTrabajo, sede, maximo16h)
-    Service -> CargaRepo: guardar(cargaTrabajoActualizada)
-    CargaRepo --> Service: CargaTrabajo actualizada
-    deactivate CargaRepo
-    alt Sede con docencia y excede 16 horas docentes
-        Service -> RecompensaRepo: registrarCompensacionPendienteSiExcede(cargaTrabajo)
-        activate RecompensaRepo
-        RecompensaRepo --> Service: Recompensa pendiente
-        deactivate RecompensaRepo
-    else Sede sin docencia o no excede limite docente
-        Service -> Service: Mantener carga sin compensacion nueva
+    Service -> Service: validarHoras(datos, sede, maximo16h)
+    alt Investigador-docente supera 16 horas docentes
+        Service --> Api: validacion fallida
+        Api --> Frontend: 400 Bad Request
+        Frontend --> Investigador: Presenta error de limite docente
+    else Carga valida
+        Service -> CargaRepo: obtenerPorUsuario(investigador)
+        activate CargaRepo
+        CargaRepo --> Service: CargaTrabajo
+        Service -> Service: actualizarCampos(cargaTrabajo, datos)
+        Service -> CargaRepo: guardar(cargaTrabajoActualizada)
+        CargaRepo --> Service: CargaTrabajo actualizada
+        deactivate CargaRepo
+        Service --> Api: CargaTrabajoPropiaResponse
+        deactivate Service
+        Api --> Frontend: 200 OK\nCargaTrabajoPropiaResponse
+        deactivate Api
+        Frontend -> Frontend: Actualizar resumen y notificar exito
+        Frontend --> Investigador: Presenta OPCIONES_CARGA_TRABAJO_ABIERTAS
     end
-    Service --> Api: CargaTrabajoPropiaResponse
-    deactivate Service
-    Api --> Frontend: 200 OK\nCargaTrabajoPropiaResponse
-    deactivate Api
-    Frontend -> Frontend: Actualizar resumen y notificar exito
-    Frontend --> Investigador: Presenta OPCIONES_CARGA_TRABAJO_ABIERTAS
 else Datos invalidos o sesion ausente
     Sesion --> Api: SesionNoValidaException / validacion fallida
     deactivate Sesion

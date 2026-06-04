@@ -50,3 +50,44 @@ export interface SolicitudEliminacionPerfil {
   fechaCreacion: string
 }
 
+export interface CargaTrabajoPersona {
+  perfilId: number
+  usuario: string
+  nombreCompleto: string
+  rol: Rol
+  sede: string
+  investigadorDocente: boolean
+  horasDocencia: number
+  horasInvestigacion: number
+  horasGestionAcademica: number
+  totalSemanal: number
+  margenDocente: number
+  observaciones: string
+}
+
+export interface CargaTrabajoUpdate {
+  horasDocencia: number
+  horasInvestigacion: number
+  horasGestionAcademica: number
+  observaciones: string
+}
+
+export interface ProyectoLibre {
+  codigo: string
+  nombre: string
+  sede: string
+  area: string
+}
+
+export interface SugerenciaAsignacion {
+  proyecto: ProyectoLibre
+  candidatos: CargaTrabajoPersona[]
+}
+
+export interface PanelCargaTrabajo {
+  maximoDocenteSemanal: number
+  cargas: CargaTrabajoPersona[]
+  proyectosLibres: ProyectoLibre[]
+  sugerencias: SugerenciaAsignacion[]
+}
+

@@ -6,9 +6,7 @@ package editarCargaTrabajo as "editarCargaTrabajo()" {
     rectangle #629EF9 EditarCargaTrabajoPropiaView
     rectangle #b5bd68 CargaTrabajoController
     rectangle #F2AC4E CargaTrabajoRepository
-    rectangle #F2AC4E RecompensaRepository
     rectangle #F2AC4E CargaTrabajo
-    rectangle #F2AC4E Recompensa
 }
 
 rectangle #CDEBA5 ":OPCIONES_CARGA_TRABAJO_ABIERTAS" as EstadoSalida
@@ -20,11 +18,9 @@ EditarCargaTrabajoPropiaView -d-> CargaTrabajoController: obtenerCargaPropia(inv
 EditarCargaTrabajoPropiaView --> CargaTrabajoController: validarHoras(datos)
 EditarCargaTrabajoPropiaView --> CargaTrabajoController: actualizarCargaPropia(investigador, datos)
 CargaTrabajoController --> CargaTrabajoRepository: obtenerPorUsuario(investigador)
-CargaTrabajoController --> CargaTrabajo: calcularExcesoDocenteSiAplica(maximo16h)
+CargaTrabajoController --> CargaTrabajo: validarLimiteDocente(maximo16h)
 CargaTrabajoController --> CargaTrabajoRepository: actualizar(cargaTrabajo)
-CargaTrabajoController --> RecompensaRepository: registrarCompensacionPendienteSiExcede(cargaTrabajo)
 CargaTrabajoRepository -- CargaTrabajo
-RecompensaRepository -- Recompensa
 EditarCargaTrabajoPropiaView ..> EstadoSalida: cargaTrabajoActualizada()
 EditarCargaTrabajoPropiaView ..> EstadoSalida: cancelarEdicion()
 EditarCargaTrabajoPropiaView ..> AbrirPanelPrincipal: abrirPanelPrincipal()

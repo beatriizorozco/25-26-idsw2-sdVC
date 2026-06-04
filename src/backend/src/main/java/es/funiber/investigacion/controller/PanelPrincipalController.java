@@ -28,7 +28,7 @@ public class PanelPrincipalController {
         SesionResponse sesion = sesionService.obtenerSesionActual(authentication);
         return new PanelPrincipalResponse(
                 sesion.rol(),
-                panelPrincipalService.obtenerAccionesDisponibles(sesion.rol()));
+                panelPrincipalService.obtenerAccionesDisponibles(sesion.usuario(), sesion.rol()));
     }
 }
 

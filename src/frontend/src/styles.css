@@ -161,6 +161,12 @@ label {
   font-weight: 700;
 }
 
+.field-hint {
+  color: #6d7f8b;
+  font-size: 12px;
+  font-weight: 600;
+}
+
 .input-wrapper {
   display: flex;
   align-items: center;
@@ -580,6 +586,114 @@ textarea {
   background: #f3f7fb;
 }
 
+.workload-workspace {
+  max-width: 1180px;
+}
+
+.workload-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.workload-summary article {
+  border: 1px solid #d5e1ea;
+  border-radius: 7px;
+  padding: 18px;
+  background: #ffffff;
+}
+
+.workload-summary strong,
+.workload-summary span {
+  display: block;
+}
+
+.workload-summary strong {
+  color: #00689d;
+  font-family: Georgia, serif;
+  font-size: 34px;
+  font-weight: 500;
+}
+
+.workload-summary span {
+  color: #657783;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.workload-layout {
+  grid-template-columns: minmax(0, 1.25fr) minmax(340px, 0.75fr);
+}
+
+.workload-list,
+.suggestion-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.workload-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #d5e1ea;
+  border-radius: 5px;
+  padding: 14px;
+  text-align: left;
+  background: #ffffff;
+}
+
+.workload-row:hover {
+  border-color: #9fc4d8;
+  background: #f7fbfd;
+}
+
+.workload-row strong,
+.workload-row small {
+  display: block;
+}
+
+.workload-row small,
+.suggestion-card small {
+  margin-top: 4px;
+  color: #70808a;
+}
+
+.workload-row > span:last-child {
+  color: #00689d;
+  font-weight: 800;
+}
+
+.suggestion-card {
+  border: 1px solid #d5e1ea;
+  border-radius: 5px;
+  padding: 14px;
+  background: #ffffff;
+}
+
+.suggestion-card strong,
+.suggestion-card small {
+  display: block;
+}
+
+.suggestion-card ol {
+  display: grid;
+  gap: 5px;
+  margin: 12px 0 0;
+  padding-left: 18px;
+  color: #334752;
+}
+
+.compact-list {
+  margin-bottom: 22px;
+}
+
+.workload-form {
+  margin-top: 18px;
+}
+
 @media (max-width: 760px) {
   .login-layout {
     grid-template-columns: 1fr;
@@ -620,6 +734,10 @@ textarea {
   }
 
   .detail-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .workload-summary {
     grid-template-columns: 1fr;
   }
 

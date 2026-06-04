@@ -8,11 +8,9 @@ package abrirOpcionesCargaTrabajo as "abrirOpcionesCargaTrabajo()" {
     rectangle #F2AC4E CargaTrabajoRepository
     rectangle #F2AC4E PersonaRepository
     rectangle #F2AC4E ProyectoRepository
-    rectangle #F2AC4E RecompensaRepository
     rectangle #F2AC4E CargaTrabajo
     rectangle #F2AC4E Persona
     rectangle #F2AC4E Proyecto
-    rectangle #F2AC4E Recompensa
 }
 
 rectangle #CDEBA5 ":OPCIONES_CARGA_TRABAJO_ABIERTAS" as EstadoSalida
@@ -29,12 +27,10 @@ CargaTrabajoController --> CargaTrabajoRepository: obtenerDetallePorPersona(filt
 CargaTrabajoController --> ProyectoRepository: obtenerProyectosLibres()
 CargaTrabajoController --> PersonaRepository: obtenerInvestigadoresDocentesPorSede()
 CargaTrabajoController --> CargaTrabajoRepository: sugerirInvestigadoresDocentesConMenorCarga(proyectoLibre, sedesDocentes)
-CargaTrabajoController --> RecompensaRepository: obtenerCompensacionesPendientes(filtros)
 CargaTrabajoController --> PersonaRepository: obtenerPorId(idPersona)
 CargaTrabajoRepository -- CargaTrabajo
 PersonaRepository -- Persona
 ProyectoRepository -- Proyecto
-RecompensaRepository -- Recompensa
 PanelCargaTrabajoView ..> EstadoSalida: opcionesCargaTrabajoAbiertas()
 PanelCargaTrabajoView ..> EditarCargaTrabajo: editarCargaTrabajo(idPersona)
 PanelCargaTrabajoView ..> AbrirPanelPrincipal: abrirPanelPrincipal()

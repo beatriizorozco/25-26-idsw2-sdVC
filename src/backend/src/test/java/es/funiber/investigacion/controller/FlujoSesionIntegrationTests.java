@@ -95,6 +95,26 @@ class FlujoSesionIntegrationTests {
     }
 
     @Test
+    void investigadorNoDocenteNoRecibeRecompensasEnSuPanel() throws Exception {
+        HttpSession session = iniciarSesion("investigador.barcelona", "barcelona123");
+
+        mockMvc.perform(get("/api/panel-principal").session((org.springframework.mock.web.MockHttpSession) session))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.rol").value("INVESTIGADOR"))
+                .andExpect(jsonPath("$.acciones[*].codigo", not(hasItem("recompensas"))));
+    }
+
+    @Test
+    void investigadorDocenteRecibeRecompensasEnSuPanel() throws Exception {
+        HttpSession session = iniciarSesion("docente.santander", "docente123");
+
+        mockMvc.perform(get("/api/panel-principal").session((org.springframework.mock.web.MockHttpSession) session))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.rol").value("INVESTIGADOR"))
+                .andExpect(jsonPath("$.acciones[*].codigo", hasItem("recompensas")));
+    }
+
+    @Test
     void cerrarSesionImpideVolverAConsultarElPanel() throws Exception {
         org.springframework.mock.web.MockHttpSession session =
                 (org.springframework.mock.web.MockHttpSession) iniciarSesion("coordinador", "coordinador123");

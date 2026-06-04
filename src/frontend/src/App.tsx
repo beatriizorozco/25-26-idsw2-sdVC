@@ -4,9 +4,10 @@ import { cerrarSesion, iniciarSesion, obtenerPanelPrincipal, obtenerSesion } fro
 import { LoginPage } from './pages/LoginPage'
 import { PanelPrincipalPage } from './pages/PanelPrincipalPage'
 import { PerfilPage } from './pages/PerfilPage'
+import { CargaTrabajoPage } from './pages/CargaTrabajoPage'
 import type { PanelPrincipal, Sesion } from './types'
 
-type Vista = 'panel' | 'perfil'
+type Vista = 'panel' | 'perfil' | 'carga-trabajo'
 
 export default function App() {
   const [sesion, setSesion] = useState<Sesion | null>(null)
@@ -72,6 +73,9 @@ export default function App() {
             if (codigo === 'perfil') {
               setVista('perfil')
             }
+            if (codigo === 'carga-trabajo') {
+              setVista('carga-trabajo')
+            }
           }}
         />
       )}
@@ -84,6 +88,12 @@ export default function App() {
             setPanel(null)
             setVista('panel')
           }}
+        />
+      )}
+      {vista === 'carga-trabajo' && (
+        <CargaTrabajoPage
+          rol={sesion.rol}
+          onVolver={() => setVista('panel')}
         />
       )}
       {confirmandoCierre && (

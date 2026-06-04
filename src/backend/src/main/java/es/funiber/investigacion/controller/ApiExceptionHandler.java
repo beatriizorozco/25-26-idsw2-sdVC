@@ -43,5 +43,11 @@ public class ApiExceptionHandler {
     public ErrorResponse solicitudDuplicada(SolicitudDuplicadaException exception) {
         return new ErrorResponse(exception.getMessage());
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse solicitudInvalida(IllegalArgumentException exception) {
+        return new ErrorResponse(exception.getMessage());
+    }
 }
 

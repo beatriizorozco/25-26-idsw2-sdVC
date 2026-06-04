@@ -55,26 +55,13 @@ Analizar la colaboracion necesaria para que el Investigador consulte su propia c
 - Calcular o proporcionar resumen personal.
 - Gestionar instancias de `CargaTrabajo`.
 
-### RecompensaRepository
-**Estereotipo**: Entidad
-
-**Responsabilidades**:
-- Consultar si el Investigador tiene compensacion pendiente por exceso docente, solo cuando aplica por sede.
-- Mantener la relacion entre carga de trabajo y recompensa economica.
-
 ### CargaTrabajo
 **Estereotipo**: Entidad
 
 **Responsabilidades**:
 - Representar horas de docencia, investigacion y actividades academicas.
 - Mantener total semanal, margen docente y observaciones.
-- Calcular margen o exceso respecto al limite de 16 horas semanales de docencia solo si la sede permite docencia.
-
-### Recompensa
-**Estereotipo**: Entidad
-
-**Responsabilidades**:
-- Representar la compensacion economica pendiente si la docencia supera el limite y aplica por sede.
+- Calcular margen respecto al limite de 16 horas semanales de docencia solo si la sede permite docencia.
 
 ## Flujo de colaboracion
 
@@ -83,7 +70,7 @@ Analizar la colaboracion necesaria para que el Investigador consulte su propia c
 3. La vista solicita `prepararAccionesPropias(investigador)`.
 4. El controlador consulta `CargaTrabajoRepository.obtenerPorUsuario(investigador)`.
 5. El controlador solicita `calcularResumenPersonal(cargaTrabajo)`.
-6. El controlador consulta `RecompensaRepository.obtenerCompensacionPendiente(investigador)`.
+6. La entidad calcula `calcularMargenDocente(maximo16h)` cuando aplica por sede.
 7. La vista presenta `OPCIONES_CARGA_TRABAJO_ABIERTAS`.
 8. El Investigador puede navegar a `editarCargaTrabajo()` o volver al panel.
 
@@ -93,7 +80,7 @@ Analizar la colaboracion necesaria para que el Investigador consulte su propia c
 |-|-|-|
 |Mostrar carga propia|`CargaTrabajoController`|`obtenerCargaPropia(investigador)`|
 |Mostrar resumen personal|`CargaTrabajoRepository`|`calcularResumenPersonal(cargaTrabajo)`|
-|Mostrar compensacion pendiente|`RecompensaRepository`|`obtenerCompensacionPendiente(investigador)`|
+|Mostrar margen docente si aplica|`CargaTrabajo`|`calcularMargenDocente(maximo16h)`|
 |Restringir consulta a usuario autenticado|`CargaTrabajoController`|`prepararAccionesPropias(investigador)`|
 |Permitir edicion propia|`CargaTrabajoPropiaView`|Navega a `editarCargaTrabajo()`|
 |Volver al panel|`CargaTrabajoPropiaView`|Navega a `abrirPanelPrincipal()`|
@@ -103,8 +90,8 @@ Analizar la colaboracion necesaria para que el Investigador consulte su propia c
 - El Investigador solo consulta su carga de trabajo propia.
 - No existe seleccion de persona ni filtros globales en este caso.
 - Si el Investigador es investigador-docente segun su sede, el sistema muestra su margen respecto a 16 horas semanales de docencia.
-- Si supera 16 horas semanales de docencia en una sede con docencia investigadora, el sistema puede mostrar que existe compensacion economica pendiente.
-- Si pertenece a una sede donde solo es investigador, el sistema no calcula exceso docente ni recompensa por docencia.
+- Si pertenece a una sede donde solo es investigador, el sistema no calcula margen docente ni permite acceder a recompensas por docencia.
+- Las recompensas no se generan desde carga de trabajo; aparecen cuando se completa un proyecto y se elige entre recompensa economica o reduccion docente posterior.
 - El caso no modifica datos; solo presenta informacion y opciones.
 - La edicion posterior tambien debe operar sobre el usuario autenticado.
 

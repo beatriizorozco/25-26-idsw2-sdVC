@@ -7,7 +7,6 @@ participant "CargaTrabajoController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "CargaTrabajoService" as Service
 participant "CargaTrabajoRepository" as CargaRepo
-participant "RecompensaRepository" as RecompensaRepo
 
 Investigador -> Frontend: Solicita abrir carga de trabajo
 activate Frontend
@@ -25,20 +24,16 @@ alt Sesion activa
     activate CargaRepo
     CargaRepo --> Service: CargaTrabajo
     deactivate CargaRepo
-    Service -> Service: calcularResumenPersonal(cargaTrabajo, sede, maximo16h)
     alt Sede con docencia investigadora
-        Service -> RecompensaRepo: obtenerCompensacionPendiente(investigador)
-        activate RecompensaRepo
-        RecompensaRepo --> Service: RecompensaPendiente
-        deactivate RecompensaRepo
+        Service -> Service: calcularMargenDocente(maximo16h)
     else Sede solo investigadora
-        Service -> Service: Omitir margen docente y compensacion
+        Service -> Service: Omitir margen docente
     end
     Service --> Api: CargaTrabajoPropiaResponse
     deactivate Service
     Api --> Frontend: 200 OK\nCargaTrabajoPropiaResponse
     deactivate Api
-    Frontend -> Frontend: Renderizar resumen propio y compensacion si existe
+    Frontend -> Frontend: Renderizar resumen propio
     Frontend --> Investigador: Presenta OPCIONES_CARGA_TRABAJO_ABIERTAS
 else Sesion ausente
     Sesion --> Api: SesionNoValidaException

@@ -18,3 +18,7 @@
 - [Abrir Solicitud Eliminación Perfil](abrirSolicitudEliminacionPerfil/README.md)
 - [Eliminar Perfil](eliminarPerfil/README.md)
 
+## Gestión de carga de trabajo
+
+- [Abrir Opciones Carga Trabajo](abrirOpcionesCargaTrabajo/README.md)
+- [Editar Carga Trabajo](editarCargaTrabajo/README.md)

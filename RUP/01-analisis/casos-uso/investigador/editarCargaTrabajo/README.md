@@ -55,26 +55,13 @@ Analizar la colaboracion necesaria para que el Investigador actualice su propia 
 - Persistir la carga de trabajo actualizada.
 - Mantener la consistencia de las horas semanales.
 
-### RecompensaRepository
-**Estereotipo**: Entidad
-
-**Responsabilidades**:
-- Registrar una compensacion pendiente solo cuando la carga propia supera el limite docente y la sede aplica docencia.
-- Mantener la relacion entre exceso docente y recompensa economica.
-
 ### CargaTrabajo
 **Estereotipo**: Entidad
 
 **Responsabilidades**:
 - Representar docencia, investigacion, actividades academicas y observaciones.
 - Mantener el total semanal y las reglas conceptuales de carga.
-- Calcular exceso docente cuando las horas de docencia superan 16 horas semanales y aplica por sede.
-
-### Recompensa
-**Estereotipo**: Entidad
-
-**Responsabilidades**:
-- Representar la compensacion economica pendiente por exceso docente.
+- Validar que la docencia no supere 16 horas semanales cuando aplica por sede.
 
 ## Flujo de colaboracion
 
@@ -83,10 +70,9 @@ Analizar la colaboracion necesaria para que el Investigador actualice su propia 
 3. El controlador consulta `CargaTrabajoRepository.obtenerPorUsuario(investigador)`.
 4. La vista envia los cambios y el controlador ejecuta `validarHoras(datos)`.
 5. Si los datos son validos, el controlador ejecuta `actualizarCargaPropia(investigador, datos)`.
-6. La entidad calcula `calcularExcesoDocenteSiAplica(maximo16h)`.
+6. La entidad ejecuta `validarLimiteDocente(maximo16h)` cuando la sede aplica docencia investigadora.
 7. El repositorio persiste `actualizar(cargaTrabajo)`.
-8. Si hay exceso docente, `RecompensaRepository.registrarCompensacionPendienteSiExcede(cargaTrabajo)` deja la compensacion preparada.
-9. La vista vuelve a `OPCIONES_CARGA_TRABAJO_ABIERTAS`; si el actor cancela, vuelve sin cambios.
+8. La vista vuelve a `OPCIONES_CARGA_TRABAJO_ABIERTAS`; si el actor cancela, vuelve sin cambios.
 
 ## Correspondencia con requisitos
 
@@ -95,8 +81,8 @@ Analizar la colaboracion necesaria para que el Investigador actualice su propia 
 |Editar carga propia|`EditarCargaTrabajoPropiaView`|Recibe `editarCargaTrabajo()`|
 |Presentar carga actual|`CargaTrabajoController`|`obtenerCargaPropia(investigador)`|
 |Validar datos introducidos|`CargaTrabajoController`|`validarHoras(datos)`|
+|Impedir superar 16 horas docentes|`CargaTrabajo`|`validarLimiteDocente(maximo16h)`|
 |Persistir cambios propios|`CargaTrabajoRepository`|`actualizar(cargaTrabajo)`|
-|Registrar compensacion por exceso docente|`RecompensaRepository`|`registrarCompensacionPendienteSiExcede(cargaTrabajo)`|
 |Cancelar sin cambios|`EditarCargaTrabajoPropiaView`|`cancelarEdicion()`|
 
 ## Reglas funcionales consideradas
@@ -107,8 +93,9 @@ Analizar la colaboracion necesaria para que el Investigador actualice su propia 
 - Un investigador-docente suele impartir 4 asignaturas por cuatrimestre.
 - El maximo ordinario de docencia es 16 horas semanales.
 - La condicion de investigador-docente depende de la sede FUNIBER.
-- Si se supera ese limite en una sede con docencia investigadora, el sistema registra una compensacion economica pendiente.
-- Si la sede clasifica al usuario como solo investigador, no se genera compensacion docente.
+- Si se intenta superar ese limite en una sede con docencia investigadora, el sistema rechaza la actualizacion.
+- Si la sede clasifica al usuario como solo investigador, no se aplica limite docente ni recompensa por carga.
+- Las recompensas pertenecen al flujo de proyectos completados y pueden resolverse como recompensa economica o reduccion docente del siguiente cuatrimestre.
 - La cancelacion no altera la carga existente.
 - La salida natural vuelve a `OPCIONES_CARGA_TRABAJO_ABIERTAS`.
 

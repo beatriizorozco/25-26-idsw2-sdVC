@@ -9,7 +9,6 @@ participant "CargaTrabajoService" as Service
 participant "CargaTrabajoRepository" as CargaRepo
 participant "PersonaRepository" as PersonaRepo
 participant "ProyectoRepository" as ProyectoRepo
-participant "RecompensaRepository" as RecompensaRepo
 
 Coordinador -> Frontend: Solicita abrir carga de trabajo
 activate Frontend
@@ -39,10 +38,7 @@ alt Sesion de Coordinador activa
     Service -> CargaRepo: sugerirInvestigadoresDocentesConMenorCarga(proyectosLibres, sedesDocentes)
     CargaRepo --> Service: List<SugerenciaAsignacion>
     deactivate CargaRepo
-    Service -> RecompensaRepo: obtenerCompensacionesPendientes(filtros)
-    activate RecompensaRepo
-    RecompensaRepo --> Service: List<RecompensaPendiente>
-    deactivate RecompensaRepo
+    Service -> Service: calcularMargenDocente(maximo16h)
     Service --> Api: PanelCargaTrabajoResponse
     deactivate Service
     Api --> Frontend: 200 OK\nPanelCargaTrabajoResponse

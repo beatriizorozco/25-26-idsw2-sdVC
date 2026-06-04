@@ -1,8 +1,12 @@
 package es.funiber.investigacion.config;
 
+import es.funiber.investigacion.model.CargaTrabajo;
 import es.funiber.investigacion.model.Rol;
+import es.funiber.investigacion.model.SedeFuniber;
 import es.funiber.investigacion.model.Usuario;
+import es.funiber.investigacion.repository.CargaTrabajoRepository;
 import es.funiber.investigacion.repository.UsuarioRepository;
+import java.math.BigDecimal;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,9 +18,10 @@ public class DemoDataConfig {
     @Bean
     CommandLineRunner crearUsuariosDemo(
             UsuarioRepository usuarioRepository,
+            CargaTrabajoRepository cargaTrabajoRepository,
             PasswordEncoder passwordEncoder) {
         return args -> {
-            crearSiNoExiste(
+            Usuario coordinador = crearSiNoExiste(
                     usuarioRepository,
                     passwordEncoder,
                     "coordinador",
@@ -24,10 +29,11 @@ public class DemoDataConfig {
                     Rol.COORDINADOR,
                     "Coordinador FUNIBER",
                     "coordinador@funiber.org",
-                    "Coordinación de investigación",
-                    "Gestión académica e investigación",
-                    "Perfil coordinador con acceso a gestión global de la plataforma.");
-            crearSiNoExiste(
+                    "Coordinacion de investigacion",
+                    "Gestion academica e investigacion",
+                    "Perfil coordinador con acceso a gestion global de la plataforma.",
+                    SedeFuniber.GLOBAL);
+            Usuario investigador = crearSiNoExiste(
                     usuarioRepository,
                     passwordEncoder,
                     "investigador",
@@ -35,13 +41,43 @@ public class DemoDataConfig {
                     Rol.INVESTIGADOR,
                     "Investigador FUNIBER",
                     "investigador@funiber.org",
-                    "Investigación",
-                    "Producción científica",
-                    "Perfil investigador con acceso a sus proyectos, publicaciones y entregables.");
+                    "Investigacion",
+                    "Produccion cientifica",
+                    "Perfil investigador con acceso a sus proyectos, publicaciones y entregables.",
+                    SedeFuniber.BARCELONA);
+            Usuario docenteSantander = crearSiNoExiste(
+                    usuarioRepository,
+                    passwordEncoder,
+                    "docente.santander",
+                    "docente123",
+                    Rol.INVESTIGADOR,
+                    "Docente Investigador Santander",
+                    "docente.santander@funiber.org",
+                    "Investigacion y docencia",
+                    "Gestion academica e investigacion",
+                    "Perfil investigador-docente adscrito a una sede con docencia.",
+                    SedeFuniber.SANTANDER);
+            Usuario investigadorBarcelona = crearSiNoExiste(
+                    usuarioRepository,
+                    passwordEncoder,
+                    "investigador.barcelona",
+                    "barcelona123",
+                    Rol.INVESTIGADOR,
+                    "Investigador Barcelona",
+                    "investigador.barcelona@funiber.org",
+                    "Investigacion",
+                    "Produccion cientifica",
+                    "Perfil investigador adscrito a una sede sin docencia.",
+                    SedeFuniber.BARCELONA);
+
+            crearCargaSiNoExiste(cargaTrabajoRepository, coordinador, "2.00", "18.00", "12.00", "Coordinacion general de investigacion.");
+            crearCargaSiNoExiste(cargaTrabajoRepository, investigador, "0.00", "24.00", "4.00", "Sede sin docencia investigadora asignada.");
+            crearCargaSiNoExiste(cargaTrabajoRepository, docenteSantander, "14.00", "12.00", "3.00", "Carga docente dentro del limite semanal.");
+            crearCargaSiNoExiste(cargaTrabajoRepository, investigadorBarcelona, "0.00", "22.00", "2.00", "Investigador de sede Barcelona sin docencia asignada.");
         };
     }
 
-    private void crearSiNoExiste(
+    private Usuario crearSiNoExiste(
             UsuarioRepository usuarioRepository,
             PasswordEncoder passwordEncoder,
             String nombreUsuario,
@@ -51,16 +87,40 @@ public class DemoDataConfig {
             String email,
             String unidad,
             String lineaInvestigacion,
-            String biografia) {
-        if (usuarioRepository.findByNombreUsuario(nombreUsuario).isEmpty()) {
-            Usuario usuario = new Usuario(
-                    nombreUsuario,
-                    passwordEncoder.encode(contrasena),
-                    rol,
-                    true);
-            usuario.actualizarPerfil(nombreCompleto, email, unidad, lineaInvestigacion, biografia);
-            usuarioRepository.save(usuario);
+            String biografia,
+            SedeFuniber sede) {
+        return usuarioRepository.findByNombreUsuario(nombreUsuario)
+                .map(usuario -> {
+                    usuario.actualizarSede(sede);
+                    return usuarioRepository.save(usuario);
+                })
+                .orElseGet(() -> {
+                    Usuario usuario = new Usuario(
+                            nombreUsuario,
+                            passwordEncoder.encode(contrasena),
+                            rol,
+                            true);
+                    usuario.actualizarPerfil(nombreCompleto, email, unidad, lineaInvestigacion, biografia);
+                    usuario.actualizarSede(sede);
+                    return usuarioRepository.save(usuario);
+                });
+    }
+
+    private void crearCargaSiNoExiste(
+            CargaTrabajoRepository cargaTrabajoRepository,
+            Usuario usuario,
+            String horasDocencia,
+            String horasInvestigacion,
+            String horasGestionAcademica,
+            String observaciones) {
+        if (cargaTrabajoRepository.findByUsuario(usuario).isEmpty()) {
+            CargaTrabajo cargaTrabajo = new CargaTrabajo(usuario);
+            cargaTrabajo.actualizar(
+                    new BigDecimal(horasDocencia),
+                    new BigDecimal(horasInvestigacion),
+                    new BigDecimal(horasGestionAcademica),
+                    observaciones);
+            cargaTrabajoRepository.save(cargaTrabajo);
         }
     }
 }
-

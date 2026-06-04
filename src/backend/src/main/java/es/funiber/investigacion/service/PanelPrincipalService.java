@@ -2,6 +2,8 @@ package es.funiber.investigacion.service;
 
 import es.funiber.investigacion.dto.AccionPanel;
 import es.funiber.investigacion.model.Rol;
+import es.funiber.investigacion.model.Usuario;
+import es.funiber.investigacion.repository.UsuarioRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -9,7 +11,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class PanelPrincipalService {
 
-    public List<AccionPanel> obtenerAccionesDisponibles(Rol rol) {
+    private final UsuarioRepository usuarioRepository;
+
+    public PanelPrincipalService(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
+
+    public List<AccionPanel> obtenerAccionesDisponibles(String nombreUsuario, Rol rol) {
+        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuario).orElse(null);
         List<AccionPanel> acciones = new ArrayList<>();
         acciones.add(new AccionPanel("perfil", "Perfil", "/perfil"));
         acciones.add(new AccionPanel("carga-trabajo", "Carga de trabajo", "/carga-trabajo"));
@@ -22,7 +31,9 @@ public class PanelPrincipalService {
             acciones.add(new AccionPanel("convocatorias", "Convocatorias", "/convocatorias"));
         }
 
-        acciones.add(new AccionPanel("recompensas", "Recompensas", "/recompensas"));
+        if (rol == Rol.COORDINADOR || (usuario != null && usuario.esInvestigadorDocente())) {
+            acciones.add(new AccionPanel("recompensas", "Recompensas", "/recompensas"));
+        }
         return List.copyOf(acciones);
     }
 }

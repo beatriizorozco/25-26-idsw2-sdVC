@@ -1,5 +1,8 @@
 import type {
+  CargaTrabajoPersona,
+  CargaTrabajoUpdate,
   CsrfToken,
+  PanelCargaTrabajo,
   PanelPrincipal,
   Perfil,
   PerfilUpdate,
@@ -95,6 +98,40 @@ export async function eliminarPerfilDesdeSolicitud(id: number): Promise<void> {
   await request<void>(`/solicitudes-eliminacion-perfil/${id}/perfil`, {
     method: 'DELETE',
     headers: { [token.headerName]: token.token },
+  })
+}
+
+export function obtenerPanelCargaTrabajo(criterio = ''): Promise<PanelCargaTrabajo> {
+  const query = criterio.trim() ? `?criterio=${encodeURIComponent(criterio.trim())}` : ''
+  return request<PanelCargaTrabajo>(`/carga-trabajo${query}`)
+}
+
+export function obtenerCargaTrabajoPropia(): Promise<CargaTrabajoPersona> {
+  return request<CargaTrabajoPersona>('/carga-trabajo/me')
+}
+
+export function obtenerCargaTrabajoPersona(perfilId: number): Promise<CargaTrabajoPersona> {
+  return request<CargaTrabajoPersona>(`/carga-trabajo/${perfilId}`)
+}
+
+export async function actualizarCargaTrabajoPropia(carga: CargaTrabajoUpdate): Promise<CargaTrabajoPersona> {
+  const token = await obtenerTokenCsrf()
+  return request<CargaTrabajoPersona>('/carga-trabajo/me', {
+    method: 'PATCH',
+    headers: { [token.headerName]: token.token },
+    body: JSON.stringify(carga),
+  })
+}
+
+export async function actualizarCargaTrabajoPersona(
+  perfilId: number,
+  carga: CargaTrabajoUpdate,
+): Promise<CargaTrabajoPersona> {
+  const token = await obtenerTokenCsrf()
+  return request<CargaTrabajoPersona>(`/carga-trabajo/${perfilId}`, {
+    method: 'PATCH',
+    headers: { [token.headerName]: token.token },
+    body: JSON.stringify(carga),
   })
 }
 

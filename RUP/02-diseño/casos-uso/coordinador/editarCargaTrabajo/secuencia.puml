@@ -8,7 +8,6 @@ participant "SesionService" as Sesion
 participant "CargaTrabajoService" as Service
 participant "PersonaRepository" as PersonaRepo
 participant "CargaTrabajoRepository" as CargaRepo
-participant "RecompensaRepository" as RecompensaRepo
 
 Coordinador -> Frontend: Solicita editar carga de una persona
 activate Frontend
@@ -24,7 +23,7 @@ alt Sesion de Coordinador activa
     activate Service
     Service -> PersonaRepo: obtenerPorId(personaId)
     activate PersonaRepo
-    PersonaRepo --> Service: Persona
+    PersonaRepo --> Service: Persona con sede
     deactivate PersonaRepo
     Service -> CargaRepo: obtenerPorPersona(personaId)
     activate CargaRepo
@@ -44,39 +43,36 @@ alt Sesion de Coordinador activa
     deactivate Sesion
     Api -> Service: actualizarCargaDePersona(coordinador, personaId, datos)
     activate Service
-    Service -> Service: validarHoras(datos)
-    Service -> CargaRepo: obtenerPorPersona(personaId)
-    activate CargaRepo
-    CargaRepo --> Service: CargaTrabajo
-    Service -> Service: actualizarCampos(cargaTrabajo, datos)
     Service -> PersonaRepo: obtenerPorId(personaId)
     activate PersonaRepo
     PersonaRepo --> Service: Persona con sede
     deactivate PersonaRepo
-    Service -> Service: calcularExcesoDocenteSiAplica(cargaTrabajo, persona.sede, maximo16h)
-    Service -> CargaRepo: guardar(cargaTrabajoActualizada)
-    CargaRepo --> Service: CargaTrabajo actualizada
-    Service -> CargaRepo: recalcularPrioridadParaProyectosLibres(personaId)
-    CargaRepo --> Service: Prioridad actualizada
-    deactivate CargaRepo
-    alt Sede con docencia y excede 16 horas docentes
-        Service -> RecompensaRepo: registrarCompensacionPendienteSiExcede(cargaTrabajo)
-        activate RecompensaRepo
-        RecompensaRepo --> Service: Recompensa pendiente
-        deactivate RecompensaRepo
-    else Sede sin docencia o no excede limite docente
-        Service -> Service: Mantener carga sin compensacion nueva
+    Service -> Service: validarHoras(datos, sede, maximo16h)
+    alt Investigador-docente supera 16 horas docentes
+        Service --> Api: validacion fallida
+        Api --> Frontend: 400 Bad Request
+        Frontend --> Coordinador: Presenta error de limite docente
+    else Carga valida
+        Service -> CargaRepo: obtenerPorPersona(personaId)
+        activate CargaRepo
+        CargaRepo --> Service: CargaTrabajo
+        Service -> Service: actualizarCampos(cargaTrabajo, datos)
+        Service -> CargaRepo: guardar(cargaTrabajoActualizada)
+        CargaRepo --> Service: CargaTrabajo actualizada
+        deactivate CargaRepo
+        Service -> CargaRepo: recalcularPrioridadParaProyectosLibres(personaId)
+        CargaRepo --> Service: Prioridad actualizada
+        Service --> Api: CargaTrabajoResponse
+        deactivate Service
+        Api --> Frontend: 200 OK\nCargaTrabajoResponse
+        deactivate Api
+        Frontend -> Frontend: Actualizar vista y notificar exito
+        Frontend --> Coordinador: Presenta OPCIONES_CARGA_TRABAJO_ABIERTAS
     end
-    Service --> Api: CargaTrabajoResponse
-    deactivate Service
-    Api --> Frontend: 200 OK\nCargaTrabajoResponse
-    deactivate Api
-    Frontend -> Frontend: Actualizar vista y notificar exito
-    Frontend --> Coordinador: Presenta OPCIONES_CARGA_TRABAJO_ABIERTAS
-else Sesion ausente, rol invalido o datos invalidos
-    Sesion --> Api: SesionNoValidaException / validacion fallida
+else Sesion ausente o rol invalido
+    Sesion --> Api: SesionNoValidaException / AccesoDenegadoException
     deactivate Sesion
-    Api --> Frontend: 400 Bad Request / 401 Unauthorized / 403 Forbidden
+    Api --> Frontend: 401 Unauthorized / 403 Forbidden
     deactivate Api
     Frontend --> Coordinador: Presenta error de edicion
 end
