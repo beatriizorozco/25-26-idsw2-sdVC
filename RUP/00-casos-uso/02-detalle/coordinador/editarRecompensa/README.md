@@ -104,6 +104,12 @@ Especificación detallada del caso de uso `editarRecompensa()` mediante diagrama
   - Estado
   - Proyecto
 
+### Reglas de dominio
+- La edición no puede desvincular la recompensa de un proyecto completado.
+- La edición debe mantener un investigador beneficiario válido.
+- La reducción docente solo es válida para investigadores-docentes.
+- Los investigadores sin docencia por sede solo pueden conservar recompensas económicas.
+
 ## Opciones de navegación
 
 ### Operaciones relacionadas

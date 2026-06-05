@@ -7,7 +7,11 @@ package abrirRecompensas as "abrirRecompensas()" {
     rectangle #629EF9 ListarRecompensasView
     rectangle #b5bd68 RecompensaController
     rectangle #F2AC4E RecompensaRepository
+    rectangle #F2AC4E ProyectoRepository
+    rectangle #F2AC4E InvestigadorRepository
     rectangle #F2AC4E Recompensa
+    rectangle #F2AC4E Proyecto
+    rectangle #F2AC4E Investigador
 }
 
 rectangle #CDEBA5 ":RECOMPENSAS_ABIERTAS" as EstadoSalida
@@ -17,16 +21,25 @@ rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanelPrincipal
 EstadoEntrada1 -r-> ListarRecompensasView: abrirRecompensas(idRecompensa)
 EstadoEntrada2 -r-> ListarRecompensasView: abrirRecompensas()
 
-ListarRecompensasView -d-> RecompensaController: listarRecompensas(contexto)
-ListarRecompensasView --> RecompensaController: filtrarRecompensas(criterio)
-RecompensaController --> RecompensaRepository: obtenerTodos()
-RecompensaController --> RecompensaRepository: obtenerPorContexto(contexto)
-RecompensaController --> RecompensaRepository: buscarPorCriterio(criterio)
+ListarRecompensasView -d-> RecompensaController: listarRecompensasPropias(investigador, contexto)
+ListarRecompensasView --> RecompensaController: filtrarRecompensasPropias(criterio)
+RecompensaController --> InvestigadorRepository: obtenerPerfil(investigador)
+RecompensaController --> RecompensaRepository: obtenerPropiasDeProyectosCompletados(investigador)
+RecompensaController --> RecompensaRepository: obtenerPropiasPorContexto(investigador, contexto)
+RecompensaController --> RecompensaRepository: buscarPropiasPorCriterio(investigador, criterio)
+RecompensaController --> ProyectoRepository: verificarCompletados()
 RecompensaRepository -- Recompensa
+ProyectoRepository -- Proyecto
+InvestigadorRepository -- Investigador
 note right of RecompensaController
 Contexto opcional:
 - sin identificador: listado propio
 - con identificador: listado propio acotado
+
+Reglas:
+- solo recompensas propias
+- docente: economica o reduccion
+- no docente: solo economica
 end note
 ListarRecompensasView ..> EstadoSalida: continuarNavegacion()
 ListarRecompensasView ..> AbrirRecompensa: abrirRecompensa()

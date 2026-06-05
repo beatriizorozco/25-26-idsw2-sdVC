@@ -104,6 +104,12 @@ Especificación detallada del caso de uso `crearRecompensa()` mediante diagrama 
   - Estado
   - Proyecto
 
+### Reglas de dominio
+- Solo se puede crear una recompensa para un proyecto completado.
+- La recompensa debe indicar el investigador beneficiario.
+- Si el beneficiario es investigador-docente, el Coordinador puede registrar recompensa económica o reducción docente del siguiente cuatrimestre.
+- Si el beneficiario pertenece a una sede sin docencia, el Coordinador solo puede registrar recompensa económica.
+
 ## Opciones de navegación
 
 ### Operaciones relacionadas

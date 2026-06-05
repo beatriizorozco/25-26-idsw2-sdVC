@@ -287,3 +287,17 @@ La verificación final quedó correcta: `mvnw.cmd test` ejecutó 21 pruebas sin 
 **Resultado:** se utilizó la skill `session-memory`. Se revisó el cierre anterior, `tareas_a_realizar.md`, la rama activa y los commits recientes. El último commit es `fix(carga-trabajo): consolidar reglas por sede`, por lo que el bloque 3 parte ya implementado, probado y con SVG regenerados.
 
 **Decisión:** la sesión se dedicará a auditar el bloque 3 completo: Detalle, Análisis, Diseño, Desarrollo, Pruebas, diagramas, SVG, capturas, trazabilidad y coherencia de dominio antes de empezar recompensas/proyectos completados.
+
+---
+
+## [2026-06-05 18:48] Fin de sesión
+
+**Prompt:** cierre de sesión solicitado con la skill `session-memory`, indicando que el siguiente paso será la revisión de Análisis del cuarto bloque.
+
+**Resultado:** se utilizó la skill `session-memory`. Durante la sesión se cerró la revisión integral del bloque 3 de carga de trabajo y se pasó al bloque 4, centrado en recompensas asociadas a proyectos completados. Se actualizaron los README de Detalle de recompensas para Coordinador e Investigador, incorporando la regla final del dominio: las recompensas no nacen por exceso de carga docente, sino por proyectos completados; los investigadores-docentes pueden recibir recompensa económica o reducción docente en el siguiente cuatrimestre; y los investigadores de sedes sin docencia solo pueden recibir recompensa económica.
+
+También se avanzó el Análisis del bloque 4. Se actualizaron los README de Análisis y los diagramas `colaboracion.puml` de `abrirRecompensas`, `abrirRecompensa`, `crearRecompensa`, `editarRecompensa` y `eliminarRecompensa` para Coordinador, y de `abrirRecompensas` y `abrirRecompensa` para Investigador. Los diagramas incorporan explícitamente las entidades `Proyecto`, `Investigador` y `Recompensa`, diferenciando que el Coordinador mantiene las recompensas globales mientras que el Investigador solo consulta recompensas propias. Se regeneraron los SVG correspondientes en `images/RUP/01-analisis/casos-uso`.
+
+Se actualizó `tareas_a_realizar.md` dejando el bloque 4 como pendiente inmediato. El repositorio queda con cambios documentales y de diagramas pendientes de revisión/commit: Detalle del bloque 4, Análisis del bloque 4, SVG de Análisis y este cierre de sesión.
+
+**Decisión:** el siguiente paso recomendado es revisar manualmente el Análisis completo del cuarto bloque antes de pasar a Diseño. Esa revisión debe confirmar que los casos distinguen correctamente Coordinador e Investigador, que las recompensas proceden de proyectos completados, que el Investigador solo consulta las propias y que la regla de tipos queda clara: investigador-docente puede tener recompensa económica o reducción docente; investigador sin docencia solo recompensa económica.

@@ -7,7 +7,11 @@ package abrirRecompensas as "abrirRecompensas()" {
     rectangle #629EF9 ListarRecompensasView
     rectangle #b5bd68 RecompensaController
     rectangle #F2AC4E RecompensaRepository
+    rectangle #F2AC4E ProyectoRepository
+    rectangle #F2AC4E InvestigadorRepository
     rectangle #F2AC4E Recompensa
+    rectangle #F2AC4E Proyecto
+    rectangle #F2AC4E Investigador
 }
 
 rectangle #CDEBA5 ":RECOMPENSAS_ABIERTAS" as EstadoSalida
@@ -20,14 +24,23 @@ EstadoEntrada2 -r-> ListarRecompensasView: abrirRecompensas()
 
 ListarRecompensasView -d-> RecompensaController: listarRecompensas(contexto)
 ListarRecompensasView --> RecompensaController: filtrarRecompensas(criterio)
-RecompensaController --> RecompensaRepository: obtenerTodos()
+RecompensaController --> RecompensaRepository: obtenerDeProyectosCompletados()
 RecompensaController --> RecompensaRepository: obtenerPorContexto(contexto)
 RecompensaController --> RecompensaRepository: buscarPorCriterio(criterio)
+RecompensaController --> ProyectoRepository: verificarCompletados()
+RecompensaController --> InvestigadorRepository: obtenerBeneficiarios()
 RecompensaRepository -- Recompensa
+ProyectoRepository -- Proyecto
+InvestigadorRepository -- Investigador
 note right of RecompensaController
 Contexto opcional:
 - sin identificador: listado global
 - con identificador: listado acotado
+
+Reglas:
+- proyecto completado como origen
+- docente: economica o reduccion
+- no docente: solo economica
 end note
 ListarRecompensasView ..> EstadoSalida: continuarNavegacion()
 ListarRecompensasView ..> AbrirRecompensa: abrirRecompensa()

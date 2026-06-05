@@ -99,6 +99,11 @@ Especificación detallada del caso de uso `abrirRecompensa()` mediante diagrama 
   - Estado
   - Proyecto
 
+### Reglas de dominio
+- La recompensa debe estar asociada a un proyecto completado y a un investigador beneficiario.
+- Si el beneficiario es investigador-docente, el tipo puede ser recompensa económica o reducción docente.
+- Si el beneficiario pertenece a una sede sin docencia, el tipo debe ser recompensa económica.
+
 ## Opciones de navegación
 
 ### Operaciones relacionadas

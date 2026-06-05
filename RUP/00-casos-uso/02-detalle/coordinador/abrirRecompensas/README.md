@@ -102,6 +102,12 @@ Especificación detallada del caso de uso `abrirRecompensas()` mediante diagrama
   - Investigador
   - Estado
 
+### Reglas de dominio
+- Las recompensas se originan cuando un proyecto queda completado.
+- El Coordinador visualiza recompensas económicas y reducciones docentes de todos los investigadores.
+- Los investigadores-docentes pueden tener recompensa económica o reducción docente del siguiente cuatrimestre.
+- Los investigadores de sedes sin docencia solo pueden tener recompensa económica.
+
 ## Opciones de navegación
 
 ### Operaciones relacionadas

@@ -82,6 +82,18 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 **Colaboraciones**:
 - **Repositorio**: Es gestionado por `RecompensaRepository`.
 
+#### Proyecto
+**Estereotipo**: Entidad  
+**Responsabilidades**:
+- Representar el proyecto completado que origina la recompensa consultada.
+- Dar contexto al motivo por el que la recompensa aparece al Investigador.
+
+#### Investigador
+**Estereotipo**: Entidad  
+**Responsabilidades**:
+- Representar al beneficiario autenticado.
+- Determinar si el detalle puede incluir reducción docente o solo recompensa económica.
+
 ## Flujo de colaboración
 
 ### Secuencia de operaciones
@@ -127,8 +139,12 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 
 ## Reglas funcionales consideradas
 
-- Mantener la separación entre presentación, coordinación y entidad para el rol Investigador.
-- Restringir operaciones de creación, edición y eliminación a publicaciones y entregables propios del Investigador.
+- Mantener la separación entre presentación, coordinación y entidades de recompensa, proyecto e investigador.
+- Permitir al Investigador consultar solo recompensas propias.
+- Verificar que la recompensa proceda de un proyecto completado en el que participa como beneficiario.
+- Mostrar recompensa económica o reducción docente cuando el Investigador es docente.
+- Mostrar solo recompensa económica cuando el Investigador pertenece a una sede sin docencia.
+- No permitir crear, editar ni eliminar recompensas desde este rol.
 
 ## Características del análisis
 

@@ -6,7 +6,9 @@ package eliminarRecompensa as "eliminarRecompensa()" {
     rectangle #629EF9 EliminarRecompensaView
     rectangle #b5bd68 RecompensaController
     rectangle #F2AC4E RecompensaRepository
+    rectangle #F2AC4E ProyectoRepository
     rectangle #F2AC4E Recompensa
+    rectangle #F2AC4E Proyecto
 }
 
 rectangle #CDEBA5 ":RECOMPENSAS_ABIERTAS" as EstadoSalidaExitosa
@@ -21,8 +23,15 @@ EliminarRecompensaView --> RecompensaController: confirmarEliminacion(id)
 EliminarRecompensaView --> RecompensaController: cancelarEliminacion()
 EliminarRecompensaView --> RecompensaController: validarEliminacion(id)
 RecompensaController --> RecompensaRepository: obtenerPorId(id)
+RecompensaController --> ProyectoRepository: verificarProyectoCompletado(recompensa)
 RecompensaController --> RecompensaRepository: eliminar(id)
 RecompensaRepository -- Recompensa
+ProyectoRepository -- Proyecto
+note right of RecompensaController
+La eliminacion borra la recompensa,
+pero no modifica el proyecto ni la
+carga de trabajo del investigador.
+end note
 EliminarRecompensaView ..> EstadoSalidaExitosa: recompensaEliminada()
 EliminarRecompensaView ..> EstadoSalidaCancelada: eliminacionCancelada()
 EliminarRecompensaView ..> AbrirRecompensas: abrirRecompensas()

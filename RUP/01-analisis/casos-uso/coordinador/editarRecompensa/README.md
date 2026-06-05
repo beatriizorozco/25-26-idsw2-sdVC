@@ -82,6 +82,18 @@ Analizar la colaboración necesaria para actualizar los datos de recompensa. El 
 **Colaboraciones**:
 - **Repositorio**: Es gestionado por `RecompensaRepository`.
 
+#### Proyecto
+**Estereotipo**: Entidad  
+**Responsabilidades**:
+- Representar el proyecto completado asociado a la recompensa.
+- Mantener la trazabilidad entre recompensa y proyecto de origen.
+
+#### Investigador
+**Estereotipo**: Entidad  
+**Responsabilidades**:
+- Representar al beneficiario de la recompensa editada.
+- Determinar si el tipo actualizado respeta la condición docente y la sede del beneficiario.
+
 ## Flujo de colaboración
 
 ### Secuencia de operaciones
@@ -128,8 +140,11 @@ Analizar la colaboración necesaria para actualizar los datos de recompensa. El 
 
 ## Reglas funcionales consideradas
 
-- Mantener la separación entre presentación, coordinación y entidad para el rol Coordinador.
-- Permitir al Coordinador acceso global sobre publicaciones, entregables, proyectos, investigadores, recompensas y perfiles según el caso de uso.
+- Mantener la separación entre presentación, coordinación y entidades de recompensa, proyecto e investigador.
+- Editar recompensas sin perder la asociación al proyecto completado que las origina.
+- Verificar que el beneficiario mantenga un tipo de recompensa permitido por su sede y condición docente.
+- Permitir recompensa económica o reducción docente cuando el beneficiario es investigador-docente.
+- Impedir reducción docente para investigadores de sedes sin docencia.
 
 ## Características del análisis
 

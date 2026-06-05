@@ -99,6 +99,12 @@ Especificación detallada del caso de uso `abrirRecompensa()` mediante diagrama 
   - Estado
   - Proyecto
 
+### Reglas de dominio
+- El Investigador solo puede abrir el detalle de una recompensa propia.
+- La recompensa debe estar asociada a un proyecto completado.
+- Las reducciones docentes solo aparecen para investigadores-docentes.
+- Los investigadores sin docencia por sede solo visualizan recompensas económicas.
+
 ## Opciones de navegación
 
 ### Operaciones relacionadas

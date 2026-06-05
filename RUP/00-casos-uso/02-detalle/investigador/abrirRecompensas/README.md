@@ -102,6 +102,12 @@ Especificación detallada del caso de uso `abrirRecompensas()` mediante diagrama
   - Investigador
   - Estado
 
+### Reglas de dominio
+- El Investigador solo visualiza sus propias recompensas.
+- Las recompensas se originan cuando un proyecto en el que participa queda completado.
+- Si el Investigador es investigador-docente, puede consultar recompensas económicas o reducciones docentes.
+- Si pertenece a una sede sin docencia, solo puede consultar recompensas económicas.
+
 ## Opciones de navegación
 
 ### Operaciones relacionadas

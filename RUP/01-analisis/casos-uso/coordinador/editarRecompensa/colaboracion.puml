@@ -6,7 +6,11 @@ package editarRecompensa as "editarRecompensa()" {
     rectangle #629EF9 EditarRecompensaView
     rectangle #b5bd68 RecompensaController
     rectangle #F2AC4E RecompensaRepository
+    rectangle #F2AC4E ProyectoRepository
+    rectangle #F2AC4E InvestigadorRepository
     rectangle #F2AC4E Recompensa
+    rectangle #F2AC4E Proyecto
+    rectangle #F2AC4E Investigador
 }
 
 rectangle #CDEBA5 ":RECOMPENSA_ABIERTA" as EstadoSalida
@@ -18,8 +22,18 @@ EstadoEntrada -r-> EditarRecompensaView: editarRecompensa()
 EditarRecompensaView -d-> RecompensaController: editarRecompensa(id, datos)
 EditarRecompensaView --> RecompensaController: validarCambios(datos)
 RecompensaController --> RecompensaRepository: obtenerPorId(id)
+RecompensaController --> ProyectoRepository: verificarProyectoCompletado(recompensa)
+RecompensaController --> InvestigadorRepository: verificarBeneficiario(datos.investigadorId)
+RecompensaController --> RecompensaController: validarTipoSegunBeneficiario()
 RecompensaController --> RecompensaRepository: actualizar(entidad)
 RecompensaRepository -- Recompensa
+ProyectoRepository -- Proyecto
+InvestigadorRepository -- Investigador
+note right of RecompensaController
+Editar no puede convertir una
+recompensa de no docente en
+reduccion docente.
+end note
 EditarRecompensaView ..> EstadoSalida: continuarNavegacion()
 EditarRecompensaView ..> EliminarRecompensa: eliminarRecompensa()
 EditarRecompensaView ..> AbrirRecompensas: abrirRecompensas()

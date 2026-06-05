@@ -82,6 +82,12 @@ Analizar la colaboración necesaria para eliminar un elemento de recompensa. El 
 **Colaboraciones**:
 - **Repositorio**: Es gestionado por `RecompensaRepository`.
 
+#### Proyecto
+**Estereotipo**: Entidad  
+**Responsabilidades**:
+- Representar el proyecto completado asociado a la recompensa.
+- Mantener la trazabilidad del origen aunque la recompensa se elimine.
+
 ## Flujo de colaboración
 
 ### Secuencia de operaciones
@@ -127,8 +133,11 @@ Analizar la colaboración necesaria para eliminar un elemento de recompensa. El 
 
 ## Reglas funcionales consideradas
 
-- Mantener la separación entre presentación, coordinación y entidad para el rol Coordinador.
-- Permitir al Coordinador acceso global sobre publicaciones, entregables, proyectos, investigadores, recompensas y perfiles según el caso de uso.
+- Mantener la separación entre presentación, coordinación y entidades de recompensa y proyecto.
+- Eliminar recompensas solo tras confirmación explícita del Coordinador.
+- Verificar que la recompensa exista y proceda de un proyecto completado.
+- Eliminar la recompensa sin modificar el estado del proyecto ni la carga de trabajo del investigador.
+- Volver al listado de recompensas cuando la eliminación sea exitosa.
 
 ## Características del análisis
 

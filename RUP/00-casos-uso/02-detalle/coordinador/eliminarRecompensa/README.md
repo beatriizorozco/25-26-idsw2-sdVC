@@ -102,6 +102,11 @@ Especificación detallada del caso de uso `eliminarRecompensa()` mediante diagra
   - Estado
   - Proyecto
 
+### Reglas de dominio
+- La eliminación de una recompensa debe solicitar confirmación para evitar pérdidas accidentales.
+- El Coordinador solo elimina recompensas registradas en el sistema y asociadas a proyectos completados.
+- La eliminación no modifica la carga de trabajo ni el estado del proyecto completado.
+
 ## Opciones de navegación
 
 ### Operaciones relacionadas

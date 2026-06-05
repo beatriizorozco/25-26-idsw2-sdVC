@@ -82,6 +82,18 @@ Analizar la colaboración necesaria para registrar un nuevo recompensa. El anál
 **Colaboraciones**:
 - **Repositorio**: Es gestionado por `RecompensaRepository`.
 
+#### Proyecto
+**Estereotipo**: Entidad  
+**Responsabilidades**:
+- Representar el proyecto que origina la recompensa.
+- Validar que el proyecto se encuentre completado antes de crear la recompensa.
+
+#### Investigador
+**Estereotipo**: Entidad  
+**Responsabilidades**:
+- Representar al beneficiario seleccionado para la recompensa.
+- Determinar si el beneficiario admite recompensa económica, reducción docente o solo recompensa económica.
+
 ## Flujo de colaboración
 
 ### Secuencia de operaciones
@@ -127,8 +139,12 @@ Analizar la colaboración necesaria para registrar un nuevo recompensa. El anál
 
 ## Reglas funcionales consideradas
 
-- Mantener la separación entre presentación, coordinación y entidad para el rol Coordinador.
-- Permitir al Coordinador acceso global sobre publicaciones, entregables, proyectos, investigadores, recompensas y perfiles según el caso de uso.
+- Mantener la separación entre presentación, coordinación y entidades de recompensa, proyecto e investigador.
+- Crear recompensas solo desde proyectos completados.
+- Asociar siempre la recompensa a un investigador beneficiario.
+- Permitir recompensa económica o reducción docente cuando el beneficiario es investigador-docente.
+- Restringir a recompensa económica cuando el beneficiario pertenece a una sede sin docencia.
+- Evitar duplicados para el mismo proyecto, beneficiario y tipo de recompensa.
 
 ## Características del análisis
 

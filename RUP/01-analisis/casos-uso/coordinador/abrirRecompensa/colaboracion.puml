@@ -6,7 +6,11 @@ package abrirRecompensa as "abrirRecompensa()" {
     rectangle #629EF9 DetalleRecompensaView
     rectangle #b5bd68 RecompensaController
     rectangle #F2AC4E RecompensaRepository
+    rectangle #F2AC4E ProyectoRepository
+    rectangle #F2AC4E InvestigadorRepository
     rectangle #F2AC4E Recompensa
+    rectangle #F2AC4E Proyecto
+    rectangle #F2AC4E Investigador
 }
 
 rectangle #CDEBA5 ":RECOMPENSAS_ABIERTAS" as EstadoSalida
@@ -19,8 +23,18 @@ EstadoEntrada -r-> DetalleRecompensaView: abrirRecompensa()
 DetalleRecompensaView -d-> RecompensaController: obtenerRecompensa(id)
 DetalleRecompensaView --> RecompensaController: prepararAccionesDisponibles(coordinador)
 RecompensaController --> RecompensaRepository: obtenerPorId(id)
-RecompensaController --> RecompensaRepository: verificarPermisos(actor)
+RecompensaController --> ProyectoRepository: verificarProyectoCompletado(recompensa)
+RecompensaController --> InvestigadorRepository: verificarBeneficiario(recompensa)
+RecompensaController --> RecompensaController: validarTipoSegunBeneficiario()
 RecompensaRepository -- Recompensa
+ProyectoRepository -- Proyecto
+InvestigadorRepository -- Investigador
+note right of RecompensaController
+El detalle conserva:
+- proyecto completado
+- investigador beneficiario
+- tipo permitido por sede/docencia
+end note
 DetalleRecompensaView ..> EstadoSalida: continuarNavegacion()
 DetalleRecompensaView ..> AbrirRecompensas: abrirRecompensas()
 DetalleRecompensaView ..> EliminarRecompensa: eliminarRecompensa()

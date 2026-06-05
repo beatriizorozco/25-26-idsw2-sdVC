@@ -82,6 +82,18 @@ Analizar la colaboración necesaria para presentar a Coordinador el listado de r
 **Colaboraciones**:
 - **Repositorio**: Es gestionado por `RecompensaRepository`.
 
+#### Proyecto
+**Estereotipo**: Entidad  
+**Responsabilidades**:
+- Representar los proyectos completados que originan recompensas.
+- Permitir separar recompensas válidas de elementos no completados.
+
+#### Investigador
+**Estereotipo**: Entidad  
+**Responsabilidades**:
+- Representar a los beneficiarios de las recompensas.
+- Determinar el tipo de recompensa permitido según sede y condición docente.
+
 ## Flujo de colaboración
 
 ### Secuencia de operaciones
@@ -129,10 +141,12 @@ Analizar la colaboración necesaria para presentar a Coordinador el listado de r
 
 ## Reglas funcionales consideradas
 
-- Mantener la separación entre presentación, coordinación y entidad para el rol Coordinador.
-- Permitir al Coordinador acceso global sobre publicaciones, entregables, proyectos, investigadores, recompensas y perfiles según el caso de uso.
-
-- Cuando el caso de uso se inicia desde un estado de detalle, el an?lisis modela un par?metro de contexto para ajustar el alcance sin duplicar el caso de uso. Si no se recibe identificador, el controlador solicita el listado global; si se recibe, solicita el listado acotado al contexto.
+- Mantener la separación entre presentación, coordinación y entidades de recompensa, proyecto e investigador.
+- Permitir al Coordinador consultar el listado global de recompensas.
+- Listar solo recompensas derivadas de proyectos completados.
+- Permitir filtrar por proyecto, investigador beneficiario, sede, tipo o estado.
+- Distinguir entre investigadores-docentes, que pueden recibir recompensa económica o reducción docente, e investigadores sin docencia, que solo pueden recibir recompensa económica.
+- Cuando el caso de uso se inicia desde un estado de detalle, el análisis modela un parámetro de contexto para ajustar el alcance sin duplicar el caso de uso.
 
 ## Características del análisis
 

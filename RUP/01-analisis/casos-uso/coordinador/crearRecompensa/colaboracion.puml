@@ -6,7 +6,11 @@ package crearRecompensa as "crearRecompensa()" {
     rectangle #629EF9 CrearRecompensaView
     rectangle #b5bd68 RecompensaController
     rectangle #F2AC4E RecompensaRepository
+    rectangle #F2AC4E ProyectoRepository
+    rectangle #F2AC4E InvestigadorRepository
     rectangle #F2AC4E Recompensa
+    rectangle #F2AC4E Proyecto
+    rectangle #F2AC4E Investigador
 }
 
 rectangle #CDEBA5 ":RECOMPENSA_ABIERTA" as EstadoSalida
@@ -16,9 +20,20 @@ EstadoEntrada -r-> CrearRecompensaView: crearRecompensa()
 
 CrearRecompensaView -d-> RecompensaController: crearRecompensa(datos)
 CrearRecompensaView --> RecompensaController: validarRecompensa(datos)
+RecompensaController --> ProyectoRepository: obtenerCompletado(datos.proyectoId)
+RecompensaController --> InvestigadorRepository: obtenerBeneficiario(datos.investigadorId)
+RecompensaController --> RecompensaController: validarTipoSegunBeneficiario()
 RecompensaController --> RecompensaRepository: existeDuplicado(datos)
 RecompensaController --> RecompensaRepository: guardar(entidad)
 RecompensaRepository -- Recompensa
+ProyectoRepository -- Proyecto
+InvestigadorRepository -- Investigador
+note right of RecompensaController
+Origen obligatorio:
+- proyecto completado
+- beneficiario identificado
+- no docente: solo economica
+end note
 CrearRecompensaView ..> EstadoSalida: continuarNavegacion()
 CrearRecompensaView ..> AbrirRecompensa: abrirRecompensa()
 

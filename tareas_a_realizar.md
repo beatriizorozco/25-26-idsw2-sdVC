@@ -98,4 +98,15 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Regenerar los SVG de Análisis y Diseño del bloque 3 cuando esté disponible PlantUML local o una vía autorizada.
 - [x] Probar manualmente en navegador el flujo visual de carga de trabajo con Coordinador, `docente.santander` e `investigador.barcelona`.
 - [x] Revisar el bloque 3 entero de carga de trabajo: Detalle, Análisis, Diseño, Desarrollo, Pruebas, diagramas, SVG, capturas y trazabilidad.
-- [ ] Empezar el módulo de recompensas/proyectos completados con la regla correcta: investigadores-docentes pueden elegir recompensa económica o reducción docente tras proyecto completado; investigadores sin docencia solo tienen recompensa económica.
+- [x] Empezar el módulo de recompensas/proyectos completados con la regla correcta: investigadores-docentes pueden elegir recompensa económica o reducción docente tras proyecto completado; investigadores sin docencia solo tienen recompensa económica.
+
+## Pendiente inmediato del bloque 4
+
+- [x] Actualizar Detalle de recompensas para Coordinador e Investigador con las reglas de proyecto completado y tipo de recompensa según docencia/sede.
+- [x] Actualizar Análisis de recompensas para Coordinador e Investigador con README, `colaboracion.puml` y SVG.
+- [ ] Revisar manualmente el Análisis del bloque 4 completo.
+- [ ] Confirmar que los diagramas distinguen correctamente Coordinador e Investigador.
+- [ ] Confirmar que las recompensas nacen de proyectos completados y no de exceso de carga docente.
+- [ ] Confirmar que el Investigador solo consulta recompensas propias.
+- [ ] Confirmar que los investigadores-docentes pueden recibir recompensa económica o reducción docente, y que los investigadores sin docencia solo reciben recompensa económica.
+- [ ] Tras la revisión, pasar a Diseño del bloque 4 con `README.md`, `secuencia.puml` y SVG por caso.
