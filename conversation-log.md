@@ -18,7 +18,7 @@
 
 ---
 
-## [02:10] Fin de sesión
+## [2026-05-24 02:10] Fin de sesión
 
 **Prompt:** cierre automatico de sesión usando la skill `session-memory`.
 
