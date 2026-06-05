@@ -311,3 +311,9 @@ Se actualizó `tareas_a_realizar.md` dejando el bloque 4 como pendiente inmediat
 **Resultado:** se revisó el PlantUML fuente de los diagramas de contexto en `modelosUML/rup/00-casos-uso/01-actores-casos-uso`. Se confirmó que el diagrama de Coordinador sí contiene la transición `RECOMPENSAS_ABIERTAS --> RECOMPENSA_ABIERTA: crearRecompensa()`, además de `editarRecompensa()` y `eliminarRecompensa()`. También se confirmó que el diagrama de Investigador no incluye creación, edición ni eliminación de recompensas, lo cual es coherente con la regla de que solo consulta recompensas propias. Se regeneraron los SVG de contexto en `images/RUP/00-casos-uso/01-actores-casos-uso` para evitar desfases entre el fuente y la imagen visible.
 
 **Decisión:** se mantiene `crearRecompensa()` en Detalle y Análisis del Coordinador porque está respaldado por el diagrama de contexto. La próxima sesión debe empezar revisando el Análisis del bloque 4, prestando especial atención a que todos los casos sigan las transiciones permitidas por el contexto.
+
+# [2026-06-05 21:10] Inicio de sesión
+
+---
+
+# [2026-06-05 21:44] Fin de sesión
