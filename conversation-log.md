@@ -239,3 +239,25 @@ Finalmente se actualizó `tareas_a_realizar.md` con el plan inmediato para maña
 ---
 
 ## [2026-06-05 01:38] Fin de sesión
+
+**Prompt:** cierre de sesión solicitado con la skill `session-memory`, dejando ya indicada la fecha y hora y pidiendo completar únicamente el resumen.
+
+**Resultado:** se utilizó la skill `session-memory`. Durante la sesión se corrigió de nuevo el problema de credenciales de la plataforma, detectando que el fallo no estaba en los usuarios introducidos por el usuario sino en un backend antiguo que seguía ejecutándose. Se detuvo el proceso anterior, se arrancó el backend actualizado y se verificó por API que las credenciales demo funcionaban correctamente. Quedaron confirmados los accesos `docente.santander / docente123` e `investigador.barcelona / barcelona123`, además de la distinción funcional entre investigador-docente por sede y solo investigador.
+
+También se revisó y ajustó el bloque 3 de carga de trabajo. Se incorporó la regla de dominio de que no todos los investigadores son docentes: sedes como Santander pueden operar con investigadores-docentes, mientras que sedes como Barcelona representan investigadores sin docencia. Se añadió un perfil demo de investigador no docente de Barcelona y se ajustó el panel principal para que el acceso a `Recompensas` dependa del rol y de la sede. Se avanzó el Desarrollo del bloque con backend, frontend y documentación RUP para `abrirOpcionesCargaTrabajo` y `editarCargaTrabajo` en Coordinador e Investigador.
+
+Tras la aclaración final del usuario, se corrigió el enfoque de recompensas: un investigador-docente no puede superar 16 horas semanales de docencia, por lo que la carga de trabajo ya no genera compensaciones por exceso. Las recompensas quedan separadas del bloque de carga y pasan a estar asociadas a proyectos completados, pudiendo resolverse como recompensa económica o como reducción de horas docentes en el siguiente cuatrimestre. Se retiró del código el modelo y repositorio de `RecompensaCargaTrabajo`, se añadió la migración `V4__retirar_recompensas_carga_trabajo.sql`, se actualizaron DTOs, tests, frontend, README de Análisis/Diseño/Desarrollo y diagramas `.puml` relacionados.
+
+La verificación quedó parcialmente realizada: `npx tsc -b` terminó correctamente y `git diff --check` no mostró errores reales, solo avisos normales de CRLF en Windows. No se pudieron ejecutar las pruebas Maven porque el entorno no permitió descargar el parent de Spring, y tampoco se pudieron regenerar los SVG de PlantUML porque no había PlantUML local y el uso del servidor externo no fue autorizado por el entorno.
+
+**Decisión:** el siguiente paso recomendado es regenerar los SVG de los diagramas de Análisis y Diseño del bloque 3 cuando esté disponible PlantUML, ejecutar `mvnw.cmd test` con dependencias accesibles y reiniciar el backend para que aplique la migración V4. Después conviene probar manualmente el flujo de carga de trabajo con Coordinador, `docente.santander` e `investigador.barcelona`, capturar evidencias y pasar al módulo de recompensas/proyectos completados con la nueva regla ya aclarada.
+
+---
+
+## [2026-06-05 12:37] Inicio de sesión - Continuidad del bloque 3
+
+**Prompt:** el usuario inició una nueva sesión usando la skill `session-memory` y pidió continuar desde el punto donde quedó la sesión anterior.
+
+**Resultado:** se utilizó la skill `session-memory`. Se revisó `conversation-log.md`, `tareas_a_realizar.md`, la rama activa y el estado de Git. El repositorio está en `main` y, al inicio, solo aparece modificado `conversation-log.md` por el registro de memoria. La última decisión relevante deja el bloque 3 de carga de trabajo con la regla de dominio corregida: los investigadores-docentes no pueden superar 16 horas semanales de docencia y las recompensas no nacen por exceso de carga, sino por proyectos completados, pudiendo resolverse como recompensa económica o reducción docente en el siguiente cuatrimestre.
+
+**Decisión:** la sesión continuará cerrando flecos del bloque 3: regenerar SVG de Análisis/Diseño si hay PlantUML disponible, validar backend con Maven cuando las dependencias estén accesibles, reiniciar backend para aplicar la migración V4, probar manualmente carga de trabajo con Coordinador, `docente.santander` e `investigador.barcelona`, y preparar el paso al módulo de recompensas/proyectos completados.
