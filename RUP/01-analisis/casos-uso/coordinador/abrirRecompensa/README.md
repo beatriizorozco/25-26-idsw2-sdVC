@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de r
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `abrirRecompensa()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `abrirRecompensa()` desde `RECOMPENSAS_ABIERTAS`.
 - **Control**: Se comunica con `RecompensaController`.
-- **Salida**: Devuelve el control a la navegación definida para el Coordinador.
+- **Salida**: Mantiene `RECOMPENSA_ABIERTA` o navega a `RECOMPENSAS_ABIERTAS`.
 
 ### Clases de control
 
@@ -64,7 +64,7 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de r
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Abstraer el acceso a datos de recompensas.
-- Proporcionar operaciones `obtenerPorId(id)` y `verificarPermisos(actor)`.
+- Proporcionar operaciones `obtenerPorId(id)`.
 - Mantener la consistencia conceptual de recompensas.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
@@ -98,16 +98,17 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de r
 
 ### Secuencia de operaciones
 
-1. **Inicio**: Estado de contexto -> `DetalleRecompensaView.abrirRecompensa()`.
+1. **Inicio**: `RECOMPENSAS_ABIERTAS` -> `DetalleRecompensaView.abrirRecompensa()`.
 2. **Solicitud principal**: `DetalleRecompensaView` -> `RecompensaController.obtenerRecompensa(id)`.
-3. **Acceso a datos**: `DetalleRecompensaView` -> `RecompensaController.prepararAccionesDisponibles(coordinador)`.
-4. **Preparación de acciones**: `RecompensaController` -> `RecompensaRepository.obtenerPorId(id)`.
-5. **Verificación de permisos**: `RecompensaController` -> `RecompensaRepository.verificarPermisos(actor)`.
-6. **Finalización**: `DetalleRecompensaView` devuelve el control al estado de navegación definido.
+3. **Acceso a datos**: `RecompensaController` -> `RecompensaRepository.obtenerPorId(id)`.
+4. **Verificación de origen**: `RecompensaController` -> `ProyectoRepository.verificarProyectoCompletado(recompensa)`.
+5. **Verificación de beneficiario**: `RecompensaController` -> `InvestigadorRepository.verificarBeneficiario(recompensa)`.
+6. **Preparación de acciones**: `DetalleRecompensaView` presenta las opciones disponibles para el Coordinador.
+7. **Finalización**: `DetalleRecompensaView` mantiene `RECOMPENSA_ABIERTA` o deriva a `abrirRecompensas()`, `editarRecompensa()` o `eliminarRecompensa()`.
 
 ### Patrón de colaboración establecido
 
-- **Entrada estándar**: Desde el estado activo del diagrama de contexto del Coordinador.
+- **Entrada estándar**: Desde `RECOMPENSAS_ABIERTAS`.
 - **Análisis MVC completo**: Vista, Control y Entidad claramente separados.
 - **Salida estándar**: Retorno a la navegación permitida o a una colaboración relacionada.
 
@@ -120,7 +121,9 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de r
 |Atender la solicitud `abrirRecompensa()`|`DetalleRecompensaView`|Recibe la acción del Coordinador|
 |Coordinar reglas del caso de uso|`RecompensaController`|`obtenerRecompensa(id)`|
 |Aplicar permisos y validaciones|`RecompensaController`|`prepararAccionesDisponibles(coordinador)`|
-|Acceder a datos de recompensas|`RecompensaRepository`|`obtenerPorId(id)`, `verificarPermisos(actor)`|
+|Acceder a datos de recompensas|`RecompensaRepository`|`obtenerPorId(id)`|
+|Verificar proyecto de origen|`ProyectoRepository`|`verificarProyectoCompletado(recompensa)`|
+|Verificar beneficiario|`InvestigadorRepository`|`verificarBeneficiario(recompensa)`|
 |Representar atributos de dominio|`Recompensa`|Entidad conceptual|
 
 ### Atributos tratados

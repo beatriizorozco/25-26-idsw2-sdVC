@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `abrirRecompensa()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `abrirRecompensa()` desde `RECOMPENSAS_ABIERTAS`.
 - **Control**: Se comunica con `RecompensaController`.
-- **Salida**: Devuelve el control a la navegación definida para el Investigador.
+- **Salida**: Mantiene `RECOMPENSA_ABIERTA` o navega a `RECOMPENSAS_ABIERTAS`.
 
 ### Clases de control
 
@@ -64,7 +64,7 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Abstraer el acceso a datos de recompensas.
-- Proporcionar operaciones `obtenerPorId(id)` y `verificarPermisos(actor)`.
+- Proporcionar operaciones `obtenerPropiaPorId(investigador, id)`.
 - Mantener la consistencia conceptual de recompensas.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
@@ -100,10 +100,10 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 
 1. **Inicio**: Estado de contexto -> `DetalleRecompensaView.abrirRecompensa()`.
 2. **Solicitud principal**: `DetalleRecompensaView` -> `RecompensaController.obtenerRecompensa(id)`.
-3. **Acceso a datos**: `DetalleRecompensaView` -> `RecompensaController.prepararAccionesDisponibles(investigador)`.
-4. **Preparación de acciones**: `RecompensaController` -> `RecompensaRepository.obtenerPorId(id)`.
-5. **Verificación de permisos**: `RecompensaController` -> `RecompensaRepository.verificarPermisos(actor)`.
-6. **Finalización**: `DetalleRecompensaView` devuelve el control al estado de navegación definido.
+3. **Perfil autenticado**: `RecompensaController` -> `InvestigadorRepository.obtenerPerfil(investigador)`.
+4. **Acceso propio a datos**: `RecompensaController` -> `RecompensaRepository.obtenerPropiaPorId(investigador, id)`.
+5. **Verificación de origen**: `RecompensaController` -> `ProyectoRepository.verificarProyectoCompletado(recompensa)`.
+6. **Finalización**: `DetalleRecompensaView` mantiene `RECOMPENSA_ABIERTA` o deriva a `abrirRecompensas()`.
 
 ### Patrón de colaboración establecido
 
@@ -120,7 +120,9 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 |Atender la solicitud `abrirRecompensa()`|`DetalleRecompensaView`|Recibe la acción del Investigador|
 |Coordinar reglas del caso de uso|`RecompensaController`|`obtenerRecompensa(id)`|
 |Aplicar permisos y validaciones|`RecompensaController`|`prepararAccionesDisponibles(investigador)`|
-|Acceder a datos de recompensas|`RecompensaRepository`|`obtenerPorId(id)`, `verificarPermisos(actor)`|
+|Acceder a datos de recompensas|`RecompensaRepository`|`obtenerPropiaPorId(investigador, id)`|
+|Verificar perfil autenticado|`InvestigadorRepository`|`obtenerPerfil(investigador)`|
+|Verificar proyecto de origen|`ProyectoRepository`|`verificarProyectoCompletado(recompensa)`|
 |Representar atributos de dominio|`Recompensa`|Entidad conceptual|
 
 ### Atributos tratados

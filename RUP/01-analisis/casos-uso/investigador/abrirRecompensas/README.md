@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para presentar a Investigador el listado de 
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `abrirRecompensas()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `abrirRecompensas()` desde `PANEL_PRINCIPAL_ABIERTO` o `RECOMPENSA_ABIERTA`.
 - **Control**: Se comunica con `RecompensaController`.
-- **Salida**: Devuelve el control a la navegación definida para el Investigador.
+- **Salida**: Mantiene `RECOMPENSAS_ABIERTAS` o navega a `RECOMPENSA_ABIERTA` / `PANEL_PRINCIPAL_ABIERTO`.
 
 ### Clases de control
 
@@ -64,7 +64,7 @@ Analizar la colaboración necesaria para presentar a Investigador el listado de 
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Abstraer el acceso a datos de recompensas.
-- Proporcionar operaciones `obtenerTodos()` y `buscarPorCriterio(criterio)`.
+- Proporcionar operaciones `obtenerPropiasDeProyectosCompletados(investigador)`, `obtenerPropiasPorContexto(investigador, contexto)` y `buscarPropiasPorCriterio(investigador, criterio)`.
 - Mantener la consistencia conceptual de recompensas.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
@@ -99,11 +99,11 @@ Analizar la colaboración necesaria para presentar a Investigador el listado de 
 ### Secuencia de operaciones
 
 1. **Inicio**: Estado de contexto -> `ListarRecompensasView.abrirRecompensas()`.
-2. **Solicitud principal**: `ListarRecompensasView` -> `RecompensaController.listarRecompensas()`.
-3. **Acceso a datos**: `ListarRecompensasView` -> `RecompensaController.filtrarRecompensas(criterio)`.
-4. **Filtrado o refinamiento**: `RecompensaController` -> `RecompensaRepository.obtenerTodos()`.
-5. **Búsqueda**: `RecompensaController` -> `RecompensaRepository.buscarPorCriterio(criterio)`.
-6. **Finalización**: `ListarRecompensasView` devuelve el control al estado de navegación definido.
+2. **Solicitud principal**: `ListarRecompensasView` -> `RecompensaController.listarRecompensasPropias(investigador, contexto)`.
+3. **Acceso a perfil**: `RecompensaController` -> `InvestigadorRepository.obtenerPerfil(investigador)`.
+4. **Listado propio válido**: `RecompensaController` -> `RecompensaRepository.obtenerPropiasDeProyectosCompletados(investigador)`.
+5. **Búsqueda propia**: `RecompensaController` -> `RecompensaRepository.buscarPropiasPorCriterio(investigador, criterio)`.
+6. **Finalización**: `ListarRecompensasView` mantiene `RECOMPENSAS_ABIERTAS` o deriva a `abrirRecompensa()` / `abrirPanelPrincipal()`.
 
 ### Patrón de colaboración establecido
 
@@ -118,9 +118,11 @@ Analizar la colaboración necesaria para presentar a Investigador el listado de 
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
 |Atender la solicitud `abrirRecompensas()`|`ListarRecompensasView`|Recibe la acción del Investigador|
-|Coordinar reglas del caso de uso|`RecompensaController`|`listarRecompensas()`|
-|Aplicar permisos y validaciones|`RecompensaController`|`filtrarRecompensas(criterio)`|
-|Acceder a datos de recompensas|`RecompensaRepository`|`obtenerTodos()`, `buscarPorCriterio(criterio)`|
+|Coordinar reglas del caso de uso|`RecompensaController`|`listarRecompensasPropias(investigador, contexto)`|
+|Aplicar permisos y validaciones|`RecompensaController`|`filtrarRecompensasPropias(criterio)`|
+|Acceder a datos de recompensas|`RecompensaRepository`|`obtenerPropiasDeProyectosCompletados(investigador)`, `obtenerPropiasPorContexto(investigador, contexto)`, `buscarPropiasPorCriterio(investigador, criterio)`|
+|Verificar perfil autenticado|`InvestigadorRepository`|`obtenerPerfil(investigador)`|
+|Verificar proyectos completados|`ProyectoRepository`|`verificarCompletados()`|
 |Representar atributos de dominio|`Recompensa`|Entidad conceptual|
 
 ### Atributos tratados

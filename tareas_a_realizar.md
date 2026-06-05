@@ -104,9 +104,9 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 
 - [x] Actualizar Detalle de recompensas para Coordinador e Investigador con las reglas de proyecto completado y tipo de recompensa según docencia/sede.
 - [x] Actualizar Análisis de recompensas para Coordinador e Investigador con README, `colaboracion.puml` y SVG.
-- [ ] Revisar manualmente el Análisis del bloque 4 completo.
-- [ ] Confirmar que los diagramas distinguen correctamente Coordinador e Investigador.
-- [ ] Confirmar que las recompensas nacen de proyectos completados y no de exceso de carga docente.
-- [ ] Confirmar que el Investigador solo consulta recompensas propias.
-- [ ] Confirmar que los investigadores-docentes pueden recibir recompensa económica o reducción docente, y que los investigadores sin docencia solo reciben recompensa económica.
+- [x] Revisar manualmente el Análisis del bloque 4 completo.
+- [x] Confirmar que los diagramas distinguen correctamente Coordinador e Investigador.
+- [x] Confirmar que las recompensas nacen de proyectos completados y no de exceso de carga docente.
+- [x] Confirmar que el Investigador solo consulta recompensas propias.
+- [x] Confirmar que los investigadores-docentes pueden recibir recompensa económica o reducción docente, y que los investigadores sin docencia solo reciben recompensa económica.
 - [ ] Tras la revisión, pasar a Diseño del bloque 4 con `README.md`, `secuencia.puml` y SVG por caso.

@@ -20,11 +20,11 @@ EstadoEntrada -r-> EliminarRecompensaView: eliminarRecompensa()
 EliminarRecompensaView -d-> RecompensaController: solicitarConfirmacion(id)
 RecompensaController --> EliminarRecompensaView: presentarConfirmacion()
 EliminarRecompensaView --> RecompensaController: confirmarEliminacion(id)
-EliminarRecompensaView --> RecompensaController: cancelarEliminacion()
 EliminarRecompensaView --> RecompensaController: validarEliminacion(id)
 RecompensaController --> RecompensaRepository: obtenerPorId(id)
 RecompensaController --> ProyectoRepository: verificarProyectoCompletado(recompensa)
 RecompensaController --> RecompensaRepository: eliminar(id)
+EliminarRecompensaView --> RecompensaController: cancelarEliminacion()
 RecompensaRepository -- Recompensa
 ProyectoRepository -- Proyecto
 note right of RecompensaController

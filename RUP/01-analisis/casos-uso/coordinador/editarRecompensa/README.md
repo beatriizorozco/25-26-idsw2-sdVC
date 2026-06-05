@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para actualizar los datos de recompensa. El 
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `editarRecompensa()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `editarRecompensa()` desde `RECOMPENSA_ABIERTA`.
 - **Control**: Se comunica con `RecompensaController`.
-- **Salida**: Devuelve el control a la navegación definida para el Coordinador.
+- **Salida**: Mantiene `RECOMPENSA_ABIERTA` o navega a `RECOMPENSAS_ABIERTAS`.
 
 ### Clases de control
 
@@ -101,9 +101,11 @@ Analizar la colaboración necesaria para actualizar los datos de recompensa. El 
 1. **Inicio**: Estado de contexto -> `EditarRecompensaView.editarRecompensa()`.
 2. **Solicitud principal**: `EditarRecompensaView` -> `RecompensaController.editarRecompensa(id, datos)`.
 3. **Acceso a datos**: `EditarRecompensaView` -> `RecompensaController.validarCambios(datos)`.
-4. **Validación de cambios**: `RecompensaController` -> `RecompensaRepository.obtenerPorId(id)`.
-5. **Persistencia**: `RecompensaController` -> `RecompensaRepository.actualizar(entidad)`.
-6. **Finalización**: `EditarRecompensaView` devuelve el control al estado de navegación definido.
+4. **Obtención actual**: `RecompensaController` -> `RecompensaRepository.obtenerPorId(id)`.
+5. **Validación de origen**: `RecompensaController` -> `ProyectoRepository.verificarProyectoCompletado(recompensa)`.
+6. **Validación de beneficiario**: `RecompensaController` -> `InvestigadorRepository.verificarBeneficiario(datos.investigadorId)`.
+7. **Persistencia**: `RecompensaController` -> `RecompensaRepository.actualizar(entidad)`.
+8. **Finalización**: `EditarRecompensaView` mantiene `RECOMPENSA_ABIERTA` o deriva a `abrirRecompensas()` / `eliminarRecompensa()`.
 
 ### Patrón de colaboración establecido
 
@@ -121,6 +123,8 @@ Analizar la colaboración necesaria para actualizar los datos de recompensa. El 
 |Coordinar reglas del caso de uso|`RecompensaController`|`editarRecompensa(id, datos)`|
 |Aplicar permisos y validaciones|`RecompensaController`|`validarCambios(datos)`|
 |Acceder a datos de recompensas|`RecompensaRepository`|`obtenerPorId(id)`, `actualizar(entidad)`|
+|Verificar proyecto completado|`ProyectoRepository`|`verificarProyectoCompletado(recompensa)`|
+|Verificar beneficiario|`InvestigadorRepository`|`verificarBeneficiario(datos.investigadorId)`|
 |Representar atributos de dominio|`Recompensa`|Entidad conceptual|
 
 ### Atributos tratados

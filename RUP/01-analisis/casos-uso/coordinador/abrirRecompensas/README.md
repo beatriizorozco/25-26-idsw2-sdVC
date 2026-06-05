@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para presentar a Coordinador el listado de r
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `abrirRecompensas()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `abrirRecompensas()` desde `PANEL_PRINCIPAL_ABIERTO` o `RECOMPENSA_ABIERTA`.
 - **Control**: Se comunica con `RecompensaController`.
-- **Salida**: Devuelve el control a la navegación definida para el Coordinador.
+- **Salida**: Mantiene `RECOMPENSAS_ABIERTAS` o navega a `RECOMPENSA_ABIERTA` / `PANEL_PRINCIPAL_ABIERTO`.
 
 ### Clases de control
 
@@ -64,7 +64,7 @@ Analizar la colaboración necesaria para presentar a Coordinador el listado de r
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Abstraer el acceso a datos de recompensas.
-- Proporcionar operaciones `obtenerTodos()` y `buscarPorCriterio(criterio)`.
+- Proporcionar operaciones `obtenerDeProyectosCompletados()`, `obtenerPorContexto(contexto)` y `buscarPorCriterio(criterio)`.
 - Mantener la consistencia conceptual de recompensas.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
@@ -99,11 +99,11 @@ Analizar la colaboración necesaria para presentar a Coordinador el listado de r
 ### Secuencia de operaciones
 
 1. **Inicio**: Estado de contexto -> `ListarRecompensasView.abrirRecompensas()`.
-2. **Solicitud principal**: `ListarRecompensasView` -> `RecompensaController.listarRecompensas()`.
+2. **Solicitud principal**: `ListarRecompensasView` -> `RecompensaController.listarRecompensas(contexto)`.
 3. **Acceso a datos**: `ListarRecompensasView` -> `RecompensaController.filtrarRecompensas(criterio)`.
-4. **Filtrado o refinamiento**: `RecompensaController` -> `RecompensaRepository.obtenerTodos()`.
+4. **Listado global válido**: `RecompensaController` -> `RecompensaRepository.obtenerDeProyectosCompletados()`.
 5. **Búsqueda**: `RecompensaController` -> `RecompensaRepository.buscarPorCriterio(criterio)`.
-6. **Finalización**: `ListarRecompensasView` devuelve el control al estado de navegación definido.
+6. **Finalización**: `ListarRecompensasView` mantiene `RECOMPENSAS_ABIERTAS` o deriva a `abrirRecompensa()`, `crearRecompensa()` o `abrirPanelPrincipal()`.
 
 ### Patrón de colaboración establecido
 
@@ -120,7 +120,9 @@ Analizar la colaboración necesaria para presentar a Coordinador el listado de r
 |Atender la solicitud `abrirRecompensas()`|`ListarRecompensasView`|Recibe la acción del Coordinador|
 |Coordinar reglas del caso de uso|`RecompensaController`|`listarRecompensas()`|
 |Aplicar permisos y validaciones|`RecompensaController`|`filtrarRecompensas(criterio)`|
-|Acceder a datos de recompensas|`RecompensaRepository`|`obtenerTodos()`, `buscarPorCriterio(criterio)`|
+|Acceder a datos de recompensas|`RecompensaRepository`|`obtenerDeProyectosCompletados()`, `obtenerPorContexto(contexto)`, `buscarPorCriterio(criterio)`|
+|Verificar proyectos completados|`ProyectoRepository`|`verificarCompletados()`|
+|Identificar beneficiarios|`InvestigadorRepository`|`obtenerBeneficiarios()`|
 |Representar atributos de dominio|`Recompensa`|Entidad conceptual|
 
 ### Atributos tratados

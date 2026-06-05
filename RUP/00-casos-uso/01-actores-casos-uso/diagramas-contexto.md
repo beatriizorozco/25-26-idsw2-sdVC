@@ -1,4 +1,4 @@
-<h1 align="center">FUNIBER — Plataforma Interna de Investigación</h1>
+﻿<h1 align="center">FUNIBER — Plataforma Interna de Investigación</h1>
 
 <div align="center">
 
@@ -33,7 +33,7 @@ Cada diagrama define los **estados de pantalla** y las **transiciones** permitid
 
 |![Diagrama de contexto: Coordinador](https://raw.githubusercontent.com/beatriizorozco/25-26-idsw2-sdVC/develop/images/RUP/00-casos-uso/01-actores-casos-uso/diagrama-contexto-coordinador.svg)|
 |-|
-|Código fuente: [especificacion.puml](/modelosUML/rup/00-casos-uso/01-actores-casos-uso/diagrama-contexto-coordinador.puml)|
+|Código fuente: [especificacion.puml](https://github.com/beatriizorozco/25-26-idsw2-sdVC/blob/main/modelosUML/RUP/00-casos-uso/01-actores-casos-uso/diagrama-contexto-coordinador.puml)|
 
 
 </div>
@@ -54,7 +54,7 @@ Cada diagrama define los **estados de pantalla** y las **transiciones** permitid
 
 |![Diagrama de contexto: Investigador](https://raw.githubusercontent.com/beatriizorozco/25-26-idsw2-sdVC/develop/images/RUP/00-casos-uso/01-actores-casos-uso/diagrama-contexto-investigador.svg)|
 |-|
-|Código fuente: [especificacion.puml](/modelosUML/rup/00-casos-uso/01-actores-casos-uso/diagrama-contexto-investigador.puml)|
+|Código fuente: [especificacion.puml](https://github.com/beatriizorozco/25-26-idsw2-sdVC/blob/main/modelosUML/RUP/00-casos-uso/01-actores-casos-uso/diagrama-contexto-investigador.puml)|
 
 
 </div>

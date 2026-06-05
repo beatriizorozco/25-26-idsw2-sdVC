@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para eliminar un elemento de recompensa. El 
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `eliminarRecompensa()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `eliminarRecompensa()` desde `RECOMPENSA_ABIERTA`.
 - **Control**: Se comunica con `RecompensaController`.
-- **Salida**: Devuelve el control a la navegación definida para el Coordinador.
+- **Salida**: Navega a `RECOMPENSAS_ABIERTAS` si confirma o mantiene `RECOMPENSA_ABIERTA` si cancela.
 
 ### Clases de control
 
@@ -92,16 +92,18 @@ Analizar la colaboración necesaria para eliminar un elemento de recompensa. El 
 
 ### Secuencia de operaciones
 
-1. **Inicio**: Estado de contexto -> `EliminarRecompensaView.eliminarRecompensa()`.
+1. **Inicio**: `RECOMPENSA_ABIERTA` -> `EliminarRecompensaView.eliminarRecompensa()`.
 2. **Confirmación previa**: `EliminarRecompensaView` -> `RecompensaController.solicitarConfirmacion(id)`.
 3. **Presentación de confirmación**: `RecompensaController` -> `EliminarRecompensaView.presentarConfirmacion()`.
 4. **Decisión del actor**: si confirma, `EliminarRecompensaView` -> `RecompensaController.confirmarEliminacion(id)`; si cancela, `EliminarRecompensaView` -> `RecompensaController.cancelarEliminacion()`.
-5. **Validación y persistencia**: `RecompensaController` -> `RecompensaRepository.obtenerPorId(id)` y `RecompensaRepository.eliminar(id)`.
-6. **Finalización**: si confirma, se presenta el listado de recompensas; si cancela, se mantiene la recompensa abierta.
+5. **Obtención de recompensa**: `RecompensaController` -> `RecompensaRepository.obtenerPorId(id)`.
+6. **Validación de origen**: `RecompensaController` -> `ProyectoRepository.verificarProyectoCompletado(recompensa)`.
+7. **Persistencia**: `RecompensaController` -> `RecompensaRepository.eliminar(id)`.
+8. **Finalización**: si confirma, se presenta el listado de recompensas; si cancela, se mantiene la recompensa abierta.
 
 ### Patrón de colaboración establecido
 
-- **Entrada estándar**: Desde el estado activo del diagrama de contexto del Coordinador.
+- **Entrada estándar**: Desde `RECOMPENSA_ABIERTA`.
 - **Análisis MVC completo**: Vista, Control y Entidad claramente separados.
 - **Salida estándar**: Retorno a la navegación permitida o a una colaboración relacionada.
 
@@ -115,6 +117,7 @@ Analizar la colaboración necesaria para eliminar un elemento de recompensa. El 
 |Coordinar reglas del caso de uso|`RecompensaController`|`solicitarConfirmacion(id)`, `confirmarEliminacion(id)`|
 |Aplicar permisos, validaciones y cancelación|`RecompensaController`|`validarEliminacion(id)`, `cancelarEliminacion()`|
 |Acceder a datos de recompensas|`RecompensaRepository`|`obtenerPorId(id)`, `eliminar(id)`|
+|Verificar proyecto de origen|`ProyectoRepository`|`verificarProyectoCompletado(recompensa)`|
 |Representar atributos de dominio|`Recompensa`|Entidad conceptual|
 
 ### Atributos tratados

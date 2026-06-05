@@ -14,7 +14,7 @@
 
 ## Propósito
 
-Analizar la colaboración necesaria para registrar un nuevo recompensa. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `crearRecompensa()`.
+Analizar la colaboración necesaria para registrar una nueva recompensa. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `crearRecompensa()`.
 
 ## Diagrama de colaboración
 
@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para registrar un nuevo recompensa. El anál
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `crearRecompensa()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `crearRecompensa()` desde `RECOMPENSAS_ABIERTAS`.
 - **Control**: Se comunica con `RecompensaController`.
-- **Salida**: Devuelve el control a la navegación definida para el Coordinador.
+- **Salida**: Navega a `RECOMPENSA_ABIERTA` con la recompensa creada.
 
 ### Clases de control
 
@@ -101,9 +101,11 @@ Analizar la colaboración necesaria para registrar un nuevo recompensa. El anál
 1. **Inicio**: Estado de contexto -> `CrearRecompensaView.crearRecompensa()`.
 2. **Solicitud principal**: `CrearRecompensaView` -> `RecompensaController.crearRecompensa(datos)`.
 3. **Validación previa**: `CrearRecompensaView` -> `RecompensaController.validarRecompensa(datos)`.
-4. **Consulta de consistencia**: `RecompensaController` -> `RecompensaRepository.existeDuplicado(datos)`.
-5. **Persistencia**: `RecompensaController` -> `RecompensaRepository.guardar(entidad)`.
-6. **Finalización**: `CrearRecompensaView` devuelve el control al estado de navegación definido.
+4. **Proyecto completado**: `RecompensaController` -> `ProyectoRepository.obtenerCompletado(datos.proyectoId)`.
+5. **Beneficiario**: `RecompensaController` -> `InvestigadorRepository.obtenerBeneficiario(datos.investigadorId)`.
+6. **Consulta de consistencia**: `RecompensaController` -> `RecompensaRepository.existeDuplicado(datos)`.
+7. **Persistencia**: `RecompensaController` -> `RecompensaRepository.guardar(entidad)`.
+8. **Finalización**: `CrearRecompensaView` deriva a `abrirRecompensa()` y queda en `RECOMPENSA_ABIERTA`.
 
 ### Patrón de colaboración establecido
 
@@ -121,6 +123,8 @@ Analizar la colaboración necesaria para registrar un nuevo recompensa. El anál
 |Coordinar reglas del caso de uso|`RecompensaController`|`crearRecompensa(datos)`|
 |Aplicar permisos y validaciones|`RecompensaController`|`validarRecompensa(datos)`|
 |Acceder a datos de recompensas|`RecompensaRepository`|`existeDuplicado(datos)`, `guardar(entidad)`|
+|Verificar proyecto completado|`ProyectoRepository`|`obtenerCompletado(datos.proyectoId)`|
+|Verificar beneficiario|`InvestigadorRepository`|`obtenerBeneficiario(datos.investigadorId)`|
 |Representar atributos de dominio|`Recompensa`|Entidad conceptual|
 
 ### Atributos tratados
