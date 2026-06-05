@@ -91,6 +91,9 @@ public class DemoDataConfig {
             SedeFuniber sede) {
         return usuarioRepository.findByNombreUsuario(nombreUsuario)
                 .map(usuario -> {
+                    usuario.actualizarContrasenaHash(passwordEncoder.encode(contrasena));
+                    usuario.reactivar();
+                    usuario.actualizarPerfil(nombreCompleto, email, unidad, lineaInvestigacion, biografia);
                     usuario.actualizarSede(sede);
                     return usuarioRepository.save(usuario);
                 })

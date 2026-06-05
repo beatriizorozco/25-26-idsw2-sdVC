@@ -275,8 +275,21 @@ function EditorCarga({
       <form className="profile-form workload-form" onSubmit={onGuardar}>
         <label>
           Horas de docencia
-          <input type="number" min="0" max={carga.investigadorDocente ? 16 : undefined} step="0.5" value={formulario.horasDocencia} onChange={(event) => onCambiar({ ...formulario, horasDocencia: Number(event.target.value) })} />
-          {carga.investigadorDocente && <small className="field-hint">Máximo 16 horas semanales.</small>}
+          <input
+            type="number"
+            min="0"
+            max={carga.investigadorDocente ? 16 : 0}
+            step="0.5"
+            value={formulario.horasDocencia}
+            disabled={!carga.investigadorDocente}
+            onChange={(event) => onCambiar({
+              ...formulario,
+              horasDocencia: normalizarDocencia(Number(event.target.value), carga.investigadorDocente),
+            })}
+          />
+          <small className="field-hint">
+            {carga.investigadorDocente ? 'Maximo 16 horas semanales.' : 'No aplica docencia para esta sede.'}
+          </small>
         </label>
         <label>
           Horas de investigacion
@@ -337,6 +350,16 @@ function desdeCarga(carga: CargaTrabajoPersona): CargaTrabajoUpdate {
 
 function totalFormulario(carga: CargaTrabajoUpdate) {
   return Number(carga.horasDocencia) + Number(carga.horasInvestigacion) + Number(carga.horasGestionAcademica)
+}
+
+function normalizarDocencia(valor: number, investigadorDocente: boolean) {
+  if (!Number.isFinite(valor) || valor < 0) {
+    return 0
+  }
+  if (!investigadorDocente) {
+    return 0
+  }
+  return Math.min(valor, 16)
 }
 
 function formatearHoras(valor: number) {

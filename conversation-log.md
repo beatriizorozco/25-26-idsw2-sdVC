@@ -261,3 +261,19 @@ La verificación quedó parcialmente realizada: `npx tsc -b` terminó correctame
 **Resultado:** se utilizó la skill `session-memory`. Se revisó `conversation-log.md`, `tareas_a_realizar.md`, la rama activa y el estado de Git. El repositorio está en `main` y, al inicio, solo aparece modificado `conversation-log.md` por el registro de memoria. La última decisión relevante deja el bloque 3 de carga de trabajo con la regla de dominio corregida: los investigadores-docentes no pueden superar 16 horas semanales de docencia y las recompensas no nacen por exceso de carga, sino por proyectos completados, pudiendo resolverse como recompensa económica o reducción docente en el siguiente cuatrimestre.
 
 **Decisión:** la sesión continuará cerrando flecos del bloque 3: regenerar SVG de Análisis/Diseño si hay PlantUML disponible, validar backend con Maven cuando las dependencias estén accesibles, reiniciar backend para aplicar la migración V4, probar manualmente carga de trabajo con Coordinador, `docente.santander` e `investigador.barcelona`, y preparar el paso al módulo de recompensas/proyectos completados.
+
+---
+
+## [2026-06-05 13:45] Fin de sesión - Bloque 3 probado y pendiente de revisión final
+
+**Prompt:** cierre de sesión solicitado con la skill `session-memory`, pidiendo actualizar `tareas_a_realizar.md` y dejar como siguiente paso revisar el bloque 3 entero.
+
+**Resultado:** se utilizó la skill `session-memory`. Durante la sesión se cerraron los flecos técnicos del bloque 3 de carga de trabajo. Se descargó PlantUML para uso local en `tools/plantuml.jar`, se añadió esa ruta a `.gitignore` para evitar subir el binario y se regeneraron los SVG de Análisis y Diseño de `abrirOpcionesCargaTrabajo` y `editarCargaTrabajo` para Coordinador e Investigador.
+
+También se corrigió el problema persistente de credenciales demo. La causa no era solo un backend antiguo, sino que la base H2 local podía conservar usuarios demo ya existentes con contraseña antigua o estado inactivo. Se ajustó `DemoDataConfig` para reactivar y actualizar contraseña, perfil y sede en cada arranque, y se añadieron métodos explícitos en `Usuario` para actualizar el hash de contraseña y reactivar la cuenta. Tras reiniciar backend, quedaron validados por API los accesos `docente.santander / docente123` e `investigador.barcelona / barcelona123`.
+
+Se revisó además la regla funcional de sedes: Santander representa investigadores-docentes y Barcelona investigadores sin docencia por sede. El frontend normaliza la docencia de investigadores-docentes para que no supere 16 horas semanales y bloquea la docencia cuando no aplica por sede. El backend refuerza la misma regla rechazando cualquier docencia mayor que cero para investigadores no docentes. Se actualizaron las pruebas de integración de carga de trabajo, `incidencias_y_soluciones.md` y `tareas_a_realizar.md`.
+
+La verificación final quedó correcta: `mvnw.cmd test` ejecutó 21 pruebas sin fallos, `npm run build` generó el build de producción correctamente, `git diff --check` no mostró errores reales y el backend quedó arrancado en el puerto 8080. El usuario comprobó manualmente en navegador los flujos de `docente.santander`, `investigador.barcelona` y el panel del Coordinador, incluyendo actualización de carga y sugerencias de asignación.
+
+**Decisión:** el siguiente paso será revisar el bloque 3 entero antes de pasar al módulo de recompensas/proyectos completados. Esa revisión debe cubrir Detalle, Análisis, Diseño, Desarrollo, Pruebas, diagramas, SVG, capturas, trazabilidad y coherencia con la regla final: los investigadores-docentes no superan 16 horas de docencia semanal, los investigadores de sedes sin docencia no registran docencia, y las recompensas nacen de proyectos completados, no de exceso de carga.

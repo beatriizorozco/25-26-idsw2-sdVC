@@ -88,3 +88,14 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Empezar el Diseño del bloque 3 siguiendo el patrón del profesor: `README.md`, `secuencia.puml` y SVG por caso.
 - [x] Preparar los casos de Diseño de `abrirOpcionesCargaTrabajo` y `editarCargaTrabajo` para Coordinador e Investigador.
 - [x] Añadir o completar capturas pendientes del bloque de perfil si se quiere dejar la evidencia visual cerrada.
+
+## Pendiente inmediato del bloque 3
+
+- [x] Ejecutar `mvnw.cmd test` para validar backend tras la corrección de carga de trabajo.
+- [x] Ejecutar `npm run build` para validar frontend tras la corrección de carga de trabajo.
+- [x] Arrancar backend local y aplicar la migración `V4__retirar_recompensas_carga_trabajo.sql`.
+- [x] Comprobar por API el flujo de carga con Coordinador, `docente.santander` e `investigador.barcelona`.
+- [x] Regenerar los SVG de Análisis y Diseño del bloque 3 cuando esté disponible PlantUML local o una vía autorizada.
+- [x] Probar manualmente en navegador el flujo visual de carga de trabajo con Coordinador, `docente.santander` e `investigador.barcelona`.
+- [ ] Revisar el bloque 3 entero de carga de trabajo: Detalle, Análisis, Diseño, Desarrollo, Pruebas, diagramas, SVG, capturas y trazabilidad.
+- [ ] Empezar el módulo de recompensas/proyectos completados con la regla correcta: recompensa económica o reducción docente tras proyecto completado.

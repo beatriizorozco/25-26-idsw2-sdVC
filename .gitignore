@@ -16,6 +16,9 @@ src/frontend/*.tsbuildinfo
 src/frontend/*-run.log
 src/frontend/*-run.err.log
 
+# Local diagram tooling
+tools/plantuml.jar
+
 # Environment
 .env
 .env.*

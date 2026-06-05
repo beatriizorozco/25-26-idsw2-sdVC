@@ -122,6 +122,14 @@ public class Usuario {
         this.sede = sede;
     }
 
+    public void actualizarContrasenaHash(String contrasenaHash) {
+        this.contrasenaHash = contrasenaHash;
+    }
+
+    public void reactivar() {
+        this.activo = true;
+    }
+
     public boolean esInvestigadorDocente() {
         return rol == Rol.INVESTIGADOR && sede.esInvestigadorDocente();
     }

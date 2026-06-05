@@ -96,6 +96,11 @@ public class CargaTrabajoService {
     }
 
     private void validarCargaDocente(Usuario usuario, CargaTrabajoUpdateRequest request) {
+        if (!usuario.esInvestigadorDocente()
+                && request.horasDocencia().compareTo(BigDecimal.ZERO) > 0) {
+            throw new IllegalArgumentException(
+                    "Un investigador de una sede sin docencia no puede registrar horas docentes.");
+        }
         if (usuario.esInvestigadorDocente()
                 && request.horasDocencia().compareTo(MAXIMO_DOCENTE_SEMANAL) > 0) {
             throw new IllegalArgumentException(

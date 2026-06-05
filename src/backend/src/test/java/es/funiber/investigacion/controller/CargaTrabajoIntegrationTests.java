@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.MvcResult;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Sql(statements = {
-        "UPDATE usuarios SET activo = TRUE WHERE nombre_usuario IN ('coordinador', 'investigador', 'docente.santander')",
+        "UPDATE usuarios SET activo = TRUE WHERE nombre_usuario IN ('coordinador', 'investigador', 'docente.santander', 'investigador.barcelona')",
         "UPDATE cargas_trabajo SET horas_docencia = 0, horas_investigacion = 24, horas_gestion_academica = 4 WHERE usuario_id = (SELECT id FROM usuarios WHERE nombre_usuario = 'investigador')",
         "UPDATE cargas_trabajo SET horas_docencia = 14, horas_investigacion = 12, horas_gestion_academica = 3 WHERE usuario_id = (SELECT id FROM usuarios WHERE nombre_usuario = 'docente.santander')"
 }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -57,8 +57,8 @@ class CargaTrabajoIntegrationTests {
     }
 
     @Test
-    void investigadorDeSedeSinDocenciaNoTieneRecompensaPorCarga() throws Exception {
-        HttpSession session = iniciarSesion("investigador", "investigador123");
+    void investigadorDeSedeSinDocenciaNoPuedeRegistrarHorasDocentes() throws Exception {
+        HttpSession session = iniciarSesion("investigador.barcelona", "barcelona123");
 
         mockMvc.perform(patch("/api/carga-trabajo/me")
                         .with(csrf())
@@ -72,10 +72,8 @@ class CargaTrabajoIntegrationTests {
                                   "observaciones": "Carga declarada en sede sin docencia."
                                 }
                                 """))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.sede").value("Barcelona"))
-                .andExpect(jsonPath("$.investigadorDocente").value(false))
-                .andExpect(jsonPath("$.margenDocente").value(0));
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.mensaje").value("Un investigador de una sede sin docencia no puede registrar horas docentes."));
     }
 
     @Test
