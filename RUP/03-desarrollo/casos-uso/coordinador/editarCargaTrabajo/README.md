@@ -7,7 +7,7 @@
 
 El Coordinador selecciona una persona del listado de cargas y actualiza sus horas mediante `PATCH /api/carga-trabajo/{perfilId}`. El backend valida que la sesión sea de Coordinador y guarda la carga semanal.
 
-Si el perfil pertenece a una sede con docencia, el sistema impide guardar más de 16 horas semanales de docencia. Las recompensas se gestionan posteriormente cuando se completa un proyecto y pueden resolverse como recompensa económica o como reducción de horas docentes en el siguiente cuatrimestre.
+Si el perfil pertenece a una sede con docencia, el sistema impide guardar más de 16 horas semanales de docencia. Si pertenece a una sede sin docencia, la docencia debe quedar en 0 horas y cualquier valor superior se rechaza. Las recompensas se gestionan posteriormente cuando se completa un proyecto y pueden resolverse como recompensa económica o como reducción de horas docentes en el siguiente cuatrimestre.
 
 ## Código relacionado
 

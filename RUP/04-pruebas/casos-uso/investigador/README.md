@@ -14,3 +14,8 @@
 - [abrirOpcionesPerfil](abrirOpcionesPerfil/README.md)
 - [editarPerfil](editarPerfil/README.md)
 - [solicitarEliminacionPerfil](solicitarEliminacionPerfil/README.md)
+
+## Carga de trabajo
+
+- [abrirOpcionesCargaTrabajo](abrirOpcionesCargaTrabajo/README.md)
+- [editarCargaTrabajo](editarCargaTrabajo/README.md)

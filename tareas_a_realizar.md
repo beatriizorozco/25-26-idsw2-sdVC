@@ -84,7 +84,7 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 
 - [x] Revisar una última vez el Análisis del bloque 3 de carga de trabajo.
 - [x] Confirmar que la regla de proyectos libres queda aplicada: asignar o sugerir investigadores-docentes con menor carga.
-- [x] Confirmar que el límite de 16 horas semanales de docencia y la compensación económica están reflejados sin contradicciones.
+- [x] Confirmar que el límite de 16 horas semanales de docencia queda separado de las recompensas, que pertenecen a proyectos completados.
 - [x] Empezar el Diseño del bloque 3 siguiendo el patrón del profesor: `README.md`, `secuencia.puml` y SVG por caso.
 - [x] Preparar los casos de Diseño de `abrirOpcionesCargaTrabajo` y `editarCargaTrabajo` para Coordinador e Investigador.
 - [x] Añadir o completar capturas pendientes del bloque de perfil si se quiere dejar la evidencia visual cerrada.
@@ -97,5 +97,5 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Comprobar por API el flujo de carga con Coordinador, `docente.santander` e `investigador.barcelona`.
 - [x] Regenerar los SVG de Análisis y Diseño del bloque 3 cuando esté disponible PlantUML local o una vía autorizada.
 - [x] Probar manualmente en navegador el flujo visual de carga de trabajo con Coordinador, `docente.santander` e `investigador.barcelona`.
-- [ ] Revisar el bloque 3 entero de carga de trabajo: Detalle, Análisis, Diseño, Desarrollo, Pruebas, diagramas, SVG, capturas y trazabilidad.
-- [ ] Empezar el módulo de recompensas/proyectos completados con la regla correcta: recompensa económica o reducción docente tras proyecto completado.
+- [x] Revisar el bloque 3 entero de carga de trabajo: Detalle, Análisis, Diseño, Desarrollo, Pruebas, diagramas, SVG, capturas y trazabilidad.
+- [ ] Empezar el módulo de recompensas/proyectos completados con la regla correcta: investigadores-docentes pueden elegir recompensa económica o reducción docente tras proyecto completado; investigadores sin docencia solo tienen recompensa económica.

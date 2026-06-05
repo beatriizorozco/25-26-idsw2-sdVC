@@ -48,7 +48,11 @@ alt Sesion de Coordinador activa
     PersonaRepo --> Service: Persona con sede
     deactivate PersonaRepo
     Service -> Service: validarHoras(datos, sede, maximo16h)
-    alt Investigador-docente supera 16 horas docentes
+    alt Sede sin docencia registra horas docentes
+        Service --> Api: validacion fallida
+        Api --> Frontend: 400 Bad Request
+        Frontend --> Coordinador: Presenta error de docencia no aplicable
+    else Investigador-docente supera 16 horas docentes
         Service --> Api: validacion fallida
         Api --> Frontend: 400 Bad Request
         Frontend --> Coordinador: Presenta error de limite docente

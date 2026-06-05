@@ -7,12 +7,23 @@
 
 Documentar la verificación incremental de la Plataforma Interna de Investigación de FUNIBER y mantener trazabilidad desde los casos de uso hasta sus evidencias de ejecución.
 
-## Primera iteración
+## Iteraciones verificadas
 
 La primera iteración verifica sesión y navegación principal:
 
 - [Casos de uso probados](casos-uso/README.md)
 - [Suite de integración](/src/backend/src/test/java/es/funiber/investigacion/controller/FlujoSesionIntegrationTests.java)
+
+La segunda iteración verifica perfil y solicitudes de eliminación:
+
+- [Pruebas del Coordinador](casos-uso/coordinador/README.md)
+- [Pruebas del Investigador](casos-uso/investigador/README.md)
+
+La tercera iteración verifica carga de trabajo:
+
+- [Carga de trabajo - Coordinador](casos-uso/coordinador/abrirOpcionesCargaTrabajo/README.md)
+- [Carga de trabajo - Investigador](casos-uso/investigador/abrirOpcionesCargaTrabajo/README.md)
+- [Suite de carga de trabajo](/src/backend/src/test/java/es/funiber/investigacion/controller/CargaTrabajoIntegrationTests.java)
 
 ## Estrategia
 
@@ -35,7 +46,7 @@ npm run lint
 
 |Verificación|Resultado|
 |-|-|
-|Suite Maven|8 pruebas correctas|
+|Suite Maven|21 pruebas correctas|
 |Compilación frontend|Correcta|
 |Lint frontend|Correcto|
 |Token CSRF real|`X-XSRF-TOKEN` mediante cookie `XSRF-TOKEN`|

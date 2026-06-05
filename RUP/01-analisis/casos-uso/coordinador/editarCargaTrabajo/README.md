@@ -115,7 +115,7 @@ Analizar la colaboracion necesaria para que el Coordinador actualice la carga de
 - Un investigador-docente suele impartir 4 asignaturas por cuatrimestre.
 - El maximo ordinario de docencia es 16 horas semanales.
 - Si se intenta superar ese limite en una sede con docencia investigadora, el sistema rechaza la actualizacion.
-- Si la sede clasifica a la persona como solo investigadora, no se aplica limite docente ni recompensa por carga.
+- Si la sede clasifica a la persona como solo investigadora, no puede registrar horas docentes; la docencia queda en 0 horas y no se calcula margen docente.
 - Las recompensas pertenecen al flujo de proyectos completados y pueden resolverse como recompensa economica o reduccion docente del siguiente cuatrimestre.
 - La cancelacion no modifica la informacion existente.
 - La salida natural vuelve a `OPCIONES_CARGA_TRABAJO_ABIERTAS`.

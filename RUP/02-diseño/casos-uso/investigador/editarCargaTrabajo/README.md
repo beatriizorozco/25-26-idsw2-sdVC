@@ -29,6 +29,7 @@ Detallar la edición de la carga de trabajo propia del Investigador, manteniendo
 - La actualización usa `PATCH`.
 - La carga docente se compara con el límite de 16 horas semanales solo en sedes con docencia investigadora.
 - Si se intenta superar el límite docente en una sede con docencia, el sistema rechaza la actualización.
+- Si la sede no tiene docencia investigadora, la docencia debe permanecer en 0 horas y el sistema rechaza cualquier valor superior.
 - Las recompensas se gestionan aparte cuando se completa un proyecto.
 
 ## Referencias

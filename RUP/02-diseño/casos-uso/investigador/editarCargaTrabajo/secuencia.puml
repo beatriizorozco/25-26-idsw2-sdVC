@@ -24,7 +24,11 @@ alt Sesion activa
     Api -> Service: actualizarCargaPropia(investigador, datos)
     activate Service
     Service -> Service: validarHoras(datos, sede, maximo16h)
-    alt Investigador-docente supera 16 horas docentes
+    alt Sede sin docencia registra horas docentes
+        Service --> Api: validacion fallida
+        Api --> Frontend: 400 Bad Request
+        Frontend --> Investigador: Presenta error de docencia no aplicable
+    else Investigador-docente supera 16 horas docentes
         Service --> Api: validacion fallida
         Api --> Frontend: 400 Bad Request
         Frontend --> Investigador: Presenta error de limite docente

@@ -26,7 +26,7 @@ Detallar la consulta de la carga de trabajo propia del Investigador. El caso per
 - El Investigador solo consulta su propia carga.
 - La API no acepta identificadores externos para este rol.
 - La carga docente se muestra junto al margen respecto a 16 horas semanales solo en sedes con docencia investigadora.
-- Si la sede clasifica al usuario como solo investigador, el resumen omite margen docente.
+- Si la sede clasifica al usuario como solo investigador, la docencia se presenta como no aplicable, queda en 0 horas y el resumen omite margen docente.
 - Las recompensas quedan fuera de este caso de uso y se consultan desde el módulo de recompensas cuando existan proyectos completados.
 
 ## Referencias

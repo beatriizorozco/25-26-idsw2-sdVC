@@ -7,7 +7,7 @@
 
 El Investigador actualiza su carga semanal mediante `PATCH /api/carga-trabajo/me`. El backend solo modifica la carga asociada a la sesión actual, por lo que no puede editar cargas de otros perfiles.
 
-Tras guardar, el sistema recalcula el total semanal. Si el usuario pertenece a una sede con docencia investigadora, no se permite superar 16 horas semanales de docencia. Las recompensas por proyectos completados quedan fuera de este caso de uso y se gestionan en el módulo de recompensas.
+Tras guardar, el sistema recalcula el total semanal. Si el usuario pertenece a una sede con docencia investigadora, no se permite superar 16 horas semanales de docencia. Si pertenece a una sede sin docencia investigadora, la docencia debe quedar en 0 horas y cualquier valor superior se rechaza. Las recompensas por proyectos completados quedan fuera de este caso de uso y se gestionan en el módulo de recompensas.
 
 ## Código relacionado
 

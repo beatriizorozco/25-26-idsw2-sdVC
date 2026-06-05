@@ -7,7 +7,7 @@
 
 El Investigador abre `Carga de trabajo` desde el panel principal y consulta únicamente su información mediante `GET /api/carga-trabajo/me`. El frontend presenta su sede, tipo de perfil, total semanal, horas de docencia y margen docente cuando aplica.
 
-El backend no permite que el Investigador abra el panel global de cargas. La información docente se calcula según sede: Barcelona se presenta como sede sin docencia investigadora, mientras que Santander activa el límite de 16 horas semanales de docencia.
+El backend no permite que el Investigador abra el panel global de cargas. La información docente se calcula según sede: Barcelona se presenta como sede sin docencia investigadora y docencia 0, mientras que Santander activa el límite de 16 horas semanales de docencia.
 
 ## Código relacionado
 

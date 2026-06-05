@@ -128,7 +128,7 @@ Analizar la colaboracion necesaria para que el Coordinador consulte la carga de 
 - Un investigador-docente suele impartir 4 asignaturas por cuatrimestre.
 - El maximo ordinario de docencia es 16 horas semanales.
 - Si una persona de una sede con docencia investigadora alcanza ese limite, el sistema no debe permitir registrar mas horas docentes.
-- Si la persona pertenece a una sede donde solo es investigadora, no se calcula margen docente ni se aplica limite de docencia.
+- Si la persona pertenece a una sede donde solo es investigadora, la docencia no aplica, queda en 0 horas y no se calcula margen docente.
 - Las recompensas no nacen por exceso de docencia; se gestionan cuando se completa un proyecto, con opcion economica o reduccion docente posterior.
 - La edicion se realiza sobre una persona concreta seleccionada desde el listado.
 - El caso no asigna el proyecto; solo prepara informacion para decidir la asignacion en el flujo de proyectos.

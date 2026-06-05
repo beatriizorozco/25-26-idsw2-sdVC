@@ -68,7 +68,7 @@ Especificación detallada del caso de uso `editarCargaTrabajo()` mediante diagra
 - ¿El campo o bloque **Sede** resulta claro para el Coordinador?
 - ¿El campo o bloque **Perfil** resulta claro para el Coordinador?
 - ¿El campo o bloque **Editar horas semanales** resulta claro para el Coordinador?
-- ¿El campo o bloque **Docencia (0–16)** resulta claro para el Coordinador?
+- ¿El campo o bloque **Docencia (0-16 si aplica; 0 si la sede no tiene docencia)** resulta claro para el Coordinador?
 - ¿El campo o bloque **Investigación** resulta claro para el Coordinador?
 - ¿Las acciones disponibles mantienen una navegación coherente con el rol Coordinador?
 - ¿Falta información que el wireframe revela antes del análisis?
@@ -110,6 +110,11 @@ Especificación detallada del caso de uso `editarCargaTrabajo()` mediante diagra
   - Disponibilidad
   - Proyecto
   - Observaciones
+
+### Restricciones de dominio
+- Si la persona pertenece a una sede con docencia investigadora, la docencia semanal no puede superar 16 horas.
+- Si la persona pertenece a una sede sin docencia investigadora, la docencia no aplica y debe permanecer en 0 horas.
+- Las recompensas no se generan por exceso de carga; pertenecen al módulo de recompensas asociado a proyectos completados.
 
 ## Opciones de navegación
 

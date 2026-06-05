@@ -16,7 +16,7 @@
 
     <b>Editar horas semanales</b>
     {
-        { <b>Docencia (0–16):</b> | [ 12 ] }
+        { <b>Docencia (0-16 si aplica):</b> | [ 12 ] }
         { <b>Investigación:</b> | [18 ] }
         { <b>Actividades académicas:</b> | [ 2  ] }
     }
@@ -34,7 +34,8 @@
 
     <b>Avisos</b>
     {
-        "• La docencia no puede superar 16 h/semana."
+        "• La docencia no puede superar 16 h/semana si aplica por sede."
+        "• En sedes sin docencia, la docencia queda en 0 h."
         "• Los cambios afectarán a la asignación automática de personas a convocatorias."
     }
 

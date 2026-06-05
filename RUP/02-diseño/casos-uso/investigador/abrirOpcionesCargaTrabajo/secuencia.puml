@@ -27,7 +27,7 @@ alt Sesion activa
     alt Sede con docencia investigadora
         Service -> Service: calcularMargenDocente(maximo16h)
     else Sede solo investigadora
-        Service -> Service: Omitir margen docente
+        Service -> Service: marcarDocenciaNoAplicable()
     end
     Service --> Api: CargaTrabajoPropiaResponse
     deactivate Service

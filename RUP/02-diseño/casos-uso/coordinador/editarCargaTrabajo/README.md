@@ -29,6 +29,7 @@ Detallar la edición de la carga de trabajo de una persona seleccionada por el C
 - La actualización usa `PATCH` para modificar únicamente los campos enviados.
 - La carga docente se compara con el límite de 16 horas semanales solo si la sede clasifica a la persona como investigadora-docente.
 - Si se intenta superar el límite docente en una sede con docencia, el sistema rechaza la actualización.
+- Si la sede no tiene docencia investigadora, la docencia debe permanecer en 0 horas y el sistema rechaza cualquier valor superior.
 - Las recompensas se originan por proyectos completados y se resuelven como compensación económica o reducción docente en el siguiente cuatrimestre.
 
 ## Referencias

@@ -277,3 +277,13 @@ Se revisó además la regla funcional de sedes: Santander representa investigado
 La verificación final quedó correcta: `mvnw.cmd test` ejecutó 21 pruebas sin fallos, `npm run build` generó el build de producción correctamente, `git diff --check` no mostró errores reales y el backend quedó arrancado en el puerto 8080. El usuario comprobó manualmente en navegador los flujos de `docente.santander`, `investigador.barcelona` y el panel del Coordinador, incluyendo actualización de carga y sugerencias de asignación.
 
 **Decisión:** el siguiente paso será revisar el bloque 3 entero antes de pasar al módulo de recompensas/proyectos completados. Esa revisión debe cubrir Detalle, Análisis, Diseño, Desarrollo, Pruebas, diagramas, SVG, capturas, trazabilidad y coherencia con la regla final: los investigadores-docentes no superan 16 horas de docencia semanal, los investigadores de sedes sin docencia no registran docencia, y las recompensas nacen de proyectos completados, no de exceso de carga.
+
+---
+
+## [2026-06-05 13:46] Inicio de sesión - Revisión integral del bloque 3
+
+**Prompt:** el usuario inició una nueva sesión usando la skill `session-memory` y pidió empezar la revisión completa del bloque 3 antes de pasar al bloque 4.
+
+**Resultado:** se utilizó la skill `session-memory`. Se revisó el cierre anterior, `tareas_a_realizar.md`, la rama activa y los commits recientes. El último commit es `fix(carga-trabajo): consolidar reglas por sede`, por lo que el bloque 3 parte ya implementado, probado y con SVG regenerados.
+
+**Decisión:** la sesión se dedicará a auditar el bloque 3 completo: Detalle, Análisis, Diseño, Desarrollo, Pruebas, diagramas, SVG, capturas, trazabilidad y coherencia de dominio antes de empezar recompensas/proyectos completados.
