@@ -343,3 +343,7 @@ También se corrigió el flujo de `eliminarRecompensa()` para recuperar la recom
 **Resultado:** se utilizó la skill `session-memory`. Se revisaron el Detalle, la especificación y el diagrama de colaboración actuales de `crearRecompensa()`, comparándolos con otros casos de creación y con el diagrama de contexto. Se detectó que el Análisis ya incluye acceso a `ProyectoRepository` e `InvestigadorRepository` para validar el proyecto completado y el beneficiario, pero el Detalle únicamente solicita tipo y cantidad. Por ello, no queda explicado cómo el Coordinador obtiene y selecciona el proyecto completado, el investigador beneficiario ni los tipos de recompensa permitidos antes de guardar.
 
 **Decisión:** antes de pasar a Diseño se revisará `crearRecompensa()` para distinguir entre colaboraciones externas con otros casos de uso y colaboraciones internas con clases de análisis. Según el contexto actual, la única colaboración externa posterior necesaria es `abrirRecompensa()`. Sin embargo, el flujo interno debe ampliarse para listar proyectos completados pendientes de recompensa, obtener beneficiarios elegibles y restringir el tipo de recompensa según la condición docente y la sede.
+
+---
+
+## [2026-06-06 16:54] Fin de sesión
