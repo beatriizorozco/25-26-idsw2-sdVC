@@ -11,6 +11,7 @@ import type {
   Recompensa,
   RecompensaEdicion,
   RecompensaRequest,
+  TipoRecompensa,
   Sesion,
   SolicitudEliminacionPerfil,
 } from '../types'
@@ -173,6 +174,10 @@ export function obtenerOpcionesCreacionRecompensa(): Promise<OpcionesCreacionRec
 
 export function obtenerBeneficiariosRecompensa(proyectoId: number): Promise<BeneficiarioRecompensa[]> {
   return request<BeneficiarioRecompensa[]>(`/recompensas/opciones-creacion/${proyectoId}/beneficiarios`)
+}
+
+export function obtenerTiposRecompensa(proyectoId: number, beneficiarioId: number): Promise<TipoRecompensa[]> {
+  return request<TipoRecompensa[]>(`/recompensas/opciones-creacion/${proyectoId}/beneficiarios/${beneficiarioId}/tipos`)
 }
 
 export function prepararEdicionRecompensa(id: number): Promise<RecompensaEdicion> {

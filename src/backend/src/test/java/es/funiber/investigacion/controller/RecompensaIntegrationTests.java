@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.not;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -106,6 +107,110 @@ class RecompensaIntegrationTests {
 
         mockMvc.perform(get("/api/recompensas/{id}", recompensaId).session((MockHttpSession) coordinador))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void opcionesCreacionExcluyenBeneficiariosYProyectosSinTiposPendientes() throws Exception {
+        HttpSession coordinador = iniciarSesion("coordinador", "coordinador123");
+        Long proyectoId = proyectoRepository.findByCodigo("PRY-BCN-COM-01").orElseThrow().getId();
+        Long investigadorId = usuarioRepository.findByNombreUsuario("investigador").orElseThrow().getId();
+        Long investigadorBarcelonaId = usuarioRepository.findByNombreUsuario("investigador.barcelona").orElseThrow().getId();
+
+        crearRecompensa(coordinador, proyectoId, investigadorId, "ECONOMICA", 350)
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(get("/api/recompensas/opciones-creacion/{proyectoId}/beneficiarios", proyectoId)
+                        .session((MockHttpSession) coordinador))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[*].usuario", not(hasItem("investigador"))))
+                .andExpect(jsonPath("$[*].usuario", hasItem("investigador.barcelona")));
+
+        crearRecompensa(coordinador, proyectoId, investigadorBarcelonaId, "ECONOMICA", 450)
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(get("/api/recompensas/opciones-creacion")
+                        .session((MockHttpSession) coordinador))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.proyectos[*].codigo", not(hasItem("PRY-BCN-COM-01"))));
+    }
+
+    @Test
+    void coordinadorPuedeEditarUnaRecompensa() throws Exception {
+        HttpSession coordinador = iniciarSesion("coordinador", "coordinador123");
+        Long proyectoId = proyectoRepository.findByCodigo("PRY-BCN-COM-01").orElseThrow().getId();
+        Long beneficiarioId = usuarioRepository.findByNombreUsuario("investigador").orElseThrow().getId();
+        MvcResult creada = crearRecompensa(coordinador, proyectoId, beneficiarioId, "ECONOMICA", 350)
+                .andExpect(status().isCreated())
+                .andReturn();
+        Number recompensaId = com.jayway.jsonpath.JsonPath.read(creada.getResponse().getContentAsString(), "$.id");
+
+        mockMvc.perform(patch("/api/recompensas/{id}", recompensaId)
+                        .with(csrf())
+                        .session((MockHttpSession) coordinador)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "proyectoId": %d,
+                                  "beneficiarioId": %d,
+                                  "tipo": "ECONOMICA",
+                                  "concepto": "Reconocimiento actualizado",
+                                  "valor": 500
+                                }
+                                """.formatted(proyectoId, beneficiarioId)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.concepto").value("Reconocimiento actualizado"))
+                .andExpect(jsonPath("$.valor").value(500));
+    }
+
+    @Test
+    void prepararEdicionMantieneTipoActualYExcluyeOtrosDuplicados() throws Exception {
+        HttpSession coordinador = iniciarSesion("coordinador", "coordinador123");
+        Long proyectoId = proyectoRepository.findByCodigo("PRY-SAN-COM-01").orElseThrow().getId();
+        Long docenteId = usuarioRepository.findByNombreUsuario("docente.santander").orElseThrow().getId();
+        MvcResult economica = crearRecompensa(coordinador, proyectoId, docenteId, "ECONOMICA", 500)
+                .andExpect(status().isCreated())
+                .andReturn();
+        crearRecompensa(coordinador, proyectoId, docenteId, "REDUCCION_DOCENTE", 2)
+                .andExpect(status().isCreated());
+        Number recompensaId = com.jayway.jsonpath.JsonPath.read(economica.getResponse().getContentAsString(), "$.id");
+
+        mockMvc.perform(get("/api/recompensas/{id}/edicion", recompensaId)
+                        .session((MockHttpSession) coordinador))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.beneficiarios[0].tiposPermitidos", hasItem("ECONOMICA")))
+                .andExpect(jsonPath("$.beneficiarios[0].tiposPermitidos", not(hasItem("REDUCCION_DOCENTE"))));
+    }
+
+    @Test
+    void noPermiteRecompensasDuplicadasNiBeneficiariosAjenosAlProyecto() throws Exception {
+        HttpSession coordinador = iniciarSesion("coordinador", "coordinador123");
+        Long proyectoId = proyectoRepository.findByCodigo("PRY-BCN-COM-01").orElseThrow().getId();
+        Long investigadorId = usuarioRepository.findByNombreUsuario("investigador").orElseThrow().getId();
+        Long docenteId = usuarioRepository.findByNombreUsuario("docente.santander").orElseThrow().getId();
+
+        crearRecompensa(coordinador, proyectoId, investigadorId, "ECONOMICA", 350)
+                .andExpect(status().isCreated());
+        crearRecompensa(coordinador, proyectoId, investigadorId, "ECONOMICA", 400)
+                .andExpect(status().isConflict());
+        crearRecompensa(coordinador, proyectoId, docenteId, "ECONOMICA", 400)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.mensaje").value("El beneficiario no es elegible para el proyecto seleccionado."));
+    }
+
+    @Test
+    void investigadorNoPuedeAbrirUnaRecompensaAjena() throws Exception {
+        HttpSession coordinador = iniciarSesion("coordinador", "coordinador123");
+        Long proyectoId = proyectoRepository.findByCodigo("PRY-BCN-COM-01").orElseThrow().getId();
+        Long beneficiarioId = usuarioRepository.findByNombreUsuario("investigador").orElseThrow().getId();
+        MvcResult creada = crearRecompensa(coordinador, proyectoId, beneficiarioId, "ECONOMICA", 350)
+                .andExpect(status().isCreated())
+                .andReturn();
+        Number recompensaId = com.jayway.jsonpath.JsonPath.read(creada.getResponse().getContentAsString(), "$.id");
+        HttpSession investigadorBarcelona = iniciarSesion("investigador.barcelona", "barcelona123");
+
+        mockMvc.perform(get("/api/recompensas/me/{id}", recompensaId)
+                        .session((MockHttpSession) investigadorBarcelona))
+                .andExpect(status().isForbidden());
     }
 
     private org.springframework.test.web.servlet.ResultActions crearRecompensa(

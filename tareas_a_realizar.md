@@ -121,5 +121,10 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Implementar consulta de recompensas propias para Investigador.
 - [x] Validar tipos de recompensa según docencia y sede.
 - [x] Añadir pruebas de integración del bloque 4 y verificar compilación de producción.
+- [x] Corregir la selección para mostrar solo proyectos, beneficiarios y tipos con recompensas pendientes.
+- [x] Evitar que los perfiles demo eliminados se reactiven automáticamente al reiniciar.
+- [x] Alinear el frontend con los endpoints de detalle y tipos permitidos del Diseño.
+- [x] Ampliar pruebas de recompensas para edición, duplicados, beneficiarios ajenos, acceso propio y proyectos agotados.
+- [x] Actualizar documentación desfasada sobre el acceso de `investigador.barcelona` a recompensas.
 - [ ] Probar manualmente en navegador el bloque 4 con Coordinador, `docente.santander` e `investigador.barcelona`.
 - [ ] Revisar el bloque 4 completo antes de pasar al bloque 5.

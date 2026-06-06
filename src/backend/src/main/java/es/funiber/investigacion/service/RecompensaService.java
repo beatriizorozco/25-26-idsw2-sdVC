@@ -20,6 +20,7 @@ import es.funiber.investigacion.repository.RecompensaRepository;
 import es.funiber.investigacion.repository.UsuarioRepository;
 import java.util.List;
 import java.util.Locale;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,6 +74,7 @@ public class RecompensaService {
         return new OpcionesCreacionRecompensaResponse(
                 proyectoRepository.findByEstadoOrderByNombreAsc(EstadoProyecto.COMPLETADO)
                         .stream()
+                        .filter(this::tieneRecompensasPendientes)
                         .map(ProyectoRecompensaResponse::desde)
                         .toList());
     }
@@ -86,7 +88,8 @@ public class RecompensaService {
         return proyecto.getInvestigadores().stream()
                 .filter(Usuario::isActivo)
                 .filter(usuario -> usuario.getRol() == Rol.INVESTIGADOR)
-                .map(this::mapearBeneficiario)
+                .map(usuario -> mapearBeneficiarioPendiente(proyecto, usuario))
+                .filter(beneficiario -> !beneficiario.tiposPermitidos().isEmpty())
                 .sorted((primero, segundo) -> primero.nombreCompleto().compareToIgnoreCase(segundo.nombreCompleto()))
                 .toList();
     }
@@ -97,7 +100,8 @@ public class RecompensaService {
             Long proyectoId,
             Long investigadorId) {
         exigirCoordinador(nombreUsuario);
-        return tiposPermitidos(buscarBeneficiarioElegible(buscarProyectoCompletado(proyectoId), investigadorId));
+        Proyecto proyecto = buscarProyectoCompletado(proyectoId);
+        return tiposPendientes(proyecto, buscarBeneficiarioElegible(proyecto, investigadorId));
     }
 
     @Transactional
@@ -117,7 +121,7 @@ public class RecompensaService {
                 request.tipo(),
                 request.concepto().trim(),
                 request.valor());
-        return RecompensaResponse.desde(recompensaRepository.save(recompensa));
+        return RecompensaResponse.desde(guardarSinDuplicados(recompensa));
     }
 
     @Transactional(readOnly = true)
@@ -129,7 +133,8 @@ public class RecompensaService {
                 recompensa.getProyecto().getInvestigadores().stream()
                         .filter(Usuario::isActivo)
                         .filter(usuario -> usuario.getRol() == Rol.INVESTIGADOR)
-                        .map(this::mapearBeneficiario)
+                        .map(usuario -> mapearBeneficiarioEdicion(recompensa, usuario))
+                        .filter(beneficiario -> !beneficiario.tiposPermitidos().isEmpty())
                         .toList());
     }
 
@@ -142,7 +147,7 @@ public class RecompensaService {
         validarDatos(request, beneficiario);
         validarDuplicado(proyecto, beneficiario, request.tipo(), id);
         recompensa.actualizar(beneficiario, request.tipo(), request.concepto().trim(), request.valor());
-        return RecompensaResponse.desde(recompensaRepository.save(recompensa));
+        return RecompensaResponse.desde(guardarSinDuplicados(recompensa));
     }
 
     @Transactional
@@ -165,8 +170,12 @@ public class RecompensaService {
                 .toList();
     }
 
-    private BeneficiarioRecompensaResponse mapearBeneficiario(Usuario usuario) {
-        return BeneficiarioRecompensaResponse.desde(usuario, tiposPermitidos(usuario));
+    private BeneficiarioRecompensaResponse mapearBeneficiarioPendiente(Proyecto proyecto, Usuario usuario) {
+        return BeneficiarioRecompensaResponse.desde(usuario, tiposPendientes(proyecto, usuario));
+    }
+
+    private BeneficiarioRecompensaResponse mapearBeneficiarioEdicion(Recompensa recompensa, Usuario usuario) {
+        return BeneficiarioRecompensaResponse.desde(usuario, tiposDisponiblesParaEdicion(recompensa, usuario));
     }
 
     private List<String> tiposPermitidos(Usuario beneficiario) {
@@ -174,6 +183,32 @@ public class RecompensaService {
             return List.of(TipoRecompensa.ECONOMICA.name(), TipoRecompensa.REDUCCION_DOCENTE.name());
         }
         return List.of(TipoRecompensa.ECONOMICA.name());
+    }
+
+    private List<String> tiposPendientes(Proyecto proyecto, Usuario beneficiario) {
+        return tiposPermitidos(beneficiario).stream()
+                .filter(tipo -> !recompensaRepository.existsByProyectoAndBeneficiarioAndTipo(
+                        proyecto,
+                        beneficiario,
+                        TipoRecompensa.valueOf(tipo)))
+                .toList();
+    }
+
+    private List<String> tiposDisponiblesParaEdicion(Recompensa recompensa, Usuario beneficiario) {
+        return tiposPermitidos(beneficiario).stream()
+                .filter(tipo -> !recompensaRepository.existsByProyectoAndBeneficiarioAndTipoAndIdNot(
+                        recompensa.getProyecto(),
+                        beneficiario,
+                        TipoRecompensa.valueOf(tipo),
+                        recompensa.getId()))
+                .toList();
+    }
+
+    private boolean tieneRecompensasPendientes(Proyecto proyecto) {
+        return proyecto.getInvestigadores().stream()
+                .filter(Usuario::isActivo)
+                .filter(usuario -> usuario.getRol() == Rol.INVESTIGADOR)
+                .anyMatch(usuario -> !tiposPendientes(proyecto, usuario).isEmpty());
     }
 
     private void validarDatos(RecompensaRequest request, Usuario beneficiario) {
@@ -193,6 +228,15 @@ public class RecompensaService {
                 : recompensaRepository.existsByProyectoAndBeneficiarioAndTipoAndIdNot(
                         proyecto, beneficiario, tipo, recompensaId);
         if (existe) {
+            throw new SolicitudDuplicadaException(
+                    "Ya existe una recompensa de ese tipo para el beneficiario y proyecto seleccionados.");
+        }
+    }
+
+    private Recompensa guardarSinDuplicados(Recompensa recompensa) {
+        try {
+            return recompensaRepository.saveAndFlush(recompensa);
+        } catch (DataIntegrityViolationException exception) {
             throw new SolicitudDuplicadaException(
                     "Ya existe una recompensa de ese tipo para el beneficiario y proyecto seleccionados.");
         }

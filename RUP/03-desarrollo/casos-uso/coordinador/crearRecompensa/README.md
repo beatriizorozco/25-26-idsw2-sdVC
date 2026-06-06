@@ -5,7 +5,7 @@
 
 ## Implementación
 
-El formulario obtiene proyectos completados y participantes elegibles desde `/api/recompensas/opciones-creacion`. `POST /api/recompensas` valida participación, tipo permitido y duplicados. Los investigadores-docentes pueden recibir recompensa económica o reducción docente; los demás solo económica.
+El formulario obtiene únicamente proyectos completados con recompensas pendientes desde `/api/recompensas/opciones-creacion`. Al seleccionar un proyecto, se excluyen los participantes que ya han recibido todos sus tipos permitidos; al seleccionar un beneficiario, se consultan los tipos todavía disponibles. `POST /api/recompensas` valida participación, tipo permitido y duplicados. Los investigadores-docentes pueden recibir recompensa económica o reducción docente; los demás solo económica.
 
 ## Código relacionado
 

@@ -11,12 +11,11 @@ Verificado mediante `CargaTrabajoIntegrationTests.investigadorNoPuedeAbrirPanelG
 
 - Se valida que el Investigador no puede acceder al panel global de cargas.
 - Se confirma que el Investigador consulta solo su propia carga mediante `GET /api/carga-trabajo/me`.
-- Se comprueba que `investigador.barcelona` no recibe acceso a recompensas en el panel por ser investigador sin docencia por sede.
-- Se comprueba que `docente.santander` sí recibe acceso a recompensas por ser investigador-docente.
+- Se comprueba que `investigador.barcelona` recibe acceso de consulta a recompensas económicas aunque no tenga docencia por sede.
+- Se comprueba que `docente.santander` recibe acceso de consulta a recompensas económicas o de reducción docente.
 
 ## Evidencia manual
 
 - Se revisó en navegador la carga propia de `docente.santander`, con límite de 16 horas docentes.
 - Se revisó en navegador la carga propia de `investigador.barcelona`, con docencia 0 y estado no aplicable por sede.
-- Se confirmó que el panel principal de `investigador.barcelona` no muestra acceso a recompensas.
-
+- Se confirmó que el panel principal de `investigador.barcelona` muestra acceso de consulta a recompensas, sin permitir operaciones globales.

@@ -1,5 +1,5 @@
 import { ArrowLeft, Award, Check, Pencil, Plus, Search, Trash2, X } from 'lucide-react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import {
   actualizarRecompensa,
@@ -9,6 +9,9 @@ import {
   listarRecompensasPropias,
   obtenerBeneficiariosRecompensa,
   obtenerOpcionesCreacionRecompensa,
+  obtenerRecompensaGlobal,
+  obtenerRecompensaPropia,
+  obtenerTiposRecompensa,
   prepararEdicionRecompensa,
 } from '../services/api'
 import type {
@@ -37,6 +40,7 @@ export function RecompensasPage({ rol, onVolver }: Props) {
   const [seleccionada, setSeleccionada] = useState<Recompensa | null>(null)
   const [proyectos, setProyectos] = useState<ProyectoRecompensa[]>([])
   const [beneficiarios, setBeneficiarios] = useState<BeneficiarioRecompensa[]>([])
+  const [tiposPermitidos, setTiposPermitidos] = useState<TipoRecompensa[]>(['ECONOMICA'])
   const [formulario, setFormulario] = useState<RecompensaRequest>(formularioVacio)
   const [modo, setModo] = useState<'lista' | 'crear' | 'editar'>('lista')
   const [criterio, setCriterio] = useState('')
@@ -66,11 +70,6 @@ export function RecompensasPage({ rol, onVolver }: Props) {
     void cargarLista()
   }, [cargarLista])
 
-  const tiposPermitidos = useMemo<TipoRecompensa[]>(() => {
-    return beneficiarios.find((beneficiario) => beneficiario.id === formulario.beneficiarioId)
-      ?.tiposPermitidos ?? ['ECONOMICA']
-  }, [beneficiarios, formulario.beneficiarioId])
-
   async function abrirCreacion() {
     setError('')
     setMensaje('')
@@ -78,6 +77,7 @@ export function RecompensasPage({ rol, onVolver }: Props) {
       const opciones = await obtenerOpcionesCreacionRecompensa()
       setProyectos(opciones.proyectos)
       setBeneficiarios([])
+      setTiposPermitidos(['ECONOMICA'])
       setFormulario(formularioVacio)
       setModo('crear')
     } catch (cargaError) {
@@ -87,7 +87,50 @@ export function RecompensasPage({ rol, onVolver }: Props) {
 
   async function seleccionarProyecto(proyectoId: number) {
     setFormulario({ ...formularioVacio, proyectoId })
-    setBeneficiarios(proyectoId ? await obtenerBeneficiariosRecompensa(proyectoId) : [])
+    setTiposPermitidos(['ECONOMICA'])
+    try {
+      setBeneficiarios(proyectoId ? await obtenerBeneficiariosRecompensa(proyectoId) : [])
+      setError('')
+    } catch (cargaError) {
+      setBeneficiarios([])
+      setError(mensajeError(cargaError, 'No se pudieron cargar los beneficiarios elegibles.'))
+    }
+  }
+
+  async function seleccionarBeneficiario(beneficiarioId: number) {
+    if (!formulario.proyectoId || !beneficiarioId) {
+      setTiposPermitidos(['ECONOMICA'])
+      setFormulario({ ...formulario, beneficiarioId, tipo: 'ECONOMICA' })
+      return
+    }
+    if (modo === 'editar') {
+      const tipos = beneficiarios.find((beneficiario) => beneficiario.id === beneficiarioId)?.tiposPermitidos ?? []
+      setTiposPermitidos(tipos)
+      setFormulario({ ...formulario, beneficiarioId, tipo: tipos[0] ?? 'ECONOMICA' })
+      return
+    }
+    try {
+      const tipos = await obtenerTiposRecompensa(formulario.proyectoId, beneficiarioId)
+      setTiposPermitidos(tipos)
+      setFormulario({ ...formulario, beneficiarioId, tipo: tipos[0] ?? 'ECONOMICA' })
+      setError('')
+    } catch (cargaError) {
+      setTiposPermitidos(['ECONOMICA'])
+      setError(mensajeError(cargaError, 'No se pudieron cargar los tipos de recompensa permitidos.'))
+    }
+  }
+
+  async function abrirDetalle(id: number) {
+    try {
+      const recompensa = rol === 'COORDINADOR'
+        ? await obtenerRecompensaGlobal(id)
+        : await obtenerRecompensaPropia(id)
+      setSeleccionada(recompensa)
+      setModo('lista')
+      setError('')
+    } catch (cargaError) {
+      setError(mensajeError(cargaError, 'No se pudo abrir la recompensa.'))
+    }
   }
 
   async function abrirEdicion() {
@@ -96,6 +139,10 @@ export function RecompensasPage({ rol, onVolver }: Props) {
     try {
       const edicion = await prepararEdicionRecompensa(seleccionada.id)
       setBeneficiarios(edicion.beneficiarios)
+      setTiposPermitidos(
+        edicion.beneficiarios.find((beneficiario) => beneficiario.id === edicion.recompensa.beneficiarioId)
+          ?.tiposPermitidos ?? ['ECONOMICA'],
+      )
       setFormulario({
         proyectoId: edicion.recompensa.proyectoId,
         beneficiarioId: edicion.recompensa.beneficiarioId,
@@ -189,10 +236,7 @@ export function RecompensasPage({ rol, onVolver }: Props) {
                   key={recompensa.id}
                   className={`reward-row ${seleccionada?.id === recompensa.id ? 'selected' : ''}`}
                   type="button"
-                  onClick={() => {
-                    setSeleccionada(recompensa)
-                    setModo('lista')
-                  }}
+                  onClick={() => void abrirDetalle(recompensa.id)}
                 >
                   <span>
                     <strong>{recompensa.proyectoNombre}</strong>
@@ -211,9 +255,11 @@ export function RecompensasPage({ rol, onVolver }: Props) {
               proyectos={proyectos}
               beneficiarios={beneficiarios}
               tiposPermitidos={tiposPermitidos}
+              proyectoSeleccionado={seleccionada}
               formulario={formulario}
               guardando={guardando}
               onSeleccionarProyecto={(id) => void seleccionarProyecto(id)}
+              onSeleccionarBeneficiario={(id) => void seleccionarBeneficiario(id)}
               onCambiar={setFormulario}
               onGuardar={guardar}
               onCancelar={() => setModo('lista')}
@@ -279,14 +325,16 @@ function Detalle({ recompensa, rol, onEditar, onEliminar }: {
   )
 }
 
-function Formulario({ modo, proyectos, beneficiarios, tiposPermitidos, formulario, guardando, onSeleccionarProyecto, onCambiar, onGuardar, onCancelar }: {
+function Formulario({ modo, proyectos, beneficiarios, tiposPermitidos, proyectoSeleccionado, formulario, guardando, onSeleccionarProyecto, onSeleccionarBeneficiario, onCambiar, onGuardar, onCancelar }: {
   modo: 'crear' | 'editar'
   proyectos: ProyectoRecompensa[]
   beneficiarios: BeneficiarioRecompensa[]
   tiposPermitidos: TipoRecompensa[]
+  proyectoSeleccionado: Recompensa | null
   formulario: RecompensaRequest
   guardando: boolean
   onSeleccionarProyecto: (id: number) => void
+  onSeleccionarBeneficiario: (id: number) => void
   onCambiar: (datos: RecompensaRequest) => void
   onGuardar: (event: FormEvent<HTMLFormElement>) => void
   onCancelar: () => void
@@ -307,16 +355,12 @@ function Formulario({ modo, proyectos, beneficiarios, tiposPermitidos, formulari
               {proyectos.map((proyecto) => <option key={proyecto.id} value={proyecto.id}>{proyecto.codigo} · {proyecto.nombre}</option>)}
             </select>
           ) : (
-            <input value={formulario.proyectoId ?? ''} disabled />
+            <input value={proyectoSeleccionado ? `${proyectoSeleccionado.proyectoCodigo} - ${proyectoSeleccionado.proyectoNombre}` : ''} disabled />
           )}
         </label>
         <label>
           Beneficiario elegible
-          <select value={formulario.beneficiarioId} required onChange={(event) => {
-            const beneficiarioId = Number(event.target.value)
-            const tipos: TipoRecompensa[] = beneficiarios.find((beneficiario) => beneficiario.id === beneficiarioId)?.tiposPermitidos ?? ['ECONOMICA']
-            onCambiar({ ...formulario, beneficiarioId, tipo: tipos[0] })
-          }}>
+          <select value={formulario.beneficiarioId} required onChange={(event) => onSeleccionarBeneficiario(Number(event.target.value))}>
             <option value={0}>Selecciona un beneficiario</option>
             {beneficiarios.map((beneficiario) => <option key={beneficiario.id} value={beneficiario.id}>{beneficiario.nombreCompleto} · {beneficiario.sede}</option>)}
           </select>

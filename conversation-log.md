@@ -346,4 +346,24 @@ También se corrigió el flujo de `eliminarRecompensa()` para recuperar la recom
 
 ---
 
-## [2026-06-06 16:54] Fin de sesión
+## [2026-06-06 16:54] Fin de sesión - Desarrollo del bloque 4 implementado y revisado
+
+**Prompt:** cierre de la sesión solicitado posteriormente con la skill `session-memory`, debido a que el límite de la sesión anterior se agotó antes de poder completar el resumen.
+
+**Resultado:** se utilizó la skill `session-memory`. Durante la sesión se corrigió y amplió la colaboración de `crearRecompensa()` para representar correctamente la selección de proyectos completados pendientes, beneficiarios elegibles y tipos de recompensa permitidos según la condición docente y la sede. Después se completó y revisó el Diseño del bloque 4 de recompensas para Coordinador e Investigador, manteniendo la trazabilidad con Detalle, Análisis y los diagramas de contexto.
+
+Se avanzó también al Desarrollo del bloque 4. En backend se incorporaron el modelo de proyectos completados y recompensas, sus repositorios, DTOs, servicio, controlador, migración de base de datos, datos demo y pruebas de integración. En frontend se implementó la pantalla de recompensas, con listado, filtrado, consulta propia y global, creación, edición y eliminación según el actor. Se añadieron igualmente los README de Desarrollo de los siete casos de uso del bloque y se actualizaron los índices y tareas relacionadas.
+
+La revisión final confirmó que la base técnica funciona: las 25 pruebas backend terminaron sin fallos, `npm run build` generó correctamente el frontend de producción y `npm run lint` no encontró errores. No obstante, se detectaron varios puntos que deben corregirse antes de cerrar completamente el bloque: actualmente se muestran todos los proyectos completados aunque ya no tengan recompensas válidas pendientes; los perfiles demo desactivados pueden reactivarse al reiniciar por `DemoDataConfig`; la selección de proyecto en frontend no gestiona errores; la edición muestra el identificador numérico del proyecto; el frontend no consulta el endpoint diseñado para obtener tipos permitidos tras seleccionar beneficiario; y existe documentación antigua que afirma incorrectamente que `investigador.barcelona` no accede a recompensas.
+
+**Decisión:** el bloque 4 queda implementado y con su primera revisión técnica completada, pero todavía no debe considerarse cerrado. La siguiente sesión debe corregir los problemas detectados, ampliar las pruebas de recompensas para cubrir edición, duplicados, beneficiarios ajenos, acceso propio y proyectos completamente recompensados, actualizar la documentación desfasada y realizar una nueva verificación integral antes de pasar al siguiente bloque.
+
+---
+
+## [2026-06-06 23:10] Inicio de sesión - Corrección del desarrollo del bloque 4
+
+**Prompt:** el usuario inició una nueva sesión usando la skill `session-memory` y pidió corregir los errores detectados durante la revisión del Desarrollo del bloque 4.
+
+**Resultado:** se utilizó la skill `session-memory`. Se revisaron el cierre anterior, `tareas_a_realizar.md`, la rama activa y los commits recientes. El repositorio está en `main`; al inicio únicamente aparece modificado `conversation-log.md` por el cierre pendiente completado. El bloque 4 está implementado y verificado inicialmente, pero conserva inconsistencias funcionales en proyectos pendientes de recompensa, reactivación de perfiles demo, manejo de errores y trazabilidad del frontend, documentación antigua y cobertura de pruebas.
+
+**Decisión:** la sesión se dedicará a corregir los hallazgos del bloque 4, ampliar las pruebas automáticas y realizar una nueva verificación integral antes de considerarlo cerrado o pasar al bloque 5.

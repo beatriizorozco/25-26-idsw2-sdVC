@@ -70,7 +70,9 @@ public class Proyecto {
     }
 
     public void agregarInvestigador(Usuario investigador) {
-        investigadores.add(investigador);
+        if (!participa(investigador)) {
+            investigadores.add(investigador);
+        }
     }
 
     public boolean estaCompletado() {
@@ -78,6 +80,7 @@ public class Proyecto {
     }
 
     public boolean participa(Usuario investigador) {
-        return investigadores.stream().anyMatch(usuario -> usuario.getId().equals(investigador.getId()));
+        return investigador.getId() != null
+                && investigadores.stream().anyMatch(usuario -> usuario.getId().equals(investigador.getId()));
     }
 }

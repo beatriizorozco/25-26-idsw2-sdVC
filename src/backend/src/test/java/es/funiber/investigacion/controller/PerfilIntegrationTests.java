@@ -14,10 +14,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import es.funiber.investigacion.model.EstadoSolicitudEliminacion;
 import es.funiber.investigacion.repository.SolicitudEliminacionPerfilRepository;
+import es.funiber.investigacion.repository.RecompensaRepository;
 import es.funiber.investigacion.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -44,6 +47,13 @@ class PerfilIntegrationTests {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private RecompensaRepository recompensaRepository;
+
+    @Autowired
+    @Qualifier("crearUsuariosDemo")
+    private CommandLineRunner inicializadorDemo;
 
     @Test
     void coordinadorPuedeActualizarSuPerfilPropio() throws Exception {
@@ -161,6 +171,20 @@ class PerfilIntegrationTests {
                         .session((MockHttpSession) session))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[*].usuario", not(hasItem("investigador"))));
+    }
+
+    @Test
+    void reiniciarDatosDemoNoReactivaUnPerfilEliminado() throws Exception {
+        var investigador = usuarioRepository.findByNombreUsuario("investigador.barcelona").orElseThrow();
+        investigador.desactivar();
+        usuarioRepository.saveAndFlush(investigador);
+        recompensaRepository.deleteAll();
+
+        inicializadorDemo.run();
+
+        var perfilReiniciado = usuarioRepository.findByNombreUsuario("investigador.barcelona").orElseThrow();
+        assertFalse(perfilReiniciado.isActivo());
+        assertTrue(recompensaRepository.findByBeneficiarioOrderByFechaCreacionDesc(perfilReiniciado).isEmpty());
     }
 
     private void registrarSolicitudInvestigador() throws Exception {

@@ -128,7 +128,6 @@ public class DemoDataConfig {
         return usuarioRepository.findByNombreUsuario(nombreUsuario)
                 .map(usuario -> {
                     usuario.actualizarContrasenaHash(passwordEncoder.encode(contrasena));
-                    usuario.reactivar();
                     usuario.actualizarPerfil(nombreCompleto, email, unidad, lineaInvestigacion, biografia);
                     usuario.actualizarSede(sede);
                     return usuarioRepository.save(usuario);
@@ -184,7 +183,8 @@ public class DemoDataConfig {
             TipoRecompensa tipo,
             String concepto,
             String valor) {
-        if (!recompensaRepository.existsByProyectoAndBeneficiarioAndTipo(proyecto, beneficiario, tipo)) {
+        if (beneficiario.isActivo()
+                && !recompensaRepository.existsByProyectoAndBeneficiarioAndTipo(proyecto, beneficiario, tipo)) {
             recompensaRepository.save(new Recompensa(
                     proyecto,
                     beneficiario,

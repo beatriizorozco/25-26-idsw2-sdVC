@@ -83,7 +83,7 @@ Credenciales incorrectas
 
 **Causa:** Seguía ejecutándose un proceso antiguo del backend. El frontend estaba enviando las peticiones a una versión previa de la aplicación, sin los datos demo y reglas actualizadas. Además, los usuarios demo ya existentes en la base H2 persistente podían conservar una contraseña anterior o un estado inactivo, porque `DemoDataConfig` solo actualizaba la sede cuando encontraba un usuario creado previamente.
 
-**Solución:** Se detuvo el proceso anterior de Java, se arrancó de nuevo el backend desde `src/backend` y se verificó que Spring Boot cargara la versión actual del código. También se ajustó `DemoDataConfig` para que, en cada arranque, los usuarios demo existentes se reactiven y actualicen contraseña, perfil y sede. La entidad `Usuario` incorpora métodos explícitos para actualizar el hash de contraseña y reactivar la cuenta.
+**Solución:** Se detuvo el proceso anterior de Java, se arrancó de nuevo el backend desde `src/backend` y se verificó que Spring Boot cargara la versión actual del código. También se ajustó `DemoDataConfig` para que, en cada arranque, los usuarios demo existentes actualicen contraseña, perfil y sede, pero respeten su estado activo o eliminado. La entidad `Usuario` conserva métodos explícitos para actualizar el hash y administrar el estado cuando un flujo funcional lo requiera.
 
 **Validación:** Se comprobó por API el inicio de sesión y la carga de trabajo con:
 
@@ -91,7 +91,17 @@ Credenciales incorrectas
 - `docente.santander / docente123`
 - `investigador.barcelona / barcelona123`
 
-Después de reiniciar el backend, `investigador.barcelona` vuelve a autenticarse correctamente y `GET /api/carga-trabajo/me` devuelve Barcelona como investigador sin docencia por sede.
+Después de reiniciar el backend, un usuario demo activo conserva credenciales actualizadas y `GET /api/carga-trabajo/me` devuelve Barcelona como investigador sin docencia por sede. Un perfil eliminado no se reactiva automáticamente.
+
+### Proyectos completados sin recompensas pendientes seguían apareciendo
+
+**Síntoma:** El formulario de creación mostraba todos los proyectos completados, incluso cuando todos sus participantes ya habían recibido cada tipo de recompensa permitido.
+
+**Causa:** `RecompensaService.prepararCreacion()` filtraba únicamente por estado `COMPLETADO`, sin comprobar las combinaciones pendientes de proyecto, beneficiario y tipo.
+
+**Solución:** Las opciones de creación ahora incluyen solo proyectos con alguna combinación válida pendiente. También se excluyen beneficiarios que ya han agotado sus tipos permitidos y el frontend consulta los tipos disponibles al seleccionar cada participante.
+
+**Validación:** Se ampliaron las pruebas de integración para comprobar la exclusión progresiva de beneficiarios y la desaparición del proyecto cuando ya no quedan recompensas pendientes.
 
 ### Regla de investigadores-docentes interpretada como compensación por exceso
 
@@ -158,7 +168,7 @@ La autenticación utiliza sesiones HTTP. El navegador conserva una cookie de ses
 
 |Comprobación|Resultado|
 |-|-|
-|Suite backend|21 pruebas correctas|
+|Suite backend|31 pruebas correctas|
 |Lint frontend|Correcto|
 |Build frontend de producción|Correcto|
 |Reintento tras credenciales incorrectas|Comprobado|

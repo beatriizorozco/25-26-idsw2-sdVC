@@ -25,6 +25,14 @@ La tercera iteración verifica carga de trabajo:
 - [Carga de trabajo - Investigador](casos-uso/investigador/abrirOpcionesCargaTrabajo/README.md)
 - [Suite de carga de trabajo](/src/backend/src/test/java/es/funiber/investigacion/controller/CargaTrabajoIntegrationTests.java)
 
+La cuarta iteración verifica recompensas vinculadas a proyectos completados:
+
+- Creación, edición y eliminación global por Coordinador.
+- Consulta exclusiva de recompensas propias por Investigador.
+- Exclusión de proyectos, beneficiarios y tipos sin recompensas pendientes.
+- Validación de duplicados, participantes elegibles y tipos según docencia y sede.
+- [Suite de recompensas](/src/backend/src/test/java/es/funiber/investigacion/controller/RecompensaIntegrationTests.java)
+
 ## Estrategia
 
 - **Integración backend**: Verificar API, persistencia, sesión HTTP, CSRF y permisos mediante MockMvc.
@@ -46,7 +54,7 @@ npm run lint
 
 |Verificación|Resultado|
 |-|-|
-|Suite Maven|21 pruebas correctas|
+|Suite Maven|31 pruebas correctas|
 |Compilación frontend|Correcta|
 |Lint frontend|Correcto|
 |Token CSRF real|`X-XSRF-TOKEN` mediante cookie `XSRF-TOKEN`|
