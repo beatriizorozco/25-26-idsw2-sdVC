@@ -14,7 +14,7 @@
 
 ## Propósito
 
-Especificación detallada del caso de uso `crearRecompensa()` mediante diagrama de estado, mostrando la conversación entre el Coordinador y el Sistema para permitir al coordinador registrar un nuevo recompensa dentro de la plataforma.
+Especificación detallada del caso de uso `crearRecompensa()` mediante diagrama de estado, mostrando la conversación entre el Coordinador y el Sistema para registrar una recompensa vinculada a un proyecto completado y a un investigador beneficiario elegible.
 
 ## Información del caso de uso
 
@@ -22,11 +22,11 @@ Especificación detallada del caso de uso `crearRecompensa()` mediante diagrama 
 |-|-|
 |**Nombre**|crearRecompensa()|
 |**Actor primario**|Coordinador|
-|**Objetivo**|Permitir al Coordinador registrar un nuevo recompensa dentro de la plataforma.|
+|**Objetivo**|Permitir al Coordinador registrar una recompensa para un investigador elegible de un proyecto completado.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
-|**Precondición**|Usuario autenticado como Coordinador y sistema disponible para navegación.|
-|**Postcondición exitosa**|El nuevo recompensa queda registrado y disponible para consulta o edición.|
+|**Precondición**|Usuario autenticado como Coordinador, listado de recompensas abierto y existencia de al menos un proyecto completado con beneficiarios elegibles.|
+|**Postcondición exitosa**|La recompensa queda registrada, vinculada al proyecto completado y al investigador beneficiario, y disponible para consulta o edición.|
 |**Postcondición de fallo**|No se aplican cambios si la información solicitada no es válida o el actor cancela la operación.|
 
 ## Diagrama de especificación
@@ -58,13 +58,21 @@ Especificación detallada del caso de uso `crearRecompensa()` mediante diagrama 
 **Correspondencia con especificación:**
 - crearRecompensa()
 - **Coordinador** solicita crear recompensa
-- **Sistema** presenta formulario de recompensa<br>**Sistema** permite introducir datos<br>- Tipo<br>- Cantidad<br>**Coordinador** introduce datos y solicita guardar<br>**Sistema** presenta el registro de la recompensa
+- **Sistema** presenta proyectos completados pendientes de recompensa
+- **Coordinador** selecciona un proyecto completado
+- **Sistema** presenta investigadores elegibles del proyecto
+- **Coordinador** selecciona el investigador beneficiario
+- **Sistema** presenta los tipos de recompensa permitidos según la condición docente y la sede
+- **Coordinador** introduce concepto, tipo y valor, y solicita guardar
+- **Sistema** valida y presenta el registro de la recompensa
 - **Coordinador** solicita cancelar la operación
 
 ### Validaciones del wireframe
 - ¿El campo o bloque **Formulario de nueva recompensa** resulta claro para el Coordinador?
-- ¿El campo o bloque **Tipo** resulta claro para el Coordinador?
-- ¿El campo o bloque **Cantidad** resulta claro para el Coordinador?
+- ¿La selección de proyecto muestra únicamente proyectos completados pendientes de recompensa?
+- ¿La selección de beneficiario muestra únicamente investigadores elegibles del proyecto?
+- ¿Los tipos disponibles cambian correctamente según la condición docente y la sede?
+- ¿El campo **Valor** permite comprender si se solicita un importe o una reducción de horas?
 - ¿El campo o bloque **Resultado** resulta claro para el Coordinador?
 - ¿Las acciones disponibles mantienen una navegación coherente con el rol Coordinador?
 - ¿Falta información que el wireframe revela antes del análisis?
@@ -78,17 +86,23 @@ Especificación detallada del caso de uso `crearRecompensa()` mediante diagrama 
 |Actor|Acción|Sistema|Respuesta|
 |-|-|-|-|
 |**Coordinador**|solicita crear recompensa|| |
-|**Coordinador**||| |
-||**Sistema**|presenta formulario de recompensa<br>| |
-|**Coordinador**|solicita cancelar la operación|| |
-||**Sistema**|presenta confirmación de creación| |
+||**Sistema**|presenta proyectos completados pendientes de recompensa|Permite seleccionar un proyecto o cancelar|
+|**Coordinador**|selecciona un proyecto completado|| |
+||**Sistema**|presenta investigadores elegibles del proyecto|Permite seleccionar al beneficiario|
+|**Coordinador**|selecciona al investigador beneficiario|| |
+||**Sistema**|presenta los tipos permitidos y permite introducir concepto y valor|Económica o reducción docente para investigador-docente; solo económica para investigador sin docencia|
+|**Coordinador**|introduce los datos y solicita guardar|| |
+||**Sistema**|valida proyecto, beneficiario, tipo y duplicados; registra y presenta la recompensa|La recompensa queda abierta|
+|**Coordinador**|solicita cancelar la operación||No se aplican cambios|
 
 ## Estados internos del caso de uso
 
 |Estado|Descripción|Responsabilidad|
 |-|-|-|
-|**IntroduciendoDatos**|Estado interno asociado a introduciendo datos.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
-|**RecompensaCreada**|Estado interno asociado a recompensa creada.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
+|**SeleccionandoProyecto**|Se muestran proyectos completados pendientes de recompensa.|Sistema debe impedir seleccionar proyectos no completados o no elegibles.|
+|**SeleccionandoBeneficiario**|Se muestran investigadores elegibles del proyecto seleccionado.|Sistema debe limitar los beneficiarios a participantes elegibles del proyecto.|
+|**IntroduciendoDatos**|Se muestran los tipos permitidos y se introducen concepto y valor.|Sistema debe adaptar los tipos a la condición docente y sede del beneficiario.|
+|**RecompensaCreada**|La recompensa ha sido validada y registrada.|Sistema debe presentar el registro creado y permitir abrirlo.|
 
 ## Funcionalidad específica
 
@@ -99,10 +113,12 @@ Especificación detallada del caso de uso `crearRecompensa()` mediante diagrama 
 - **Validación temprana**: el prototipo permite detectar si faltan datos antes del desarrollo.
 
 ### Información tratada
-  - Concepto
-  - Importe o reconocimiento
-  - Estado
-  - Proyecto
+  - Proyecto completado.
+  - Investigador beneficiario elegible.
+  - Condición docente y sede del beneficiario.
+  - Tipo de recompensa permitido.
+  - Concepto.
+  - Importe económico o reducción docente.
 
 ### Reglas de dominio
 - Solo se puede crear una recompensa para un proyecto completado.
@@ -117,7 +133,8 @@ Especificación detallada del caso de uso `crearRecompensa()` mediante diagrama 
 
 ### Navegación del sistema
 - **Estado de entrada**: RECOMPENSAS_ABIERTAS.
-- **Estado de salida**: RECOMPENSA_ABIERTA.
+- **Estado de salida exitosa**: RECOMPENSA_ABIERTA.
+- **Estado de salida por cancelación**: RECOMPENSAS_ABIERTAS.
 
 ## Conexión con diagrama de contexto
 

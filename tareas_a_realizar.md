@@ -109,4 +109,5 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Confirmar que las recompensas nacen de proyectos completados y no de exceso de carga docente.
 - [x] Confirmar que el Investigador solo consulta recompensas propias.
 - [x] Confirmar que los investigadores-docentes pueden recibir recompensa económica o reducción docente, y que los investigadores sin docencia solo reciben recompensa económica.
+- [x] Completar `crearRecompensa()` con selección de proyecto completado, beneficiario elegible, tipos permitidos y cancelación coherente.
 - [ ] Tras la revisión, pasar a Diseño del bloque 4 con `README.md`, `secuencia.puml` y SVG por caso.

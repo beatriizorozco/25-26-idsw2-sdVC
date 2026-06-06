@@ -10,22 +10,49 @@ end note
 
 state crearRecompensa as "crearRecompensa()" {
 
+    state " " as SeleccionandoProyecto
+    state " " as SeleccionandoBeneficiario
     state " " as IntroduciendoDatos
     state " " as RecompensaCreada
 
-    [*] -[#green]-> IntroduciendoDatos
+    [*] -[#green]-> SeleccionandoProyecto
     note on link
     <b>Coordinador</b> solicita crear recompensa
+    <b>Sistema</b> presenta proyectos completados pendientes de recompensa
+    end note
+
+    SeleccionandoProyecto -[#green]-> SeleccionandoBeneficiario
+    note on link
+    <b>Coordinador</b> selecciona un proyecto completado
+    <b>Sistema</b> presenta investigadores elegibles del proyecto
+    end note
+
+    SeleccionandoBeneficiario -[#green]-> IntroduciendoDatos
+    note on link
+    <b>Coordinador</b> selecciona el investigador beneficiario
+    <b>Sistema</b> presenta los tipos de recompensa permitidos
+    <b>Sistema</b> permite introducir:
+    • Concepto
+    • Tipo de recompensa
+    • Valor económico o reducción docente
     end note
 
     IntroduciendoDatos -[#green]-> RecompensaCreada
     note on link
-    <b>Sistema</b> presenta formulario de recompensa
-    <b>Sistema</b> permite introducir datos
-    • Tipo
-    • Cantidad
     <b>Coordinador</b> introduce datos y solicita guardar
+    <b>Sistema</b> valida proyecto, beneficiario, tipo y duplicados
+    <b>Sistema</b> registra la recompensa
     <b>Sistema</b> presenta el registro de la recompensa
+    end note
+
+    SeleccionandoProyecto -[#red]-> [*]
+    note on link
+    <b>Coordinador</b> solicita cancelar la operación
+    end note
+
+    SeleccionandoBeneficiario -[#red]-> [*]
+    note on link
+    <b>Coordinador</b> solicita cancelar la operación
     end note
 
     IntroduciendoDatos -[#red]-> [*]
@@ -44,8 +71,9 @@ note on link
 abrirRecompensa()
 end note
 
-
-
-
+crearRecompensa -[#red]-> RECOMPENSAS_ABIERTAS
+note on link
+Creación cancelada
+end note
 
 @enduml

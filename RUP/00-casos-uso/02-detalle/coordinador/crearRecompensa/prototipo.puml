@@ -7,9 +7,15 @@
         <b>Formulario de nueva recompensa</b>
         --
         {
-            {<b>Tipo</b>     | [                              ]}
-            {<b>Cantidad</b> | [                              ]}
+            {<b>Proyecto completado</b> | [ Seleccionar proyecto pendiente       ]}
+            {<b>Beneficiario</b>        | [ Seleccionar investigador elegible   ]}
+            {<b>Condición</b>           | "Investigador-docente / sede"}
+            {<b>Tipo permitido</b>      | { "Económica" | "Reducción docente" }}
+            {<b>Concepto</b>            | [                                      ]}
+            {<b>Valor</b>               | [ Importe o reducción de horas         ]}
         }
+
+        "El tipo disponible depende de la condición docente y la sede del beneficiario."
 
         ~~
 

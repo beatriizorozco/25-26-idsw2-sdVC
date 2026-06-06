@@ -312,8 +312,34 @@ Se actualizó `tareas_a_realizar.md` dejando el bloque 4 como pendiente inmediat
 
 **Decisión:** se mantiene `crearRecompensa()` en Detalle y Análisis del Coordinador porque está respaldado por el diagrama de contexto. La próxima sesión debe empezar revisando el Análisis del bloque 4, prestando especial atención a que todos los casos sigan las transiciones permitidas por el contexto.
 
-# [2026-06-05 21:10] Inicio de sesión
+## [2026-06-05 21:10] Inicio de sesión - Revisión del Análisis del bloque 4
+
+**Prompt:** el usuario inició una nueva sesión usando la skill `session-memory` y pidió repasar el Análisis completo del bloque 4 antes de continuar con Diseño.
+
+**Resultado:** se utilizó la skill `session-memory`. Se revisaron la última entrada de `conversation-log.md`, las tareas pendientes del bloque 4, el estado del repositorio y las transiciones de los diagramas de contexto. Se confirmó que el Coordinador dispone de `abrirRecompensas()`, `abrirRecompensa()`, `crearRecompensa()`, `editarRecompensa()` y `eliminarRecompensa()`, mientras que el Investigador únicamente dispone de los casos de consulta `abrirRecompensas()` y `abrirRecompensa()`.
+
+**Decisión:** la sesión se dedicará a revisar los README y diagramas de colaboración del bloque 4, corrigiendo cualquier estado abstracto, método genérico o incoherencia con las reglas de dominio: las recompensas proceden de proyectos completados, el Investigador solo consulta recompensas propias, los investigadores-docentes pueden recibir recompensa económica o reducción docente y los investigadores sin docencia solo pueden recibir recompensa económica.
 
 ---
 
-# [2026-06-05 21:44] Fin de sesión
+## [2026-06-05 21:44] Fin de sesión - Análisis del bloque 4 revisado
+
+**Prompt:** cierre de la sesión dedicada a revisar el Análisis del bloque 4, cuya fecha y hora quedaron indicadas previamente en `conversation-log.md`.
+
+**Resultado:** se utilizó la skill `session-memory`. Durante la sesión se revisó el Análisis de recompensas para Coordinador e Investigador y se corrigieron los README de `abrirRecompensas`, `abrirRecompensa`, `crearRecompensa`, `editarRecompensa` y `eliminarRecompensa`. Se sustituyeron estados y salidas genéricas por las transiciones concretas del diagrama de contexto, se eliminaron referencias antiguas a permisos abstractos y se ajustaron las colaboraciones con `RecompensaRepository`, `ProyectoRepository` e `InvestigadorRepository`.
+
+El análisis quedó alineado con las reglas finales del dominio. El Coordinador mantiene acceso global y puede crear, editar y eliminar recompensas. El Investigador únicamente puede listar y consultar sus propias recompensas. Todas las recompensas conservan su trazabilidad hacia un proyecto completado y un investigador beneficiario. Los investigadores-docentes pueden recibir recompensa económica o reducción docente, mientras que los investigadores sin docencia solo pueden recibir recompensa económica.
+
+También se corrigió el flujo de `eliminarRecompensa()` para recuperar la recompensa antes de validar su proyecto de origen y eliminarla, se actualizó su `colaboracion.puml` y se regeneró el SVG asociado. La validación final de los siete diagramas PlantUML del bloque 4 terminó correctamente y no se encontraron operaciones CRUD de recompensas dentro del Análisis del Investigador. Finalmente, se actualizó `tareas_a_realizar.md`, marcando como completada la revisión del Análisis del bloque 4.
+
+**Decisión:** el Análisis del bloque 4 queda revisado y preparado para avanzar. El siguiente paso recomendado es comenzar el Diseño del bloque 4, creando y revisando los README, diagramas `secuencia.puml` y SVG de recompensas por actor, manteniendo la trazabilidad con Detalle, Análisis y diagrama de contexto.
+
+---
+
+## [2026-06-06 14:59] Inicio de sesión - Revisión de colaboraciones de crearRecompensa
+
+**Prompt:** el usuario inició una nueva sesión usando la skill `session-memory` y planteó que el caso de uso `crearRecompensa()` podría necesitar más colaboraciones antes de comenzar el Diseño del bloque 4.
+
+**Resultado:** se utilizó la skill `session-memory`. Se revisaron el Detalle, la especificación y el diagrama de colaboración actuales de `crearRecompensa()`, comparándolos con otros casos de creación y con el diagrama de contexto. Se detectó que el Análisis ya incluye acceso a `ProyectoRepository` e `InvestigadorRepository` para validar el proyecto completado y el beneficiario, pero el Detalle únicamente solicita tipo y cantidad. Por ello, no queda explicado cómo el Coordinador obtiene y selecciona el proyecto completado, el investigador beneficiario ni los tipos de recompensa permitidos antes de guardar.
+
+**Decisión:** antes de pasar a Diseño se revisará `crearRecompensa()` para distinguir entre colaboraciones externas con otros casos de uso y colaboraciones internas con clases de análisis. Según el contexto actual, la única colaboración externa posterior necesaria es `abrirRecompensa()`. Sin embargo, el flujo interno debe ampliarse para listar proyectos completados pendientes de recompensa, obtener beneficiarios elegibles y restringir el tipo de recompensa según la condición docente y la sede.

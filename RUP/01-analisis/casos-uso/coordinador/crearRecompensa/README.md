@@ -34,15 +34,17 @@ Analizar la colaboración necesaria para registrar una nueva recompensa. El aná
 **Estereotipo**: Vista (Boundary)  
 **Responsabilidades**:
 - Recibir la solicitud `crearRecompensa()` del Coordinador.
-- Presentar la información de recompensas necesaria para el caso de uso.
-- Capturar datos, criterios o confirmaciones introducidos por el Coordinador.
+- Presentar proyectos completados pendientes de recompensa.
+- Presentar investigadores elegibles del proyecto seleccionado.
+- Presentar únicamente los tipos de recompensa permitidos para el beneficiario.
+- Capturar proyecto, beneficiario, concepto, tipo y valor introducidos por el Coordinador.
 - Invocar al controlador para ejecutar la operación de análisis.
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
 - **Entrada**: Recibe `crearRecompensa()` desde `RECOMPENSAS_ABIERTAS`.
 - **Control**: Se comunica con `RecompensaController`.
-- **Salida**: Navega a `RECOMPENSA_ABIERTA` con la recompensa creada.
+- **Salida**: Navega a `RECOMPENSA_ABIERTA` con la recompensa creada o conserva `RECOMPENSAS_ABIERTAS` si el Coordinador cancela.
 
 ### Clases de control
 
@@ -50,18 +52,19 @@ Analizar la colaboración necesaria para registrar una nueva recompensa. El aná
 **Estereotipo**: Control  
 **Responsabilidades**:
 - Coordinar la ejecución del caso de uso `crearRecompensa()`.
-- Aplicar reglas de permisos del Coordinador.
-- Validar datos o criterios antes de acceder a las entidades.
-- Servir como intermediario entre la vista y el repositorio.
+- Preparar los proyectos y beneficiarios disponibles para la creación.
+- Determinar los tipos de recompensa permitidos según condición docente y sede.
+- Validar los datos y evitar recompensas duplicadas antes de registrar.
+- Servir como intermediario entre la vista y los repositorios implicados.
 
 **Colaboraciones**:
 - **Vista**: Responde a solicitudes de `CrearRecompensaView`.
-- **Repositorio**: Delega operaciones de datos a `RecompensaRepository`.
+- **Repositorio**: Delega operaciones de datos a `ProyectoRepository`, `InvestigadorRepository` y `RecompensaRepository`.
 
 ### Clases de entidad (entity)
 
 #### RecompensaRepository
-**Estereotipo**: Entidad  
+**Estereotipo**: Entidad
 **Responsabilidades**:
 - Abstraer el acceso a datos de recompensas.
 - Proporcionar operaciones `existeDuplicado(datos)` y `guardar(entidad)`.
@@ -73,7 +76,7 @@ Analizar la colaboración necesaria para registrar una nueva recompensa. El aná
 - **Entidad**: Gestiona instancias de `Recompensa`.
 
 #### Recompensa
-**Estereotipo**: Entidad  
+**Estereotipo**: Entidad
 **Responsabilidades**:
 - Representar la información de recompensa.
 - Encapsular atributos relevantes del dominio.
@@ -88,24 +91,40 @@ Analizar la colaboración necesaria para registrar una nueva recompensa. El aná
 - Representar el proyecto que origina la recompensa.
 - Validar que el proyecto se encuentre completado antes de crear la recompensa.
 
+#### ProyectoRepository
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Obtener proyectos completados pendientes de recompensa.
+- Garantizar que el proyecto seleccionado puede originar una recompensa.
+
 #### Investigador
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Representar al beneficiario seleccionado para la recompensa.
 - Determinar si el beneficiario admite recompensa económica, reducción docente o solo recompensa económica.
 
+#### InvestigadorRepository
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Obtener investigadores elegibles del proyecto seleccionado.
+- Recuperar la condición docente y la sede del beneficiario.
+
 ## Flujo de colaboración
 
 ### Secuencia de operaciones
 
-1. **Inicio**: Estado de contexto -> `CrearRecompensaView.crearRecompensa()`.
-2. **Solicitud principal**: `CrearRecompensaView` -> `RecompensaController.crearRecompensa(datos)`.
-3. **Validación previa**: `CrearRecompensaView` -> `RecompensaController.validarRecompensa(datos)`.
-4. **Proyecto completado**: `RecompensaController` -> `ProyectoRepository.obtenerCompletado(datos.proyectoId)`.
-5. **Beneficiario**: `RecompensaController` -> `InvestigadorRepository.obtenerBeneficiario(datos.investigadorId)`.
-6. **Consulta de consistencia**: `RecompensaController` -> `RecompensaRepository.existeDuplicado(datos)`.
-7. **Persistencia**: `RecompensaController` -> `RecompensaRepository.guardar(entidad)`.
-8. **Finalización**: `CrearRecompensaView` deriva a `abrirRecompensa()` y queda en `RECOMPENSA_ABIERTA`.
+1. **Inicio**: `RECOMPENSAS_ABIERTAS` -> `CrearRecompensaView.crearRecompensa()`.
+2. **Preparación**: `CrearRecompensaView` -> `RecompensaController.prepararCreacion()`.
+3. **Proyectos disponibles**: `RecompensaController` -> `ProyectoRepository.obtenerCompletadosPendientesRecompensa()`.
+4. **Selección de proyecto**: `CrearRecompensaView` -> `RecompensaController.seleccionarProyecto(proyectoId)`.
+5. **Beneficiarios disponibles**: `RecompensaController` -> `InvestigadorRepository.obtenerElegiblesPorProyecto(proyectoId)`.
+6. **Selección de beneficiario**: `CrearRecompensaView` -> `RecompensaController.seleccionarBeneficiario(investigadorId)`.
+7. **Tipos permitidos**: `RecompensaController` recupera al beneficiario y determina los tipos permitidos según condición docente y sede.
+8. **Solicitud de creación**: `CrearRecompensaView` -> `RecompensaController.crearRecompensa(datos)`.
+9. **Validación previa**: `RecompensaController.validarRecompensa(datos)`.
+10. **Consulta de consistencia**: `RecompensaController` -> `RecompensaRepository.existeDuplicado(datos)`.
+11. **Persistencia**: `RecompensaController` -> `RecompensaRepository.guardar(entidad)`.
+12. **Finalización**: si se registra, `CrearRecompensaView` deriva a `abrirRecompensa()` y queda en `RECOMPENSA_ABIERTA`; si se cancela, conserva `RECOMPENSAS_ABIERTAS`.
 
 ### Patrón de colaboración establecido
 
@@ -121,9 +140,12 @@ Analizar la colaboración necesaria para registrar una nueva recompensa. El aná
 |-|-|-|
 |Atender la solicitud `crearRecompensa()`|`CrearRecompensaView`|Recibe la acción del Coordinador|
 |Coordinar reglas del caso de uso|`RecompensaController`|`crearRecompensa(datos)`|
-|Aplicar permisos y validaciones|`RecompensaController`|`validarRecompensa(datos)`|
+|Preparar la creación|`RecompensaController`|`prepararCreacion()`|
+|Listar proyectos completados pendientes|`ProyectoRepository`|`obtenerCompletadosPendientesRecompensa()`|
+|Listar beneficiarios elegibles|`InvestigadorRepository`|`obtenerElegiblesPorProyecto(proyectoId)`|
+|Determinar tipos permitidos|`RecompensaController`|`obtenerTiposPermitidos(beneficiario)`|
+|Aplicar validaciones|`RecompensaController`|`validarRecompensa(datos)`|
 |Acceder a datos de recompensas|`RecompensaRepository`|`existeDuplicado(datos)`, `guardar(entidad)`|
-|Verificar proyecto completado|`ProyectoRepository`|`obtenerCompletado(datos.proyectoId)`|
 |Verificar beneficiario|`InvestigadorRepository`|`obtenerBeneficiario(datos.investigadorId)`|
 |Representar atributos de dominio|`Recompensa`|Entidad conceptual|
 
