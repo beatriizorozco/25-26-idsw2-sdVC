@@ -148,15 +148,14 @@ Flyway crea la tabla mediante `src/backend/src/main/resources/db/migration/V1__c
 
 ## Comandos comprobados
 
-### Backend
+### Pruebas del backend
 
 ```powershell
 cd src/backend
 .\mvnw.cmd test
-.\mvnw.cmd spring-boot:run
 ```
 
-### Frontend
+### Aplicación completa y pruebas del frontend
 
 ```powershell
 cd src/frontend
@@ -166,7 +165,13 @@ npm run lint
 npm run dev
 ```
 
-En desarrollo, la SPA queda disponible en `http://127.0.0.1:5173` y delega las rutas `/api` al backend local en `http://127.0.0.1:8080`.
+`npm run dev` comprueba si Spring Boot responde en el puerto `8080`, lo inicia
+automáticamente cuando es necesario y espera antes de arrancar Vite. En
+desarrollo, la SPA queda disponible en `http://127.0.0.1:5173` y delega las
+rutas `/api` al backend local en `http://127.0.0.1:8080`.
+
+Para una depuración aislada del frontend puede utilizarse `npm run
+dev:frontend`, que no inicia ni comprueba el backend.
 
 ## Despliegue pendiente
 

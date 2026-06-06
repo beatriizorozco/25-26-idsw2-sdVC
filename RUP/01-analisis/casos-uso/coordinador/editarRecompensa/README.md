@@ -149,6 +149,7 @@ Analizar la colaboración necesaria para actualizar los datos de recompensa. El 
 - Verificar que el beneficiario mantenga un tipo de recompensa permitido por su sede y condición docente.
 - Permitir recompensa económica o reducción docente cuando el beneficiario es investigador-docente.
 - Impedir reducción docente para investigadores de sedes sin docencia.
+- Mantener la reducción docente en múltiplos de 4 horas, hasta un máximo de 16.
 
 ## Características del análisis
 

@@ -27,6 +27,7 @@ Detallar la edición de una recompensa existente manteniendo el proyecto de orig
 - El proyecto de origen debe continuar completado.
 - El proyecto de origen permanece fijo; el beneficiario solo puede cambiarse por otro investigador elegible del mismo proyecto.
 - No se permite asignar reducción docente a un beneficiario sin docencia.
+- La reducción docente solo admite múltiplos de 4 horas y no puede superar 16 horas.
 - Cancelar conserva `RECOMPENSA_ABIERTA` y no invoca `PATCH`.
 - `PATCH` modifica únicamente los campos editables enviados.
 - Un cambio inválido conserva el formulario y devuelve `400 Bad Request`.

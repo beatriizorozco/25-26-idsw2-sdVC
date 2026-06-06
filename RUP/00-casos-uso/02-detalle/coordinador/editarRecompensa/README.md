@@ -108,6 +108,7 @@ Especificación detallada del caso de uso `editarRecompensa()` mediante diagrama
 - La edición no puede desvincular la recompensa de un proyecto completado.
 - La edición debe mantener un investigador beneficiario válido.
 - La reducción docente solo es válida para investigadores-docentes.
+- La reducción docente debe corresponder a asignaturas completas de 4 horas, con un máximo de 16 horas.
 - Los investigadores sin docencia por sede solo pueden conservar recompensas económicas.
 
 ## Opciones de navegación

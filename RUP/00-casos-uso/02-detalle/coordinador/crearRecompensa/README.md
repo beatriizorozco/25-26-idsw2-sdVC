@@ -125,6 +125,7 @@ Especificación detallada del caso de uso `crearRecompensa()` mediante diagrama 
 - La recompensa debe indicar el investigador beneficiario.
 - Si el beneficiario es investigador-docente, el Coordinador puede registrar recompensa económica o reducción docente del siguiente cuatrimestre.
 - Si el beneficiario pertenece a una sede sin docencia, el Coordinador solo puede registrar recompensa económica.
+- La reducción docente se concede por asignaturas completas: cada asignatura equivale a 4 horas semanales y la reducción debe ser de 4, 8, 12 o 16 horas.
 
 ## Opciones de navegación
 

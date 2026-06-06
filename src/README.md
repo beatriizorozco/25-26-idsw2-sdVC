@@ -7,19 +7,18 @@
 
 ## Ejecución local
 
-### Backend
-
-```powershell
-cd src/backend
-.\mvnw.cmd spring-boot:run
-```
-
-### Frontend
-
 ```powershell
 cd src/frontend
 npm install
 npm run dev
 ```
 
-La interfaz queda disponible en `http://127.0.0.1:5173`.
+El comando comprueba el backend, lo inicia automáticamente si es necesario y
+espera hasta que responda antes de arrancar Vite. La interfaz queda disponible
+en `http://127.0.0.1:5173`.
+
+Para arrancar únicamente el frontend durante una depuración aislada:
+
+```powershell
+npm run dev:frontend
+```

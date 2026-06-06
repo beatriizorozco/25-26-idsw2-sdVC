@@ -54,7 +54,7 @@ npm run lint
 
 |Verificación|Resultado|
 |-|-|
-|Suite Maven|31 pruebas correctas|
+|Suite Maven|32 pruebas correctas|
 |Compilación frontend|Correcta|
 |Lint frontend|Correcto|
 |Token CSRF real|`X-XSRF-TOKEN` mediante cookie `XSRF-TOKEN`|

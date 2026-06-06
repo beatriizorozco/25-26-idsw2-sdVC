@@ -83,7 +83,7 @@ alt Sesion de Coordinador activa
                 ProyectoRepo --> Service: Proyecto completado
                 Service -> InvestigadorRepo: obtenerElegible(datos.proyectoId, datos.investigadorId)
                 InvestigadorRepo --> Service: Beneficiario con sede y condicion
-                Service -> Service: validarTipoYValor(datos, beneficiario)
+                Service -> Service: validarTipoYValor(datos, beneficiario)\nReduccion: 4, 8, 12 o 16 horas
                 Service -> Repo: existeDuplicado(proyectoId, investigadorId, tipo)
                 Repo --> Service: true / false
                 alt Datos invalidos o recompensa duplicada

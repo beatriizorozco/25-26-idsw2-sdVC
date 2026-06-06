@@ -57,7 +57,7 @@ alt Sesion de Coordinador activa
             ProyectoRepo --> Service: Proyecto completado
             Service -> InvestigadorRepo: obtenerElegible(recompensa.proyectoId, datos.investigadorId)
             InvestigadorRepo --> Service: Beneficiario con sede y condicion
-            Service -> Service: validarTipoYValor(datos, beneficiario)
+            Service -> Service: validarTipoYValor(datos, beneficiario)\nReduccion: 4, 8, 12 o 16 horas
             alt Cambio invalido
                 Service --> Api: ValidacionException
                 deactivate Service

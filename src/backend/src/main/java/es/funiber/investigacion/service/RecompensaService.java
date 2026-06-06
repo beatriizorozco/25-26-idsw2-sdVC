@@ -18,6 +18,7 @@ import es.funiber.investigacion.model.Usuario;
 import es.funiber.investigacion.repository.ProyectoRepository;
 import es.funiber.investigacion.repository.RecompensaRepository;
 import es.funiber.investigacion.repository.UsuarioRepository;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -26,6 +27,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RecompensaService {
+
+    private static final BigDecimal HORAS_POR_ASIGNATURA = new BigDecimal("4");
+    private static final BigDecimal MAXIMA_REDUCCION_DOCENTE = new BigDecimal("16");
 
     private final RecompensaRepository recompensaRepository;
     private final ProyectoRepository proyectoRepository;
@@ -215,6 +219,12 @@ public class RecompensaService {
         if (!tiposPermitidos(beneficiario).contains(request.tipo().name())) {
             throw new IllegalArgumentException(
                     "La reduccion docente solo puede concederse a investigadores-docentes.");
+        }
+        if (request.tipo() == TipoRecompensa.REDUCCION_DOCENTE
+                && (request.valor().compareTo(MAXIMA_REDUCCION_DOCENTE) > 0
+                || request.valor().remainder(HORAS_POR_ASIGNATURA).compareTo(BigDecimal.ZERO) != 0)) {
+            throw new IllegalArgumentException(
+                    "La reduccion docente debe corresponder a asignaturas completas de 4 horas, hasta un maximo de 16.");
         }
     }
 

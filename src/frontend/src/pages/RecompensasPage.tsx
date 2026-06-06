@@ -106,13 +106,15 @@ export function RecompensasPage({ rol, onVolver }: Props) {
     if (modo === 'editar') {
       const tipos = beneficiarios.find((beneficiario) => beneficiario.id === beneficiarioId)?.tiposPermitidos ?? []
       setTiposPermitidos(tipos)
-      setFormulario({ ...formulario, beneficiarioId, tipo: tipos[0] ?? 'ECONOMICA' })
+      const tipo = tipos[0] ?? 'ECONOMICA'
+      setFormulario({ ...formulario, beneficiarioId, tipo, valor: valorInicial(tipo) })
       return
     }
     try {
       const tipos = await obtenerTiposRecompensa(formulario.proyectoId, beneficiarioId)
       setTiposPermitidos(tipos)
-      setFormulario({ ...formulario, beneficiarioId, tipo: tipos[0] ?? 'ECONOMICA' })
+      const tipo = tipos[0] ?? 'ECONOMICA'
+      setFormulario({ ...formulario, beneficiarioId, tipo, valor: valorInicial(tipo) })
       setError('')
     } catch (cargaError) {
       setTiposPermitidos(['ECONOMICA'])
@@ -367,9 +369,15 @@ function Formulario({ modo, proyectos, beneficiarios, tiposPermitidos, proyectoS
         </label>
         <label>
           Tipo
-          <select value={formulario.tipo} onChange={(event) => onCambiar({ ...formulario, tipo: event.target.value as TipoRecompensa })}>
+          <select value={formulario.tipo} onChange={(event) => {
+            const tipo = event.target.value as TipoRecompensa
+            onCambiar({ ...formulario, tipo, valor: valorInicial(tipo) })
+          }}>
             {tiposPermitidos.map((tipo) => <option key={tipo} value={tipo}>{etiquetaTipo(tipo)}</option>)}
           </select>
+          {modo === 'crear' && formulario.beneficiarioId > 0 && (
+            <small>Solo aparecen los tipos que todavía no se han concedido a este beneficiario en el proyecto.</small>
+          )}
         </label>
         <label>
           Concepto
@@ -377,7 +385,13 @@ function Formulario({ modo, proyectos, beneficiarios, tiposPermitidos, proyectoS
         </label>
         <label>
           {formulario.tipo === 'ECONOMICA' ? 'Importe economico' : 'Horas de reduccion docente'}
-          <input type="number" required min="0.01" step="0.01" value={formulario.valor} onChange={(event) => onCambiar({ ...formulario, valor: Number(event.target.value) })} />
+          {formulario.tipo === 'ECONOMICA' ? (
+            <input type="number" required min="0.01" step="0.01" value={formulario.valor} onChange={(event) => onCambiar({ ...formulario, valor: Number(event.target.value) })} />
+          ) : (
+            <select value={formulario.valor} onChange={(event) => onCambiar({ ...formulario, valor: Number(event.target.value) })}>
+              {[4, 8, 12, 16].map((horas) => <option key={horas} value={horas}>{horas} h · {horas / 4} {horas === 4 ? 'asignatura' : 'asignaturas'}</option>)}
+            </select>
+          )}
         </label>
         <div className="button-row">
           <button className="primary-button" type="submit" disabled={guardando || !formulario.proyectoId || !formulario.beneficiarioId}>
@@ -398,6 +412,10 @@ function formatearValor(recompensa: Recompensa) {
 
 function etiquetaTipo(tipo: TipoRecompensa) {
   return tipo === 'ECONOMICA' ? 'Economica' : 'Reduccion docente'
+}
+
+function valorInicial(tipo: TipoRecompensa) {
+  return tipo === 'REDUCCION_DOCENTE' ? 4 : 0
 }
 
 function mensajeError(error: unknown, respaldo: string) {

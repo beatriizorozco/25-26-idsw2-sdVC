@@ -126,5 +126,10 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Alinear el frontend con los endpoints de detalle y tipos permitidos del Diseño.
 - [x] Ampliar pruebas de recompensas para edición, duplicados, beneficiarios ajenos, acceso propio y proyectos agotados.
 - [x] Actualizar documentación desfasada sobre el acceso de `investigador.barcelona` a recompensas.
-- [ ] Probar manualmente en navegador el bloque 4 con Coordinador, `docente.santander` e `investigador.barcelona`.
-- [ ] Revisar el bloque 4 completo antes de pasar al bloque 5.
+- [x] Probar manualmente en navegador el bloque 4 con Coordinador, `docente.santander` e `investigador.barcelona`.
+- [x] Revisar el bloque 4 completo antes de pasar al bloque 5.
+
+## Pendiente inmediato del bloque 5
+
+- [ ] Identificar y revisar los casos de uso que forman el bloque 5.
+- [ ] Comenzar el bloque 5 por Detalle, validando su coherencia con los diagramas de contexto antes de avanzar a Análisis.

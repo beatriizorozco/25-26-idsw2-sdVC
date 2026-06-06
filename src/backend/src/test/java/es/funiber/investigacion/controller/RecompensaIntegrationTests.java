@@ -67,9 +67,25 @@ class RecompensaIntegrationTests {
                 .andExpect(jsonPath("$.mensaje").value(
                         "La reduccion docente solo puede concederse a investigadores-docentes."));
 
-        crearRecompensa(coordinador, proyectoSantander, docente, "REDUCCION_DOCENTE", 2)
+        crearRecompensa(coordinador, proyectoSantander, docente, "REDUCCION_DOCENTE", 4)
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.tipo").value("REDUCCION_DOCENTE"));
+                .andExpect(jsonPath("$.tipo").value("REDUCCION_DOCENTE"))
+                .andExpect(jsonPath("$.valor").value(4));
+    }
+
+    @Test
+    void reduccionDocenteDebeCorresponderAAsignaturasCompletas() throws Exception {
+        HttpSession coordinador = iniciarSesion("coordinador", "coordinador123");
+        Long proyectoSantander = proyectoRepository.findByCodigo("PRY-SAN-COM-01").orElseThrow().getId();
+        Long docente = usuarioRepository.findByNombreUsuario("docente.santander").orElseThrow().getId();
+
+        crearRecompensa(coordinador, proyectoSantander, docente, "REDUCCION_DOCENTE", 6)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.mensaje").value(
+                        "La reduccion docente debe corresponder a asignaturas completas de 4 horas, hasta un maximo de 16."));
+
+        crearRecompensa(coordinador, proyectoSantander, docente, "REDUCCION_DOCENTE", 20)
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -170,7 +186,7 @@ class RecompensaIntegrationTests {
         MvcResult economica = crearRecompensa(coordinador, proyectoId, docenteId, "ECONOMICA", 500)
                 .andExpect(status().isCreated())
                 .andReturn();
-        crearRecompensa(coordinador, proyectoId, docenteId, "REDUCCION_DOCENTE", 2)
+        crearRecompensa(coordinador, proyectoId, docenteId, "REDUCCION_DOCENTE", 4)
                 .andExpect(status().isCreated());
         Number recompensaId = com.jayway.jsonpath.JsonPath.read(economica.getResponse().getContentAsString(), "$.id");
 

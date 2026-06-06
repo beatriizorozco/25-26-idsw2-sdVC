@@ -1,5 +1,42 @@
 # Incidencias y soluciones
 
+## Un investigador-docente solo muestra recompensa económica al crear
+
+**Síntoma:** Al seleccionar un investigador-docente, el selector de tipo puede
+mostrar únicamente la recompensa económica.
+
+**Causa:** Ese beneficiario ya tiene concedida una reducción docente para el
+proyecto seleccionado. El sistema evita duplicar una recompensa del mismo tipo
+para la misma combinación de proyecto y beneficiario.
+
+**Solución:** El formulario explica que solo presenta tipos todavía pendientes.
+Los datos demo incluyen además `PRY-SAN-COM-02`, un proyecto completado sin
+recompensas previas que permite probar la creación de una reducción docente.
+
+## La reducción docente admitía horas que no representaban asignaturas completas
+
+**Síntoma:** Era posible registrar reducciones docentes como 2 o 6 horas.
+
+**Causa:** El valor de la recompensa se trataba como una cantidad decimal libre,
+aunque cada asignatura representa 4 horas semanales.
+
+**Solución:** El frontend ofrece únicamente 4, 8, 12 o 16 horas. El backend
+valida la regla y Flyway añade una restricción de base de datos, normalizando
+previamente los datos antiguos incompatibles.
+
+## El proxy de Vite devuelve `ECONNREFUSED` al probar un bloque
+
+**Síntoma:** La interfaz abre en el puerto `5173`, pero Vite muestra errores
+`http proxy error: /api/auth/csrf` y `ECONNREFUSED`.
+
+**Causa:** El frontend se iniciaba sin que el backend Spring Boot estuviera
+disponible en el puerto `8080`. El procedimiento anterior requería mantener dos
+terminales y no garantizaba el orden de arranque.
+
+**Solución:** `npm run dev` ejecuta `tools/start-dev.ps1`, que reutiliza el
+backend si ya responde o lo inicia automáticamente y espera antes de arrancar
+Vite. `npm run dev:frontend` queda reservado para depurar solo el frontend.
+
 Este documento registra problemas encontrados durante el desarrollo de la Plataforma Interna de Investigación de FUNIBER, su causa y la solución aplicada. Su objetivo es conservar el razonamiento técnico del proyecto y facilitar futuras revisiones.
 
 ## Incidencias resueltas
@@ -168,7 +205,7 @@ La autenticación utiliza sesiones HTTP. El navegador conserva una cookie de ses
 
 |Comprobación|Resultado|
 |-|-|
-|Suite backend|31 pruebas correctas|
+|Suite backend|32 pruebas correctas|
 |Lint frontend|Correcto|
 |Build frontend de producción|Correcto|
 |Reintento tras credenciales incorrectas|Comprobado|

@@ -170,6 +170,7 @@ Analizar la colaboración necesaria para registrar una nueva recompensa. El aná
 - Asociar siempre la recompensa a un investigador beneficiario.
 - Permitir recompensa económica o reducción docente cuando el beneficiario es investigador-docente.
 - Restringir a recompensa económica cuando el beneficiario pertenece a una sede sin docencia.
+- Validar que la reducción docente represente entre una y cuatro asignaturas completas de 4 horas.
 - Evitar duplicados para el mismo proyecto, beneficiario y tipo de recompensa.
 
 ## Características del análisis

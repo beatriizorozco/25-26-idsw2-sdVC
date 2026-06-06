@@ -367,3 +367,17 @@ La revisión final confirmó que la base técnica funciona: las 25 pruebas backe
 **Resultado:** se utilizó la skill `session-memory`. Se revisaron el cierre anterior, `tareas_a_realizar.md`, la rama activa y los commits recientes. El repositorio está en `main`; al inicio únicamente aparece modificado `conversation-log.md` por el cierre pendiente completado. El bloque 4 está implementado y verificado inicialmente, pero conserva inconsistencias funcionales en proyectos pendientes de recompensa, reactivación de perfiles demo, manejo de errores y trazabilidad del frontend, documentación antigua y cobertura de pruebas.
 
 **Decisión:** la sesión se dedicará a corregir los hallazgos del bloque 4, ampliar las pruebas automáticas y realizar una nueva verificación integral antes de considerarlo cerrado o pasar al bloque 5.
+
+---
+
+## [2026-06-07 01:02] Fin de sesión - Bloque 4 cerrado y preparado para bloque 5
+
+**Prompt:** cierre de sesión solicitado mediante la skill `session-memory`, dejando como siguiente paso comenzar el bloque 5.
+
+**Resultado:** se utilizó la skill `session-memory`. Durante la sesión se corrigió y revisó integralmente el Desarrollo del bloque 4 de recompensas. Se ajustaron backend y frontend para mostrar únicamente proyectos, beneficiarios y tipos de recompensa todavía pendientes; se reforzaron los permisos, la consulta de detalle, la edición y la protección frente a duplicados; y se evitó que los perfiles demo eliminados se reactivaran al reiniciar. También se creó un proyecto completado adicional para comprobar correctamente la concesión de reducción docente.
+
+Se incorporó la regla de dominio que exige que las reducciones docentes sean múltiplos de cuatro horas, equivalentes a asignaturas completas. Esta validación quedó aplicada en backend, base de datos mediante la migración `V6__validar_reduccion_docente.sql`, frontend, pruebas y documentación RUP. Los diagramas PlantUML afectados se actualizaron y sus SVG se regeneraron.
+
+Además, se corrigió de forma estable el error recurrente del proxy de Vite cuando el backend no estaba iniciado, incorporando `tools/start-dev.ps1` y un arranque coordinado desde `npm run dev`. La verificación final terminó con 32 pruebas backend correctas, `npm run lint` y `npm run build` sin errores. El usuario realizó pruebas manuales con Coordinador, `docente.santander` e `investigador.barcelona`, confirmando creación, filtrado, consulta y eliminación de recompensas, así como las diferencias entre recompensas económicas y reducciones docentes.
+
+**Decisión:** el bloque 4 queda completamente revisado y cerrado. El siguiente paso será comenzar el bloque 5, identificando primero sus casos de uso y revisando su coherencia con los diagramas de contexto antes de desarrollar el Detalle y avanzar posteriormente a Análisis.

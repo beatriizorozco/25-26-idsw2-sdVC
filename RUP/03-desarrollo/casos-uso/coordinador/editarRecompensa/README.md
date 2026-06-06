@@ -5,7 +5,7 @@
 
 ## Implementación
 
-`GET /api/recompensas/{id}/edicion` prepara participantes elegibles y `PATCH /api/recompensas/{id}` conserva el proyecto de origen y vuelve a validar beneficiario, tipo, valor y duplicados.
+`GET /api/recompensas/{id}/edicion` prepara participantes elegibles y `PATCH /api/recompensas/{id}` conserva el proyecto de origen y vuelve a validar beneficiario, tipo, valor y duplicados. Una reducción docente editada debe seguir representando asignaturas completas de 4 horas, hasta un máximo de 16.
 
 ## Código relacionado
 

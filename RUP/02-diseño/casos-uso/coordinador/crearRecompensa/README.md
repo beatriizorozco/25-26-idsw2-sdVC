@@ -28,6 +28,7 @@ Detallar la creación guiada de una recompensa, desde la selección del proyecto
 - Los beneficiarios se limitan a investigadores elegibles del proyecto.
 - Los tipos permitidos se obtienen después de seleccionar al beneficiario.
 - Investigador-docente admite recompensa económica o reducción docente; investigador sin docencia solo económica.
+- La reducción docente se selecciona por asignaturas completas mediante valores cerrados de 4, 8, 12 o 16 horas.
 - Si no existen proyectos o beneficiarios elegibles, se presenta un estado vacío sin permitir guardar.
 - Cancelar conserva `RECOMPENSAS_ABIERTAS` y no invoca `POST`.
 - Un duplicado devuelve `409 Conflict`; datos incompatibles devuelven `400 Bad Request`.

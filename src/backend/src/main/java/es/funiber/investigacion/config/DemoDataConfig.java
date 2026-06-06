@@ -89,6 +89,12 @@ public class DemoDataConfig {
                     "Modelo de gestion investigadora",
                     EstadoProyecto.COMPLETADO,
                     docenteSantander);
+            crearProyectoSiNoExiste(
+                    proyectoRepository,
+                    "PRY-SAN-COM-02",
+                    "Innovacion docente aplicada",
+                    EstadoProyecto.COMPLETADO,
+                    docenteSantander);
             Proyecto proyectoBarcelona = crearProyectoSiNoExiste(
                     proyectoRepository,
                     "PRY-BCN-COM-01",
@@ -102,7 +108,7 @@ public class DemoDataConfig {
                     docenteSantander,
                     TipoRecompensa.REDUCCION_DOCENTE,
                     "Reduccion docente para el siguiente cuatrimestre",
-                    "2.00");
+                    "4.00");
             crearRecompensaSiNoExiste(
                     recompensaRepository,
                     proyectoBarcelona,
