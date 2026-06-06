@@ -91,3 +91,52 @@ export interface PanelCargaTrabajo {
   sugerencias: SugerenciaAsignacion[]
 }
 
+export type TipoRecompensa = 'ECONOMICA' | 'REDUCCION_DOCENTE'
+
+export interface Recompensa {
+  id: number
+  proyectoId: number
+  proyectoCodigo: string
+  proyectoNombre: string
+  beneficiarioId: number
+  beneficiario: string
+  beneficiarioNombre: string
+  tipo: TipoRecompensa
+  tipoEtiqueta: string
+  concepto: string
+  valor: number
+  fechaCreacion: string
+}
+
+export interface RecompensaRequest {
+  proyectoId?: number
+  beneficiarioId: number
+  tipo: TipoRecompensa
+  concepto: string
+  valor: number
+}
+
+export interface ProyectoRecompensa {
+  id: number
+  codigo: string
+  nombre: string
+}
+
+export interface BeneficiarioRecompensa {
+  id: number
+  usuario: string
+  nombreCompleto: string
+  sede: string
+  investigadorDocente: boolean
+  tiposPermitidos: TipoRecompensa[]
+}
+
+export interface OpcionesCreacionRecompensa {
+  proyectos: ProyectoRecompensa[]
+}
+
+export interface RecompensaEdicion {
+  recompensa: Recompensa
+  beneficiarios: BeneficiarioRecompensa[]
+}
+

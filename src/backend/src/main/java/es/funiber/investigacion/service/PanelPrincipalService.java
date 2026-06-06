@@ -31,7 +31,7 @@ public class PanelPrincipalService {
             acciones.add(new AccionPanel("convocatorias", "Convocatorias", "/convocatorias"));
         }
 
-        if (rol == Rol.COORDINADOR || (usuario != null && usuario.esInvestigadorDocente())) {
+        if (rol == Rol.COORDINADOR || (usuario != null && usuario.getRol() == Rol.INVESTIGADOR)) {
             acciones.add(new AccionPanel("recompensas", "Recompensas", "/recompensas"));
         }
         return List.copyOf(acciones);

@@ -18,7 +18,8 @@ body {
 
 button,
 input,
-textarea {
+textarea,
+select {
   font: inherit;
 }
 
@@ -185,7 +186,8 @@ label {
 }
 
 input,
-textarea {
+textarea,
+select {
   width: 100%;
   border: 0;
   outline: 0;
@@ -469,6 +471,7 @@ textarea {
 
 .profile-form input,
 .profile-form textarea,
+.profile-form select,
 .search-row input,
 .modal textarea {
   border: 1px solid #cad7da;
@@ -479,6 +482,7 @@ textarea {
 
 .profile-form input:focus,
 .profile-form textarea:focus,
+.profile-form select:focus,
 .search-row input:focus,
 .modal textarea:focus {
   border-color: #00689d;
@@ -692,6 +696,61 @@ textarea {
 
 .workload-form {
   margin-top: 18px;
+}
+
+.rewards-workspace {
+  max-width: 1180px;
+}
+
+.rewards-layout {
+  grid-template-columns: minmax(0, 1.2fr) minmax(340px, 0.8fr);
+}
+
+.rewards-title {
+  align-items: center;
+}
+
+.rewards-title .compact-button {
+  min-height: 38px;
+  margin-left: auto;
+}
+
+.reward-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.reward-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid #d5e1ea;
+  border-radius: 5px;
+  padding: 14px;
+  text-align: left;
+  background: #ffffff;
+}
+
+.reward-row:hover,
+.reward-row.selected {
+  border-color: #8fbbd2;
+  background: #f4f9fc;
+}
+
+.reward-row strong,
+.reward-row small {
+  display: block;
+}
+
+.reward-row small {
+  margin-top: 4px;
+  color: #70808a;
+}
+
+.reward-row b {
+  color: #00689d;
 }
 
 @media (max-width: 760px) {

@@ -1,10 +1,16 @@
 package es.funiber.investigacion.config;
 
 import es.funiber.investigacion.model.CargaTrabajo;
+import es.funiber.investigacion.model.EstadoProyecto;
+import es.funiber.investigacion.model.Proyecto;
+import es.funiber.investigacion.model.Recompensa;
 import es.funiber.investigacion.model.Rol;
 import es.funiber.investigacion.model.SedeFuniber;
+import es.funiber.investigacion.model.TipoRecompensa;
 import es.funiber.investigacion.model.Usuario;
 import es.funiber.investigacion.repository.CargaTrabajoRepository;
+import es.funiber.investigacion.repository.ProyectoRepository;
+import es.funiber.investigacion.repository.RecompensaRepository;
 import es.funiber.investigacion.repository.UsuarioRepository;
 import java.math.BigDecimal;
 import org.springframework.boot.CommandLineRunner;
@@ -19,6 +25,8 @@ public class DemoDataConfig {
     CommandLineRunner crearUsuariosDemo(
             UsuarioRepository usuarioRepository,
             CargaTrabajoRepository cargaTrabajoRepository,
+            ProyectoRepository proyectoRepository,
+            RecompensaRepository recompensaRepository,
             PasswordEncoder passwordEncoder) {
         return args -> {
             Usuario coordinador = crearSiNoExiste(
@@ -74,6 +82,34 @@ public class DemoDataConfig {
             crearCargaSiNoExiste(cargaTrabajoRepository, investigador, "0.00", "24.00", "4.00", "Sede sin docencia investigadora asignada.");
             crearCargaSiNoExiste(cargaTrabajoRepository, docenteSantander, "14.00", "12.00", "3.00", "Carga docente dentro del limite semanal.");
             crearCargaSiNoExiste(cargaTrabajoRepository, investigadorBarcelona, "0.00", "22.00", "2.00", "Investigador de sede Barcelona sin docencia asignada.");
+
+            Proyecto proyectoSantander = crearProyectoSiNoExiste(
+                    proyectoRepository,
+                    "PRY-SAN-COM-01",
+                    "Modelo de gestion investigadora",
+                    EstadoProyecto.COMPLETADO,
+                    docenteSantander);
+            Proyecto proyectoBarcelona = crearProyectoSiNoExiste(
+                    proyectoRepository,
+                    "PRY-BCN-COM-01",
+                    "Observatorio de produccion cientifica",
+                    EstadoProyecto.COMPLETADO,
+                    investigador,
+                    investigadorBarcelona);
+            crearRecompensaSiNoExiste(
+                    recompensaRepository,
+                    proyectoSantander,
+                    docenteSantander,
+                    TipoRecompensa.REDUCCION_DOCENTE,
+                    "Reduccion docente para el siguiente cuatrimestre",
+                    "2.00");
+            crearRecompensaSiNoExiste(
+                    recompensaRepository,
+                    proyectoBarcelona,
+                    investigadorBarcelona,
+                    TipoRecompensa.ECONOMICA,
+                    "Reconocimiento economico por proyecto completado",
+                    "450.00");
         };
     }
 
@@ -124,6 +160,37 @@ public class DemoDataConfig {
                     new BigDecimal(horasGestionAcademica),
                     observaciones);
             cargaTrabajoRepository.save(cargaTrabajo);
+        }
+    }
+
+    private Proyecto crearProyectoSiNoExiste(
+            ProyectoRepository proyectoRepository,
+            String codigo,
+            String nombre,
+            EstadoProyecto estado,
+            Usuario... investigadores) {
+        Proyecto proyecto = proyectoRepository.findByCodigo(codigo)
+                .orElseGet(() -> new Proyecto(codigo, nombre, estado));
+        for (Usuario investigador : investigadores) {
+            proyecto.agregarInvestigador(investigador);
+        }
+        return proyectoRepository.save(proyecto);
+    }
+
+    private void crearRecompensaSiNoExiste(
+            RecompensaRepository recompensaRepository,
+            Proyecto proyecto,
+            Usuario beneficiario,
+            TipoRecompensa tipo,
+            String concepto,
+            String valor) {
+        if (!recompensaRepository.existsByProyectoAndBeneficiarioAndTipo(proyecto, beneficiario, tipo)) {
+            recompensaRepository.save(new Recompensa(
+                    proyecto,
+                    beneficiario,
+                    tipo,
+                    concepto,
+                    new BigDecimal(valor)));
         }
     }
 }

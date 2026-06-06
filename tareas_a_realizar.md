@@ -115,4 +115,11 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Confirmar que las rutas globales de recompensas quedan restringidas al Coordinador.
 - [x] Confirmar que las rutas `/api/recompensas/me` impiden al Investigador consultar recompensas ajenas.
 - [x] Confirmar que crear y editar validan proyecto completado, beneficiario elegible y tipo permitido.
-- [ ] Tras la revisión, pasar a Desarrollo del bloque 4.
+- [x] Tras la revisión, pasar a Desarrollo del bloque 4.
+- [x] Implementar persistencia de proyectos completados, participantes elegibles y recompensas.
+- [x] Implementar CRUD global de recompensas para Coordinador.
+- [x] Implementar consulta de recompensas propias para Investigador.
+- [x] Validar tipos de recompensa según docencia y sede.
+- [x] Añadir pruebas de integración del bloque 4 y verificar compilación de producción.
+- [ ] Probar manualmente en navegador el bloque 4 con Coordinador, `docente.santander` e `investigador.barcelona`.
+- [ ] Revisar el bloque 4 completo antes de pasar al bloque 5.

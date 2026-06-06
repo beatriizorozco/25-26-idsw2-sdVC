@@ -6,6 +6,11 @@ import type {
   PanelPrincipal,
   Perfil,
   PerfilUpdate,
+  BeneficiarioRecompensa,
+  OpcionesCreacionRecompensa,
+  Recompensa,
+  RecompensaEdicion,
+  RecompensaRequest,
   Sesion,
   SolicitudEliminacionPerfil,
 } from '../types'
@@ -142,5 +147,61 @@ export async function cerrarSesion(): Promise<void> {
     headers: { [token.headerName]: token.token },
   })
   csrfToken = null
+}
+
+export function listarRecompensasGlobales(criterio = ''): Promise<Recompensa[]> {
+  const query = criterio.trim() ? `?criterio=${encodeURIComponent(criterio.trim())}` : ''
+  return request<Recompensa[]>(`/recompensas${query}`)
+}
+
+export function listarRecompensasPropias(criterio = ''): Promise<Recompensa[]> {
+  const query = criterio.trim() ? `?criterio=${encodeURIComponent(criterio.trim())}` : ''
+  return request<Recompensa[]>(`/recompensas/me${query}`)
+}
+
+export function obtenerRecompensaGlobal(id: number): Promise<Recompensa> {
+  return request<Recompensa>(`/recompensas/${id}`)
+}
+
+export function obtenerRecompensaPropia(id: number): Promise<Recompensa> {
+  return request<Recompensa>(`/recompensas/me/${id}`)
+}
+
+export function obtenerOpcionesCreacionRecompensa(): Promise<OpcionesCreacionRecompensa> {
+  return request<OpcionesCreacionRecompensa>('/recompensas/opciones-creacion')
+}
+
+export function obtenerBeneficiariosRecompensa(proyectoId: number): Promise<BeneficiarioRecompensa[]> {
+  return request<BeneficiarioRecompensa[]>(`/recompensas/opciones-creacion/${proyectoId}/beneficiarios`)
+}
+
+export function prepararEdicionRecompensa(id: number): Promise<RecompensaEdicion> {
+  return request<RecompensaEdicion>(`/recompensas/${id}/edicion`)
+}
+
+export async function crearRecompensa(datos: RecompensaRequest): Promise<Recompensa> {
+  const token = await obtenerTokenCsrf()
+  return request<Recompensa>('/recompensas', {
+    method: 'POST',
+    headers: { [token.headerName]: token.token },
+    body: JSON.stringify(datos),
+  })
+}
+
+export async function actualizarRecompensa(id: number, datos: RecompensaRequest): Promise<Recompensa> {
+  const token = await obtenerTokenCsrf()
+  return request<Recompensa>(`/recompensas/${id}`, {
+    method: 'PATCH',
+    headers: { [token.headerName]: token.token },
+    body: JSON.stringify(datos),
+  })
+}
+
+export async function eliminarRecompensa(id: number): Promise<void> {
+  const token = await obtenerTokenCsrf()
+  await request<void>(`/recompensas/${id}`, {
+    method: 'DELETE',
+    headers: { [token.headerName]: token.token },
+  })
 }
 

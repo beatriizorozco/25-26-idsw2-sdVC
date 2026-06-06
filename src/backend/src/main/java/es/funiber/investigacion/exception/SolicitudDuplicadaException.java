@@ -5,4 +5,7 @@ public class SolicitudDuplicadaException extends RuntimeException {
     public SolicitudDuplicadaException() {
         super("Ya existe una solicitud de eliminación pendiente para este perfil.");
     }
+    public SolicitudDuplicadaException(String mensaje) {
+        super(mensaje);
+    }
 }

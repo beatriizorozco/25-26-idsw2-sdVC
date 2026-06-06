@@ -5,9 +5,10 @@ import { LoginPage } from './pages/LoginPage'
 import { PanelPrincipalPage } from './pages/PanelPrincipalPage'
 import { PerfilPage } from './pages/PerfilPage'
 import { CargaTrabajoPage } from './pages/CargaTrabajoPage'
+import { RecompensasPage } from './pages/RecompensasPage'
 import type { PanelPrincipal, Sesion } from './types'
 
-type Vista = 'panel' | 'perfil' | 'carga-trabajo'
+type Vista = 'panel' | 'perfil' | 'carga-trabajo' | 'recompensas'
 
 export default function App() {
   const [sesion, setSesion] = useState<Sesion | null>(null)
@@ -76,6 +77,9 @@ export default function App() {
             if (codigo === 'carga-trabajo') {
               setVista('carga-trabajo')
             }
+            if (codigo === 'recompensas') {
+              setVista('recompensas')
+            }
           }}
         />
       )}
@@ -92,6 +96,12 @@ export default function App() {
       )}
       {vista === 'carga-trabajo' && (
         <CargaTrabajoPage
+          rol={sesion.rol}
+          onVolver={() => setVista('panel')}
+        />
+      )}
+      {vista === 'recompensas' && (
+        <RecompensasPage
           rol={sesion.rol}
           onVolver={() => setVista('panel')}
         />

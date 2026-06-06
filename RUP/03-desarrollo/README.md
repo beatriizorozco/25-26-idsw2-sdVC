@@ -22,6 +22,19 @@ La segunda iteración implementa la gestión de perfil:
 - Solicitud de eliminación de perfil con cierre de sesión.
 - Consulta y resolución de solicitudes de eliminación por Coordinador.
 
+## Tercera iteración
+
+La tercera iteración implementa la carga de trabajo por sede, el límite docente y las sugerencias de asignación.
+
+## Cuarta iteración
+
+La cuarta iteración implementa recompensas vinculadas a proyectos completados:
+
+- CRUD global para Coordinador.
+- Consulta propia para Investigador.
+- Recompensa económica para cualquier Investigador elegible.
+- Reducción docente únicamente para investigadores-docentes.
+
 ## Stack implementado
 
 - **Backend**: Java 17, Spring Boot, Spring Security, Spring Data JPA y Flyway.
