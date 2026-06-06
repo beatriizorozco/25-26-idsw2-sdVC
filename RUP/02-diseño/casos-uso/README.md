@@ -16,6 +16,8 @@ Organizar los diagramas de secuencia que convierten las colaboraciones de Análi
 
 - **Gestión de sesión y navegación principal**: `iniciarSesion()`, `abrirPanelPrincipal()` y `cerrarSesion()`.
 - **Gestión de perfil**: opciones de perfil, edición, solicitud de eliminación y revisión de solicitudes por Coordinador.
+- **Gestión de carga de trabajo**: consulta y edición de cargas según rol, sede y condición docente.
+- **Gestión de recompensas**: gestión global por Coordinador y consulta propia por Investigador para recompensas originadas por proyectos completados.
 
 ## Convenciones
 

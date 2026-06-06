@@ -22,3 +22,11 @@
 
 - [Abrir Opciones Carga Trabajo](abrirOpcionesCargaTrabajo/README.md)
 - [Editar Carga Trabajo](editarCargaTrabajo/README.md)
+
+## Gestión de recompensas
+
+- [Abrir Recompensas](abrirRecompensas/README.md)
+- [Abrir Recompensa](abrirRecompensa/README.md)
+- [Crear Recompensa](crearRecompensa/README.md)
+- [Editar Recompensa](editarRecompensa/README.md)
+- [Eliminar Recompensa](eliminarRecompensa/README.md)

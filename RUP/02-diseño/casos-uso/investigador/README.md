@@ -19,3 +19,8 @@
 
 - [Abrir Opciones Carga Trabajo](abrirOpcionesCargaTrabajo/README.md)
 - [Editar Carga Trabajo](editarCargaTrabajo/README.md)
+
+## Consulta de recompensas
+
+- [Abrir Recompensas](abrirRecompensas/README.md)
+- [Abrir Recompensa](abrirRecompensa/README.md)

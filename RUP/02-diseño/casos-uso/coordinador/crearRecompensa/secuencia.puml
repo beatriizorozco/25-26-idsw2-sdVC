@@ -1,0 +1,115 @@
+@startuml crearRecompensa-coordinador-diseno
+title Diagrama de secuencia - Crear recompensa
+
+actor Coordinador
+participant "CrearRecompensaForm\n(React)" as Frontend
+participant "RecompensaController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "RecompensaService" as Service
+participant "ProyectoRepository" as ProyectoRepo
+participant "InvestigadorRepository" as InvestigadorRepo
+participant "RecompensaRepository" as Repo
+
+Coordinador -> Frontend: Solicita crear recompensa
+activate Frontend
+Frontend -> Api: GET /api/recompensas/opciones-creacion\nCookie de sesion
+activate Api
+Api -> Sesion: exigirCoordinador(authentication)
+activate Sesion
+alt Sesion de Coordinador activa
+    Sesion --> Api: Coordinador autenticado
+    deactivate Sesion
+    Api -> Service: prepararCreacion()
+    activate Service
+    Service -> ProyectoRepo: obtenerCompletadosPendientesRecompensa()
+    ProyectoRepo --> Service: Proyectos disponibles
+    Service --> Api: OpcionesCreacionRecompensaResponse
+    deactivate Service
+    Api --> Frontend: 200 OK\nProyectos disponibles
+    deactivate Api
+    alt No existen proyectos disponibles
+        Frontend --> Coordinador: Presenta estado vacio y permite volver
+    else Existen proyectos disponibles
+        Frontend --> Coordinador: Presenta seleccion de proyecto
+
+        Coordinador -> Frontend: Selecciona proyecto completado
+        Frontend -> Api: GET /api/recompensas/opciones-creacion/{proyectoId}/beneficiarios
+        activate Api
+        Api -> Sesion: exigirCoordinador(authentication)
+        Sesion --> Api: Coordinador autenticado
+        Api -> Service: obtenerBeneficiariosElegibles(proyectoId)
+        activate Service
+        Service -> ProyectoRepo: obtenerCompletado(proyectoId)
+        ProyectoRepo --> Service: Proyecto completado
+        Service -> InvestigadorRepo: obtenerElegiblesPorProyecto(proyectoId)
+        InvestigadorRepo --> Service: Beneficiarios elegibles
+        Service --> Api: Lista<BeneficiarioElegibleResponse>
+        deactivate Service
+        Api --> Frontend: 200 OK\nBeneficiarios elegibles
+        deactivate Api
+
+        alt No existen beneficiarios elegibles
+            Frontend --> Coordinador: Presenta estado vacio y permite cambiar proyecto
+        else Existen beneficiarios elegibles
+            Frontend --> Coordinador: Presenta seleccion de beneficiario
+            Coordinador -> Frontend: Selecciona beneficiario
+            Frontend -> Api: GET /api/recompensas/opciones-creacion/{proyectoId}/beneficiarios/{investigadorId}/tipos
+            activate Api
+            Api -> Sesion: exigirCoordinador(authentication)
+            Sesion --> Api: Coordinador autenticado
+            Api -> Service: obtenerTiposPermitidos(proyectoId, investigadorId)
+            activate Service
+            Service -> InvestigadorRepo: obtenerElegible(proyectoId, investigadorId)
+            InvestigadorRepo --> Service: Beneficiario con sede y condicion
+            Service -> Service: calcularTiposPermitidos(beneficiario)
+            Service --> Api: TiposRecompensaPermitidosResponse
+            deactivate Service
+            Api --> Frontend: 200 OK\nTipos permitidos
+            deactivate Api
+            Frontend --> Coordinador: Permite introducir tipo, concepto y valor
+
+            alt Coordinador cancela
+                Coordinador -> Frontend: Cancela creacion
+                Frontend --> Coordinador: Presenta RECOMPENSAS_ABIERTAS
+            else Coordinador guarda
+                Coordinador -> Frontend: Introduce datos y guarda
+                Frontend -> Api: POST /api/recompensas\nRecompensaCreateRequest + cookie
+                activate Api
+                Api -> Sesion: exigirCoordinador(authentication)
+                Sesion --> Api: Coordinador autenticado
+                Api -> Service: crear(datos)
+                activate Service
+                Service -> ProyectoRepo: obtenerCompletado(datos.proyectoId)
+                ProyectoRepo --> Service: Proyecto completado
+                Service -> InvestigadorRepo: obtenerElegible(datos.proyectoId, datos.investigadorId)
+                InvestigadorRepo --> Service: Beneficiario con sede y condicion
+                Service -> Service: validarTipoYValor(datos, beneficiario)
+                Service -> Repo: existeDuplicado(proyectoId, investigadorId, tipo)
+                Repo --> Service: true / false
+                alt Datos invalidos o recompensa duplicada
+                    Service --> Api: ValidacionException / ConflictoException
+                    deactivate Service
+                    Api --> Frontend: 400 Bad Request / 409 Conflict
+                    deactivate Api
+                    Frontend --> Coordinador: Presenta error y conserva formulario
+                else Recompensa valida
+                    Service -> Repo: guardar(recompensa)
+                    Repo --> Service: Recompensa creada
+                    Service --> Api: RecompensaDetalleResponse
+                    deactivate Service
+                    Api --> Frontend: 201 Created\nRecompensa creada
+                    deactivate Api
+                    Frontend --> Coordinador: Presenta RECOMPENSA_ABIERTA
+                end
+            end
+        end
+    end
+else Sesion ausente o rol invalido
+    Sesion --> Api: SesionNoValidaException / AccesoDenegadoException
+    deactivate Sesion
+    Api --> Frontend: 401 Unauthorized / 403 Forbidden
+    deactivate Api
+    Frontend --> Coordinador: Presenta error de acceso
+end
+deactivate Frontend
+@enduml

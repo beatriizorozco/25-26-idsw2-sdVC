@@ -1,0 +1,52 @@
+@startuml abrirRecompensa-coordinador-diseno
+title Diagrama de secuencia - Abrir recompensa como Coordinador
+
+actor Coordinador
+participant "RecompensaDetallePage\n(React)" as Frontend
+participant "RecompensaController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "RecompensaService" as Service
+participant "RecompensaRepository" as Repo
+participant "ProyectoRepository" as ProyectoRepo
+participant "InvestigadorRepository" as InvestigadorRepo
+
+Coordinador -> Frontend: Selecciona una recompensa
+activate Frontend
+Frontend -> Api: GET /api/recompensas/{id}\nCookie de sesion
+activate Api
+Api -> Sesion: exigirCoordinador(authentication)
+activate Sesion
+alt Sesion de Coordinador activa
+    Sesion --> Api: Coordinador autenticado
+    deactivate Sesion
+    Api -> Service: obtenerGlobal(id)
+    activate Service
+    Service -> Repo: obtenerPorId(id)
+    Repo --> Service: Recompensa
+    alt Recompensa existente
+        Service -> ProyectoRepo: obtenerCompletado(recompensa.proyectoId)
+        ProyectoRepo --> Service: Proyecto completado
+        Service -> InvestigadorRepo: obtenerBeneficiario(recompensa.investigadorId)
+        InvestigadorRepo --> Service: Beneficiario con sede y condicion
+        Service -> Service: validarTipoSegunBeneficiario()
+        Service --> Api: RecompensaDetalleResponse
+        deactivate Service
+        Api --> Frontend: 200 OK\nDetalle y acciones de gestion
+        deactivate Api
+        Frontend --> Coordinador: Presenta RECOMPENSA_ABIERTA
+    else Recompensa inexistente
+        Service --> Api: RecursoNoEncontradoException
+        deactivate Service
+        Api --> Frontend: 404 Not Found
+        deactivate Api
+        Frontend --> Coordinador: Presenta recompensa no encontrada
+    end
+else Sesion ausente o rol invalido
+    Sesion --> Api: SesionNoValidaException / AccesoDenegadoException
+    deactivate Sesion
+    Api --> Frontend: 401 Unauthorized / 403 Forbidden
+    deactivate Api
+    Frontend --> Coordinador: Presenta error de acceso
+end
+deactivate Frontend
+@enduml

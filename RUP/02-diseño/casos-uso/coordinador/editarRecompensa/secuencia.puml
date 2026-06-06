@@ -1,0 +1,86 @@
+@startuml editarRecompensa-coordinador-diseno
+title Diagrama de secuencia - Editar recompensa
+
+actor Coordinador
+participant "EditarRecompensaForm\n(React)" as Frontend
+participant "RecompensaController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "RecompensaService" as Service
+participant "RecompensaRepository" as Repo
+participant "ProyectoRepository" as ProyectoRepo
+participant "InvestigadorRepository" as InvestigadorRepo
+
+Coordinador -> Frontend: Solicita editar recompensa
+activate Frontend
+Frontend -> Api: GET /api/recompensas/{id}/edicion\nCookie de sesion
+activate Api
+Api -> Sesion: exigirCoordinador(authentication)
+activate Sesion
+alt Sesion de Coordinador activa
+    Sesion --> Api: Coordinador autenticado
+    deactivate Sesion
+    Api -> Service: prepararEdicion(id)
+    activate Service
+    Service -> Repo: obtenerPorId(id)
+    Repo --> Service: Recompensa / vacio
+    alt Recompensa inexistente
+        Service --> Api: RecursoNoEncontradoException
+        deactivate Service
+        Api --> Frontend: 404 Not Found
+        deactivate Api
+        Frontend --> Coordinador: Presenta recompensa no encontrada
+    else Recompensa existente
+        Service -> ProyectoRepo: obtenerCompletado(recompensa.proyectoId)
+        ProyectoRepo --> Service: Proyecto completado
+        Service -> InvestigadorRepo: obtenerElegiblesPorProyecto(recompensa.proyectoId)
+        InvestigadorRepo --> Service: Beneficiarios elegibles con tipos permitidos
+        Service --> Api: RecompensaEdicionResponse con beneficiarios elegibles
+        deactivate Service
+        Api --> Frontend: 200 OK\nDatos y tipos permitidos
+        deactivate Api
+        Frontend --> Coordinador: Presenta formulario precargado
+
+        alt Coordinador cancela
+            Coordinador -> Frontend: Cancela edicion
+            Frontend --> Coordinador: Conserva RECOMPENSA_ABIERTA
+        else Coordinador guarda cambios
+            Coordinador -> Frontend: Modifica datos y guarda
+            Frontend -> Api: PATCH /api/recompensas/{id}\nRecompensaUpdateRequest + cookie
+            activate Api
+            Api -> Sesion: exigirCoordinador(authentication)
+            Sesion --> Api: Coordinador autenticado
+            Api -> Service: actualizar(id, datos)
+            activate Service
+            Service -> Repo: obtenerPorId(id)
+            Repo --> Service: Recompensa existente
+            Service -> ProyectoRepo: obtenerCompletado(recompensa.proyectoId)
+            ProyectoRepo --> Service: Proyecto completado
+            Service -> InvestigadorRepo: obtenerElegible(recompensa.proyectoId, datos.investigadorId)
+            InvestigadorRepo --> Service: Beneficiario con sede y condicion
+            Service -> Service: validarTipoYValor(datos, beneficiario)
+            alt Cambio invalido
+                Service --> Api: ValidacionException
+                deactivate Service
+                Api --> Frontend: 400 Bad Request
+                deactivate Api
+                Frontend --> Coordinador: Presenta error y conserva formulario
+            else Cambio valido
+                Service -> Repo: guardar(recompensaActualizada)
+                Repo --> Service: Recompensa actualizada
+                Service --> Api: RecompensaDetalleResponse
+                deactivate Service
+                Api --> Frontend: 200 OK\nRecompensa actualizada
+                deactivate Api
+                Frontend --> Coordinador: Presenta RECOMPENSA_ABIERTA
+            end
+        end
+    end
+else Sesion ausente o rol invalido
+    Sesion --> Api: SesionNoValidaException / AccesoDenegadoException
+    deactivate Sesion
+    Api --> Frontend: 401 Unauthorized / 403 Forbidden
+    deactivate Api
+    Frontend --> Coordinador: Presenta error de acceso
+end
+deactivate Frontend
+@enduml

@@ -1,0 +1,48 @@
+@startuml abrirRecompensa-investigador-diseno
+title Diagrama de secuencia - Abrir recompensa propia
+
+actor Investigador
+participant "MiRecompensaDetallePage\n(React)" as Frontend
+participant "RecompensaController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "RecompensaService" as Service
+participant "RecompensaRepository" as Repo
+participant "ProyectoRepository" as ProyectoRepo
+
+Investigador -> Frontend: Selecciona una recompensa propia
+activate Frontend
+Frontend -> Api: GET /api/recompensas/me/{id}\nCookie de sesion
+activate Api
+Api -> Sesion: exigirInvestigador(authentication)
+activate Sesion
+alt Sesion de Investigador activa
+    Sesion --> Api: Investigador autenticado
+    deactivate Sesion
+    Api -> Service: obtenerPropia(investigadorId, id)
+    activate Service
+    Service -> Repo: obtenerPropiaPorId(investigadorId, id)
+    Repo --> Service: Recompensa propia / vacio
+    alt Recompensa propia existente
+        Service -> ProyectoRepo: obtenerCompletado(recompensa.proyectoId)
+        ProyectoRepo --> Service: Proyecto completado
+        Service --> Api: RecompensaDetalleResponse sin acciones CRUD
+        deactivate Service
+        Api --> Frontend: 200 OK\nDetalle propio
+        deactivate Api
+        Frontend --> Investigador: Presenta RECOMPENSA_ABIERTA
+    else Recompensa inexistente o ajena
+        Service --> Api: RecursoNoEncontradoException
+        deactivate Service
+        Api --> Frontend: 404 Not Found
+        deactivate Api
+        Frontend --> Investigador: Presenta recompensa no encontrada
+    end
+else Sesion ausente o rol invalido
+    Sesion --> Api: SesionNoValidaException / AccesoDenegadoException
+    deactivate Sesion
+    Api --> Frontend: 401 Unauthorized / 403 Forbidden
+    deactivate Api
+    Frontend --> Investigador: Presenta error de acceso
+end
+deactivate Frontend
+@enduml

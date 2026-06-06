@@ -110,4 +110,9 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Confirmar que el Investigador solo consulta recompensas propias.
 - [x] Confirmar que los investigadores-docentes pueden recibir recompensa económica o reducción docente, y que los investigadores sin docencia solo reciben recompensa económica.
 - [x] Completar `crearRecompensa()` con selección de proyecto completado, beneficiario elegible, tipos permitidos y cancelación coherente.
-- [ ] Tras la revisión, pasar a Diseño del bloque 4 con `README.md`, `secuencia.puml` y SVG por caso.
+- [x] Tras la revisión, pasar a Diseño del bloque 4 con `README.md`, `secuencia.puml` y SVG por caso.
+- [x] Revisar el Diseño completo del bloque 4 antes de comenzar Desarrollo.
+- [x] Confirmar que las rutas globales de recompensas quedan restringidas al Coordinador.
+- [x] Confirmar que las rutas `/api/recompensas/me` impiden al Investigador consultar recompensas ajenas.
+- [x] Confirmar que crear y editar validan proyecto completado, beneficiario elegible y tipo permitido.
+- [ ] Tras la revisión, pasar a Desarrollo del bloque 4.
