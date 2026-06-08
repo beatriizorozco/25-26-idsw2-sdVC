@@ -4,31 +4,20 @@
     <b>GIPF - CREAR PROYECTO</b>
     ====
     {
-        <b>Datos del proyecto</b>
+        <b>Datos mínimos del proyecto</b>
         --
         {
-            {
-            {<b>Título:</b> | [                                      ]}
-            --
-            {<b>Estado inicial:</b> | { "Borrador" | "En curso" }}
-            --
-            {<b>Coordinador responsable:</b> | "Carlos Fernández López"}
-            --
-            {<b>Fecha inicio:</b> | [            ]}
-            --
-            {<b>Fecha fin:</b> | [            ]}
-            --
-            {<b>Descripción:</b> |
-                {[                                      ]}}
-            }
-            --
-            <i>El ID del proyecto se genera automáticamente</i>
-            <i>Tras crearlo, el proyecto se abrirá para continuar su definición</i>
+            {<b>Título *</b> | [                                      ]}
+            {<b>Convocatoria de origen</b> | ^Seleccionar convocatoria^}
+            {<b>Fecha de inicio prevista</b> | [            ]}
+            {<b>Fecha de fin prevista</b> | [            ]}
+            {<b>Descripción inicial</b> | [                                      ]}
         }
-
-        ~~
-
-        {[Crear proyecto] | [Volver]}
+        --
+        <i>El sistema asignará el código, el Coordinador responsable y el estado Creado.</i>
+        <i>Después de crearlo se abrirá para continuar su definición.</i>
+        --
+        {[Crear proyecto] | [Cancelar]}
     }
 }
 @endsalt

@@ -25,7 +25,7 @@ Especificación detallada del caso de uso `editarProyecto()` mediante diagrama d
 |**Objetivo**|Permitir al Coordinador actualizar la información de proyecto manteniendo la trazabilidad del sistema.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
-|**Precondición**|Usuario autenticado como Coordinador y sistema disponible para navegación.|
+|**Precondición**|Coordinador autenticado con un proyecto en `PROYECTO_ABIERTO`.|
 |**Postcondición exitosa**|La información de proyecto queda actualizada.|
 |**Postcondición de fallo**|No se aplican cambios si la información solicitada no es válida o el actor cancela la operación.|
 
@@ -51,15 +51,14 @@ Especificación detallada del caso de uso `editarProyecto()` mediante diagrama d
 
 |![Wireframe: editarProyecto](/images/RUP/00-casos-uso/02-detalle/coordinador/editarProyecto/editarProyecto-wireframe.svg)|
 |-|
-|**Estado**: EditandoDatos / GuardandoDatos|
+|**Estado**: PresentandoEdicion / ValidandoCambios|
 
 </div>
 
 **Correspondencia con especificación:**
 - **Coordinador** solicita editar proyecto
-- **Sistema** presenta datos de edición del proyecto<br>- ID<br>- Título<br>- Estado<br>- Coordinador<br>- Fecha de inicio<br>- Fecha de fin<br>- Descripción<br>y permite solicitar las siguientes acciones:<br>- Modificar datos del proyecto<br>- Guardar y salir<br>- Cancelar
-- **Coordinador** solicita modificar campos
-- **Coordinador** solicita guardar y salir
+- **Sistema** presenta los datos editables y únicamente las transiciones de estado permitidas.
+- **Coordinador** modifica datos y solicita guardar; **Sistema** valida fechas, campos obligatorios y transición de estado.
 
 ### Validaciones del wireframe
 - ¿El campo o bloque **Datos del proyecto** resulta claro para el Coordinador?
@@ -82,17 +81,16 @@ Especificación detallada del caso de uso `editarProyecto()` mediante diagrama d
 |Actor|Acción|Sistema|Respuesta|
 |-|-|-|-|
 |**Coordinador**|solicita editar proyecto|| |
-||**Sistema**|presenta datos de edición del proyecto<br>- ID<br>- Título<br>- Estado<br>- Coordinador<br>- Fecha de inicio<br>- Fecha de fin<br>- Descripción<br>y permite solicitar las siguientes acciones:<br>- Modificar datos del proyecto<br>- Guardar y salir<br>- Cancelar| |
-|**Coordinador**|solicita modificar campos|| |
-|**Coordinador**|solicita guardar y salir|| |
-|**Coordinador**|solicita cancelar edición|| |
+||**Sistema**|presenta los datos editables y las transiciones de estado permitidas| |
+|**Coordinador**|modifica datos y solicita guardar|| |
+||**Sistema**|valida fechas, datos obligatorios y transición de estado; registra los cambios si son válidos| |
 
 ## Estados internos del caso de uso
 
 |Estado|Descripción|Responsabilidad|
 |-|-|-|
-|**EditandoDatos**|Estado donde el sistema permite modificar la información de proyecto.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
-|**GuardandoDatos**|Estado interno asociado a guardando datos.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
+|**PresentandoEdicion**|Presenta los datos editables y estados permitidos.|Sistema debe impedir modificaciones incompatibles con el estado del proyecto.|
+|**ValidandoCambios**|Valida los cambios antes de registrarlos.|Sistema debe conservar los datos anteriores si hay errores o cancelación.|
 
 ## Funcionalidad específica
 
@@ -110,22 +108,13 @@ Especificación detallada del caso de uso `editarProyecto()` mediante diagrama d
 
 ## Opciones de navegación
 
-### Operaciones relacionadas
-- **editarProyecto()** -> Navegar a `editarProyecto()`
-- **eliminarProyecto()** -> Navegar a `eliminarProyecto()` cuando el actor solicita esa continuidad.
-- **agregarInvestigador()** -> Navegar a `agregarInvestigador()` cuando el actor solicita esa continuidad.
-- **eliminarInvestigador()** -> Navegar a `eliminarInvestigador()` cuando el actor solicita esa continuidad.
-- **abrirEntregables()** -> Navegar a `abrirEntregables()` cuando el actor solicita esa continuidad.
-- **abrirInvestigadores()** -> Navegar a `abrirInvestigadores()` cuando el actor solicita esa continuidad.
-- **abrirProyectos()** -> Navegar a `abrirProyectos()` cuando el actor solicita esa continuidad.
-
 ### Navegación del sistema
 - **Estado de entrada**: PROYECTO_ABIERTO.
-- **Estado de salida**: PROYECTO_ABIERTO, PROYECTOS_ABIERTOS, ENTREGABLES_ABIERTOS, INVESTIGADORES_ABIERTOS.
+- **Estado de salida**: PROYECTO_ABIERTO.
 
 ## Conexión con diagrama de contexto
 
-Este caso de uso se integra en los diagramas de contexto del Coordinador, manteniendo la trazabilidad entre navegación, estado del sistema y responsabilidad del actor.
+Este caso de uso corresponde a `PROYECTO_ABIERTO` → `editarProyecto()` → `PROYECTO_ABIERTO`. La edición respeta las transiciones definidas en el diagrama de estados del proyecto.
 
 ## Vocabulario utilizado
 

@@ -44,8 +44,6 @@ Esta carpeta contiene la especificación detallada y el prototipado de los casos
 - [abrirInvestigadores](coordinador/abrirInvestigadores/) - Consulta del listado de investigadores.
 - [abrirInvestigador](coordinador/abrirInvestigador/) - Consulta del detalle de un investigador.
 - [crearInvestigador](coordinador/crearInvestigador/) - Alta de investigador.
-- [agregarInvestigador](coordinador/agregarInvestigador/) - Asociación de investigador a un proyecto.
-- [eliminarInvestigador](coordinador/eliminarInvestigador/) - Eliminación de investigador.
 
 #### Convocatorias
 - [abrirConvocatorias](coordinador/abrirConvocatorias/) - Consulta de convocatorias.
@@ -58,6 +56,8 @@ Esta carpeta contiene la especificación detallada y el prototipado de los casos
 - [crearProyecto](coordinador/crearProyecto/) - Creación de proyecto.
 - [editarProyecto](coordinador/editarProyecto/) - Edición de proyecto.
 - [eliminarProyecto](coordinador/eliminarProyecto/) - Eliminación de proyecto.
+- [agregarInvestigador](coordinador/agregarInvestigador/) - Asociación razonada de un investigador existente al proyecto.
+- [eliminarInvestigador](coordinador/eliminarInvestigador/) - Retirada de un investigador del proyecto sin eliminar su perfil.
 
 #### Entregables
 - [abrirEntregables](coordinador/abrirEntregables/) - Consulta de entregables.

@@ -1,30 +1,26 @@
 @startsalt eliminarInvestigador-wireframe
 {
     ====
-    <b>GIPF - ELIMINAR INVESTIGADOR DEL PROYECTO</b>
+    <b>GIPF - RETIRAR INVESTIGADOR DEL PROYECTO</b>
     ====
     {
         <b>Investigador seleccionado</b>
         --
         {
-            <b>ID:</b> 12345
-            <b>Nombre:</b> Juan Pérez
-            <b>Campo:</b> Inteligencia Artificial
+            <b>Nombre:</b> Docente Investigador Santander
+            <b>Sede:</b> Santander
+            <b>Perfil:</b> Investigador-docente
         }
-
-        ~~
-
-        <b>Confirmación</b>
+        --
+        <b>Responsabilidades en el proyecto</b>
         --
         {
-            ¿Está seguro de que desea eliminar este investigador del proyecto?
+            Sin entregables ni responsabilidades pendientes.
         }
-
-        ~~
-
-        <b>Acciones</b>
         --
-        {[Confirmar eliminación] | [Cancelar]}
+        ¿Confirmas que deseas retirar a este investigador del proyecto?
+        --
+        {[Retirar del proyecto] | [Cancelar]}
     }
 }
 @endsalt

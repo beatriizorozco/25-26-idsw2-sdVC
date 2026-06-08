@@ -14,20 +14,20 @@
 
 ## Propósito
 
-Especificación detallada del caso de uso `eliminarInvestigador()` mediante diagrama de estado, mostrando la conversación entre el Coordinador y el Sistema para permitir al coordinador solicitar o confirmar la eliminación de investigador cuando su rol lo permite.
+Especificación detallada del caso de uso `eliminarInvestigador()` mediante diagrama de estado, mostrando la conversación entre el Coordinador y el Sistema para retirar de un proyecto a un investigador sin eliminar su perfil.
 
 ## Información del caso de uso
 
 |Atributo|Valor|
 |-|-|
-|**Nombre**|eliminarInvestigador()|
+|**Nombre**|eliminarInvestigador(investigadorId)|
 |**Actor primario**|Coordinador|
-|**Objetivo**|Permitir al Coordinador solicitar o confirmar la eliminación de investigador cuando su rol lo permite.|
+|**Objetivo**|Permitir al Coordinador retirar del proyecto a un investigador seleccionado, conservando su perfil y la trazabilidad histórica.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
-|**Precondición**|Usuario autenticado como Coordinador y sistema disponible para navegación.|
-|**Postcondición exitosa**|Investigador queda eliminado o marcado para eliminación según corresponda.|
-|**Postcondición de fallo**|No se aplican cambios si la información solicitada no es válida o el actor cancela la operación.|
+|**Precondición**|Coordinador autenticado con un proyecto en `PROYECTO_ABIERTO` y un miembro del equipo seleccionado.|
+|**Postcondición exitosa**|La asociación entre el investigador y el proyecto queda retirada; el perfil del investigador se conserva.|
+|**Postcondición de fallo**|No se aplican cambios si existen responsabilidades pendientes o el actor cancela.|
 
 ## Diagrama de especificación
 
@@ -51,15 +51,14 @@ Especificación detallada del caso de uso `eliminarInvestigador()` mediante diag
 
 |![Wireframe: eliminarInvestigador](/images/RUP/00-casos-uso/02-detalle/coordinador/eliminarInvestigador/eliminarInvestigador-wireframe.svg)|
 |-|
-|**Estado**: ConfirmandoEliminacion / InvestigadorEliminado|
+|**Estado**: ComprobandoResponsabilidades / ConfirmandoDesasignacion|
 
 </div>
 
 **Correspondencia con especificación:**
-- eliminarInvestigador()
-- **Coordinador** solicita eliminar investigador de proyecto
-- **Sistema** presenta confirmación de eliminación<br>**Coordinador** solicita confirmar eliminación<br>**Sistema** elimina al investigador del proyecto
-- **Coordinador** solicita cancelar la operación
+- **Coordinador** solicita retirar del proyecto al investigador seleccionado.
+- **Sistema** comprueba responsabilidades pendientes y, si puede retirarse, solicita confirmación.
+- **Coordinador** confirma o cancela; **Sistema** retira únicamente la asociación cuando procede.
 
 ### Validaciones del wireframe
 - ¿El campo o bloque **Investigador seleccionado** resulta claro para el Coordinador?
@@ -79,18 +78,17 @@ Especificación detallada del caso de uso `eliminarInvestigador()` mediante diag
 
 |Actor|Acción|Sistema|Respuesta|
 |-|-|-|-|
-|**Coordinador**|solicita eliminar investigador de proyecto|| |
-|**Coordinador**||| |
-||**Sistema**|presenta confirmación de eliminación<br>**Coordinador** solicita confirmar eliminación<br>| |
-|**Coordinador**|solicita cancelar la operación|| |
-||**Sistema**|presenta confirmación de eliminación| |
+|**Coordinador**|solicita retirar del proyecto al investigador seleccionado|| |
+||**Sistema**|comprueba entregables y responsabilidades pendientes; si puede retirarse, presenta confirmación| |
+|**Coordinador**|confirma la retirada|| |
+||**Sistema**|retira la asociación con el proyecto y conserva el perfil del investigador| |
 
 ## Estados internos del caso de uso
 
 |Estado|Descripción|Responsabilidad|
 |-|-|-|
-|**ConfirmandoEliminacion**|Estado donde el sistema valida o confirma la eliminación de investigador.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
-|**InvestigadorEliminado**|Estado interno asociado a investigador eliminado.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
+|**ComprobandoResponsabilidades**|Comprueba si el investigador mantiene responsabilidades pendientes en el proyecto.|Sistema debe impedir una retirada que deje trabajo sin responsable.|
+|**ConfirmandoDesasignacion**|Solicita confirmación de la retirada.|Sistema debe retirar solo la asociación con el proyecto.|
 
 ## Funcionalidad específica
 
@@ -108,17 +106,13 @@ Especificación detallada del caso de uso `eliminarInvestigador()` mediante diag
 
 ## Opciones de navegación
 
-### Operaciones relacionadas
-- **abrirEntregables()** -> Navegar a `abrirEntregables()` cuando el actor solicita esa continuidad.
-- **abrirProyectos()** -> Navegar a `abrirProyectos()` cuando el actor solicita esa continuidad.
-
 ### Navegación del sistema
 - **Estado de entrada**: PROYECTO_ABIERTO.
-- **Estado de salida**: PROYECTO_ABIERTO, ENTREGABLES_ABIERTOS, PROYECTOS_ABIERTOS.
+- **Estado de salida**: PROYECTO_ABIERTO.
 
 ## Conexión con diagrama de contexto
 
-Este caso de uso se integra en los diagramas de contexto del Coordinador, manteniendo la trazabilidad entre navegación, estado del sistema y responsabilidad del actor.
+Este caso de uso corresponde a `PROYECTO_ABIERTO` → `eliminarInvestigador(investigadorId)` → `PROYECTO_ABIERTO`. El nombre histórico del caso se conserva, pero funcionalmente realiza una desasignación, no elimina el perfil.
 
 ## Vocabulario utilizado
 

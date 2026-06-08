@@ -381,3 +381,15 @@ Se incorporó la regla de dominio que exige que las reducciones docentes sean m�
 Además, se corrigió de forma estable el error recurrente del proxy de Vite cuando el backend no estaba iniciado, incorporando `tools/start-dev.ps1` y un arranque coordinado desde `npm run dev`. La verificación final terminó con 32 pruebas backend correctas, `npm run lint` y `npm run build` sin errores. El usuario realizó pruebas manuales con Coordinador, `docente.santander` e `investigador.barcelona`, confirmando creación, filtrado, consulta y eliminación de recompensas, así como las diferencias entre recompensas económicas y reducciones docentes.
 
 **Decisión:** el bloque 4 queda completamente revisado y cerrado. El siguiente paso será comenzar el bloque 5, identificando primero sus casos de uso y revisando su coherencia con los diagramas de contexto antes de desarrollar el Detalle y avanzar posteriormente a Análisis.
+
+---
+
+## [2026-06-08 13:05] Inicio de sesión - Detalle del bloque 5 de proyectos
+
+**Prompt:** el usuario inició una nueva sesión mediante la skill `session-memory`, pidió leer `conversation-log.md` y `tareas_a_realizar.md` y continuar con el bloque 5.
+
+**Resultado:** se utilizó la skill `session-memory`. Se reconstruyó el contexto desde el cierre anterior, se comprobó que el repositorio está limpio y sincronizado en `main` tras el commit de cierre del bloque 4, y se revisaron la priorización, los índices y los diagramas de contexto de Coordinador e Investigador. Se identificó el bloque 5 como la gestión de proyectos y composición de sus equipos. El alcance incluye para Coordinador `abrirProyectos()`, `abrirProyecto()`, `crearProyecto()`, `editarProyecto()`, `eliminarProyecto()`, `agregarInvestigador()` y `eliminarInvestigador()`; para Investigador incluye `abrirProyectos()` y `abrirProyecto()`.
+
+La revisión inicial detectó dos incoherencias funcionales relevantes. `abrirProyecto()` repite actualmente el listado y filtrado de proyectos, aunque el diagrama de contexto indica que se invoca desde `PROYECTOS_ABIERTOS` sobre un proyecto seleccionado y debe presentar directamente su detalle. Además, `agregarInvestigador()` solicita nuevamente ID, nombre y campo como si crease un investigador, cuando debe asociar al proyecto un perfil ya existente y considerar su disponibilidad y carga de trabajo.
+
+**Decisión:** la sesión se dedicará a corregir y revisar el Detalle completo del bloque 5, comenzando por los diagramas de especificación y alineando después los README y prototipos. Antes de avanzar a Análisis se solicitará una revisión manual del usuario.

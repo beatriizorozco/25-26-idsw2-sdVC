@@ -20,13 +20,13 @@ Especificación detallada del caso de uso `abrirProyectos()` mediante diagrama d
 
 |Atributo|Valor|
 |-|-|
-|**Nombre**|abrirProyectos()|
+|**Nombre**|abrirProyectos(investigadorId?)|
 |**Actor primario**|Investigador|
-|**Objetivo**|Presentar al Investigador el listado de proyectos con opciones de consulta, filtrado y navegación.|
+|**Objetivo**|Presentar los proyectos propios o los proyectos visibles asociados al investigador de contexto.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
-|**Precondición**|Usuario autenticado como Investigador y sistema disponible para navegación.|
-|**Postcondición exitosa**|El Investigador visualiza el listado de proyectos y puede continuar la navegación.|
+|**Precondición**|Investigador autenticado en `PANEL_PRINCIPAL_ABIERTO`, `PROYECTO_ABIERTO` o `INVESTIGADOR_ABIERTO`.|
+|**Postcondición exitosa**|El estado queda en `PROYECTOS_ABIERTOS` mostrando únicamente proyectos visibles para el actor.|
 |**Postcondición de fallo**|No se modifica la información del sistema; el actor permanece en el punto de navegación anterior.|
 
 ## Diagrama de especificación
@@ -56,8 +56,8 @@ Especificación detallada del caso de uso `abrirProyectos()` mediante diagrama d
 </div>
 
 **Correspondencia con especificación:**
-- **Investigador** solicita abrir el listado de proyectos propios
-- **Sistema** presenta el listado de proyectos propios del investigador con sus datos<br>principales (ID, título, estado, inicio y fin) y permite solicitar la introducción de criterios de filtrado y búsqueda.
+- **Investigador** solicita abrir proyectos
+- **Sistema** presenta los proyectos propios o, desde `INVESTIGADOR_ABIERTO`, los proyectos visibles asociados a ese perfil.
 - **Investigador** solicita introducir filtros y/o solicita introducir búsqueda<br>**Sistema** muestra el listado actualizado
 - **Investigador** solicita una acción disponible en el listado
 
@@ -81,8 +81,8 @@ Especificación detallada del caso de uso `abrirProyectos()` mediante diagrama d
 
 |Actor|Acción|Sistema|Respuesta|
 |-|-|-|-|
-|**Investigador**|solicita abrir el listado de proyectos propios|| |
-||**Sistema**|presenta el listado de proyectos propios del investigador con sus datos<br>principales (ID, título, estado, inicio y fin) y permite solicitar la introducción de criterios de filtrado y búsqueda.| |
+|**Investigador**|solicita abrir proyectos|| |
+||**Sistema**|presenta los proyectos propios o los proyectos visibles asociados al investigador de contexto, con sus datos principales y opciones de consulta y filtrado| |
 |**Investigador**|solicita introducir filtros y/o solicita introducir búsqueda<br>|| |
 ||**Sistema**|muestra el listado actualizado| |
 |**Investigador**|solicita una acción disponible en el listado|| |
@@ -92,9 +92,8 @@ Especificación detallada del caso de uso `abrirProyectos()` mediante diagrama d
 
 |Estado|Descripción|Responsabilidad|
 |-|-|-|
-|**MostrandoLista**|Estado interno asociado a mostrando lista.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
-|**FiltrandoLista**|Estado interno asociado a filtrando lista.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
-|**SolicitandoAccion**|Estado interno asociado a solicitando accion.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
+|**PresentandoProyectos**|Presenta los proyectos visibles correspondientes al contexto.|Sistema debe impedir que el Investigador consulte proyectos no visibles.|
+|**FiltrandoProyectos**|Aplica o limpia criterios sobre el conjunto visible.|Sistema debe conservar las restricciones de visibilidad al filtrar.|
 
 ## Funcionalidad específica
 
@@ -122,7 +121,7 @@ Especificación detallada del caso de uso `abrirProyectos()` mediante diagrama d
 
 ## Conexión con diagrama de contexto
 
-Este caso de uso se integra en los diagramas de contexto del Investigador, manteniendo la trazabilidad entre navegación, estado del sistema y responsabilidad del actor.
+Este caso de uso corresponde a `PANEL_PRINCIPAL_ABIERTO`, `PROYECTO_ABIERTO` o `INVESTIGADOR_ABIERTO` → `abrirProyectos(investigadorId?)` → `PROYECTOS_ABIERTOS`. Sin parámetro muestra los proyectos propios; con investigador de contexto muestra únicamente sus proyectos visibles.
 
 ## Vocabulario utilizado
 

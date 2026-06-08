@@ -1,56 +1,41 @@
 @startuml agregarInvestigador
-
 skinparam linetype polyline
 
-state in1 as "PROYECTO_ABIERTO"
-in1 -[#green]-> agregarInvestigador
-note on link
-agregarInvestigador()
-end note
+state proyecto as "PROYECTO_ABIERTO"
+proyecto -[#green]-> agregarInvestigador
 
 state agregarInvestigador as "agregarInvestigador()" {
+    state " " as PresentandoCandidatos
+    state " " as ConfirmandoAsignacion
 
-    state " " as SolicitandoDatos
-    state " " as CreandoInvestigador
-
-    [*] -[#green]-> SolicitandoDatos 
+    [*] -[#green]-> PresentandoCandidatos
     note on link
-    <b>Coordinador</b> solicita agregar un investigador a un proyecto
-    end note    
-    
-    SolicitandoDatos -[#green]-> CreandoInvestigador
-    note on link
-    <b>Sistema</b> presenta solicitud de datos mínimos del investigador
-    • ID del investigador (obligatorio)
-    • Nombre del investigador (obligatorio)
-    • Campo del investigador (obligatorio)
-    • Permite solicitar agregar investigador
-    • Permite solicitar cancelar la agregacion
+    <b>Coordinador</b> solicita agregar un investigador al proyecto
     end note
-    
-    CreandoInvestigador -[#green]-> [*]
+
+    PresentandoCandidatos -[#green]-> ConfirmandoAsignacion
     note on link
-    <b>Coordinador</b> proporciona datos mínimos
-    <b>Sistema</b> agrega investigador
+    <b>Sistema</b> presenta investigadores existentes no asociados:
+    • Nombre, sede, perfil y línea de investigación
+    • Carga de trabajo y disponibilidad
+    • Recomendación de menor carga compatible
+
+    <b>Coordinador</b> selecciona un investigador
+    end note
+
+    ConfirmandoAsignacion -[#green]-> [*]
+    note on link
+    <b>Coordinador</b> confirma la asignación
+    <b>Sistema</b> asocia el investigador al proyecto
+    end note
+
+    ConfirmandoAsignacion -[#red]-> [*]
+    note on link
+    <b>Coordinador</b> cancela la asignación
     end note
 }
 
-
-agregarInvestigador -[#green]-> PROYECTO_ABIERTO
-note on link
-Investigador agregado
-end note
-
-agregarInvestigador -[#green]-> ENTREGABLES_ABIERTOS
-note on link
-abrirEntregables()
-end note
-
-agregarInvestigador -[#green]-> PROYECTOS_ABIERTOS
-note on link
-abrirProyectos()
-end note
-
-
+agregarInvestigador -[#green]-> PROYECTO_ABIERTO: Investigador asociado
+agregarInvestigador -[#red]-> PROYECTO_ABIERTO: Asignación cancelada
 
 @enduml

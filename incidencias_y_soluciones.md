@@ -189,6 +189,25 @@ Después de reiniciar el backend, un usuario demo activo conserva credenciales a
 
 **Validación:** Los SVG quedaron actualizados en `images/RUP/01-analisis` e `images/RUP/02-diseño`. Se comprobó que los archivos esperados se modificaran y que no quedaran SVG temporales con nombres derivados de `@startuml`.
 
+### Casos de uso de proyectos con responsabilidades ambiguas
+
+**Síntoma:** El detalle inicial del bloque 5 trataba algunas operaciones de proyectos como listados o eliminaciones genéricas. `abrirProyecto()` repetía el filtrado de proyectos aunque ya existía un proyecto seleccionado, `agregarInvestigador()` solicitaba datos propios de la creación de un perfil y `eliminarInvestigador()` podía interpretarse como la eliminación completa de la persona.
+
+**Causa:** Los casos de uso habían heredado patrones CRUD generales sin distinguir suficientemente entre gestionar una entidad y gestionar su asociación con un proyecto.
+
+**Solución:** Se revisó el detalle completo del bloque 5:
+
+- `abrirProyecto(proyectoId)` presenta directamente el proyecto seleccionado.
+- `abrirProyectos()` conserva un único caso de uso, pero adapta su alcance según el actor y el contexto de entrada.
+- `agregarInvestigador()` selecciona un investigador existente y muestra compatibilidad, sede, línea, carga y disponibilidad.
+- La recomendación de asignación prioriza al investigador compatible con menor carga de trabajo.
+- `eliminarInvestigador()` desasigna al investigador del proyecto sin eliminar su perfil.
+- `eliminarProyecto()` comprueba dependencias y preserva la trazabilidad antes de permitir la eliminación.
+- `crearProyecto()` registra los datos mínimos y asigna automáticamente código, coordinador y estado inicial.
+- `editarProyecto()` valida fechas, datos obligatorios y transiciones de estado permitidas.
+
+**Validación:** Se actualizaron los README, diagramas de especificación y prototipos afectados. Todos los PlantUML del bloque 5 superaron `-checkonly`, se regeneraron sus SVG y `git diff --check` no detectó errores.
+
 ## Decisiones de seguridad
 
 ### Almacenamiento de contraseñas

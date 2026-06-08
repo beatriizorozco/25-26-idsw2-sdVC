@@ -22,10 +22,10 @@ Especificación detallada del caso de uso `agregarInvestigador()` mediante diagr
 |-|-|
 |**Nombre**|agregarInvestigador()|
 |**Actor primario**|Coordinador|
-|**Objetivo**|Permitir al Coordinador asociar un investigador a un proyecto.|
+|**Objetivo**|Permitir al Coordinador asociar al proyecto un investigador existente, considerando compatibilidad, disponibilidad y carga de trabajo.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
-|**Precondición**|Usuario autenticado como Coordinador y sistema disponible para navegación.|
+|**Precondición**|Coordinador autenticado con un proyecto en `PROYECTO_ABIERTO`.|
 |**Postcondición exitosa**|El investigador queda asociado al proyecto.|
 |**Postcondición de fallo**|No se aplican cambios si la información solicitada no es válida o el actor cancela la operación.|
 
@@ -51,21 +51,20 @@ Especificación detallada del caso de uso `agregarInvestigador()` mediante diagr
 
 |![Wireframe: agregarInvestigador](/images/RUP/00-casos-uso/02-detalle/coordinador/agregarInvestigador/agregarInvestigador-wireframe.svg)|
 |-|
-|**Estado**: SolicitandoDatos / CreandoInvestigador|
+|**Estado**: PresentandoCandidatos / ConfirmandoAsignacion|
 
 </div>
 
 **Correspondencia con especificación:**
-- agregarInvestigador()
 - **Coordinador** solicita agregar un investigador a un proyecto
-- **Sistema** presenta solicitud de datos mínimos del investigador<br>- ID del investigador (obligatorio)<br>- Nombre del investigador (obligatorio)<br>- Campo del investigador (obligatorio)<br>- Permite solicitar agregar investigador<br>- Permite solicitar cancelar la agregacion
-- **Coordinador** proporciona datos mínimos<br>**Sistema** agrega investigador
+- **Sistema** presenta investigadores existentes no asociados, con sede, perfil, línea, carga, disponibilidad y recomendación de menor carga compatible.
+- **Coordinador** selecciona y confirma un investigador; **Sistema** lo asocia al proyecto.
 
 ### Validaciones del wireframe
-- ¿El campo o bloque **Datos mínimos del investigador** resulta claro para el Coordinador?
-- ¿El campo o bloque **ID investigador *** resulta claro para el Coordinador?
-- ¿El campo o bloque **Nombre *** resulta claro para el Coordinador?
-- ¿El campo o bloque **Campo *** resulta claro para el Coordinador?
+- ¿La lista distingue claramente los investigadores que aún no participan en el proyecto?
+- ¿La sede, el perfil y la línea de investigación permiten valorar la compatibilidad?
+- ¿La carga y disponibilidad permiten justificar la selección?
+- ¿La recomendación de menor carga resulta comprensible sin impedir la decisión del Coordinador?
 - ¿El campo o bloque **Acciones** resulta claro para el Coordinador?
 - ¿Las acciones disponibles mantienen una navegación coherente con el rol Coordinador?
 - ¿Falta información que el wireframe revela antes del análisis?
@@ -78,17 +77,17 @@ Especificación detallada del caso de uso `agregarInvestigador()` mediante diagr
 
 |Actor|Acción|Sistema|Respuesta|
 |-|-|-|-|
-|**Coordinador**|solicita agregar un investigador a un proyecto|| |
-||**Sistema**|presenta solicitud de datos mínimos del investigador<br>- ID del investigador (obligatorio)<br>- Nombre del investigador (obligatorio)<br>- Campo del investigador (obligatorio)<br>- Permite solicitar agregar investigador<br>- Permite solicitar cancelar la agregacion| |
-|**Coordinador**|proporciona datos mínimos<br>|| |
-||**Sistema**|agrega investigador| |
+|**Coordinador**|solicita agregar un investigador al proyecto abierto|| |
+||**Sistema**|presenta investigadores existentes no asociados, indicando sede, perfil, línea, carga, disponibilidad y recomendación de menor carga compatible| |
+|**Coordinador**|selecciona un investigador y confirma|| |
+||**Sistema**|asocia el investigador seleccionado al proyecto| |
 
 ## Estados internos del caso de uso
 
 |Estado|Descripción|Responsabilidad|
 |-|-|-|
-|**SolicitandoDatos**|Estado interno asociado a solicitando datos.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
-|**CreandoInvestigador**|Estado interno asociado a creando investigador.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
+|**PresentandoCandidatos**|Presenta perfiles existentes que aún no participan en el proyecto.|Sistema debe incluir disponibilidad y carga para apoyar una asignación razonada.|
+|**ConfirmandoAsignacion**|Solicita confirmar el perfil seleccionado.|Sistema debe asociar exclusivamente al investigador confirmado.|
 
 ## Funcionalidad específica
 
@@ -99,24 +98,20 @@ Especificación detallada del caso de uso `agregarInvestigador()` mediante diagr
 - La especificación evita decisiones de implementación.
 
 ### Información tratada
-  - Nombre
-  - Perfil
-  - Especialización
-  - Proyectos asociados
+  - Perfil existente y sede
+  - Línea de investigación
+  - Carga de trabajo y disponibilidad
+  - Compatibilidad con el proyecto
 
 ## Opciones de navegación
 
-### Operaciones relacionadas
-- **abrirEntregables()** -> Navegar a `abrirEntregables()` cuando el actor solicita esa continuidad.
-- **abrirProyectos()** -> Navegar a `abrirProyectos()` cuando el actor solicita esa continuidad.
-
 ### Navegación del sistema
 - **Estado de entrada**: PROYECTO_ABIERTO.
-- **Estado de salida**: PROYECTO_ABIERTO, ENTREGABLES_ABIERTOS, PROYECTOS_ABIERTOS.
+- **Estado de salida**: PROYECTO_ABIERTO.
 
 ## Conexión con diagrama de contexto
 
-Este caso de uso se integra en los diagramas de contexto del Coordinador, manteniendo la trazabilidad entre navegación, estado del sistema y responsabilidad del actor.
+Este caso de uso corresponde a `PROYECTO_ABIERTO` → `agregarInvestigador()` → `PROYECTO_ABIERTO`. Asocia un perfil existente; no crea ni vuelve a solicitar sus datos personales.
 
 ## Vocabulario utilizado
 

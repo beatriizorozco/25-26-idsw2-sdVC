@@ -1,79 +1,44 @@
 @startuml crearProyecto
 skinparam linetype polyline
 
-state in1 as "PROYECTOS_ABIERTOS"
-in1 -[#green]-> crearProyecto
+state proyectos as "PROYECTOS_ABIERTOS"
+proyectos -[#green]-> crearProyecto
 
 state crearProyecto as "crearProyecto()" {
+    state " " as SolicitandoDatosMinimos
+    state " " as ValidandoDatos
 
-    state " " as SolicitandoDatos
-    state " " as RegistrandoProyecto
-
-    [*] -[#green]-> SolicitandoDatos
+    [*] -[#green]-> SolicitandoDatosMinimos
     note on link
-    <b>Coordinador</b> solicita crear un nuevo proyecto
+    <b>Coordinador</b> solicita crear un proyecto
+    <b>Sistema</b> permite introducir título, convocatoria de origen,
+    fechas previstas y descripción inicial
     end note
 
-    SolicitandoDatos -[#green]-> RegistrandoProyecto
+    SolicitandoDatosMinimos -[#green]-> ValidandoDatos
     note on link
-    <b>Sistema</b> presenta el formulario de creación del proyecto y permite introducir:
-    • Título
-    • Estado inicial
-    • Fecha de inicio
-    • Fecha de fin
-    • Descripción
-    <i>El ID del proyecto se genera automáticamente
-
-    y permite solicitar las siguientes acciones:
-    • Crear proyecto
-    • Volver
+    <b>Coordinador</b> solicita crear el proyecto
+    <b>Sistema</b> valida los datos mínimos y la coherencia de fechas
     end note
 
-    RegistrandoProyecto -[#green]-> [*]
+    ValidandoDatos -[#red]-> SolicitandoDatosMinimos
     note on link
-    <b>Coordinador</b> introduce los datos solicitados
-    <b>Sistema</b> registra el nuevo proyecto
+    <b>Sistema</b> informa los datos que deben corregirse
+    end note
+
+    ValidandoDatos -[#green]-> [*]
+    note on link
+    <b>Sistema</b> registra el proyecto en estado Creado,
+    asigna su código y lo abre para continuar su definición
+    end note
+
+    SolicitandoDatosMinimos -[#red]-> [*]
+    note on link
+    <b>Coordinador</b> cancela
     end note
 }
 
-crearProyecto -[#green]-> PROYECTO_ABIERTO
-note on link
-Proyecto creado y abierto
-end note
-
-crearProyecto -[#green]-> PROYECTO_ABIERTO
-note on link
-editarProyecto()
-end note
-
-crearProyecto -[#green]-> PROYECTOS_ABIERTOS
-note on link
-eliminarProyecto()
-end note
-
-crearProyecto -[#green]-> PROYECTO_ABIERTO
-note on link
-agregarInvestigador()
-end note
-
-crearProyecto -[#green]-> PROYECTO_ABIERTO
-note on link
-eliminarInvestigador()
-end note
-
-crearProyecto -[#green]-> ENTREGABLES_ABIERTOS
-note on link
-abrirEntregables()
-end note
-
-crearProyecto -[#green]-> INVESTIGADORES_ABIERTOS
-note on link
-abrirInvestigadores()
-end note
-
-crearProyecto -[#green]-> PROYECTOS_ABIERTOS
-note on link
-abrirProyectos()
-end note
+crearProyecto -[#green]-> PROYECTO_ABIERTO: Proyecto creado
+crearProyecto -[#red]-> PROYECTOS_ABIERTOS: Creación cancelada
 
 @enduml

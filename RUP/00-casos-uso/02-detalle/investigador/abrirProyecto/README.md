@@ -20,14 +20,14 @@ Especificación detallada del caso de uso `abrirProyecto()` mediante diagrama de
 
 |Atributo|Valor|
 |-|-|
-|**Nombre**|abrirProyecto()|
+|**Nombre**|abrirProyecto(proyectoId)|
 |**Actor primario**|Investigador|
 |**Objetivo**|Presentar al Investigador el detalle de proyecto y las acciones disponibles según su rol.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
-|**Precondición**|Usuario autenticado como Investigador y sistema disponible para navegación.|
-|**Postcondición exitosa**|El Investigador visualiza el detalle de proyecto y puede continuar la navegación.|
-|**Postcondición de fallo**|No se modifica la información del sistema; el actor permanece en el punto de navegación anterior.|
+|**Precondición**|Investigador autenticado y proyecto visible seleccionado desde `PROYECTOS_ABIERTOS`, o proyecto conservado como contexto desde `ENTREGABLES_ABIERTOS`.|
+|**Postcondición exitosa**|El proyecto visible queda presentado en `PROYECTO_ABIERTO`.|
+|**Postcondición de fallo**|El proyecto no se abre y el actor vuelve a `PROYECTOS_ABIERTOS`.|
 
 ## Diagrama de especificación
 
@@ -51,15 +51,14 @@ Especificación detallada del caso de uso `abrirProyecto()` mediante diagrama de
 
 |![Wireframe: abrirProyecto](/images/RUP/00-casos-uso/02-detalle/investigador/abrirProyecto/proyectoAbierto-wireframe.svg)|
 |-|
-|**Estado**: MostrandoListaProyectos / FiltrandoBuscando / SolicitandoProyecto|
+|**Estado**: ValidandoParticipacion / PresentandoProyecto|
 
 </div>
 
 **Correspondencia con especificación:**
-- **Investigador** solicita abrir un proyecto
-- **Sistema** presenta la lista de proyectos con sus datos principales y permite solicitar<br>la introducción de criterios de filtrado y búsqueda, así como solicitar la apertura de un proyecto del listado.
-- **Investigador** solicita introducir filtros y/o solicita introducir búsqueda<br>**Sistema** muestra el listado actualizado según los criterios introducidos
-- **Investigador** solicita abrir un proyecto del listado
+- **Investigador** solicita abrir el proyecto seleccionado
+- **Sistema** valida que el proyecto sea visible para el Investigador y presenta directamente su detalle.
+- **Investigador** consulta el detalle o solicita abrir entregables, investigadores o volver a proyectos.
 
 ### Validaciones del wireframe
 - ¿El campo o bloque **Datos del proyecto** resulta claro para el Investigador?
@@ -81,20 +80,16 @@ Especificación detallada del caso de uso `abrirProyecto()` mediante diagrama de
 
 |Actor|Acción|Sistema|Respuesta|
 |-|-|-|-|
-|**Investigador**|solicita abrir un proyecto|| |
-||**Sistema**|presenta la lista de proyectos con sus datos principales y permite solicitar<br>la introducción de criterios de filtrado y búsqueda, así como solicitar la apertura de un proyecto del listado.| |
-|**Investigador**|solicita introducir filtros y/o solicita introducir búsqueda<br>|| |
-||**Sistema**|muestra el listado actualizado según los criterios introducidos| |
-|**Investigador**|solicita abrir un proyecto del listado|| |
-||**Sistema**|visualiza el proyecto solicitado, presentando sus datos, la descripción y el equipo, y permite solicitar acciones disponibles sobre el proyecto abierto.| |
+|**Investigador**|solicita abrir el proyecto seleccionado|| |
+||**Sistema**|valida su visibilidad y presenta código, título, estado, convocatoria, coordinador, fechas, descripción, equipo y entregables asociados| |
+|**Investigador**|consulta el detalle o solicita una acción disponible|| |
 
 ## Estados internos del caso de uso
 
 |Estado|Descripción|Responsabilidad|
 |-|-|-|
-|**MostrandoListaProyectos**|Estado interno asociado a mostrando lista proyectos.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
-|**FiltrandoBuscando**|Estado interno asociado a filtrando buscando.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
-|**SolicitandoProyecto**|Estado interno asociado a solicitando proyecto.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
+|**ValidandoParticipacion**|Comprueba que el proyecto sea visible para el Investigador.|Sistema debe impedir el acceso a proyectos no visibles.|
+|**PresentandoProyecto**|Presenta el detalle en modo consulta.|Sistema debe limitar las acciones a consulta y navegación autorizada.|
 
 ## Funcionalidad específica
 
@@ -123,7 +118,7 @@ Especificación detallada del caso de uso `abrirProyecto()` mediante diagrama de
 
 ## Conexión con diagrama de contexto
 
-Este caso de uso se integra en los diagramas de contexto del Investigador, manteniendo la trazabilidad entre navegación, estado del sistema y responsabilidad del actor.
+Este caso de uso corresponde a `PROYECTOS_ABIERTOS` o `ENTREGABLES_ABIERTOS` → `abrirProyecto(proyectoId)` → `PROYECTO_ABIERTO`. No vuelve a listar proyectos y no concede operaciones de mantenimiento al Investigador.
 
 ## Vocabulario utilizado
 

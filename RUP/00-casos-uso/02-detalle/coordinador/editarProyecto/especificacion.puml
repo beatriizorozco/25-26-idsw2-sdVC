@@ -1,95 +1,44 @@
 @startuml editarProyecto
 skinparam linetype polyline
 
-state in1 as "PROYECTO_ABIERTO"
-in1 -[#green]-> editarProyecto
+state proyecto as "PROYECTO_ABIERTO"
+proyecto -[#green]-> editarProyecto
 
 state editarProyecto as "editarProyecto()" {
+    state " " as PresentandoEdicion
+    state " " as ValidandoCambios
 
-    state " " as EditandoDatos
-    state " " as GuardandoDatos
-
-    [*] -[#green]-> EditandoDatos
+    [*] -[#green]-> PresentandoEdicion
     note on link
-    <b>Coordinador</b> solicita editar proyecto
+    <b>Coordinador</b> solicita editar el proyecto abierto
+    <b>Sistema</b> presenta sus datos editables y las
+    transiciones de estado permitidas
     end note
 
-    EditandoDatos -[#green]-> GuardandoDatos
+    PresentandoEdicion -[#green]-> ValidandoCambios
     note on link
-    <b>Sistema</b> presenta datos de edición del proyecto
-    • ID
-    • Título
-    • Estado
-    • Coordinador
-    • Fecha de inicio
-    • Fecha de fin
-    • Descripción
-
-    y permite solicitar las siguientes acciones:
-    • Modificar datos del proyecto
-    • Guardar y salir
-    • Cancelar
+    <b>Coordinador</b> modifica datos y solicita guardar
+    <b>Sistema</b> valida fechas, datos obligatorios
+    y transición de estado
     end note
 
-    GuardandoDatos -[#green]-> EditandoDatos
+    ValidandoCambios -[#red]-> PresentandoEdicion
     note on link
-    <b>Coordinador</b> solicita modificar campos
+    <b>Sistema</b> informa los cambios que deben corregirse
     end note
 
-    GuardandoDatos -[#green]-> [*]
+    ValidandoCambios -[#green]-> [*]
     note on link
-    <b>Coordinador</b> solicita guardar y salir
+    <b>Sistema</b> registra los cambios
     end note
 
-    GuardandoDatos -[#red]-> [*]
+    PresentandoEdicion -[#red]-> [*]
     note on link
-    <b>Coordinador</b> solicita cancelar edición
+    <b>Coordinador</b> cancela
     end note
 }
 
-editarProyecto -[#green]-> PROYECTO_ABIERTO
-note on link
-Proyecto actualizado
-end note
-
-editarProyecto -[#red]-> PROYECTO_ABIERTO
-note on link
-Edición cancelada
-end note
-
-editarProyecto -[#green]-> PROYECTO_ABIERTO
-note on link
-editarProyecto()
-end note
-
-editarProyecto -[#green]-> PROYECTOS_ABIERTOS
-note on link
-eliminarProyecto()
-end note
-
-editarProyecto -[#green]-> PROYECTO_ABIERTO
-note on link
-agregarInvestigador()
-end note
-
-editarProyecto -[#green]-> PROYECTO_ABIERTO
-note on link
-eliminarInvestigador()
-end note
-
-editarProyecto -[#green]-> ENTREGABLES_ABIERTOS
-note on link
-abrirEntregables()
-end note
-
-editarProyecto -[#green]-> INVESTIGADORES_ABIERTOS
-note on link
-abrirInvestigadores()
-end note
-
-editarProyecto -[#green]-> PROYECTOS_ABIERTOS
-note on link
-abrirProyectos()
-end note
+editarProyecto -[#green]-> PROYECTO_ABIERTO: Proyecto actualizado
+editarProyecto -[#red]-> PROYECTO_ABIERTO: Edición cancelada
 
 @enduml

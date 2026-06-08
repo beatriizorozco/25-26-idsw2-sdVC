@@ -1,65 +1,47 @@
 @startuml abrirProyecto
 skinparam linetype polyline
 
-state in1 as "PROYECTOS_ABIERTOS"
-in1 -[#green]-> abrirProyecto
+state proyectos as "PROYECTOS_ABIERTOS"
+state entregables as "ENTREGABLES_ABIERTOS"
+proyectos -[#green]-> abrirProyecto
+entregables -[#green]-> abrirProyecto
 
-state in2 as "ENTREGABLES_ABIERTOS"
-in2 -[#green]-> abrirProyecto
+state abrirProyecto as "abrirProyecto(proyectoId)" {
+    state " " as ValidandoParticipacion
+    state " " as PresentandoProyecto
 
-
-state abrirProyecto as "abrirProyecto()" {
-
-    state " " as MostrandoListaProyectos
-    state " " as FiltrandoBuscando
-    state " " as SolicitandoProyecto
-
-    [*] -[#green]-> MostrandoListaProyectos
+    [*] -[#green]-> ValidandoParticipacion
     note on link
-    <b>Investigador</b> solicita abrir un proyecto
+    <b>Investigador</b> solicita abrir el proyecto seleccionado
     end note
 
-    MostrandoListaProyectos -[#green]-> FiltrandoBuscando
+    ValidandoParticipacion -[#green]-> PresentandoProyecto
     note on link
-    <b>Sistema</b> presenta la lista de proyectos con sus datos principales y permite solicitar
-    la introducción de criterios de filtrado y búsqueda, así como solicitar la apertura de un proyecto del listado.
+    <b>Sistema</b> valida que el proyecto sea visible para el investigador
+    y presenta:
+    • Código, título, estado, convocatoria y coordinador
+    • Fechas y descripción
+    • Equipo investigador
+    • Entregables asociados
+
+    Permite abrir entregables, abrir investigadores o volver a proyectos
     end note
 
-    FiltrandoBuscando -[#green]-> FiltrandoBuscando
+    ValidandoParticipacion -[#red]-> [*]
     note on link
-    <b>Investigador</b> solicita introducir filtros y/o solicita introducir búsqueda
-    <b>Sistema</b> muestra el listado actualizado según los criterios introducidos
+    <b>Sistema</b> informa que el proyecto no está disponible
     end note
 
-    FiltrandoBuscando -[#green]-> SolicitandoProyecto
+    PresentandoProyecto -[#green]-> [*]
     note on link
-    <b>Investigador</b> solicita abrir un proyecto del listado
-    end note
-
-    SolicitandoProyecto -[#green]-> [*]
-    note on link
-    <b>Sistema</b> visualiza el proyecto solicitado, presentando sus datos, la descripción y el equipo, y permite solicitar acciones disponibles sobre el proyecto abierto.
+    <b>Investigador</b> consulta el detalle o solicita una acción
     end note
 }
 
 abrirProyecto -[#green]-> PROYECTO_ABIERTO
-note on link
-Proyecto abierto
-end note
-
-abrirProyecto -[#green]-> ENTREGABLES_ABIERTOS
-note on link
-abrirEntregables()
-end note
-
-abrirProyecto -[#green]-> INVESTIGADORES_ABIERTOS
-note on link
-abrirInvestigadores()
-end note
-
-abrirProyecto -[#green]-> PROYECTOS_ABIERTOS
-note on link
-abrirProyectos()
-end note
+abrirProyecto -[#red]-> PROYECTOS_ABIERTOS: Proyecto no disponible
+abrirProyecto -[#green]-> ENTREGABLES_ABIERTOS: abrirEntregables()
+abrirProyecto -[#green]-> INVESTIGADORES_ABIERTOS: abrirInvestigadores()
+abrirProyecto -[#green]-> PROYECTOS_ABIERTOS: abrirProyectos()
 
 @enduml

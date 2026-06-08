@@ -20,14 +20,14 @@ Especificación detallada del caso de uso `abrirProyecto()` mediante diagrama de
 
 |Atributo|Valor|
 |-|-|
-|**Nombre**|abrirProyecto()|
+|**Nombre**|abrirProyecto(proyectoId)|
 |**Actor primario**|Coordinador|
 |**Objetivo**|Presentar al Coordinador el detalle de proyecto y las acciones disponibles según su rol.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
-|**Precondición**|Usuario autenticado como Coordinador y sistema disponible para navegación.|
-|**Postcondición exitosa**|El Coordinador visualiza el detalle de proyecto y puede continuar la navegación.|
-|**Postcondición de fallo**|No se modifica la información del sistema; el actor permanece en el punto de navegación anterior.|
+|**Precondición**|Coordinador autenticado y proyecto seleccionado desde `PROYECTOS_ABIERTOS`, o proyecto conservado como contexto desde `ENTREGABLES_ABIERTOS`.|
+|**Postcondición exitosa**|El proyecto seleccionado queda presentado en `PROYECTO_ABIERTO`.|
+|**Postcondición de fallo**|El proyecto no se abre y el actor permanece en el estado de entrada.|
 
 ## Diagrama de especificación
 
@@ -51,15 +51,14 @@ Especificación detallada del caso de uso `abrirProyecto()` mediante diagrama de
 
 |![Wireframe: abrirProyecto](/images/RUP/00-casos-uso/02-detalle/coordinador/abrirProyecto/proyectoAbierto-wireframe.svg)|
 |-|
-|**Estado**: MostrandoListaProyectos / FiltrandoBuscando / SeleccionandoProyecto|
+|**Estado**: RecuperandoProyecto / PresentandoProyecto|
 
 </div>
 
 **Correspondencia con especificación:**
-- **Coordinador** solicita abrir un proyecto
-- **Sistema** presenta la lista de proyectos con:<br>- ID<br>- Título<br>- Estado<br>- Coordinador responsable<br>- Fechas de inicio y fin<br>- Descripción<br>y permite solicitar las siguientes acciones:<br>- Filtrar proyectos<br>- Buscar proyectos<br>- Seleccionar un proyecto
-- **Coordinador** aplica filtros/búsqueda<br>**Sistema** muestra la lista filtrada
-- **Coordinador** selecciona un proyecto del listado
+- **Coordinador** solicita abrir el proyecto seleccionado
+- **Sistema** recupera y presenta directamente sus datos, equipo, carga disponible y entregables asociados.
+- **Coordinador** consulta el detalle o solicita una acción disponible.
 
 ### Validaciones del wireframe
 - ¿El campo o bloque **Datos del proyecto** resulta claro para el Coordinador?
@@ -81,20 +80,16 @@ Especificación detallada del caso de uso `abrirProyecto()` mediante diagrama de
 
 |Actor|Acción|Sistema|Respuesta|
 |-|-|-|-|
-|**Coordinador**|solicita abrir un proyecto|| |
-||**Sistema**|presenta la lista de proyectos con:<br>- ID<br>- Título<br>- Estado<br>- Coordinador responsable<br>- Fechas de inicio y fin<br>- Descripción<br>y permite solicitar las siguientes acciones:<br>- Filtrar proyectos<br>- Buscar proyectos<br>- Seleccionar un proyecto| |
-|**Coordinador**|aplica filtros/búsqueda<br>|| |
-||**Sistema**|muestra la lista filtrada| |
-|**Coordinador**|selecciona un proyecto del listado|| |
-||**Sistema**|visualiza el proyecto seleccionado con:<br>- Datos del proyecto (ID, título, estado, entidad financiadora, coordinador, inicio, fin)<br>- Descripción<br>- Equipo<br>y permite solicitar las siguientes acciones:<br>- Editar proyecto<br>- Eliminar proyecto<br>- Abrir entregables<br>- Agregar investigador<br>- Abrir investigadores<br>- Volver a proyectos| |
+|**Coordinador**|solicita abrir el proyecto seleccionado|| |
+||**Sistema**|recupera y presenta código, título, estado, convocatoria, coordinador, fechas, descripción, equipo investigador, carga disponible y entregables asociados; permite gestionar el proyecto o volver al listado| |
+|**Coordinador**|consulta el detalle o solicita una acción disponible|| |
 
 ## Estados internos del caso de uso
 
 |Estado|Descripción|Responsabilidad|
 |-|-|-|
-|**MostrandoListaProyectos**|Estado interno asociado a mostrando lista proyectos.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
-|**FiltrandoBuscando**|Estado interno asociado a filtrando buscando.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
-|**SeleccionandoProyecto**|Estado interno asociado a seleccionando proyecto.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
+|**RecuperandoProyecto**|Localiza el proyecto seleccionado o conservado como contexto.|Sistema debe recuperar exactamente el proyecto solicitado.|
+|**PresentandoProyecto**|Presenta el detalle y las acciones autorizadas.|Sistema debe mostrar información y navegación coherentes con el Coordinador.|
 
 ## Funcionalidad específica
 
@@ -127,7 +122,7 @@ Especificación detallada del caso de uso `abrirProyecto()` mediante diagrama de
 
 ## Conexión con diagrama de contexto
 
-Este caso de uso se integra en los diagramas de contexto del Coordinador, manteniendo la trazabilidad entre navegación, estado del sistema y responsabilidad del actor.
+Este caso de uso corresponde a `PROYECTOS_ABIERTOS` o `ENTREGABLES_ABIERTOS` → `abrirProyecto(proyectoId)` → `PROYECTO_ABIERTO`. No vuelve a listar proyectos: recibe o conserva el proyecto de contexto y presenta directamente su detalle.
 
 ## Vocabulario utilizado
 

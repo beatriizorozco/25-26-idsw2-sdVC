@@ -1,80 +1,49 @@
 @startuml abrirProyectos
 skinparam linetype polyline
 
-state in1 as "PANEL_PRINCIPAL_ABIERTO"
-in1 -[#green]-> abrirProyectos
+state panel as "PANEL_PRINCIPAL_ABIERTO"
+state proyecto as "PROYECTO_ABIERTO"
+state investigador as "INVESTIGADOR_ABIERTO"
 
-state in2 as "PROYECTO_ABIERTO"
-in2 -[#green]-> abrirProyectos
+panel -[#green]-> abrirProyectos
+proyecto -[#green]-> abrirProyectos
+investigador -[#green]-> abrirProyectos
 
-state in3 as "INVESTIGADOR_ABIERTO"
-in3 -[#green]-> abrirProyectos
-note on link
-abrirProyectos(ID)
-end note
+state abrirProyectos as "abrirProyectos(investigadorId?)" {
+    state " " as PresentandoProyectos
+    state " " as FiltrandoProyectos
 
-
-state abrirProyectos as "abrirProyectos()" {
-
-    state " " as MostrandoLista
-    state " " as FiltrandoLista
-
-    [*] -[#green]-> MostrandoLista
+    [*] -[#green]-> PresentandoProyectos
     note on link
-    <b>Coordinador</b> solicita abrir listado de proyectos
+    <b>Coordinador</b> solicita abrir proyectos
     end note
 
-    MostrandoLista -[#green]-> FiltrandoLista
+    PresentandoProyectos -[#green]-> FiltrandoProyectos
     note on link
-    <b>Sistema</b> presenta el listado de proyectos con:
-    • ID
-    • Título
-    • Estado
-    • Coordinador
-    • Fecha de inicio
-    • Fecha de fin
+    <b>Sistema</b> presenta:
+    • Todos los proyectos, si no existe investigador de contexto
+    • Los proyectos asociados, si existe investigador de contexto
+    • Código, título, estado, coordinador y fechas
 
-    Permite filtrar y buscar proyectos
-
-    y permite solicitar las siguientes acciones:
-    • Abrir proyecto
-    • Crear proyecto
-    • Aplicar filtros
-    • Limpiar filtros
-    • Abrir panel principal
+    Permite filtrar, abrir un proyecto, crear un proyecto
+    o volver al panel principal
     end note
 
-    FiltrandoLista -[#green]-> FiltrandoLista
+    FiltrandoProyectos -[#green]-> FiltrandoProyectos
     note on link
-    <b>Coordinador</b> filtra o busca proyectos
-    <b>Sistema</b> actualiza el listado
+    <b>Coordinador</b> introduce o limpia criterios
+    <b>Sistema</b> presenta los proyectos coincidentes
     end note
 
-    FiltrandoLista -[#green]-> [*]
+    FiltrandoProyectos -[#green]-> [*]
     note on link
-    <b>Coordinador</b> selecciona una opción de navegación
+    <b>Coordinador</b> solicita una opción disponible
     end note
-
 }
 
 abrirProyectos -[#green]-> PROYECTOS_ABIERTOS
-note on link
-Listado de proyectos visible
-end note
-
-abrirProyectos -[#green]-> PROYECTO_ABIERTO
-note on link
-abrirProyecto()
-end note
-
-abrirProyectos -[#green]-> PROYECTO_ABIERTO
-note on link
-crearProyecto()
-end note
-
-abrirProyectos -[#green]-> PANEL_PRINCIPAL_ABIERTO
-note on link
-abrirPanelPrincipal()
-end note
+abrirProyectos -[#green]-> PROYECTO_ABIERTO: abrirProyecto(proyectoId)
+abrirProyectos -[#green]-> PROYECTO_ABIERTO: crearProyecto()
+abrirProyectos -[#green]-> PANEL_PRINCIPAL_ABIERTO: abrirPanelPrincipal()
 
 @enduml

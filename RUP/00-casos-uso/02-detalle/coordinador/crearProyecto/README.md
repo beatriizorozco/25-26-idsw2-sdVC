@@ -22,11 +22,11 @@ Especificación detallada del caso de uso `crearProyecto()` mediante diagrama de
 |-|-|
 |**Nombre**|crearProyecto()|
 |**Actor primario**|Coordinador|
-|**Objetivo**|Permitir al Coordinador registrar un nuevo proyecto dentro de la plataforma.|
+|**Objetivo**|Registrar los datos mínimos de un proyecto y abrirlo para continuar su definición.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
-|**Precondición**|Usuario autenticado como Coordinador y sistema disponible para navegación.|
-|**Postcondición exitosa**|El nuevo proyecto queda registrado y disponible para consulta o edición.|
+|**Precondición**|Coordinador autenticado en `PROYECTOS_ABIERTOS`.|
+|**Postcondición exitosa**|El proyecto queda registrado en estado `Creado`, con código y Coordinador asignados, y pasa a `PROYECTO_ABIERTO`.|
 |**Postcondición de fallo**|No se aplican cambios si la información solicitada no es válida o el actor cancela la operación.|
 
 ## Diagrama de especificación
@@ -51,14 +51,14 @@ Especificación detallada del caso de uso `crearProyecto()` mediante diagrama de
 
 |![Wireframe: crearProyecto](/images/RUP/00-casos-uso/02-detalle/coordinador/crearProyecto/crearProyecto-wireframe.svg)|
 |-|
-|**Estado**: SolicitandoDatos / RegistrandoProyecto|
+|**Estado**: SolicitandoDatosMinimos / ValidandoDatos|
 
 </div>
 
 **Correspondencia con especificación:**
 - **Coordinador** solicita crear un nuevo proyecto
-- **Sistema** presenta el formulario de creación del proyecto y permite introducir:<br>- Título<br>- Estado inicial<br>- Fecha de inicio<br>- Fecha de fin<br>- Descripción<br>*El ID del proyecto se genera automáticamente<br>y permite solicitar las siguientes acciones:<br>- Crear proyecto<br>- Volver
-- **Coordinador** introduce los datos solicitados<br>**Sistema** registra el nuevo proyecto
+- **Sistema** permite introducir título, convocatoria de origen, fechas previstas y descripción inicial. El estado, código y Coordinador se asignan automáticamente.
+- **Coordinador** solicita crear; **Sistema** valida datos y fechas antes de registrar el proyecto.
 - Proyecto creado y abierto
 
 ### Validaciones del wireframe
@@ -81,16 +81,16 @@ Especificación detallada del caso de uso `crearProyecto()` mediante diagrama de
 |Actor|Acción|Sistema|Respuesta|
 |-|-|-|-|
 |**Coordinador**|solicita crear un nuevo proyecto|| |
-||**Sistema**|presenta el formulario de creación del proyecto y permite introducir:<br>- Título<br>- Estado inicial<br>- Fecha de inicio<br>- Fecha de fin<br>- Descripción<br>*El ID del proyecto se genera automáticamente<br>y permite solicitar las siguientes acciones:<br>- Crear proyecto<br>- Volver| |
-|**Coordinador**|introduce los datos solicitados<br>|| |
-||**Sistema**|registra el nuevo proyecto| |
+||**Sistema**|permite introducir título, convocatoria de origen, fechas previstas y descripción inicial; informa que asignará código, Coordinador y estado `Creado`| |
+|**Coordinador**|introduce los datos y solicita crear|| |
+||**Sistema**|valida datos y fechas; registra el proyecto y lo abre para continuar su definición| |
 
 ## Estados internos del caso de uso
 
 |Estado|Descripción|Responsabilidad|
 |-|-|-|
-|**SolicitandoDatos**|Estado interno asociado a solicitando datos.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
-|**RegistrandoProyecto**|Estado donde el sistema registra la información del proyecto.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
+|**SolicitandoDatosMinimos**|Solicita únicamente la información necesaria para crear el proyecto.|Sistema debe asignar automáticamente código, Coordinador y estado inicial.|
+|**ValidandoDatos**|Comprueba datos obligatorios y coherencia de fechas.|Sistema debe informar errores antes de registrar.|
 
 ## Funcionalidad específica
 
@@ -108,22 +108,13 @@ Especificación detallada del caso de uso `crearProyecto()` mediante diagrama de
 
 ## Opciones de navegación
 
-### Operaciones relacionadas
-- **editarProyecto()** -> Navegar a `editarProyecto()` cuando el actor solicita esa continuidad.
-- **eliminarProyecto()** -> Navegar a `eliminarProyecto()` cuando el actor solicita esa continuidad.
-- **agregarInvestigador()** -> Navegar a `agregarInvestigador()` cuando el actor solicita esa continuidad.
-- **eliminarInvestigador()** -> Navegar a `eliminarInvestigador()` cuando el actor solicita esa continuidad.
-- **abrirEntregables()** -> Navegar a `abrirEntregables()` cuando el actor solicita esa continuidad.
-- **abrirInvestigadores()** -> Navegar a `abrirInvestigadores()` cuando el actor solicita esa continuidad.
-- **abrirProyectos()** -> Navegar a `abrirProyectos()` cuando el actor solicita esa continuidad.
-
 ### Navegación del sistema
 - **Estado de entrada**: PROYECTOS_ABIERTOS.
-- **Estado de salida**: PROYECTO_ABIERTO, PROYECTOS_ABIERTOS, ENTREGABLES_ABIERTOS, INVESTIGADORES_ABIERTOS.
+- **Estado de salida**: PROYECTO_ABIERTO si se crea; PROYECTOS_ABIERTOS si se cancela.
 
 ## Conexión con diagrama de contexto
 
-Este caso de uso se integra en los diagramas de contexto del Coordinador, manteniendo la trazabilidad entre navegación, estado del sistema y responsabilidad del actor.
+Este caso de uso corresponde a `PROYECTOS_ABIERTOS` → `crearProyecto()` → `PROYECTO_ABIERTO`. Sigue el patrón crear → usar: registra lo mínimo y abre el proyecto para continuar su definición.
 
 ## Vocabulario utilizado
 

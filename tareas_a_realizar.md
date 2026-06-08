@@ -131,5 +131,11 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 
 ## Pendiente inmediato del bloque 5
 
-- [ ] Identificar y revisar los casos de uso que forman el bloque 5.
-- [ ] Comenzar el bloque 5 por Detalle, validando su coherencia con los diagramas de contexto antes de avanzar a Análisis.
+- [x] Identificar y revisar los casos de uso que forman el bloque 5.
+- [x] Comenzar el bloque 5 por Detalle, validando su coherencia con los diagramas de contexto antes de avanzar a Análisis.
+- [x] Revisar el Detalle de proyectos para Coordinador: `abrirProyectos()`, `abrirProyecto()`, `crearProyecto()`, `editarProyecto()` y `eliminarProyecto()`.
+- [x] Revisar el Detalle de composición del equipo para Coordinador: `agregarInvestigador()` y `eliminarInvestigador()`.
+- [x] Revisar el Detalle de consulta de proyectos propios para Investigador: `abrirProyectos()` y `abrirProyecto()`.
+- [x] Confirmar que `abrirProyecto()` recibe un proyecto seleccionado y presenta directamente su detalle, sin repetir el listado.
+- [x] Confirmar que la asignación de investigadores utiliza perfiles existentes, disponibilidad y carga de trabajo, sin volver a crear sus datos personales.
+- [ ] Revisar manualmente el Detalle completo del bloque 5 antes de avanzar a Análisis.

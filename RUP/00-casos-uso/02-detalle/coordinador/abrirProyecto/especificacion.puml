@@ -1,105 +1,45 @@
 @startuml abrirProyecto
 skinparam linetype polyline
 
-state in1 as "PROYECTOS_ABIERTOS"
-in1 -[#green]-> abrirProyecto
+state proyectos as "PROYECTOS_ABIERTOS"
+state entregables as "ENTREGABLES_ABIERTOS"
+proyectos -[#green]-> abrirProyecto
+entregables -[#green]-> abrirProyecto
 
-state in2 as "ENTREGABLES_ABIERTOS"
-in2 -[#green]-> abrirProyecto
+state abrirProyecto as "abrirProyecto(proyectoId)" {
+    state " " as RecuperandoProyecto
+    state " " as PresentandoProyecto
 
-state abrirProyecto as "abrirProyecto()" {
-
-    state " " as MostrandoListaProyectos
-    state " " as FiltrandoBuscando
-    state " " as SeleccionandoProyecto
-
-    [*] -[#green]-> MostrandoListaProyectos
+    [*] -[#green]-> RecuperandoProyecto
     note on link
-    <b>Coordinador</b> solicita abrir un proyecto
+    <b>Coordinador</b> solicita abrir el proyecto seleccionado
     end note
 
-    MostrandoListaProyectos -[#green]-> FiltrandoBuscando
+    RecuperandoProyecto -[#green]-> PresentandoProyecto
     note on link
-    <b>Sistema</b> presenta la lista de proyectos con:
-    • ID
-    • Título
-    • Estado
-    • Coordinador responsable
-    • Fechas de inicio y fin
-    • Descripción
+    <b>Sistema</b> recupera el proyecto y presenta:
+    • Código, título, estado, convocatoria y coordinador
+    • Fechas y descripción
+    • Equipo investigador y carga disponible
+    • Entregables asociados
 
-    y permite solicitar las siguientes acciones:
-    • Filtrar proyectos
-    • Buscar proyectos
-    • Seleccionar un proyecto
+    Permite editar, eliminar, gestionar el equipo,
+    abrir entregables o volver a proyectos
     end note
 
-    FiltrandoBuscando -[#green]-> FiltrandoBuscando
+    PresentandoProyecto -[#green]-> [*]
     note on link
-    <b>Coordinador</b> aplica filtros/búsqueda
-    <b>Sistema</b> muestra la lista filtrada
-    end note
-
-    FiltrandoBuscando -[#green]-> SeleccionandoProyecto
-    note on link
-    <b>Coordinador</b> selecciona un proyecto del listado
-    end note
-
-    SeleccionandoProyecto -[#green]-> [*]
-    note on link
-    <b>Sistema</b> visualiza el proyecto seleccionado con:
-    • Datos del proyecto (ID, título, estado, entidad financiadora, coordinador, inicio, fin)
-    • Descripción
-    • Equipo
-
-    y permite solicitar las siguientes acciones:
-    • Editar proyecto
-    • Eliminar proyecto
-    • Abrir entregables
-    • Agregar investigador
-    • Abrir investigadores
-    • Volver a proyectos
+    <b>Coordinador</b> consulta el detalle o solicita una acción
     end note
 }
 
 abrirProyecto -[#green]-> PROYECTO_ABIERTO
-note on link
-Proyecto abierto
-end note
-
-abrirProyecto -[#green]-> PROYECTO_ABIERTO
-note on link
-editarProyecto()
-end note
-
-abrirProyecto -[#green]-> PROYECTOS_ABIERTOS
-note on link
-eliminarProyecto()
-end note
-
-abrirProyecto -[#green]-> PROYECTO_ABIERTO
-note on link
-agregarInvestigador()
-end note
-
-abrirProyecto -[#green]-> PROYECTO_ABIERTO
-note on link
-eliminarInvestigador()
-end note
-
-abrirProyecto -[#green]-> ENTREGABLES_ABIERTOS
-note on link
-abrirEntregables()
-end note
-
-abrirProyecto -[#green]-> INVESTIGADORES_ABIERTOS
-note on link
-abrirInvestigadores()
-end note
-
-abrirProyecto -[#green]-> PROYECTOS_ABIERTOS
-note on link
-abrirProyectos()
-end note
+abrirProyecto -[#green]-> PROYECTO_ABIERTO: editarProyecto()
+abrirProyecto -[#green]-> PROYECTOS_ABIERTOS: eliminarProyecto()
+abrirProyecto -[#green]-> PROYECTO_ABIERTO: agregarInvestigador()
+abrirProyecto -[#green]-> PROYECTO_ABIERTO: eliminarInvestigador()
+abrirProyecto -[#green]-> ENTREGABLES_ABIERTOS: abrirEntregables()
+abrirProyecto -[#green]-> INVESTIGADORES_ABIERTOS: abrirInvestigadores()
+abrirProyecto -[#green]-> PROYECTOS_ABIERTOS: abrirProyectos()
 
 @enduml
