@@ -19,14 +19,14 @@ Detallar la actualización controlada de los datos de un proyecto abierto.
 - **ProyectoController**: Expone `PATCH /api/proyectos/{id}`.
 - **SesionService**: Exige una sesión de Coordinador.
 - **ProyectoService**: Valida cambios, fechas y convocatoria.
-- **ProyectoRepository** y **ConvocatoriaRepository**: Recuperan y actualizan los datos.
+- **ProyectoRepository** y **ConvocatoriaRepository**: Recuperan y actualizan los datos de proyectos activos.
 
 ## Decisiones de Diseño
 
 - El formulario se precarga desde el detalle vigente.
 - Solo se modifican los campos enviados.
 - Cancelar conserva `PROYECTO_ABIERTO`.
-- Datos incompatibles devuelven `400 Bad Request`; un proyecto inexistente devuelve `404 Not Found`.
+- Datos incompatibles devuelven `400 Bad Request`; un proyecto inexistente o archivado devuelve `404 Not Found`.
 
 ## Referencias
 

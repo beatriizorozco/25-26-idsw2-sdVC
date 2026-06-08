@@ -19,13 +19,15 @@ Detallar la asociación de un investigador existente a un proyecto mediante una 
 - **ProyectoController**: Expone candidatos y la asociación.
 - **SesionService**: Exige una sesión de Coordinador.
 - **ProyectoService**: Evalúa compatibilidad, disponibilidad y menor carga.
-- **ProyectoRepository**, **InvestigadorRepository** y **CargaTrabajoRepository**: Recuperan y asocian la información necesaria.
+- **ProyectoRepository**, **InvestigadorRepository** y **CargaTrabajoRepository**: Recuperan la información necesaria, revalidan la candidatura y registran la participación activa.
 
 ## Decisiones de Diseño
 
 - Solo se muestran perfiles existentes todavía no asociados.
 - La recomendación prioriza al candidato compatible y disponible con menor carga.
 - La recomendación informa, pero el Coordinador confirma la selección.
+- La disponibilidad y carga se revalidan al confirmar para evitar asignaciones basadas en información desactualizada.
+- La asignación registra fecha y Coordinador responsable, conservando el histórico de participaciones.
 - La operación asocia el perfil; nunca crea ni modifica sus datos personales.
 
 ## Referencias

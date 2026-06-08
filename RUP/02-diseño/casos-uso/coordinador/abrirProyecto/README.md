@@ -19,13 +19,13 @@ Detallar la apertura directa de un proyecto seleccionado y la composición de su
 - **ProyectoController**: Expone `GET /api/proyectos/{id}`.
 - **SesionService**: Exige una sesión de Coordinador.
 - **ProyectoService**: Compone el detalle completo.
-- **ProyectoRepository**, **InvestigadorRepository** y **EntregableRepository**: Recuperan proyecto, equipo y entregables.
+- **ProyectoRepository**, **InvestigadorRepository** y **EntregableRepository**: Recuperan el proyecto activo, su equipo y sus entregables.
 
 ## Decisiones de Diseño
 
 - La selección abre directamente el proyecto, sin repetir el listado.
 - El Coordinador recibe la visión global del proyecto.
-- Un proyecto inexistente devuelve `404 Not Found`.
+- Un proyecto inexistente o archivado queda fuera de la navegación operativa y devuelve `404 Not Found`.
 - El detalle habilita las navegaciones definidas desde `PROYECTO_ABIERTO`.
 
 ## Referencias

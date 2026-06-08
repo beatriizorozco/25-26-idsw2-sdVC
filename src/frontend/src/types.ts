@@ -140,3 +140,50 @@ export interface RecompensaEdicion {
   beneficiarios: BeneficiarioRecompensa[]
 }
 
+export type EstadoProyecto = 'EN_CURSO' | 'COMPLETADO'
+
+export interface InvestigadorProyecto {
+  id: number
+  usuario: string
+  nombreCompleto: string
+  sede: string
+  investigadorDocente: boolean
+  cargaSemanal?: number
+}
+
+export interface Proyecto {
+  id: number
+  codigo: string
+  nombre: string
+  descripcion: string
+  area: string
+  sede: string
+  estado: EstadoProyecto
+  fechaInicio?: string
+  fechaFin?: string
+  archivado: boolean
+  fechaArchivado?: string
+  motivoArchivado?: string
+  investigadores: InvestigadorProyecto[]
+}
+
+export interface ProyectoRequest {
+  codigo: string
+  nombre: string
+  descripcion: string
+  area: string
+  sede: string
+  estado: EstadoProyecto
+  fechaInicio?: string
+  fechaFin?: string
+}
+
+export interface ArchivoProyecto {
+  id: number
+  nombre: string
+  tipoContenido: string
+  tamano: number
+  subidoPor: string
+  fechaSubida: string
+}
+

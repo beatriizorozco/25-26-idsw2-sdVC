@@ -14,6 +14,10 @@ import type {
   TipoRecompensa,
   Sesion,
   SolicitudEliminacionPerfil,
+  InvestigadorProyecto,
+  Proyecto,
+  ProyectoRequest,
+  ArchivoProyecto,
 } from '../types'
 
 const API_URL = import.meta.env.VITE_API_URL ?? '/api'
@@ -205,6 +209,111 @@ export async function actualizarRecompensa(id: number, datos: RecompensaRequest)
 export async function eliminarRecompensa(id: number): Promise<void> {
   const token = await obtenerTokenCsrf()
   await request<void>(`/recompensas/${id}`, {
+    method: 'DELETE',
+    headers: { [token.headerName]: token.token },
+  })
+}
+
+export function listarProyectos(criterio = '', archivados = false): Promise<Proyecto[]> {
+  const query = new URLSearchParams()
+  if (criterio.trim()) query.set('criterio', criterio.trim())
+  if (archivados) query.set('archivados', 'true')
+  const suffix = query.size ? `?${query.toString()}` : ''
+  return request<Proyecto[]>(`/proyectos${suffix}`)
+}
+
+export function obtenerProyecto(id: number): Promise<Proyecto> {
+  return request<Proyecto>(`/proyectos/${id}`)
+}
+
+export async function crearProyecto(datos: ProyectoRequest): Promise<Proyecto> {
+  const token = await obtenerTokenCsrf()
+  return request<Proyecto>('/proyectos', {
+    method: 'POST',
+    headers: { [token.headerName]: token.token },
+    body: JSON.stringify(datos),
+  })
+}
+
+export async function actualizarProyecto(id: number, datos: ProyectoRequest): Promise<Proyecto> {
+  const token = await obtenerTokenCsrf()
+  return request<Proyecto>(`/proyectos/${id}`, {
+    method: 'PATCH',
+    headers: { [token.headerName]: token.token },
+    body: JSON.stringify(datos),
+  })
+}
+
+export async function archivarProyecto(id: number, motivo: string): Promise<Proyecto> {
+  const token = await obtenerTokenCsrf()
+  return request<Proyecto>(`/proyectos/${id}/archivado`, {
+    method: 'PATCH',
+    headers: { [token.headerName]: token.token },
+    body: JSON.stringify({ motivo }),
+  })
+}
+
+export function listarCandidatosProyecto(id: number): Promise<InvestigadorProyecto[]> {
+  return request<InvestigadorProyecto[]>(`/proyectos/${id}/candidatos`)
+}
+
+export async function agregarInvestigadorProyecto(id: number, investigadorId: number): Promise<Proyecto> {
+  const token = await obtenerTokenCsrf()
+  return request<Proyecto>(`/proyectos/${id}/investigadores/${investigadorId}`, {
+    method: 'POST',
+    headers: { [token.headerName]: token.token },
+  })
+}
+
+export async function retirarInvestigadorProyecto(
+  id: number,
+  investigadorId: number,
+  motivo: string,
+): Promise<Proyecto> {
+  const token = await obtenerTokenCsrf()
+  return request<Proyecto>(`/proyectos/${id}/investigadores/${investigadorId}/desasignado`, {
+    method: 'PATCH',
+    headers: { [token.headerName]: token.token },
+    body: JSON.stringify({ motivo }),
+  })
+}
+
+export function listarArchivosProyecto(proyectoId: number): Promise<ArchivoProyecto[]> {
+  return request<ArchivoProyecto[]>(`/proyectos/${proyectoId}/archivos`)
+}
+
+export async function subirArchivoProyecto(proyectoId: number, archivo: File): Promise<ArchivoProyecto> {
+  const token = await obtenerTokenCsrf()
+  const datos = new FormData()
+  datos.append('archivo', archivo)
+  const response = await fetch(`${API_URL}/proyectos/${proyectoId}/archivos`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: { [token.headerName]: token.token },
+    body: datos,
+  })
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ mensaje: 'No se pudo subir el archivo.' }))
+    throw new Error(error.mensaje ?? 'No se pudo subir el archivo.')
+  }
+  return response.json() as Promise<ArchivoProyecto>
+}
+
+export async function descargarArchivoProyecto(proyectoId: number, archivo: ArchivoProyecto): Promise<void> {
+  const response = await fetch(`${API_URL}/proyectos/${proyectoId}/archivos/${archivo.id}`, {
+    credentials: 'include',
+  })
+  if (!response.ok) throw new Error('No se pudo descargar el archivo.')
+  const enlace = document.createElement('a')
+  enlace.href = URL.createObjectURL(await response.blob())
+  enlace.download = archivo.nombre
+  enlace.click()
+  URL.revokeObjectURL(enlace.href)
+}
+
+export async function eliminarArchivoProyecto(proyectoId: number, archivoId: number): Promise<void> {
+  const token = await obtenerTokenCsrf()
+  await request<void>(`/proyectos/${proyectoId}/archivos/${archivoId}`, {
     method: 'DELETE',
     headers: { [token.headerName]: token.token },
   })

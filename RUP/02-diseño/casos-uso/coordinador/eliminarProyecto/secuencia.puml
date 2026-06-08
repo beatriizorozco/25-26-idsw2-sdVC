@@ -1,5 +1,5 @@
 @startuml eliminarProyecto-coordinador-diseno
-title Diagrama de secuencia - Eliminar proyecto
+title Diagrama de secuencia - Archivar proyecto
 
 actor Coordinador
 participant "ProyectoDetallePage\n(React)" as Frontend
@@ -8,33 +8,16 @@ participant "SesionService" as Sesion
 participant "ProyectoService" as Service
 participant "ProyectoRepository" as Repo
 
-Coordinador -> Frontend: Solicita eliminar proyecto
+Coordinador -> Frontend: Solicita archivar proyecto
 activate Frontend
 Frontend -> Api: GET /api/proyectos/{id}/opciones-archivado\nCookie de sesion
 activate Api
 Api -> Sesion: exigirCoordinador(authentication)
-Sesion --> Api: Coordinador autenticado
-Api -> Service: prepararArchivado(id)
-activate Service
-Service -> Repo: obtenerPorId(id)
-Repo --> Service: Proyecto / vacio
-Service -> Repo: obtenerResumenHistorico(id)
-Repo --> Service: Estado, equipo y elementos vinculados
-Service --> Api: OpcionesArchivadoProyectoResponse
-deactivate Service
-Api --> Frontend: 200 OK\nConsecuencias del archivado
-deactivate Api
-Frontend --> Coordinador: Presenta confirmacion de archivado
-alt Coordinador cancela
-    Coordinador -> Frontend: Cancela archivado
-    Frontend --> Coordinador: Conserva PROYECTO_ABIERTO
-else Coordinador confirma
-    Coordinador -> Frontend: Confirma archivado
-    Frontend -> Api: DELETE /api/proyectos/{id}\nCookie de sesion
-    activate Api
-    Api -> Sesion: exigirCoordinador(authentication)
+activate Sesion
+alt Sesion de Coordinador activa
     Sesion --> Api: Coordinador autenticado
-    Api -> Service: archivar(id, coordinador)
+    deactivate Sesion
+    Api -> Service: prepararArchivado(id)
     activate Service
     Service -> Repo: obtenerActivoPorId(id)
     Repo --> Service: Proyecto / vacio
@@ -45,18 +28,53 @@ else Coordinador confirma
         deactivate Api
         Frontend --> Coordinador: Presenta error y conserva PROYECTO_ABIERTO
     else Proyecto activo
-        Service -> Repo: archivar(id, fecha, coordinador)
-        Repo --> Service: Proyecto archivado
-        note right of Service
-        Se conservan estado, equipo,
-        entregables y recompensas.
-        end note
-        Service --> Api: archivado completado
+        Service -> Repo: obtenerResumenHistorico(id)
+        Repo --> Service: Estado, equipo y elementos vinculados
+        Service --> Api: OpcionesArchivadoProyectoResponse
         deactivate Service
-        Api --> Frontend: 204 No Content
+        Api --> Frontend: 200 OK\nConsecuencias del archivado
         deactivate Api
-        Frontend --> Coordinador: Presenta PROYECTOS_ABIERTOS
+        Frontend --> Coordinador: Presenta confirmacion y solicita motivo
+        alt Coordinador cancela
+            Coordinador -> Frontend: Cancela archivado
+            Frontend --> Coordinador: Conserva PROYECTO_ABIERTO
+        else Coordinador confirma
+            Coordinador -> Frontend: Confirma archivado con motivo
+            Frontend -> Api: PATCH /api/proyectos/{id}/archivado\nProyectoArchivadoRequest + cookie
+            activate Api
+            Api -> Sesion: exigirCoordinador(authentication)
+            Sesion --> Api: Coordinador autenticado
+            Api -> Service: archivar(id, motivo, coordinador)
+            activate Service
+            Service -> Repo: obtenerActivoPorId(id)
+            Repo --> Service: Proyecto / vacio
+            alt Proyecto inexistente o archivado durante la confirmacion
+                Service --> Api: RecursoNoEncontradoException / ConflictoException
+                deactivate Service
+                Api --> Frontend: 404 Not Found / 409 Conflict
+                deactivate Api
+                Frontend --> Coordinador: Presenta conflicto
+            else Proyecto activo
+                Service -> Repo: archivar(id, fecha, coordinador, motivo)
+                Repo --> Service: Proyecto archivado
+                note right of Service
+                Se conservan estado, equipo,
+                entregables y recompensas.
+                end note
+                Service --> Api: ProyectoArchivadoResponse
+                deactivate Service
+                Api --> Frontend: 200 OK\nProyecto archivado
+                deactivate Api
+                Frontend --> Coordinador: Presenta PROYECTOS_ABIERTOS
+            end
+        end
     end
+else Sesion ausente o rol invalido
+    Sesion --> Api: SesionNoValidaException / AccesoDenegadoException
+    deactivate Sesion
+    Api --> Frontend: 401 Unauthorized / 403 Forbidden
+    deactivate Api
+    Frontend --> Coordinador: Presenta error de acceso
 end
 deactivate Frontend
 @enduml

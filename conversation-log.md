@@ -417,3 +417,21 @@ Durante la revisión final se tomó una decisión relevante de dominio: `elimina
 **Resultado:** se utilizó la skill `session-memory`. Se recuperó el cierre anterior, se revisó el estado del repositorio y se inventariaron los casos de eliminación existentes. Se confirmó que el backend ya implementa correctamente `eliminarPerfil()` como una desactivación del usuario mediante el atributo `activo`, conservando el perfil y su trazabilidad, aunque parte de la documentación todavía lo presenta como una eliminación irreversible. También se distinguieron tres comportamientos diferentes bajo nombres históricos `eliminar...`: baja lógica de entidades históricas, desasignación de relaciones y borrado físico excepcional de datos sin valor histórico.
 
 **Decisión:** se adoptará como regla general que perfiles, proyectos, publicaciones, entregables y recompensas con valor de auditoría o relaciones históricas no se eliminan físicamente, sino que se desactivan, archivan o anulan. `eliminarInvestigador()` dentro de un proyecto seguirá siendo únicamente una desasignación. Antes de modificar transversalmente los bloques ya cerrados se revisará cada caso de eliminación para definir su semántica exacta y mantener coherentes Detalle, Análisis, Diseño, Desarrollo y Pruebas.
+
+---
+
+## [2026-06-08 22:34] Fin de sesión - Desarrollo del bloque 5 y adjuntos de proyectos
+
+**Prompt:** cierre de sesión solicitado mediante la skill `session-memory` tras implementar y comprobar el Desarrollo del bloque 5.
+
+**Resultado:** se utilizó la skill `session-memory`. Durante la sesión se completó el Desarrollo del bloque 5 de gestión de proyectos para Coordinador e Investigador. Se implementaron la creación, edición, consulta, filtrado, archivado lógico e histórico de proyectos, además de la asignación y desasignación de investigadores con registro histórico de movimientos. El Coordinador puede alternar entre proyectos activos y archivados, mientras que el Investigador consulta exclusivamente aquellos en los que participa.
+
+Se sincronizaron los conceptos de finalización y archivado: marcar un proyecto como completado provoca su archivado automático y archivar un proyecto lo marca como completado. Los proyectos archivados permanecen consultables y conservan participantes, relaciones y documentación. También se mejoró la visibilidad de los controles de los formularios de creación y edición.
+
+Se incorporó la gestión de archivos adjuntos mediante la migración `V8__archivos_proyecto.sql`, modelo, repositorio, servicio, controlador, API y componentes frontend. Coordinador e Investigadores participantes pueden listar, subir y descargar documentos de proyectos activos o archivados; únicamente el Coordinador puede eliminarlos. Se corrigió la compatibilidad del contenido binario entre PostgreSQL y H2 mediante un mapeo `VARBINARY`.
+
+Durante la prueba manual apareció un error al subir archivos porque el navegador utilizaba el frontend actualizado contra un proceso backend iniciado antes de incorporar los nuevos endpoints y la migración. Se reinició el backend, se aplicó correctamente la migración V8 y se comprobó por API una subida real con respuesta `201 Created` y su posterior eliminación por Coordinador con respuesta `204 No Content`.
+
+Se actualizaron los README de Desarrollo, `tareas_a_realizar.md` e `incidencias_y_soluciones.md`. La validación final terminó con 38 pruebas backend correctas, `npm run build`, `npm run lint` y `git diff --check` sin errores.
+
+**Decisión:** el Desarrollo del bloque 5 queda funcional y técnicamente verificado. Antes de pasar al bloque 6 se realizará una prueba manual completa desde el navegador con Coordinador e Investigador, comprobando proyectos activos y archivados, asignaciones, finalización automática y permisos de subida, descarga y eliminación de adjuntos.

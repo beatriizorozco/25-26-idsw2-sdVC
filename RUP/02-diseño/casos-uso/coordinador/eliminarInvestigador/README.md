@@ -24,9 +24,11 @@ Detallar la desasignación segura de un investigador del proyecto sin eliminar s
 ## Decisiones de Diseño
 
 - La API solo se invoca después de confirmación explícita.
+- Antes de confirmar se comprueban entregables y responsabilidades pendientes.
+- Las responsabilidades se vuelven a comprobar al confirmar para evitar conflictos concurrentes.
 - Eliminar al investigador del proyecto significa desasignarlo.
 - El perfil, su carga, sus datos personales y la participación histórica permanecen intactos.
-- La desasignación registra fecha y Coordinador responsable.
+- La desasignación registra fecha, Coordinador responsable y motivo.
 - Cancelar conserva `PROYECTO_ABIERTO`.
 
 ## Referencias

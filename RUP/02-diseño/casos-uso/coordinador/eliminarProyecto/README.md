@@ -16,7 +16,7 @@ Detallar la baja lógica de un proyecto, retirándolo de la gestión activa y co
 ## Participantes
 
 - **ProyectoDetallePage**: Presenta las consecuencias del archivado y solicita confirmación.
-- **ProyectoController**: Expone las opciones de archivado y `DELETE /api/proyectos/{id}`.
+- **ProyectoController**: Expone las opciones de archivado y `PATCH /api/proyectos/{id}/archivado`.
 - **SesionService**: Exige una sesión de Coordinador.
 - **ProyectoService**: Coordina la baja lógica y registra su autoría.
 - **ProyectoRepository**: Conserva el proyecto y marca sus metadatos de archivado.
@@ -26,9 +26,10 @@ Detallar la baja lógica de un proyecto, retirándolo de la gestión activa y co
 - El nombre `eliminarProyecto()` se conserva por trazabilidad, pero la operación realiza una baja lógica.
 - Cancelar conserva `PROYECTO_ABIERTO`.
 - Estado, equipo, entregables, recompensas y demás relaciones permanecen intactos.
-- El archivado registra `archivado`, `fechaArchivado` y `archivadoPor`.
+- El archivado registra `archivado`, `fechaArchivado`, `archivadoPor` y `motivoArchivado`.
+- La confirmación revalida que el proyecto siga activo para evitar conflictos concurrentes.
 - Los listados activos excluyen proyectos archivados.
-- El archivado correcto devuelve `204 No Content` y abre el listado.
+- El archivado correcto devuelve el resultado de auditoría y abre el listado.
 
 ## Referencias
 

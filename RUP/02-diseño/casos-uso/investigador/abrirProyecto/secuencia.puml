@@ -21,9 +21,9 @@ alt Sesion de Investigador activa
     deactivate Sesion
     Api -> Service: obtenerDetalleVisible(id, investigadorId)
     activate Service
-    Service -> Repo: obtenerVisiblePorId(id, investigadorId)
+    Service -> Repo: obtenerActivoVisiblePorId(id, investigadorId)
     Repo --> Service: Proyecto / vacio
-    alt Proyecto inexistente o no visible
+    alt Proyecto inexistente, archivado o no visible
         Service --> Api: RecursoNoEncontradoException
         deactivate Service
         Api --> Frontend: 404 Not Found

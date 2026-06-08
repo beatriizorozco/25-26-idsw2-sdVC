@@ -18,7 +18,7 @@ Api -> Sesion: exigirCoordinador(authentication)
 Sesion --> Api: Coordinador autenticado
 Api -> Service: obtenerCandidatos(id)
 activate Service
-Service -> Repo: obtenerPorId(id)
+Service -> Repo: obtenerActivoPorId(id)
 Repo --> Service: Proyecto
 Service -> InvestigadorRepo: obtenerNoAsociados(id)
 InvestigadorRepo --> Service: Candidatos
@@ -41,17 +41,22 @@ else Coordinador confirma
     Sesion --> Api: Coordinador autenticado
     Api -> Service: asociarInvestigador(id, investigadorId)
     activate Service
+    Service -> Repo: obtenerActivoPorId(id)
+    Repo --> Service: Proyecto / vacio
     Service -> InvestigadorRepo: obtenerCandidatoDisponible(id, investigadorId)
     InvestigadorRepo --> Service: Investigador / vacio
-    alt Candidato invalido o ya asociado
+    Service -> CargaRepo: obtenerCargaActual(investigadorId)
+    CargaRepo --> Service: Carga y disponibilidad actualizadas
+    Service -> Service: reevaluarCompatibilidadYDisponibilidad()
+    alt Proyecto no disponible, candidato invalido o ya asociado
         Service --> Api: ValidacionException / ConflictoException
         deactivate Service
         Api --> Frontend: 400 Bad Request / 409 Conflict
         deactivate Api
         Frontend --> Coordinador: Presenta error y conserva candidatos
     else Candidato valido
-        Service -> Repo: asociarInvestigador(id, investigadorId)
-        Repo --> Service: Equipo actualizado
+        Service -> Repo: registrarAsignacion(id, investigadorId, fecha, coordinador)
+        Repo --> Service: Participacion activa
         Service --> Api: ProyectoDetalleResponse
         deactivate Service
         Api --> Frontend: 200 OK\nInvestigador asociado

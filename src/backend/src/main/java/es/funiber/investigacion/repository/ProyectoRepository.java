@@ -13,4 +13,10 @@ public interface ProyectoRepository extends JpaRepository<Proyecto, Long> {
     Optional<Proyecto> findByCodigo(String codigo);
 
     List<Proyecto> findByEstadoOrderByNombreAsc(EstadoProyecto estado);
+
+    @EntityGraph(attributePaths = "investigadores")
+    List<Proyecto> findByArchivadoOrderByNombreAsc(boolean archivado);
+
+    @EntityGraph(attributePaths = "investigadores")
+    List<Proyecto> findDistinctByInvestigadoresIdOrderByNombreAsc(Long investigadorId);
 }

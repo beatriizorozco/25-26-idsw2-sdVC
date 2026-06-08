@@ -21,14 +21,14 @@ alt Sesion de Coordinador activa
     deactivate Sesion
     Api -> Service: obtenerDetalleGlobal(id)
     activate Service
-    Service -> Repo: obtenerPorId(id)
+    Service -> Repo: obtenerActivoPorId(id)
     Repo --> Service: Proyecto / vacio
-    alt Proyecto inexistente
+    alt Proyecto inexistente o archivado
         Service --> Api: RecursoNoEncontradoException
         deactivate Service
         Api --> Frontend: 404 Not Found
         deactivate Api
-        Frontend --> Coordinador: Presenta proyecto no encontrado
+        Frontend --> Coordinador: Presenta proyecto no disponible
     else Proyecto existente
         Service -> InvestigadorRepo: obtenerEquipo(id)
         InvestigadorRepo --> Service: Equipo

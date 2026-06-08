@@ -223,8 +223,12 @@ Después de reiniciar el backend, un usuario demo activo conserva credenciales a
 - `eliminarInvestigador()` elimina únicamente la asociación con el proyecto.
 - `eliminarProyecto()` exige comprobación previa de dependencias y trazabilidad.
 - `crearProyecto()` asigna en servidor código, Coordinador y estado inicial.
+- La apertura y edición operativa recuperan únicamente proyectos activos.
+- La asignación revalida carga, compatibilidad y disponibilidad al confirmar.
+- La desasignación comprueba responsabilidades pendientes antes y durante la confirmación, registra motivo y conserva la participación histórica.
+- El archivado utiliza una operación explícita `PATCH`, registra motivo y revalida que el proyecto siga activo.
 
-**Validación:** Se crearon los nueve diseños del bloque 5 con README, secuencia PlantUML y SVG. Todos los diagramas superaron `plantuml -checkonly` y los enlaces utilizan el nombre normalizado `secuencia.svg`.
+**Validación:** Se revisaron los nueve diseños del bloque 5 con README, secuencia PlantUML y SVG. Todos los diagramas superaron `plantuml -checkonly`, los enlaces utilizan el nombre normalizado `secuencia.svg` y no quedan operaciones `DELETE` ni desasociaciones físicas dentro del Diseño del bloque.
 
 ### Eliminación física de proyectos incompatible con la trazabilidad histórica
 
@@ -271,7 +275,7 @@ La autenticación utiliza sesiones HTTP. El navegador conserva una cookie de ses
 
 |Comprobación|Resultado|
 |-|-|
-|Suite backend|32 pruebas correctas|
+|Suite backend|36 pruebas correctas|
 |Lint frontend|Correcto|
 |Build frontend de producción|Correcto|
 |Reintento tras credenciales incorrectas|Comprobado|
@@ -289,3 +293,23 @@ La autenticación utiliza sesiones HTTP. El navegador conserva una cookie de ses
 - Extraer las contraseñas de demostración del código.
 - Publicar la aplicación mediante una URL accesible para evaluación.
 - Validar el recorrido completo desde un navegador externo sin sesión previa.
+
+### Gestión de proyectos sin consulta histórica funcional
+
+**Síntoma:** El Diseño del bloque 5 definía el archivado lógico, pero el Coordinador todavía no disponía de una consulta funcional para recuperar los proyectos archivados.
+
+**Causa:** La apertura de proyectos solo contemplaba inicialmente el listado operativo de proyectos activos.
+
+**Solución:** El Desarrollo integra el histórico dentro de `abrirProyectos()` mediante un control Activos/Archivados. `eliminarProyecto()` ejecuta `PATCH /api/proyectos/{id}/archivado`, registra motivo, fecha y Coordinador responsable, y nunca borra la entidad. Las asignaciones y desasignaciones registran movimientos históricos independientes mientras la relación operativa conserva únicamente participantes activos.
+
+**Validación:** La migración `V7__gestion_historica_proyectos.sql` se aplica correctamente, la suite previa continúa verde y se añadieron pruebas específicas de creación, edición, archivado, permisos y trazabilidad de participantes.
+
+### Finalización, archivado y documentación de proyectos desconectados
+
+**Síntoma:** Un proyecto podía marcarse como completado sin pasar al histórico, o archivarse conservando un estado operativo. Además, el detalle no permitía conservar y compartir los documentos generados durante el proyecto.
+
+**Causa:** El estado funcional y la baja lógica se habían implementado como decisiones independientes, y el bloque de proyectos todavía no incluía persistencia de archivos adjuntos.
+
+**Solución:** Completar un proyecto provoca su archivado automático, mientras que archivarlo lo marca como completado. Se añadió la migración `V8__archivos_proyecto.sql` y una API de archivos adjuntos. Coordinador e Investigadores participantes pueden listar, subir y descargar documentos de proyectos activos o archivados; únicamente el Coordinador puede eliminarlos.
+
+**Validación:** La suite backend completa supera 38 pruebas, incluidas las reglas de sincronización de estado, subida, consulta, permisos de descarga y eliminación exclusiva por Coordinador. La compilación de producción y el lint del frontend finalizan correctamente.
