@@ -226,6 +226,16 @@ Después de reiniciar el backend, un usuario demo activo conserva credenciales a
 
 **Validación:** Se crearon los nueve diseños del bloque 5 con README, secuencia PlantUML y SVG. Todos los diagramas superaron `plantuml -checkonly` y los enlaces utilizan el nombre normalizado `secuencia.svg`.
 
+### Eliminación física de proyectos incompatible con la trazabilidad histórica
+
+**Síntoma:** `eliminarProyecto()` se había diseñado como un borrado físico condicionado por entregables y recompensas, lo que podía impedir la operación o hacer perder información histórica.
+
+**Causa:** El nombre histórico del caso de uso se interpretó literalmente como eliminación de la entidad.
+
+**Solución:** `eliminarProyecto()` pasa a realizar una baja lógica. El proyecto se marca como archivado, registra fecha y Coordinador responsable, deja de aparecer en los listados activos y conserva estado, equipo, entregables, recompensas y demás relaciones. Solo se rechaza la operación si el proyecto ya estaba archivado o no existe.
+
+**Validación:** Se alinearon Detalle, Análisis, Diseño, diagramas y listados activos. Se dejó pendiente diseñar una consulta específica del histórico para el Coordinador.
+
 ## Decisiones de seguridad
 
 ### Almacenamiento de contraseñas

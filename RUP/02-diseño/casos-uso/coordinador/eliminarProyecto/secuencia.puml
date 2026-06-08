@@ -7,46 +7,51 @@ participant "ProyectoController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "ProyectoService" as Service
 participant "ProyectoRepository" as Repo
-participant "EntregableRepository" as EntregableRepo
-participant "RecompensaRepository" as RecompensaRepo
 
 Coordinador -> Frontend: Solicita eliminar proyecto
 activate Frontend
-Frontend -> Api: GET /api/proyectos/{id}/comprobacion-eliminacion\nCookie de sesion
+Frontend -> Api: GET /api/proyectos/{id}/opciones-archivado\nCookie de sesion
 activate Api
 Api -> Sesion: exigirCoordinador(authentication)
 Sesion --> Api: Coordinador autenticado
-Api -> Service: comprobarEliminacion(id)
+Api -> Service: prepararArchivado(id)
 activate Service
 Service -> Repo: obtenerPorId(id)
 Repo --> Service: Proyecto / vacio
-Service -> EntregableRepo: contarPorProyecto(id)
-EntregableRepo --> Service: Numero de entregables
-Service -> RecompensaRepo: contarPorProyecto(id)
-RecompensaRepo --> Service: Numero de recompensas
-Service -> Service: validarTrazabilidad()
-Service --> Api: ComprobacionEliminacionResponse
+Service -> Repo: obtenerResumenHistorico(id)
+Repo --> Service: Estado, equipo y elementos vinculados
+Service --> Api: OpcionesArchivadoProyectoResponse
 deactivate Service
-Api --> Frontend: 200 OK\nResultado de comprobacion
+Api --> Frontend: 200 OK\nConsecuencias del archivado
 deactivate Api
-alt Eliminacion impedida
-    Frontend --> Coordinador: Explica dependencias y conserva PROYECTO_ABIERTO
-else Eliminacion permitida
-    Frontend --> Coordinador: Presenta confirmacion
-    alt Coordinador cancela
-        Coordinador -> Frontend: Cancela eliminacion
-        Frontend --> Coordinador: Conserva PROYECTO_ABIERTO
-    else Coordinador confirma
-        Coordinador -> Frontend: Confirma eliminacion
-        Frontend -> Api: DELETE /api/proyectos/{id}\nCookie de sesion
-        activate Api
-        Api -> Sesion: exigirCoordinador(authentication)
-        Sesion --> Api: Coordinador autenticado
-        Api -> Service: eliminarSiMantieneTrazabilidad(id)
-        activate Service
-        Service -> Repo: eliminar(id)
-        Repo --> Service: Proyecto eliminado
-        Service --> Api: eliminacion completada
+Frontend --> Coordinador: Presenta confirmacion de archivado
+alt Coordinador cancela
+    Coordinador -> Frontend: Cancela archivado
+    Frontend --> Coordinador: Conserva PROYECTO_ABIERTO
+else Coordinador confirma
+    Coordinador -> Frontend: Confirma archivado
+    Frontend -> Api: DELETE /api/proyectos/{id}\nCookie de sesion
+    activate Api
+    Api -> Sesion: exigirCoordinador(authentication)
+    Sesion --> Api: Coordinador autenticado
+    Api -> Service: archivar(id, coordinador)
+    activate Service
+    Service -> Repo: obtenerActivoPorId(id)
+    Repo --> Service: Proyecto / vacio
+    alt Proyecto inexistente o ya archivado
+        Service --> Api: RecursoNoEncontradoException / ConflictoException
+        deactivate Service
+        Api --> Frontend: 404 Not Found / 409 Conflict
+        deactivate Api
+        Frontend --> Coordinador: Presenta error y conserva PROYECTO_ABIERTO
+    else Proyecto activo
+        Service -> Repo: archivar(id, fecha, coordinador)
+        Repo --> Service: Proyecto archivado
+        note right of Service
+        Se conservan estado, equipo,
+        entregables y recompensas.
+        end note
+        Service --> Api: archivado completado
         deactivate Service
         Api --> Frontend: 204 No Content
         deactivate Api

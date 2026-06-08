@@ -3,6 +3,9 @@
 title "Diagrama de Clases Unificado: Gestión de Proyectos + Red de Investigadores"
 
 class Proyecto <<Principal>> #FFAAAA {
+  archivado
+  fechaArchivado
+  archivadoPor
 }
 
 class Convocatoria {

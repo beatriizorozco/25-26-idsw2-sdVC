@@ -1,26 +1,27 @@
 @startsalt eliminarProyecto-wireframe
 {
     ====
-    <b>GIPF - ELIMINAR PROYECTO</b>
+    <b>GIPF - ARCHIVAR PROYECTO</b>
     ====
     {
         <b>Proyecto seleccionado</b>
         --
         {
-            <b>Código:</b> PRY-SAN-CREADO-01
-            <b>Título:</b> Proyecto pendiente de definición
-            <b>Estado:</b> Creado
+            <b>Codigo:</b> PRY-SAN-CREADO-01
+            <b>Titulo:</b> Proyecto pendiente de definicion
+            <b>Estado actual:</b> Creado
         }
         --
-        <b>Comprobación de dependencias</b>
+        <b>Conservacion historica</b>
         --
         {
-            Sin entregables, recompensas ni responsabilidades vinculadas.
+            Se conservaran el estado, el equipo, los entregables,
+            las recompensas y el resto de informacion vinculada.
         }
         --
-        <b>Esta acción no se puede deshacer.</b>
+        <b>El proyecto dejara de aparecer en la gestion activa.</b>
         --
-        {[Eliminar proyecto] | [Cancelar]}
+        {[Archivar proyecto] | [Cancelar]}
     }
 }
 @endsalt

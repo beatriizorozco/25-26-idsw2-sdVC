@@ -64,7 +64,7 @@ Analizar la colaboración necesaria para presentar a Investigador el listado de 
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Abstraer el acceso a datos de proyectos.
-- Proporcionar operaciones `obtenerPropios(investigador)` y `buscarPorCriterio(criterio)`.
+- Proporcionar operaciones `obtenerActivosPropios(investigador)` y `buscarPorCriterio(criterio)`, excluyendo proyectos archivados.
 - Mantener la consistencia conceptual de proyectos.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
@@ -88,14 +88,14 @@ Analizar la colaboración necesaria para presentar a Investigador el listado de 
 
 1. **Inicio**: `PANEL_PRINCIPAL_ABIERTO`, `PROYECTO_ABIERTO` o `INVESTIGADOR_ABIERTO` -> `ListarProyectosView.abrirProyectos(investigadorId?)`.
 2. **Solicitud principal**: `ListarProyectosView` -> `ProyectoController.listarProyectos(actorId, investigadorId?)`.
-3. **Alcance propio**: Sin identificador, `ProyectoRepository.obtenerPropios(actorId)`.
-4. **Alcance contextual**: Con identificador, `ProyectoRepository.obtenerVisiblesPorInvestigador(investigadorId)`.
+3. **Alcance propio**: Sin identificador, `ProyectoRepository.obtenerActivosPropios(actorId)`.
+4. **Alcance contextual**: Con identificador, `ProyectoRepository.obtenerActivosVisiblesPorInvestigador(investigadorId)`.
 5. **Búsqueda**: El repositorio filtra únicamente dentro del alcance visible.
 6. **Finalización**: `ListarProyectosView` presenta `PROYECTOS_ABIERTOS` o deriva a la colaboración seleccionada.
 
 ### Patrón de colaboración establecido
 
-- **Entrada contextual**: Sin identificador presenta los proyectos propios; con `investigadorId` presenta los proyectos visibles asociados al investigador consultado.
+- **Entrada contextual**: Sin identificador presenta los proyectos activos propios; con `investigadorId` presenta los proyectos activos visibles asociados al investigador consultado.
 - **Análisis MVC completo**: Vista, Control y Entidad claramente separados.
 - **Salida estándar**: Retorno a la navegación permitida o a una colaboración relacionada.
 
@@ -108,7 +108,7 @@ Analizar la colaboración necesaria para presentar a Investigador el listado de 
 |Atender la solicitud `abrirProyectos()`|`ListarProyectosView`|Recibe la acción del Investigador|
 |Coordinar reglas del caso de uso|`ProyectoController`|`listarProyectos(actorId, investigadorId?)`|
 |Aplicar filtrado visible|`ProyectoController`|`filtrarProyectos(criterio, actorId, investigadorId?)`|
-|Acceder a datos de proyectos|`ProyectoRepository`|`obtenerPropios(...)`, `obtenerVisiblesPorInvestigador(...)`, `buscarVisiblesPorCriterio(...)`|
+|Acceder a datos de proyectos|`ProyectoRepository`|`obtenerActivosPropios(...)`, `obtenerActivosVisiblesPorInvestigador(...)`, `buscarVisiblesPorCriterio(...)`|
 |Representar atributos de dominio|`Proyecto`|Entidad conceptual|
 
 ### Atributos tratados
@@ -129,7 +129,7 @@ Analizar la colaboración necesaria para presentar a Investigador el listado de 
 ## Reglas funcionales consideradas
 
 - Mantener la separación entre presentación, coordinación y entidad para el rol Investigador.
-- Restringir el listado a proyectos propios o visibles según el investigador de contexto, sin ofrecer operaciones de gestión.
+- Restringir el listado a proyectos activos propios o visibles según el investigador de contexto, sin ofrecer operaciones de gestión.
 
 ## Características del análisis
 

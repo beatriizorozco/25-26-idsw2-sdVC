@@ -55,7 +55,7 @@ Esta carpeta contiene la especificación detallada y el prototipado de los casos
 - [abrirProyecto](coordinador/abrirProyecto/) - Consulta del detalle de un proyecto.
 - [crearProyecto](coordinador/crearProyecto/) - Creación de proyecto.
 - [editarProyecto](coordinador/editarProyecto/) - Edición de proyecto.
-- [eliminarProyecto](coordinador/eliminarProyecto/) - Eliminación de proyecto.
+- [eliminarProyecto](coordinador/eliminarProyecto/) - Archivado histórico de proyecto mediante baja lógica.
 - [agregarInvestigador](coordinador/agregarInvestigador/) - Asociación razonada de un investigador existente al proyecto.
 - [eliminarInvestigador](coordinador/eliminarInvestigador/) - Retirada de un investigador del proyecto sin eliminar su perfil.
 

@@ -19,7 +19,7 @@ alt Sesion de Investigador activa
     deactivate Sesion
     Api -> Service: listarVisiblesPropios(investigadorId, criterio)
     activate Service
-    Service -> Repo: buscarVisiblesPorInvestigador(investigadorId, criterio)
+    Service -> Repo: buscarActivosVisiblesPorInvestigador(investigadorId, criterio)
     Repo --> Service: Lista<Proyecto>
     Service --> Api: Lista<ProyectoResumenResponse>
     deactivate Service

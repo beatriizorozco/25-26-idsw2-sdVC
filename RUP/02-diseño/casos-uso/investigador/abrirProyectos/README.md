@@ -25,6 +25,7 @@ Detallar la consulta de proyectos visibles para el Investigador autenticado, sin
 
 - El identificador del actor se obtiene de la sesión, nunca de un parámetro manipulable.
 - Sin contexto adicional se muestran sus proyectos propios.
+- Los proyectos archivados se conservan históricamente, pero no aparecen en la gestión activa.
 - El filtro mantiene las restricciones de visibilidad.
 - El Investigador no dispone de acciones de creación, edición ni eliminación.
 

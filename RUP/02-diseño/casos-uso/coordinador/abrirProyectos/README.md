@@ -23,7 +23,8 @@ Detallar la consulta global de proyectos por el Coordinador, incluyendo filtrado
 
 ## Decisiones de Diseño
 
-- El Coordinador puede consultar todos los proyectos.
+- El Coordinador puede consultar todos los proyectos activos.
+- Los proyectos archivados quedan fuera del listado operativo y se conservan para una futura consulta histórica.
 - `investigadorId` limita opcionalmente el listado a los proyectos asociados.
 - El filtro se procesa en servidor y conserva el alcance seleccionado.
 - Cada elemento permite abrir directamente su detalle.

@@ -64,7 +64,7 @@ Analizar la colaboración necesaria para presentar a Coordinador el listado de p
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Abstraer el acceso a datos de proyectos.
-- Proporcionar operaciones `obtenerTodos()` y `buscarPorCriterio(criterio)`.
+- Proporcionar operaciones `obtenerActivos()` y `buscarPorCriterio(criterio)`, excluyendo proyectos archivados.
 - Mantener la consistencia conceptual de proyectos.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
@@ -88,14 +88,14 @@ Analizar la colaboración necesaria para presentar a Coordinador el listado de p
 
 1. **Inicio**: `PANEL_PRINCIPAL_ABIERTO`, `PROYECTO_ABIERTO` o `INVESTIGADOR_ABIERTO` -> `ListarProyectosView.abrirProyectos(investigadorId?)`.
 2. **Solicitud principal**: `ListarProyectosView` -> `ProyectoController.listarProyectos(investigadorId?)`.
-3. **Alcance global**: Sin identificador, `ProyectoRepository.obtenerTodos()`.
-4. **Alcance contextual**: Con identificador, `ProyectoRepository.obtenerPorInvestigador(investigadorId)`.
+3. **Alcance global**: Sin identificador, `ProyectoRepository.obtenerActivos()`.
+4. **Alcance contextual**: Con identificador, `ProyectoRepository.obtenerActivosPorInvestigador(investigadorId)`.
 5. **Búsqueda**: El repositorio filtra dentro del mismo alcance.
 6. **Finalización**: `ListarProyectosView` presenta `PROYECTOS_ABIERTOS` o deriva a la colaboración seleccionada.
 
 ### Patrón de colaboración establecido
 
-- **Entrada contextual**: Sin identificador presenta todos los proyectos; con `investigadorId` presenta únicamente los proyectos asociados a ese investigador.
+- **Entrada contextual**: Sin identificador presenta todos los proyectos activos; con `investigadorId` presenta únicamente los activos asociados a ese investigador.
 - **Análisis MVC completo**: Vista, Control y Entidad claramente separados.
 - **Salida estándar**: Retorno a la navegación permitida o a una colaboración relacionada.
 
@@ -108,7 +108,7 @@ Analizar la colaboración necesaria para presentar a Coordinador el listado de p
 |Atender la solicitud `abrirProyectos()`|`ListarProyectosView`|Recibe la acción del Coordinador|
 |Coordinar reglas del caso de uso|`ProyectoController`|`listarProyectos(investigadorId?)`|
 |Aplicar filtrado contextual|`ProyectoController`|`filtrarProyectos(criterio, investigadorId?)`|
-|Acceder a datos de proyectos|`ProyectoRepository`|`obtenerTodos()`, `obtenerPorInvestigador(...)`, `buscarPorCriterio(...)`|
+|Acceder a datos de proyectos|`ProyectoRepository`|`obtenerActivos()`, `obtenerActivosPorInvestigador(...)`, `buscarPorCriterio(...)`|
 |Representar atributos de dominio|`Proyecto`|Entidad conceptual|
 
 ### Atributos tratados

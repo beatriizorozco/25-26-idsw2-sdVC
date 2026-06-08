@@ -14,7 +14,7 @@
 
 ## Propósito
 
-Analizar la colaboración necesaria para eliminar de forma segura un proyecto sin perder trazabilidad de entregables, equipo o recompensas vinculadas.
+Analizar la colaboración necesaria para archivar un proyecto mediante baja lógica, retirándolo de la gestión activa sin perder su estado ni ninguna relación histórica.
 
 ## Diagrama de colaboración
 
@@ -42,7 +42,7 @@ Analizar la colaboración necesaria para eliminar de forma segura un proyecto si
 **Colaboraciones**:
 - **Entrada**: Recibe `eliminarProyecto(proyectoId)` desde `PROYECTO_ABIERTO`.
 - **Control**: Se comunica con `ProyectoController`.
-- **Salida**: Navega a `PROYECTOS_ABIERTOS` si elimina o conserva `PROYECTO_ABIERTO` si cancela o existen dependencias.
+- **Salida**: Navega a `PROYECTOS_ABIERTOS` si archiva o conserva `PROYECTO_ABIERTO` si cancela.
 
 ### Clases de control
 
@@ -64,7 +64,7 @@ Analizar la colaboración necesaria para eliminar de forma segura un proyecto si
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Abstraer el acceso a datos de proyectos.
-- Proporcionar operaciones `obtenerPorId(proyectoId)`, `obtenerEquipo(proyectoId)` y `eliminar(proyectoId)`.
+- Proporcionar operaciones `obtenerPorId(proyectoId)`, `obtenerEquipo(proyectoId)` y `archivar(proyectoId, fecha, coordinador)`.
 - Mantener la consistencia conceptual de proyectos.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
@@ -82,28 +82,16 @@ Analizar la colaboración necesaria para eliminar de forma segura un proyecto si
 **Colaboraciones**:
 - **Repositorio**: Es gestionado por `ProyectoRepository`.
 
-#### EntregableRepository
-**Estereotipo**: Entidad
-**Responsabilidades**:
-- Recuperar entregables vinculados al proyecto antes de eliminar.
-- Aportar dependencias que pueden impedir la eliminación por trazabilidad.
-
-#### RecompensaRepository
-**Estereotipo**: Entidad
-**Responsabilidades**:
-- Recuperar recompensas vinculadas al proyecto.
-- Evitar que se pierda la relación entre proyecto completado y recompensa concedida.
-
 ## Flujo de colaboración
 
 ### Secuencia de operaciones
 
 1. **Inicio**: `PROYECTO_ABIERTO` -> `EliminarProyectoView.eliminarProyecto(proyectoId)`.
-2. **Comprobación previa**: `ProyectoController.comprobarEliminacion(proyectoId)`.
-3. **Dependencias**: El controlador obtiene equipo, entregables y recompensas vinculadas.
-4. **Trazabilidad**: Si existen dependencias que deben conservarse, impide la eliminación e informa al Coordinador.
-5. **Confirmación**: Si puede eliminarse, la vista solicita confirmación y el repositorio elimina el proyecto.
-6. **Finalización**: Navega a `PROYECTOS_ABIERTOS` si elimina o conserva `PROYECTO_ABIERTO` sin cambios.
+2. **Preparación**: `ProyectoController.prepararArchivado(proyectoId)` recupera el proyecto y resume qué información se conservará.
+3. **Confirmación**: La vista informa de las consecuencias y solicita confirmación.
+4. **Archivado**: El repositorio marca el proyecto como archivado y registra fecha y Coordinador responsable.
+5. **Trazabilidad**: Estado, equipo, entregables y recompensas permanecen vinculados al proyecto.
+6. **Finalización**: Navega a `PROYECTOS_ABIERTOS` si archiva o conserva `PROYECTO_ABIERTO` si cancela.
 
 ### Patrón de colaboración establecido
 
@@ -118,10 +106,9 @@ Analizar la colaboración necesaria para eliminar de forma segura un proyecto si
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
 |Atender la solicitud `eliminarProyecto()`|`EliminarProyectoView`|Recibe la acción del Coordinador|
-|Coordinar reglas del caso de uso|`ProyectoController`|`comprobarEliminacion(proyectoId)`, `confirmarEliminacion(proyectoId)`|
-|Preservar trazabilidad|`ProyectoController`|`validarTrazabilidad(dependencias)`|
-|Consultar dependencias|`EntregableRepository`, `RecompensaRepository`|Obtienen información vinculada|
-|Acceder a datos de proyectos|`ProyectoRepository`|`obtenerPorId(proyectoId)`, `obtenerEquipo(proyectoId)`, `eliminar(proyectoId)`|
+|Coordinar reglas del caso de uso|`ProyectoController`|`prepararArchivado(proyectoId)`, `confirmarArchivado(proyectoId, coordinador)`|
+|Preservar trazabilidad|`ProyectoRepository`|Conserva la entidad y todas sus relaciones|
+|Acceder a datos de proyectos|`ProyectoRepository`|`obtenerPorId(proyectoId)`, `obtenerEquipo(proyectoId)`, `archivar(proyectoId, fecha, coordinador)`|
 |Representar atributos de dominio|`Proyecto`|Entidad conceptual|
 
 ### Atributos tratados
@@ -133,16 +120,18 @@ Analizar la colaboración necesaria para eliminar de forma segura un proyecto si
 |estado|`Proyecto`|Atributo conceptual tratado por la entidad de dominio.|
 |fechas|`Proyecto`|Atributo conceptual tratado por la entidad de dominio.|
 |investigadores asociados|`Proyecto`|Atributo conceptual tratado por la entidad de dominio.|
+|archivado, fechaArchivado y archivadoPor|`Proyecto`|Metadatos de la baja lógica que conservan la trazabilidad.|
 
 ## Colaboraciones relacionadas
 
-- **abrirProyecto()**, **crearProyecto()** y **abrirPanelPrincipal()**: disponibles desde `PROYECTOS_ABIERTOS` tras eliminar.
-- **editarProyecto()**, **eliminarProyecto()**, **agregarInvestigador()**, **eliminarInvestigador()**, **abrirEntregables()**, **abrirInvestigadores()** y **abrirProyectos()**: disponibles desde `PROYECTO_ABIERTO` si se cancela o se impide la eliminación.
+- **abrirProyecto()**, **crearProyecto()** y **abrirPanelPrincipal()**: disponibles desde `PROYECTOS_ABIERTOS` tras archivar.
+- **editarProyecto()**, **eliminarProyecto()**, **agregarInvestigador()**, **eliminarInvestigador()**, **abrirEntregables()**, **abrirInvestigadores()** y **abrirProyectos()**: disponibles desde `PROYECTO_ABIERTO` si se cancela.
 
 ## Reglas funcionales consideradas
 
 - Mantener la separación entre presentación, coordinación y entidad para el rol Coordinador.
-- Impedir la eliminación cuando las dependencias vinculadas deban resolverse o conservarse para mantener la trazabilidad.
+- Aplicar una baja lógica y excluir proyectos archivados de la gestión activa.
+- Conservar el estado de negocio original, el equipo, los entregables y las recompensas.
 
 ## Características del análisis
 

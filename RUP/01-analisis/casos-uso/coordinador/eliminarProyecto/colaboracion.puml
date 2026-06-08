@@ -6,11 +6,7 @@ package eliminarProyecto as "eliminarProyecto()" {
     rectangle #629EF9 EliminarProyectoView
     rectangle #b5bd68 ProyectoController
     rectangle #F2AC4E ProyectoRepository
-    rectangle #F2AC4E EntregableRepository
-    rectangle #F2AC4E RecompensaRepository
     rectangle #F2AC4E Proyecto
-    rectangle #F2AC4E Entregable
-    rectangle #F2AC4E Recompensa
 }
 
 rectangle #CDEBA5 ":PROYECTOS_ABIERTOS" as EstadoSalida
@@ -28,20 +24,15 @@ rectangle #CDEBA5 ":Collaboration AbrirProyectos" as AbrirProyectos
 
 EstadoEntrada -r-> EliminarProyectoView: eliminarProyecto(proyectoId)
 
-EliminarProyectoView -d-> ProyectoController: comprobarEliminacion(proyectoId)
+EliminarProyectoView -d-> ProyectoController: prepararArchivado(proyectoId)
 ProyectoController --> ProyectoRepository: obtenerPorId(proyectoId)
-ProyectoController --> EntregableRepository: obtenerPorProyecto(proyectoId)
-ProyectoController --> RecompensaRepository: obtenerPorProyecto(proyectoId)
 ProyectoController --> ProyectoRepository: obtenerEquipo(proyectoId)
-ProyectoController --> ProyectoController: validarTrazabilidad(dependencias)
-ProyectoController --> EliminarProyectoView: presentarResultadoYConfirmacion()
-EliminarProyectoView --> ProyectoController: confirmarEliminacion(proyectoId)
-ProyectoController --> ProyectoRepository: eliminar(proyectoId)
+ProyectoController --> EliminarProyectoView: presentarConsecuenciasYConfirmacion()
+EliminarProyectoView --> ProyectoController: confirmarArchivado(proyectoId, coordinador)
+ProyectoController --> ProyectoRepository: archivar(proyectoId, fecha, coordinador)
 ProyectoRepository -- Proyecto
-EntregableRepository -- Entregable
-RecompensaRepository -- Recompensa
-EliminarProyectoView ..> EstadoSalida: proyectoEliminado()
-EliminarProyectoView ..> EstadoSalidaSinCambios: cancelarOImpedirEliminacion()
+EliminarProyectoView ..> EstadoSalida: proyectoArchivado()
+EliminarProyectoView ..> EstadoSalidaSinCambios: cancelarArchivado()
 EliminarProyectoView ..> AbrirProyecto: abrirProyecto()
 EliminarProyectoView ..> CrearProyecto: crearProyecto()
 EliminarProyectoView ..> AbrirPanelPrincipal: abrirPanelPrincipal()

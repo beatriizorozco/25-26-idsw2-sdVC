@@ -14,7 +14,7 @@
 
 ## Propósito
 
-Especificación detallada del caso de uso `eliminarProyecto()` mediante diagrama de estado, mostrando la conversación entre el Coordinador y el Sistema para permitir al coordinador solicitar o confirmar la eliminación de proyecto cuando su rol lo permite.
+Especificación detallada del caso de uso `eliminarProyecto()` mediante diagrama de estado. El nombre histórico del caso se conserva, pero funcionalmente realiza una baja lógica: archiva el proyecto sin borrar su información.
 
 ## Información del caso de uso
 
@@ -22,12 +22,12 @@ Especificación detallada del caso de uso `eliminarProyecto()` mediante diagrama
 |-|-|
 |**Nombre**|eliminarProyecto()|
 |**Actor primario**|Coordinador|
-|**Objetivo**|Eliminar un proyecto únicamente cuando puede hacerse sin perder trazabilidad ni dejar dependencias huérfanas.|
+|**Objetivo**|Retirar un proyecto de la gestión activa y conservarlo íntegramente en el histórico.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
 |**Precondición**|Coordinador autenticado con un proyecto en `PROYECTO_ABIERTO`.|
-|**Postcondición exitosa**|El proyecto queda eliminado y el estado pasa a `PROYECTOS_ABIERTOS`.|
-|**Postcondición de fallo**|No se aplican cambios si existen dependencias que deben conservarse o el actor cancela.|
+|**Postcondición exitosa**|El proyecto queda archivado, conserva toda su trazabilidad y el estado de navegación pasa a `PROYECTOS_ABIERTOS`.|
+|**Postcondición de fallo**|No se aplican cambios si el actor cancela o el proyecto ya estaba archivado.|
 
 ## Diagrama de especificación
 
@@ -51,14 +51,14 @@ Especificación detallada del caso de uso `eliminarProyecto()` mediante diagrama
 
 |![Wireframe: eliminarProyecto](/images/RUP/00-casos-uso/02-detalle/coordinador/eliminarProyecto/eliminarProyecto-wireframe.svg)|
 |-|
-|**Estado**: ComprobandoDependencias / ConfirmandoEliminacion|
+|**Estado**: MostrandoConsecuencias / ConfirmandoArchivado|
 
 </div>
 
 **Correspondencia con especificación:**
 - **Coordinador** tiene un proyecto abierto<br>**Coordinador** solicita eliminar proyecto
-- **Sistema** comprueba entregables, equipo, recompensas y demás información vinculada. Solo presenta confirmación si puede eliminarse sin perder trazabilidad.
-- **Coordinador** solicita confirmar eliminación<br>**Sistema** visualiza el listado de proyectos actualizado
+- **Sistema** informa que el proyecto dejará de aparecer en la gestión activa y que conservará estado, equipo, entregables, recompensas y demás información vinculada.
+- **Coordinador** solicita confirmar<br>**Sistema** archiva el proyecto y visualiza el listado de proyectos activos actualizado.
 - **Coordinador** cancela eliminación<br>**Sistema** visualiza el proyecto sin cambios
 
 ### Validaciones del wireframe
@@ -82,9 +82,9 @@ Especificación detallada del caso de uso `eliminarProyecto()` mediante diagrama
 |Actor|Acción|Sistema|Respuesta|
 |-|-|-|-|
 |**Coordinador**|tiene un proyecto abierto<br>**Coordinador** solicita eliminar proyecto|| |
-||**Sistema**|comprueba entregables, equipo, recompensas y demás información vinculada; impide eliminar si debe conservarse trazabilidad y, en caso contrario, presenta confirmación| |
-|**Coordinador**|solicita confirmar eliminación<br>|| |
-||**Sistema**|visualiza el listado de proyectos actualizado| |
+||**Sistema**|presenta las consecuencias del archivado e informa que conservará íntegramente el proyecto y sus relaciones históricas| |
+|**Coordinador**|solicita confirmar el archivado<br>|| |
+||**Sistema**|archiva el proyecto, registra fecha y Coordinador responsable, y visualiza el listado de proyectos activos actualizado| |
 |**Coordinador**|cancela eliminación<br>|| |
 ||**Sistema**|visualiza el proyecto sin cambios| |
 
@@ -92,15 +92,16 @@ Especificación detallada del caso de uso `eliminarProyecto()` mediante diagrama
 
 |Estado|Descripción|Responsabilidad|
 |-|-|-|
-|**ComprobandoDependencias**|Comprueba toda la información vinculada al proyecto.|Sistema debe impedir pérdidas de trazabilidad o referencias huérfanas.|
-|**ConfirmandoEliminacion**|Solicita confirmación cuando el proyecto puede eliminarse.|Sistema debe eliminar únicamente tras confirmación explícita.|
+|**MostrandoConsecuencias**|Presenta qué cambia y qué información se conservará.|Sistema debe explicar que el proyecto dejará la gestión activa sin perder trazabilidad.|
+|**ConfirmandoArchivado**|Solicita confirmación para archivar el proyecto.|Sistema debe realizar la baja lógica únicamente tras confirmación explícita.|
 
 ## Funcionalidad específica
 
-### Patrón de eliminación segura
+### Patrón de baja lógica segura
 
-- **Confirmación**: la conversación separa solicitud y eliminación.
-- **Protección de trazabilidad**: la eliminación se impide mientras existan dependencias que deban conservarse.
+- **Confirmación**: la conversación separa solicitud y archivado.
+- **Protección de trazabilidad**: ninguna relación histórica se borra; el proyecto y sus dependencias permanecen vinculados.
+- **Retirada de la gestión activa**: los listados operativos excluyen proyectos archivados.
 - **Retorno al contexto**: el actor vuelve al listado o estado indicado por el diagrama.
 
 ### Información tratada
@@ -108,6 +109,7 @@ Especificación detallada del caso de uso `eliminarProyecto()` mediante diagrama
   - Título
   - Estado
   - Investigadores asociados
+  - Indicador, fecha y Coordinador responsable del archivado
 
 ## Opciones de navegación
 
@@ -120,7 +122,7 @@ Especificación detallada del caso de uso `eliminarProyecto()` mediante diagrama
 
 ## Conexión con diagrama de contexto
 
-Este caso de uso corresponde a `PROYECTO_ABIERTO` → `eliminarProyecto()` → `PROYECTOS_ABIERTOS` cuando se elimina, o vuelve a `PROYECTO_ABIERTO` si se cancela o existen dependencias.
+Este caso de uso corresponde a `PROYECTO_ABIERTO` → `eliminarProyecto()` → `PROYECTOS_ABIERTOS` cuando se archiva, o vuelve a `PROYECTO_ABIERTO` si se cancela. El nombre `eliminarProyecto()` se conserva por trazabilidad, aunque funcionalmente realiza una baja lógica.
 
 ## Vocabulario utilizado
 

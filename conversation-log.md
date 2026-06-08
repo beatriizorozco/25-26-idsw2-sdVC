@@ -393,3 +393,27 @@ Además, se corrigió de forma estable el error recurrente del proxy de Vite cua
 La revisión inicial detectó dos incoherencias funcionales relevantes. `abrirProyecto()` repite actualmente el listado y filtrado de proyectos, aunque el diagrama de contexto indica que se invoca desde `PROYECTOS_ABIERTOS` sobre un proyecto seleccionado y debe presentar directamente su detalle. Además, `agregarInvestigador()` solicita nuevamente ID, nombre y campo como si crease un investigador, cuando debe asociar al proyecto un perfil ya existente y considerar su disponibilidad y carga de trabajo.
 
 **Decisión:** la sesión se dedicará a corregir y revisar el Detalle completo del bloque 5, comenzando por los diagramas de especificación y alineando después los README y prototipos. Antes de avanzar a Análisis se solicitará una revisión manual del usuario.
+
+---
+
+## [2026-06-08 17:32] Fin de sesión - Análisis y Diseño del bloque 5 con archivado histórico
+
+**Prompt:** cierre de sesión solicitado mediante la skill `session-memory`, indicando como hora final las 17:32.
+
+**Resultado:** se utilizó la skill `session-memory`. Durante la sesión se terminó de revisar el Análisis del bloque 5 de gestión de proyectos y composición de equipos. Se validaron los casos del Coordinador `abrirProyectos()`, `abrirProyecto()`, `crearProyecto()`, `editarProyecto()`, `eliminarProyecto()`, `agregarInvestigador()` y `eliminarInvestigador()`, además de `abrirProyectos()` y `abrirProyecto()` para el Investigador. Las colaboraciones se contrastaron con los diagramas de contexto y se corrigieron sus salidas, incluyendo la colaboración de `agregarInvestigador()` con `abrirInvestigadores()` y las acciones disponibles desde `PROYECTO_ABIERTO`.
+
+También se creó el Diseño completo del bloque 5 para ambos actores, con sus README, diagramas `secuencia.puml` y SVG. El Diseño diferencia la gestión global del Coordinador de la consulta de proyectos propios del Investigador, asigna al servidor la creación del código, Coordinador y estado inicial del proyecto, y establece que agregar o retirar investigadores modifica únicamente su asociación con el proyecto, sin crear ni eliminar perfiles. Los diagramas PlantUML generados fueron validados correctamente.
+
+Durante la revisión final se tomó una decisión relevante de dominio: `eliminarProyecto()` conservará su nombre por trazabilidad, pero realizará un archivado lógico en lugar de una eliminación física. El proyecto archivado mantiene su estado original, equipo, entregables, recompensas y relaciones históricas, registra quién y cuándo lo archivó y deja de aparecer en los listados activos. Esta decisión se propagó por el modelo del dominio, Detalle, Análisis, Diseño, diagramas de contexto, fuentes PlantUML, SVG, `incidencias_y_soluciones.md` y `tareas_a_realizar.md`.
+
+**Decisión:** el Detalle y el Análisis del bloque 5 quedan revisados, y su Diseño queda creado y validado técnicamente. Antes de avanzar a Desarrollo se debe revisar manualmente el Diseño completo y diseñar una consulta de histórico de proyectos archivados para el Coordinador, garantizando que el archivado lógico pueda consultarse y mantenga toda la trazabilidad del proyecto.
+
+---
+
+## [2026-06-08 19:16] Inicio de sesión - Política transversal de bajas lógicas
+
+**Prompt:** el usuario inició una nueva sesión mediante la skill `session-memory` y planteó si todos los casos de uso `eliminar...` deberían conservar un histórico, especialmente los investigadores que dejan de estar activos.
+
+**Resultado:** se utilizó la skill `session-memory`. Se recuperó el cierre anterior, se revisó el estado del repositorio y se inventariaron los casos de eliminación existentes. Se confirmó que el backend ya implementa correctamente `eliminarPerfil()` como una desactivación del usuario mediante el atributo `activo`, conservando el perfil y su trazabilidad, aunque parte de la documentación todavía lo presenta como una eliminación irreversible. También se distinguieron tres comportamientos diferentes bajo nombres históricos `eliminar...`: baja lógica de entidades históricas, desasignación de relaciones y borrado físico excepcional de datos sin valor histórico.
+
+**Decisión:** se adoptará como regla general que perfiles, proyectos, publicaciones, entregables y recompensas con valor de auditoría o relaciones históricas no se eliminan físicamente, sino que se desactivan, archivan o anulan. `eliminarInvestigador()` dentro de un proyecto seguirá siendo únicamente una desasignación. Antes de modificar transversalmente los bloques ya cerrados se revisará cada caso de eliminación para definir su semántica exacta y mantener coherentes Detalle, Análisis, Diseño, Desarrollo y Pruebas.

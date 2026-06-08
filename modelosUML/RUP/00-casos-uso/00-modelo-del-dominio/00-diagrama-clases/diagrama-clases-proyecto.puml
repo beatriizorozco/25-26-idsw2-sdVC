@@ -3,6 +3,9 @@
 title Sistema de gestión de proyectos
 
 class Proyecto <<Principal>> #FFAAAA {
+  archivado
+  fechaArchivado
+  archivadoPor
 }
 
 class Convocatoria {

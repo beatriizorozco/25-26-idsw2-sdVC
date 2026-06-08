@@ -5,41 +5,38 @@ state proyecto as "PROYECTO_ABIERTO"
 proyecto -[#green]-> eliminarProyecto
 
 state eliminarProyecto as "eliminarProyecto()" {
-    state " " as ComprobandoDependencias
-    state " " as ConfirmandoEliminacion
+    state " " as MostrandoConsecuencias
+    state " " as ConfirmandoArchivado
 
-    [*] -[#green]-> ComprobandoDependencias
+    [*] -[#green]-> MostrandoConsecuencias
     note on link
     <b>Coordinador</b> solicita eliminar el proyecto abierto
-    <b>Sistema</b> comprueba entregables, equipo,
-    recompensas y demás información vinculada
+    <b>Sistema</b> presenta el proyecto y la informacion
+    vinculada que se conservara en el historico
     end note
 
-    ComprobandoDependencias -[#red]-> [*]
+    MostrandoConsecuencias -[#green]-> ConfirmandoArchivado
     note on link
-    <b>Sistema</b> impide la eliminación e informa
-    las dependencias que deben resolverse o conservarse
+    <b>Sistema</b> informa que el proyecto dejara
+    de aparecer en la gestion activa, pero conservara
+    estado, equipo, entregables y recompensas
     end note
 
-    ComprobandoDependencias -[#green]-> ConfirmandoEliminacion
-    note on link
-    <b>Sistema</b> presenta el proyecto y solicita confirmación
-    cuando puede eliminarse sin perder trazabilidad
-    end note
-
-    ConfirmandoEliminacion -[#green]-> [*]
+    ConfirmandoArchivado -[#green]-> [*]
     note on link
     <b>Coordinador</b> confirma
-    <b>Sistema</b> elimina el proyecto
+    <b>Sistema</b> archiva el proyecto y registra
+    fecha y Coordinador responsable
     end note
 
-    ConfirmandoEliminacion -[#red]-> [*]
+    ConfirmandoArchivado -[#red]-> [*]
     note on link
     <b>Coordinador</b> cancela
+    <b>Sistema</b> conserva el proyecto activo sin cambios
     end note
 }
 
-eliminarProyecto -[#green]-> PROYECTOS_ABIERTOS: Proyecto eliminado
+eliminarProyecto -[#green]-> PROYECTOS_ABIERTOS: Proyecto archivado
 eliminarProyecto -[#red]-> PROYECTO_ABIERTO: Sin cambios
 
 @enduml

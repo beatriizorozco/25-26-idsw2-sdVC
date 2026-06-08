@@ -5,7 +5,7 @@
 
 ## Propósito
 
-Detallar la eliminación segura de un proyecto, comprobando previamente sus dependencias y trazabilidad.
+Detallar la baja lógica de un proyecto, retirándolo de la gestión activa y conservándolo íntegramente en el histórico.
 
 ## Diagrama de secuencia
 
@@ -15,18 +15,20 @@ Detallar la eliminación segura de un proyecto, comprobando previamente sus depe
 
 ## Participantes
 
-- **ProyectoDetallePage**: Presenta el diagnóstico y solicita confirmación.
-- **ProyectoController**: Expone comprobación y `DELETE /api/proyectos/{id}`.
+- **ProyectoDetallePage**: Presenta las consecuencias del archivado y solicita confirmación.
+- **ProyectoController**: Expone las opciones de archivado y `DELETE /api/proyectos/{id}`.
 - **SesionService**: Exige una sesión de Coordinador.
-- **ProyectoService**: Decide si la eliminación preserva la trazabilidad.
-- **ProyectoRepository**, **EntregableRepository** y **RecompensaRepository**: Comprueban dependencias y eliminan cuando procede.
+- **ProyectoService**: Coordina la baja lógica y registra su autoría.
+- **ProyectoRepository**: Conserva el proyecto y marca sus metadatos de archivado.
 
 ## Decisiones de Diseño
 
-- La confirmación solo se habilita cuando la eliminación es compatible con la trazabilidad.
-- Cancelar o impedir la eliminación conserva `PROYECTO_ABIERTO`.
-- La API no elimina entregables, recompensas ni perfiles asociados de forma implícita.
-- La eliminación correcta devuelve `204 No Content` y abre el listado.
+- El nombre `eliminarProyecto()` se conserva por trazabilidad, pero la operación realiza una baja lógica.
+- Cancelar conserva `PROYECTO_ABIERTO`.
+- Estado, equipo, entregables, recompensas y demás relaciones permanecen intactos.
+- El archivado registra `archivado`, `fechaArchivado` y `archivadoPor`.
+- Los listados activos excluyen proyectos archivados.
+- El archivado correcto devuelve `204 No Content` y abre el listado.
 
 ## Referencias
 

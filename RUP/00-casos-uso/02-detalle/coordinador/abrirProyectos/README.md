@@ -22,7 +22,7 @@ Especificación detallada del caso de uso `abrirProyectos()` mediante diagrama d
 |-|-|
 |**Nombre**|abrirProyectos(investigadorId?)|
 |**Actor primario**|Coordinador|
-|**Objetivo**|Presentar todos los proyectos o los asociados al investigador de contexto, con opciones de filtrado y navegación.|
+|**Objetivo**|Presentar los proyectos activos o los activos asociados al investigador de contexto, con opciones de filtrado y navegación.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
 |**Precondición**|Coordinador autenticado en `PANEL_PRINCIPAL_ABIERTO`, `PROYECTO_ABIERTO` o `INVESTIGADOR_ABIERTO`.|
@@ -57,7 +57,7 @@ Especificación detallada del caso de uso `abrirProyectos()` mediante diagrama d
 
 **Correspondencia con especificación:**
 - **Coordinador** solicita abrir proyectos
-- **Sistema** presenta todos los proyectos o, desde `INVESTIGADOR_ABIERTO`, los asociados al investigador de contexto. Permite filtrar, abrir, crear o volver al panel.
+- **Sistema** presenta los proyectos activos o, desde `INVESTIGADOR_ABIERTO`, los activos asociados al investigador de contexto. Permite filtrar, abrir, crear o volver al panel.
 - **Coordinador** filtra o busca proyectos<br>**Sistema** actualiza el listado
 
 ### Validaciones del wireframe
@@ -81,7 +81,7 @@ Especificación detallada del caso de uso `abrirProyectos()` mediante diagrama d
 |Actor|Acción|Sistema|Respuesta|
 |-|-|-|-|
 |**Coordinador**|solicita abrir proyectos|| |
-||**Sistema**|presenta todos los proyectos o los asociados al investigador de contexto, incluyendo código, título, estado, coordinador y fechas; permite filtrar, abrir, crear o volver al panel| |
+||**Sistema**|presenta los proyectos activos o los activos asociados al investigador de contexto, incluyendo código, título, estado, coordinador y fechas; permite filtrar, abrir, crear o volver al panel| |
 |**Coordinador**|filtra o busca proyectos<br>|| |
 ||**Sistema**|actualiza el listado| |
 |**Coordinador**|selecciona una opción de navegación|| |
@@ -90,7 +90,7 @@ Especificación detallada del caso de uso `abrirProyectos()` mediante diagrama d
 
 |Estado|Descripción|Responsabilidad|
 |-|-|-|
-|**PresentandoProyectos**|Presenta los proyectos correspondientes al contexto de entrada.|Sistema debe respetar el alcance global o por investigador.|
+|**PresentandoProyectos**|Presenta los proyectos activos correspondientes al contexto de entrada.|Sistema debe respetar el alcance global o por investigador y excluir los archivados.|
 |**FiltrandoProyectos**|Aplica o limpia criterios sobre el conjunto presentado.|Sistema debe conservar el alcance de contexto al filtrar.|
 
 ## Funcionalidad específica

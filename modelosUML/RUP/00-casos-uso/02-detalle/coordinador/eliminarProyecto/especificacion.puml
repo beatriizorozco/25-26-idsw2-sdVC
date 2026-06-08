@@ -1,67 +1,42 @@
 @startuml eliminarProyecto
 skinparam linetype polyline
 
-state in1 as "PROYECTO_ABIERTO"
-in1 -[#green]-> eliminarProyecto
-
+state proyecto as "PROYECTO_ABIERTO"
+proyecto -[#green]-> eliminarProyecto
 
 state eliminarProyecto as "eliminarProyecto()" {
+    state " " as MostrandoConsecuencias
+    state " " as ConfirmandoArchivado
 
-    state " " as MostrandoProyecto
-    state " " as ConfirmandoEliminacion
-
-    [*] -[#green]-> MostrandoProyecto
+    [*] -[#green]-> MostrandoConsecuencias
     note on link
-    <b>Coordinador</b> tiene un proyecto abierto
-    <b>Coordinador</b> solicita eliminar proyecto
+    <b>Coordinador</b> solicita eliminar el proyecto abierto
+    <b>Sistema</b> presenta el proyecto y la informacion
+    vinculada que se conservara en el historico
     end note
 
-    MostrandoProyecto -[#green]-> ConfirmandoEliminacion
+    MostrandoConsecuencias -[#green]-> ConfirmandoArchivado
     note on link
-    <b>Sistema</b> presenta los datos del proyecto:
-    • ID
-    • Título
-    • Estado
-    • Coordinador
-    • Fecha de inicio
-    • Fecha de fin
-    • Descripción
-
-    y presenta la confirmación de eliminación:
-    • ¿Está seguro de eliminar el proyecto?
-    • Advertencia: esta acción no se puede deshacer.
-
-    <b>Al confirmar:</b>
-    • Se eliminarán los entregables asociados
-    • Se eliminarán las asociaciones con investigadores
-    • Se volverá al listado de proyectos actualizado
-
-    y permite solicitar las siguientes acciones:
-    • Confirmar eliminación
-    • Cancelar
+    <b>Sistema</b> informa que el proyecto dejara
+    de aparecer en la gestion activa, pero conservara
+    estado, equipo, entregables y recompensas
     end note
 
-    ConfirmandoEliminacion -[#green]-> [*]
+    ConfirmandoArchivado -[#green]-> [*]
     note on link
-    <b>Coordinador</b> solicita confirmar eliminación
-    <b>Sistema</b> visualiza el listado de proyectos actualizado
+    <b>Coordinador</b> confirma
+    <b>Sistema</b> archiva el proyecto y registra
+    fecha y Coordinador responsable
     end note
 
-    ConfirmandoEliminacion -[#red]-> MostrandoProyecto
+    ConfirmandoArchivado -[#red]-> [*]
     note on link
-    <b>Coordinador</b> cancela eliminación
-    <b>Sistema</b> visualiza el proyecto sin cambios
+    <b>Coordinador</b> cancela
+    <b>Sistema</b> conserva el proyecto activo sin cambios
     end note
 }
 
-eliminarProyecto -[#green]-> PROYECTOS_ABIERTOS
-note on link
-abrirProyectos()
-end note
-
-eliminarProyecto -[#red]-> PROYECTO_ABIERTO
-note on link
-Eliminación cancelada
-end note
+eliminarProyecto -[#green]-> PROYECTOS_ABIERTOS: Proyecto archivado
+eliminarProyecto -[#red]-> PROYECTO_ABIERTO: Sin cambios
 
 @enduml

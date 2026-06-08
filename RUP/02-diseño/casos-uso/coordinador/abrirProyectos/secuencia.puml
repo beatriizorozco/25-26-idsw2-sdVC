@@ -20,9 +20,9 @@ alt Sesion de Coordinador activa
     Api -> Service: listar(criterio, investigadorId?)
     activate Service
     alt Sin investigador seleccionado
-        Service -> Repo: buscarTodos(criterio)
+        Service -> Repo: buscarActivos(criterio)
     else Con investigador seleccionado
-        Service -> Repo: buscarPorInvestigador(criterio, investigadorId)
+        Service -> Repo: buscarActivosPorInvestigador(criterio, investigadorId)
     end
     Repo --> Service: Lista<Proyecto>
     Service --> Api: Lista<ProyectoResumenResponse>

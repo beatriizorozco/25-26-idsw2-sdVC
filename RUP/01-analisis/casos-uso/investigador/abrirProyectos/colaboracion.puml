@@ -20,8 +20,8 @@ EstadoEntrada2 -r-> ListarProyectosView: abrirProyectos()
 EstadoEntrada3 -r-> ListarProyectosView: abrirProyectos(idInvestigador)
 
 ListarProyectosView -d-> ProyectoController: listarProyectos(actorId, investigadorId?)
-ProyectoController --> ProyectoRepository: obtenerPropios(investigador)
-ProyectoController --> ProyectoRepository: obtenerVisiblesPorInvestigador(investigadorId)
+ProyectoController --> ProyectoRepository: obtenerActivosPropios(investigador)
+ProyectoController --> ProyectoRepository: obtenerActivosVisiblesPorInvestigador(investigadorId)
 ListarProyectosView --> ProyectoController: filtrarProyectos(criterio, actorId, investigadorId?)
 ProyectoController --> ProyectoRepository: buscarVisiblesPorCriterio(criterio, alcance)
 ProyectoRepository -- Proyecto
