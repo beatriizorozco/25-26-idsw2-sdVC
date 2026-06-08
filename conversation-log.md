@@ -417,7 +417,3 @@ Durante la revisión final se tomó una decisión relevante de dominio: `elimina
 **Resultado:** se utilizó la skill `session-memory`. Se recuperó el cierre anterior, se revisó el estado del repositorio y se inventariaron los casos de eliminación existentes. Se confirmó que el backend ya implementa correctamente `eliminarPerfil()` como una desactivación del usuario mediante el atributo `activo`, conservando el perfil y su trazabilidad, aunque parte de la documentación todavía lo presenta como una eliminación irreversible. También se distinguieron tres comportamientos diferentes bajo nombres históricos `eliminar...`: baja lógica de entidades históricas, desasignación de relaciones y borrado físico excepcional de datos sin valor histórico.
 
 **Decisión:** se adoptará como regla general que perfiles, proyectos, publicaciones, entregables y recompensas con valor de auditoría o relaciones históricas no se eliminan físicamente, sino que se desactivan, archivan o anulan. `eliminarInvestigador()` dentro de un proyecto seguirá siendo únicamente una desasignación. Antes de modificar transversalmente los bloques ya cerrados se revisará cada caso de eliminación para definir su semántica exacta y mantener coherentes Detalle, Análisis, Diseño, Desarrollo y Pruebas.
-
----
-
-## [2026-06-08 20:02] Fin de sesión
