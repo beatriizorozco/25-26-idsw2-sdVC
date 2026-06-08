@@ -6,24 +6,51 @@ package eliminarProyecto as "eliminarProyecto()" {
     rectangle #629EF9 EliminarProyectoView
     rectangle #b5bd68 ProyectoController
     rectangle #F2AC4E ProyectoRepository
+    rectangle #F2AC4E EntregableRepository
+    rectangle #F2AC4E RecompensaRepository
     rectangle #F2AC4E Proyecto
+    rectangle #F2AC4E Entregable
+    rectangle #F2AC4E Recompensa
 }
 
-rectangle #CDEBA5 ":PROYECTO_ABIERTO" as EstadoSalida
+rectangle #CDEBA5 ":PROYECTOS_ABIERTOS" as EstadoSalida
+rectangle #CDEBA5 ":PROYECTO_ABIERTO" as EstadoSalidaSinCambios
+rectangle #CDEBA5 ":Collaboration AbrirProyecto" as AbrirProyecto
+rectangle #CDEBA5 ":Collaboration CrearProyecto" as CrearProyecto
+rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanelPrincipal
+rectangle #CDEBA5 ":Collaboration EditarProyecto" as EditarProyecto
+rectangle #CDEBA5 ":Collaboration EliminarProyecto" as EliminarProyecto
+rectangle #CDEBA5 ":Collaboration AgregarInvestigador" as AgregarInvestigador
+rectangle #CDEBA5 ":Collaboration EliminarInvestigador" as EliminarInvestigador
+rectangle #CDEBA5 ":Collaboration AbrirEntregables" as AbrirEntregables
+rectangle #CDEBA5 ":Collaboration AbrirInvestigadores" as AbrirInvestigadores
 rectangle #CDEBA5 ":Collaboration AbrirProyectos" as AbrirProyectos
 
-EstadoEntrada -r-> EliminarProyectoView: eliminarProyecto()
+EstadoEntrada -r-> EliminarProyectoView: eliminarProyecto(proyectoId)
 
-EliminarProyectoView -d-> ProyectoController: solicitarConfirmacion(id)
-ProyectoController --> EliminarProyectoView: presentarConfirmacion()
-EliminarProyectoView --> ProyectoController: confirmarEliminacion(id)
-EliminarProyectoView --> ProyectoController: cancelarEliminacion()
-EliminarProyectoView --> ProyectoController: validarEliminacion(id)
-ProyectoController --> ProyectoRepository: obtenerPorId(id)
-ProyectoController --> ProyectoRepository: eliminar(id)
+EliminarProyectoView -d-> ProyectoController: comprobarEliminacion(proyectoId)
+ProyectoController --> ProyectoRepository: obtenerPorId(proyectoId)
+ProyectoController --> EntregableRepository: obtenerPorProyecto(proyectoId)
+ProyectoController --> RecompensaRepository: obtenerPorProyecto(proyectoId)
+ProyectoController --> ProyectoRepository: obtenerEquipo(proyectoId)
+ProyectoController --> ProyectoController: validarTrazabilidad(dependencias)
+ProyectoController --> EliminarProyectoView: presentarResultadoYConfirmacion()
+EliminarProyectoView --> ProyectoController: confirmarEliminacion(proyectoId)
+ProyectoController --> ProyectoRepository: eliminar(proyectoId)
 ProyectoRepository -- Proyecto
+EntregableRepository -- Entregable
+RecompensaRepository -- Recompensa
 EliminarProyectoView ..> EstadoSalida: proyectoEliminado()
-EliminarProyectoView ..> EstadoSalida: eliminacionCancelada()
+EliminarProyectoView ..> EstadoSalidaSinCambios: cancelarOImpedirEliminacion()
+EliminarProyectoView ..> AbrirProyecto: abrirProyecto()
+EliminarProyectoView ..> CrearProyecto: crearProyecto()
+EliminarProyectoView ..> AbrirPanelPrincipal: abrirPanelPrincipal()
+EliminarProyectoView ..> EditarProyecto: editarProyecto()
+EliminarProyectoView ..> EliminarProyecto: eliminarProyecto()
+EliminarProyectoView ..> AgregarInvestigador: agregarInvestigador()
+EliminarProyectoView ..> EliminarInvestigador: eliminarInvestigador()
+EliminarProyectoView ..> AbrirEntregables: abrirEntregables()
+EliminarProyectoView ..> AbrirInvestigadores: abrirInvestigadores()
 EliminarProyectoView ..> AbrirProyectos: abrirProyectos()
 
 @enduml

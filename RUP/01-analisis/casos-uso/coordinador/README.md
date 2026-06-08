@@ -30,13 +30,13 @@ Esta carpeta contiene el análisis MVC de los casos de uso del Coordinador, orga
 - [editarProyecto()](editarProyecto/README.md)
 - [eliminarProyecto()](eliminarProyecto/README.md)
 - [agregarInvestigador()](agregarInvestigador/README.md)
+- [eliminarInvestigador()](eliminarInvestigador/README.md)
 
 ## Consulta y gestión de investigadores
 
 - [abrirInvestigadores()](abrirInvestigadores/README.md)
 - [abrirInvestigador()](abrirInvestigador/README.md)
 - [crearInvestigador()](crearInvestigador/README.md)
-- [eliminarInvestigador()](eliminarInvestigador/README.md)
 
 ## Consulta y CRUD de entregables
 

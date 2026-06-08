@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para actualizar los datos de proyecto. El an
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `editarProyecto()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `editarProyecto(proyectoId)` desde `PROYECTO_ABIERTO`.
 - **Control**: Se comunica con `ProyectoController`.
-- **Salida**: Devuelve el control a la navegación definida para el Coordinador.
+- **Salida**: Conserva `PROYECTO_ABIERTO`, con los cambios registrados o sin cambios si se cancela.
 
 ### Clases de control
 
@@ -86,12 +86,12 @@ Analizar la colaboración necesaria para actualizar los datos de proyecto. El an
 
 ### Secuencia de operaciones
 
-1. **Inicio**: Estado de contexto -> `EditarProyectoView.editarProyecto()`.
-2. **Solicitud principal**: `EditarProyectoView` -> `ProyectoController.editarProyecto(id, datos)`.
-3. **Acceso a datos**: `EditarProyectoView` -> `ProyectoController.validarCambios(datos)`.
-4. **Validación de cambios**: `ProyectoController` -> `ProyectoRepository.obtenerPorId(id)`.
-5. **Persistencia**: `ProyectoController` -> `ProyectoRepository.actualizar(entidad)`.
-6. **Finalización**: `EditarProyectoView` devuelve el control al estado de navegación definido.
+1. **Inicio**: `PROYECTO_ABIERTO` -> `EditarProyectoView.editarProyecto(proyectoId)`.
+2. **Preparación**: `ProyectoController.prepararEdicion(proyectoId)` recupera el proyecto.
+3. **Transiciones**: `ProyectoController.obtenerTransicionesPermitidas(proyecto.estado)`.
+4. **Validación de cambios**: Se comprueban datos obligatorios, fechas y transición solicitada.
+5. **Persistencia**: `ProyectoController` -> `ProyectoRepository.actualizar(proyecto)`.
+6. **Finalización**: `EditarProyectoView` conserva `PROYECTO_ABIERTO`, con los cambios registrados o sin cambios si se cancela.
 
 ### Patrón de colaboración establecido
 
@@ -106,9 +106,9 @@ Analizar la colaboración necesaria para actualizar los datos de proyecto. El an
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
 |Atender la solicitud `editarProyecto()`|`EditarProyectoView`|Recibe la acción del Coordinador|
-|Coordinar reglas del caso de uso|`ProyectoController`|`editarProyecto(id, datos)`|
-|Aplicar permisos y validaciones|`ProyectoController`|`validarCambios(datos)`|
-|Acceder a datos de proyectos|`ProyectoRepository`|`obtenerPorId(id)`, `actualizar(entidad)`|
+|Coordinar reglas del caso de uso|`ProyectoController`|`prepararEdicion(proyectoId)`, `editarProyecto(proyectoId, cambios)`|
+|Aplicar validaciones|`ProyectoController`|`validarDatosFechasYTransicion(cambios)`|
+|Acceder a datos de proyectos|`ProyectoRepository`|`obtenerPorId(proyectoId)`, `actualizar(proyecto)`|
 |Representar atributos de dominio|`Proyecto`|Entidad conceptual|
 
 ### Atributos tratados
@@ -123,16 +123,18 @@ Analizar la colaboración necesaria para actualizar los datos de proyecto. El an
 
 ## Colaboraciones relacionadas
 
+- **editarProyecto()**: colaboración disponible mientras permanece `PROYECTO_ABIERTO`.
 - **eliminarProyecto()**: colaboración relacionada desde la navegación del caso de uso.
 - **agregarInvestigador()**: colaboración relacionada desde la navegación del caso de uso.
 - **eliminarInvestigador()**: colaboración relacionada desde la navegación del caso de uso.
 - **abrirEntregables()**: colaboración relacionada desde la navegación del caso de uso.
 - **abrirInvestigadores()**: colaboración relacionada desde la navegación del caso de uso.
+- **abrirProyectos()**: colaboración relacionada desde la navegación del caso de uso.
 
 ## Reglas funcionales consideradas
 
 - Mantener la separación entre presentación, coordinación y entidad para el rol Coordinador.
-- Permitir al Coordinador acceso global sobre publicaciones, entregables, proyectos, investigadores, recompensas y perfiles según el caso de uso.
+- Validar datos obligatorios, coherencia de fechas y transiciones de estado permitidas antes de actualizar.
 
 ## Características del análisis
 

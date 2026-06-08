@@ -14,7 +14,7 @@
 
 ## Propósito
 
-Analizar la colaboración necesaria para eliminar un elemento de investigador. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `eliminarInvestigador()`.
+Analizar la colaboración necesaria para retirar a un investigador de un proyecto sin eliminar su perfil y sin dejar responsabilidades pendientes.
 
 ## Diagrama de colaboración
 
@@ -40,13 +40,13 @@ Analizar la colaboración necesaria para eliminar un elemento de investigador. E
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `eliminarInvestigador()` desde el estado de contexto correspondiente.
-- **Control**: Se comunica con `InvestigadorController`.
-- **Salida**: Devuelve el control a la navegación definida para el Coordinador.
+- **Entrada**: Recibe `eliminarInvestigador(proyectoId, investigadorId)` desde `PROYECTO_ABIERTO`.
+- **Control**: Se comunica con `ProyectoController`.
+- **Salida**: Conserva `PROYECTO_ABIERTO`, con el investigador desasignado o sin cambios.
 
 ### Clases de control
 
-#### InvestigadorController
+#### ProyectoController
 **Estereotipo**: Control  
 **Responsabilidades**:
 - Coordinar la ejecución del caso de uso `eliminarInvestigador()`.
@@ -56,7 +56,7 @@ Analizar la colaboración necesaria para eliminar un elemento de investigador. E
 
 **Colaboraciones**:
 - **Vista**: Responde a solicitudes de `EliminarInvestigadorView`.
-- **Repositorio**: Delega operaciones de datos a `InvestigadorRepository`.
+- **Repositorio**: Coordina `ProyectoRepository`, `InvestigadorRepository` y `EntregableRepository`.
 
 ### Clases de entidad (entity)
 
@@ -64,12 +64,12 @@ Analizar la colaboración necesaria para eliminar un elemento de investigador. E
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Abstraer el acceso a datos de investigadores.
-- Proporcionar operaciones `obtenerPorId(id)` y `eliminar(id)`.
+- Proporcionar operaciones para recuperar el investigador seleccionado; el perfil no se elimina.
 - Mantener la consistencia conceptual de investigadores.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
 **Colaboraciones**:
-- **Control**: Responde a `InvestigadorController`.
+- **Control**: Responde a `ProyectoController`.
 - **Entidad**: Gestiona instancias de `Investigador`.
 
 #### Investigador
@@ -82,16 +82,28 @@ Analizar la colaboración necesaria para eliminar un elemento de investigador. E
 **Colaboraciones**:
 - **Repositorio**: Es gestionado por `InvestigadorRepository`.
 
+#### ProyectoRepository
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Recuperar el proyecto abierto.
+- Retirar únicamente la asociación entre proyecto e investigador.
+
+#### EntregableRepository
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Consultar entregables pendientes asignados al investigador.
+- Aportar la información que puede impedir la desasignación.
+
 ## Flujo de colaboración
 
 ### Secuencia de operaciones
 
-1. **Inicio**: Estado de contexto -> `EliminarInvestigadorView.eliminarInvestigador()`.
-2. **Confirmación previa**: `EliminarInvestigadorView` -> `InvestigadorController.solicitarConfirmacion(id)`.
-3. **Presentación de confirmación**: `InvestigadorController` -> `EliminarInvestigadorView.presentarConfirmacion()`.
-4. **Decisión del actor**: si confirma, `EliminarInvestigadorView` -> `InvestigadorController.confirmarEliminacion(id)`; si cancela, `EliminarInvestigadorView` -> `InvestigadorController.cancelarEliminacion()`.
-5. **Validación y persistencia**: `InvestigadorController` -> `InvestigadorRepository.obtenerPorId(id)` y `InvestigadorRepository.eliminar(id)`.
-6. **Finalización**: si confirma, se actualiza `PROYECTO_ABIERTO`; si cancela, se mantiene `PROYECTO_ABIERTO` sin cambios.
+1. **Inicio**: `PROYECTO_ABIERTO` -> `EliminarInvestigadorView.eliminarInvestigador(proyectoId, investigadorId)`.
+2. **Comprobación**: `ProyectoController` recupera proyecto, investigador y responsabilidades pendientes.
+3. **Decisión**: Si existen entregables pendientes, informa que no puede retirarse; si no existen, solicita confirmación.
+4. **Desasignación**: Tras confirmar, `ProyectoRepository.desasociarInvestigador(proyectoId, investigadorId)`.
+5. **Conservación del perfil**: El investigador continúa existiendo y solo desaparece de la composición del proyecto.
+6. **Finalización**: Se conserva `PROYECTO_ABIERTO`.
 
 ### Patrón de colaboración establecido
 
@@ -106,9 +118,10 @@ Analizar la colaboración necesaria para eliminar un elemento de investigador. E
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
 |Atender la solicitud `eliminarInvestigador()`|`EliminarInvestigadorView`|Recibe la acción del Coordinador|
-|Coordinar reglas del caso de uso|`InvestigadorController`|`solicitarConfirmacion(id)`, `confirmarEliminacion(id)`|
-|Aplicar permisos, validaciones y cancelación|`InvestigadorController`|`validarEliminacion(id)`, `cancelarEliminacion()`|
-|Acceder a datos de investigadores|`InvestigadorRepository`|`obtenerPorId(id)`, `eliminar(id)`|
+|Coordinar reglas del caso de uso|`ProyectoController`|`comprobarDesasignacion(...)`, `confirmarDesasignacion(...)`|
+|Comprobar responsabilidades pendientes|`EntregableRepository`|`obtenerPendientesAsignados(...)`|
+|Retirar únicamente la asociación|`ProyectoRepository`|`desasociarInvestigador(proyectoId, investigadorId)`|
+|Conservar el perfil|`InvestigadorRepository`|`obtenerPorId(investigadorId)` sin eliminación|
 |Representar atributos de dominio|`Investigador`|Entidad conceptual|
 
 ### Atributos tratados
@@ -123,13 +136,18 @@ Analizar la colaboración necesaria para eliminar un elemento de investigador. E
 
 ## Colaboraciones relacionadas
 
+- **editarProyecto()**: colaboración disponible desde `PROYECTO_ABIERTO`.
+- **eliminarProyecto()**: colaboración disponible desde `PROYECTO_ABIERTO`.
+- **agregarInvestigador()**: colaboración disponible desde `PROYECTO_ABIERTO`.
+- **eliminarInvestigador()**: colaboración disponible desde `PROYECTO_ABIERTO`.
 - **abrirEntregables()**: colaboración relacionada desde la navegación del caso de uso.
+- **abrirInvestigadores()**: colaboración relacionada desde la navegación del caso de uso.
 - **abrirProyectos()**: colaboración relacionada desde la navegación del caso de uso.
 
 ## Reglas funcionales consideradas
 
 - Mantener la separación entre presentación, coordinación y entidad para el rol Coordinador.
-- Permitir al Coordinador acceso global sobre publicaciones, entregables, proyectos, investigadores, recompensas y perfiles según el caso de uso.
+- Comprobar responsabilidades pendientes y retirar únicamente la asociación entre proyecto e investigador.
 
 ## Características del análisis
 
@@ -157,7 +175,7 @@ Analizar la colaboración necesaria para eliminar un elemento de investigador. E
 `InvestigadorRepository` abstrae el acceso a datos de investigadores, permitiendo cambiar la implementación sin afectar al controlador.
 
 ### MVC pattern
-Separación clara entre presentación (`EliminarInvestigadorView`), lógica de aplicación (`InvestigadorController`) y datos (`Investigador`, `InvestigadorRepository`).
+Separación clara entre presentación (`EliminarInvestigadorView`), lógica de aplicación (`ProyectoController`) y datos de proyecto, investigador y entregables.
 
 ### Sistema de estados
 Mantiene coherencia con el diagrama de contexto del Coordinador, respetando las transiciones de estado establecidas.

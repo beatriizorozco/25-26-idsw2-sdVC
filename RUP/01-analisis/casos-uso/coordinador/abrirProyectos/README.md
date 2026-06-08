@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para presentar a Coordinador el listado de p
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `abrirProyectos()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `abrirProyectos(investigadorId?)` desde `PANEL_PRINCIPAL_ABIERTO`, `PROYECTO_ABIERTO` o `INVESTIGADOR_ABIERTO`.
 - **Control**: Se comunica con `ProyectoController`.
-- **Salida**: Devuelve el control a la navegación definida para el Coordinador.
+- **Salida**: Presenta `PROYECTOS_ABIERTOS` o deriva a `abrirProyecto()`, `crearProyecto()` o `abrirPanelPrincipal()`.
 
 ### Clases de control
 
@@ -86,16 +86,16 @@ Analizar la colaboración necesaria para presentar a Coordinador el listado de p
 
 ### Secuencia de operaciones
 
-1. **Inicio**: Estado de contexto -> `ListarProyectosView.abrirProyectos()`.
-2. **Solicitud principal**: `ListarProyectosView` -> `ProyectoController.listarProyectos()`.
-3. **Acceso a datos**: `ListarProyectosView` -> `ProyectoController.filtrarProyectos(criterio)`.
-4. **Filtrado o refinamiento**: `ProyectoController` -> `ProyectoRepository.obtenerTodos()`.
-5. **Búsqueda**: `ProyectoController` -> `ProyectoRepository.buscarPorCriterio(criterio)`.
-6. **Finalización**: `ListarProyectosView` devuelve el control al estado de navegación definido.
+1. **Inicio**: `PANEL_PRINCIPAL_ABIERTO`, `PROYECTO_ABIERTO` o `INVESTIGADOR_ABIERTO` -> `ListarProyectosView.abrirProyectos(investigadorId?)`.
+2. **Solicitud principal**: `ListarProyectosView` -> `ProyectoController.listarProyectos(investigadorId?)`.
+3. **Alcance global**: Sin identificador, `ProyectoRepository.obtenerTodos()`.
+4. **Alcance contextual**: Con identificador, `ProyectoRepository.obtenerPorInvestigador(investigadorId)`.
+5. **Búsqueda**: El repositorio filtra dentro del mismo alcance.
+6. **Finalización**: `ListarProyectosView` presenta `PROYECTOS_ABIERTOS` o deriva a la colaboración seleccionada.
 
 ### Patrón de colaboración establecido
 
-- **Entrada contextual**: Puede iniciarse desde `PANEL_PRINCIPAL_ABIERTO`, `PROYECTO_ABIERTO`, `INVESTIGADOR_ABIERTO`; la vista conserva el origen para que el controlador ajuste el alcance cuando exista identificador de contexto.
+- **Entrada contextual**: Sin identificador presenta todos los proyectos; con `investigadorId` presenta únicamente los proyectos asociados a ese investigador.
 - **Análisis MVC completo**: Vista, Control y Entidad claramente separados.
 - **Salida estándar**: Retorno a la navegación permitida o a una colaboración relacionada.
 
@@ -106,9 +106,9 @@ Analizar la colaboración necesaria para presentar a Coordinador el listado de p
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
 |Atender la solicitud `abrirProyectos()`|`ListarProyectosView`|Recibe la acción del Coordinador|
-|Coordinar reglas del caso de uso|`ProyectoController`|`listarProyectos()`|
-|Aplicar permisos y validaciones|`ProyectoController`|`filtrarProyectos(criterio)`|
-|Acceder a datos de proyectos|`ProyectoRepository`|`obtenerTodos()`, `buscarPorCriterio(criterio)`|
+|Coordinar reglas del caso de uso|`ProyectoController`|`listarProyectos(investigadorId?)`|
+|Aplicar filtrado contextual|`ProyectoController`|`filtrarProyectos(criterio, investigadorId?)`|
+|Acceder a datos de proyectos|`ProyectoRepository`|`obtenerTodos()`, `obtenerPorInvestigador(...)`, `buscarPorCriterio(...)`|
 |Representar atributos de dominio|`Proyecto`|Entidad conceptual|
 
 ### Atributos tratados
@@ -130,7 +130,7 @@ Analizar la colaboración necesaria para presentar a Coordinador el listado de p
 ## Reglas funcionales consideradas
 
 - Mantener la separación entre presentación, coordinación y entidad para el rol Coordinador.
-- Permitir al Coordinador acceso global sobre publicaciones, entregables, proyectos, investigadores, recompensas y perfiles según el caso de uso.
+- Mantener un único caso de uso cuyo alcance cambia de listado global a listado asociado cuando recibe `investigadorId`.
 
 ## Características del análisis
 

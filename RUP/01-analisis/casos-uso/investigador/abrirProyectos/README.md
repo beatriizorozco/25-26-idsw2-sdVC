@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para presentar a Investigador el listado de 
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `abrirProyectos()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `abrirProyectos(investigadorId?)` desde `PANEL_PRINCIPAL_ABIERTO`, `PROYECTO_ABIERTO` o `INVESTIGADOR_ABIERTO`.
 - **Control**: Se comunica con `ProyectoController`.
-- **Salida**: Devuelve el control a la navegación definida para el Investigador.
+- **Salida**: Presenta `PROYECTOS_ABIERTOS` o deriva a `abrirProyecto()` o `abrirPanelPrincipal()`.
 
 ### Clases de control
 
@@ -86,16 +86,16 @@ Analizar la colaboración necesaria para presentar a Investigador el listado de 
 
 ### Secuencia de operaciones
 
-1. **Inicio**: Estado de contexto -> `ListarProyectosView.abrirProyectos()`.
-2. **Solicitud principal**: `ListarProyectosView` -> `ProyectoController.listarProyectos()`.
-3. **Acceso a datos**: `ListarProyectosView` -> `ProyectoController.filtrarProyectos(criterio)`.
-4. **Filtrado o refinamiento**: `ProyectoController` -> `ProyectoRepository.obtenerPropios(investigador)`.
-5. **Búsqueda**: `ProyectoController` -> `ProyectoRepository.buscarPorCriterio(criterio)`.
-6. **Finalización**: `ListarProyectosView` devuelve el control al estado de navegación definido.
+1. **Inicio**: `PANEL_PRINCIPAL_ABIERTO`, `PROYECTO_ABIERTO` o `INVESTIGADOR_ABIERTO` -> `ListarProyectosView.abrirProyectos(investigadorId?)`.
+2. **Solicitud principal**: `ListarProyectosView` -> `ProyectoController.listarProyectos(actorId, investigadorId?)`.
+3. **Alcance propio**: Sin identificador, `ProyectoRepository.obtenerPropios(actorId)`.
+4. **Alcance contextual**: Con identificador, `ProyectoRepository.obtenerVisiblesPorInvestigador(investigadorId)`.
+5. **Búsqueda**: El repositorio filtra únicamente dentro del alcance visible.
+6. **Finalización**: `ListarProyectosView` presenta `PROYECTOS_ABIERTOS` o deriva a la colaboración seleccionada.
 
 ### Patrón de colaboración establecido
 
-- **Entrada contextual**: Puede iniciarse desde `PANEL_PRINCIPAL_ABIERTO`, `PROYECTO_ABIERTO`, `INVESTIGADOR_ABIERTO`; la vista conserva el origen para que el controlador ajuste el alcance cuando exista identificador de contexto.
+- **Entrada contextual**: Sin identificador presenta los proyectos propios; con `investigadorId` presenta los proyectos visibles asociados al investigador consultado.
 - **Análisis MVC completo**: Vista, Control y Entidad claramente separados.
 - **Salida estándar**: Retorno a la navegación permitida o a una colaboración relacionada.
 
@@ -106,9 +106,9 @@ Analizar la colaboración necesaria para presentar a Investigador el listado de 
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
 |Atender la solicitud `abrirProyectos()`|`ListarProyectosView`|Recibe la acción del Investigador|
-|Coordinar reglas del caso de uso|`ProyectoController`|`listarProyectos()`|
-|Aplicar permisos y validaciones|`ProyectoController`|`filtrarProyectos(criterio)`|
-|Acceder a datos de proyectos|`ProyectoRepository`|`obtenerPropios(investigador)`, `buscarPorCriterio(criterio)`|
+|Coordinar reglas del caso de uso|`ProyectoController`|`listarProyectos(actorId, investigadorId?)`|
+|Aplicar filtrado visible|`ProyectoController`|`filtrarProyectos(criterio, actorId, investigadorId?)`|
+|Acceder a datos de proyectos|`ProyectoRepository`|`obtenerPropios(...)`, `obtenerVisiblesPorInvestigador(...)`, `buscarVisiblesPorCriterio(...)`|
 |Representar atributos de dominio|`Proyecto`|Entidad conceptual|
 
 ### Atributos tratados
@@ -129,7 +129,7 @@ Analizar la colaboración necesaria para presentar a Investigador el listado de 
 ## Reglas funcionales consideradas
 
 - Mantener la separación entre presentación, coordinación y entidad para el rol Investigador.
-- Restringir operaciones de creación, edición y eliminación a publicaciones y entregables propios del Investigador.
+- Restringir el listado a proyectos propios o visibles según el investigador de contexto, sin ofrecer operaciones de gestión.
 
 ## Características del análisis
 

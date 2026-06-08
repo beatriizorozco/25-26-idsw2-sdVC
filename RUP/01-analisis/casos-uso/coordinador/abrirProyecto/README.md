@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de p
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `abrirProyecto()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `abrirProyecto(proyectoId)` desde `PROYECTOS_ABIERTOS` o `ENTREGABLES_ABIERTOS`.
 - **Control**: Se comunica con `ProyectoController`.
-- **Salida**: Devuelve el control a la navegación definida para el Coordinador.
+- **Salida**: Presenta `PROYECTO_ABIERTO` y permite navegar a las colaboraciones de gestión disponibles.
 
 ### Clases de control
 
@@ -64,7 +64,7 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de p
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Abstraer el acceso a datos de proyectos.
-- Proporcionar operaciones `obtenerPorId(id)` y `verificarPermisos(actor)`.
+- Proporcionar la operación `obtenerPorId(proyectoId)`.
 - Mantener la consistencia conceptual de proyectos.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
@@ -82,6 +82,18 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de p
 **Colaboraciones**:
 - **Repositorio**: Es gestionado por `ProyectoRepository`.
 
+#### InvestigadorRepository
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Recuperar el equipo investigador asociado al proyecto.
+- Aportar la información necesaria para presentar composición, sede, perfil y carga disponible.
+
+#### EntregableRepository
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Recuperar los entregables asociados al proyecto abierto.
+- Permitir que el detalle del proyecto muestre su trabajo pendiente o registrado.
+
 ## Flujo de colaboración
 
 ### Secuencia de operaciones
@@ -90,8 +102,8 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de p
 2. **Solicitud principal**: `DetalleProyectoView` -> `ProyectoController.obtenerProyecto(id)`.
 3. **Acceso a datos**: `DetalleProyectoView` -> `ProyectoController.prepararAccionesDisponibles(coordinador)`.
 4. **Preparación de acciones**: `ProyectoController` -> `ProyectoRepository.obtenerPorId(id)`.
-5. **Verificación de permisos**: `ProyectoController` -> `ProyectoRepository.verificarPermisos(actor)`.
-6. **Finalización**: `DetalleProyectoView` devuelve el control al estado de navegación definido.
+5. **Composición del detalle**: El controlador reúne proyecto, equipo investigador y entregables asociados.
+6. **Finalización**: `DetalleProyectoView` presenta `PROYECTO_ABIERTO` y sus acciones permitidas.
 
 ### Patrón de colaboración establecido
 
@@ -108,7 +120,9 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de p
 |Atender la solicitud `abrirProyecto()`|`DetalleProyectoView`|Recibe la acción del Coordinador|
 |Coordinar reglas del caso de uso|`ProyectoController`|`obtenerProyecto(id)`|
 |Aplicar permisos y validaciones|`ProyectoController`|`prepararAccionesDisponibles(coordinador)`|
-|Acceder a datos de proyectos|`ProyectoRepository`|`obtenerPorId(id)`, `verificarPermisos(actor)`|
+|Acceder a datos de proyectos|`ProyectoRepository`|`obtenerPorId(proyectoId)`|
+|Recuperar equipo investigador|`InvestigadorRepository`|`obtenerEquipoPorProyecto(proyectoId)`|
+|Recuperar entregables|`EntregableRepository`|`obtenerPorProyecto(proyectoId)`|
 |Representar atributos de dominio|`Proyecto`|Entidad conceptual|
 
 ### Atributos tratados
@@ -128,13 +142,13 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de p
 - **agregarInvestigador()**: colaboración relacionada desde la navegación del caso de uso.
 - **eliminarInvestigador()**: colaboración relacionada desde la navegación del caso de uso.
 - **abrirEntregables()**: colaboración relacionada desde la navegación del caso de uso.
+- **abrirInvestigadores()**: colaboración relacionada desde la navegación del caso de uso.
+- **abrirProyectos()**: colaboración relacionada desde la navegación del caso de uso.
 
 ## Reglas funcionales consideradas
 
 - Mantener la separación entre presentación, coordinación y entidad para el rol Coordinador.
-- Permitir al Coordinador acceso global sobre publicaciones, entregables, proyectos, investigadores, recompensas y perfiles según el caso de uso.
-
-- Cuando el caso de uso se inicia desde un estado de detalle, el an?lisis modela un par?metro de contexto para ajustar el alcance sin duplicar el caso de uso. Si no se recibe identificador, el controlador conserva el comportamiento base del caso de uso; si se recibe, recupera o prepara la entidad acotada al contexto.
+- Recuperar directamente el proyecto seleccionado junto con su equipo investigador y sus entregables, sin repetir el listado.
 
 ## Características del análisis
 

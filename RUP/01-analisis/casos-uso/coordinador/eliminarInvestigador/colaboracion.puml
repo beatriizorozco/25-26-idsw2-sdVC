@@ -4,28 +4,44 @@ skinparam linetype polyline
 rectangle #CDEBA5 ":PROYECTO_ABIERTO" as EstadoEntrada
 package eliminarInvestigador as "eliminarInvestigador()" {
     rectangle #629EF9 EliminarInvestigadorView
-    rectangle #b5bd68 InvestigadorController
+    rectangle #b5bd68 ProyectoController
+    rectangle #F2AC4E ProyectoRepository
     rectangle #F2AC4E InvestigadorRepository
+    rectangle #F2AC4E EntregableRepository
+    rectangle #F2AC4E Proyecto
     rectangle #F2AC4E Investigador
+    rectangle #F2AC4E Entregable
 }
 
 rectangle #CDEBA5 ":PROYECTO_ABIERTO" as EstadoSalida
+rectangle #CDEBA5 ":Collaboration EditarProyecto" as EditarProyecto
+rectangle #CDEBA5 ":Collaboration EliminarProyecto" as EliminarProyecto
+rectangle #CDEBA5 ":Collaboration AgregarInvestigador" as AgregarInvestigador
+rectangle #CDEBA5 ":Collaboration EliminarInvestigador" as EliminarInvestigador
 rectangle #CDEBA5 ":Collaboration AbrirEntregables" as AbrirEntregables
+rectangle #CDEBA5 ":Collaboration AbrirInvestigadores" as AbrirInvestigadores
 rectangle #CDEBA5 ":Collaboration AbrirProyectos" as AbrirProyectos
 
-EstadoEntrada -r-> EliminarInvestigadorView: eliminarInvestigador()
+EstadoEntrada -r-> EliminarInvestigadorView: eliminarInvestigador(proyectoId, investigadorId)
 
-EliminarInvestigadorView -d-> InvestigadorController: solicitarConfirmacion(id)
-InvestigadorController --> EliminarInvestigadorView: presentarConfirmacion()
-EliminarInvestigadorView --> InvestigadorController: confirmarEliminacion(id)
-EliminarInvestigadorView --> InvestigadorController: cancelarEliminacion()
-EliminarInvestigadorView --> InvestigadorController: validarEliminacion(id)
-InvestigadorController --> InvestigadorRepository: obtenerPorId(id)
-InvestigadorController --> InvestigadorRepository: eliminar(id)
+EliminarInvestigadorView -d-> ProyectoController: comprobarDesasignacion(proyectoId, investigadorId)
+ProyectoController --> ProyectoRepository: obtenerPorId(proyectoId)
+ProyectoController --> InvestigadorRepository: obtenerPorId(investigadorId)
+ProyectoController --> EntregableRepository: obtenerPendientesAsignados(proyectoId, investigadorId)
+ProyectoController --> EliminarInvestigadorView: presentarResultadoYConfirmacion()
+EliminarInvestigadorView --> ProyectoController: confirmarDesasignacion(proyectoId, investigadorId)
+ProyectoController --> ProyectoRepository: desasociarInvestigador(proyectoId, investigadorId)
+ProyectoRepository -- Proyecto
 InvestigadorRepository -- Investigador
-EliminarInvestigadorView ..> EstadoSalida: investigadorEliminado()
-EliminarInvestigadorView ..> EstadoSalida: eliminacionCancelada()
+EntregableRepository -- Entregable
+EliminarInvestigadorView ..> EstadoSalida: investigadorDesasignado()
+EliminarInvestigadorView ..> EstadoSalida: cancelarOImpedirDesasignacion()
+EliminarInvestigadorView ..> EditarProyecto: editarProyecto()
+EliminarInvestigadorView ..> EliminarProyecto: eliminarProyecto()
+EliminarInvestigadorView ..> AgregarInvestigador: agregarInvestigador()
+EliminarInvestigadorView ..> EliminarInvestigador: eliminarInvestigador()
 EliminarInvestigadorView ..> AbrirEntregables: abrirEntregables()
+EliminarInvestigadorView ..> AbrirInvestigadores: abrirInvestigadores()
 EliminarInvestigadorView ..> AbrirProyectos: abrirProyectos()
 
 @enduml

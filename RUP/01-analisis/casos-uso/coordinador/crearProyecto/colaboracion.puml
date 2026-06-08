@@ -6,28 +6,45 @@ package crearProyecto as "crearProyecto()" {
     rectangle #629EF9 CrearProyectoView
     rectangle #b5bd68 ProyectoController
     rectangle #F2AC4E ProyectoRepository
+    rectangle #F2AC4E ConvocatoriaRepository
     rectangle #F2AC4E Proyecto
+    rectangle #F2AC4E Convocatoria
 }
 
 rectangle #CDEBA5 ":PROYECTO_ABIERTO" as EstadoSalida
+rectangle #CDEBA5 ":PROYECTOS_ABIERTOS" as EstadoSalidaCancelada
+rectangle #CDEBA5 ":Collaboration AbrirProyecto" as AbrirProyecto
 rectangle #CDEBA5 ":Collaboration EditarProyecto" as EditarProyecto
 rectangle #CDEBA5 ":Collaboration EliminarProyecto" as EliminarProyecto
 rectangle #CDEBA5 ":Collaboration AgregarInvestigador" as AgregarInvestigador
 rectangle #CDEBA5 ":Collaboration EliminarInvestigador" as EliminarInvestigador
 rectangle #CDEBA5 ":Collaboration AbrirEntregables" as AbrirEntregables
+rectangle #CDEBA5 ":Collaboration AbrirInvestigadores" as AbrirInvestigadores
+rectangle #CDEBA5 ":Collaboration AbrirProyectos" as AbrirProyectos
+rectangle #CDEBA5 ":Collaboration CrearProyecto" as CrearProyecto
+rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanelPrincipal
 
 EstadoEntrada -r-> CrearProyectoView: crearProyecto()
 
-CrearProyectoView -d-> ProyectoController: crearProyecto(datos)
-CrearProyectoView --> ProyectoController: validarProyecto(datos)
-ProyectoController --> ProyectoRepository: existeDuplicado(datos)
-ProyectoController --> ProyectoRepository: guardar(entidad)
+CrearProyectoView -d-> ProyectoController: prepararCreacion()
+ProyectoController --> ConvocatoriaRepository: obtenerDisponibles()
+CrearProyectoView --> ProyectoController: crearProyecto(datosMinimos, coordinador)
+ProyectoController --> ProyectoController: validarDatosYFechas(datosMinimos)
+ProyectoController --> ProyectoController: asignarCodigoCoordinadorYEstadoCreado()
+ProyectoController --> ProyectoRepository: guardar(proyecto)
 ProyectoRepository -- Proyecto
-CrearProyectoView ..> EstadoSalida: continuarNavegacion()
+ConvocatoriaRepository -- Convocatoria
+CrearProyectoView ..> EstadoSalida: proyectoCreado()
+CrearProyectoView ..> EstadoSalidaCancelada: cancelarCreacion()
+CrearProyectoView ..> AbrirProyecto: abrirProyecto(proyectoId)
 CrearProyectoView ..> EditarProyecto: editarProyecto()
 CrearProyectoView ..> EliminarProyecto: eliminarProyecto()
 CrearProyectoView ..> AgregarInvestigador: agregarInvestigador()
 CrearProyectoView ..> EliminarInvestigador: eliminarInvestigador()
 CrearProyectoView ..> AbrirEntregables: abrirEntregables()
+CrearProyectoView ..> AbrirInvestigadores: abrirInvestigadores()
+CrearProyectoView ..> AbrirProyectos: abrirProyectos()
+CrearProyectoView ..> CrearProyecto: crearProyecto()
+CrearProyectoView ..> AbrirPanelPrincipal: abrirPanelPrincipal()
 
 @enduml

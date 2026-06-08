@@ -205,8 +205,9 @@ Después de reiniciar el backend, un usuario demo activo conserva credenciales a
 - `eliminarProyecto()` comprueba dependencias y preserva la trazabilidad antes de permitir la eliminación.
 - `crearProyecto()` registra los datos mínimos y asigna automáticamente código, coordinador y estado inicial.
 - `editarProyecto()` valida fechas, datos obligatorios y transiciones de estado permitidas.
+- Las colaboraciones de Análisis muestran todas las acciones disponibles desde cada estado resultante del diagrama de contexto, no solo la operación principal.
 
-**Validación:** Se actualizaron los README, diagramas de especificación y prototipos afectados. Todos los PlantUML del bloque 5 superaron `-checkonly`, se regeneraron sus SVG y `git diff --check` no detectó errores.
+**Validación:** Se actualizaron los README, diagramas de especificación, prototipos y colaboraciones de Análisis afectados. Todos los PlantUML de Detalle y Análisis del bloque 5 superaron `-checkonly`, se regeneraron sus SVG y `git diff --check` no detectó errores.
 
 ## Decisiones de seguridad
 

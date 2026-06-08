@@ -17,19 +17,19 @@ rectangle #CDEBA5 ":Collaboration CrearProyecto" as CrearProyecto
 rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanelPrincipal
 
 EstadoEntrada1 -r-> ListarProyectosView: abrirProyectos()
-EstadoEntrada2 -r-> ListarProyectosView: abrirProyectos(idProyecto)
+EstadoEntrada2 -r-> ListarProyectosView: abrirProyectos()
 EstadoEntrada3 -r-> ListarProyectosView: abrirProyectos(idInvestigador)
 
-ListarProyectosView -d-> ProyectoController: listarProyectos(contexto)
-ListarProyectosView --> ProyectoController: filtrarProyectos(criterio)
+ListarProyectosView -d-> ProyectoController: listarProyectos(investigadorId?)
 ProyectoController --> ProyectoRepository: obtenerTodos()
-ProyectoController --> ProyectoRepository: obtenerPorContexto(contexto)
-ProyectoController --> ProyectoRepository: buscarPorCriterio(criterio)
+ProyectoController --> ProyectoRepository: obtenerPorInvestigador(investigadorId)
+ListarProyectosView --> ProyectoController: filtrarProyectos(criterio, investigadorId?)
+ProyectoController --> ProyectoRepository: buscarPorCriterio(criterio, investigadorId?)
 ProyectoRepository -- Proyecto
 note right of ProyectoController
 Contexto opcional:
 - sin identificador: listado global
-- con identificador: listado acotado
+- con investigadorId: proyectos asociados
 end note
 ListarProyectosView ..> EstadoSalida: continuarNavegacion()
 ListarProyectosView ..> AbrirProyecto: abrirProyecto()

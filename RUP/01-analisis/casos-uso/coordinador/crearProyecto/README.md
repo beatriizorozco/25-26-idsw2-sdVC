@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para registrar un nuevo proyecto. El anális
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `crearProyecto()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `crearProyecto()` desde `PROYECTOS_ABIERTOS`.
 - **Control**: Se comunica con `ProyectoController`.
-- **Salida**: Devuelve el control a la navegación definida para el Coordinador.
+- **Salida**: Abre el proyecto creado en `PROYECTO_ABIERTO` o conserva `PROYECTOS_ABIERTOS` si se cancela.
 
 ### Clases de control
 
@@ -64,7 +64,7 @@ Analizar la colaboración necesaria para registrar un nuevo proyecto. El anális
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Abstraer el acceso a datos de proyectos.
-- Proporcionar operaciones `existeDuplicado(datos)` y `guardar(entidad)`.
+- Proporcionar la operación `guardar(proyecto)`.
 - Mantener la consistencia conceptual de proyectos.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
@@ -82,16 +82,22 @@ Analizar la colaboración necesaria para registrar un nuevo proyecto. El anális
 **Colaboraciones**:
 - **Repositorio**: Es gestionado por `ProyectoRepository`.
 
+#### ConvocatoriaRepository
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Proporcionar convocatorias disponibles para asociar el proyecto desde su creación.
+- Evitar que el caso de uso cree proyectos vinculados a convocatorias inexistentes.
+
 ## Flujo de colaboración
 
 ### Secuencia de operaciones
 
-1. **Inicio**: Estado de contexto -> `CrearProyectoView.crearProyecto()`.
-2. **Solicitud principal**: `CrearProyectoView` -> `ProyectoController.crearProyecto(datos)`.
-3. **Validación previa**: `CrearProyectoView` -> `ProyectoController.validarProyecto(datos)`.
-4. **Consulta de consistencia**: `ProyectoController` -> `ProyectoRepository.existeDuplicado(datos)`.
-5. **Persistencia**: `ProyectoController` -> `ProyectoRepository.guardar(entidad)`.
-6. **Finalización**: `CrearProyectoView` devuelve el control al estado de navegación definido.
+1. **Inicio**: `PROYECTOS_ABIERTOS` -> `CrearProyectoView.crearProyecto()`.
+2. **Preparación**: `ProyectoController` obtiene las convocatorias disponibles.
+3. **Validación previa**: `ProyectoController.validarDatosYFechas(datosMinimos)`.
+4. **Asignación automática**: `ProyectoController` asigna código, Coordinador y estado `Creado`.
+5. **Persistencia**: `ProyectoController` -> `ProyectoRepository.guardar(proyecto)`.
+6. **Finalización**: Abre el proyecto creado o conserva `PROYECTOS_ABIERTOS` si se cancela.
 
 ### Patrón de colaboración establecido
 
@@ -106,9 +112,10 @@ Analizar la colaboración necesaria para registrar un nuevo proyecto. El anális
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
 |Atender la solicitud `crearProyecto()`|`CrearProyectoView`|Recibe la acción del Coordinador|
-|Coordinar reglas del caso de uso|`ProyectoController`|`crearProyecto(datos)`|
-|Aplicar permisos y validaciones|`ProyectoController`|`validarProyecto(datos)`|
-|Acceder a datos de proyectos|`ProyectoRepository`|`existeDuplicado(datos)`, `guardar(entidad)`|
+|Coordinar reglas del caso de uso|`ProyectoController`|`crearProyecto(datosMinimos, coordinador)`|
+|Aplicar validaciones|`ProyectoController`|`validarDatosYFechas(datosMinimos)`|
+|Acceder a datos de proyectos|`ProyectoRepository`|`guardar(proyecto)`|
+|Obtener convocatorias disponibles|`ConvocatoriaRepository`|`obtenerDisponibles()`|
 |Representar atributos de dominio|`Proyecto`|Entidad conceptual|
 
 ### Atributos tratados
@@ -128,11 +135,16 @@ Analizar la colaboración necesaria para registrar un nuevo proyecto. El anális
 - **agregarInvestigador()**: colaboración relacionada desde la navegación del caso de uso.
 - **eliminarInvestigador()**: colaboración relacionada desde la navegación del caso de uso.
 - **abrirEntregables()**: colaboración relacionada desde la navegación del caso de uso.
+- **abrirInvestigadores()**: colaboración disponible desde `PROYECTO_ABIERTO`.
+- **abrirProyectos()**: colaboración disponible desde `PROYECTO_ABIERTO`.
+- **abrirProyecto()**: colaboración disponible desde `PROYECTOS_ABIERTOS` si se cancela.
+- **crearProyecto()**: colaboración disponible desde `PROYECTOS_ABIERTOS` si se cancela.
+- **abrirPanelPrincipal()**: colaboración disponible desde `PROYECTOS_ABIERTOS` si se cancela.
 
 ## Reglas funcionales consideradas
 
 - Mantener la separación entre presentación, coordinación y entidad para el rol Coordinador.
-- Permitir al Coordinador acceso global sobre publicaciones, entregables, proyectos, investigadores, recompensas y perfiles según el caso de uso.
+- Registrar únicamente los datos mínimos, validar fechas y asignar automáticamente código, coordinador y estado `Creado`.
 
 ## Características del análisis
 

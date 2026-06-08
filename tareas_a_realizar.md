@@ -138,4 +138,8 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Revisar el Detalle de consulta de proyectos propios para Investigador: `abrirProyectos()` y `abrirProyecto()`.
 - [x] Confirmar que `abrirProyecto()` recibe un proyecto seleccionado y presenta directamente su detalle, sin repetir el listado.
 - [x] Confirmar que la asignación de investigadores utiliza perfiles existentes, disponibilidad y carga de trabajo, sin volver a crear sus datos personales.
-- [ ] Revisar manualmente el Detalle completo del bloque 5 antes de avanzar a Análisis.
+- [x] Revisar manualmente el Detalle completo del bloque 5 antes de avanzar a Análisis.
+- [x] Revisar el Análisis del bloque 5 para Coordinador: `abrirProyectos()`, `abrirProyecto()`, `crearProyecto()`, `editarProyecto()`, `eliminarProyecto()`, `agregarInvestigador()` y `eliminarInvestigador()`.
+- [x] Revisar el Análisis del bloque 5 para Investigador: `abrirProyectos()` y `abrirProyecto()`.
+- [x] Validar que las colaboraciones de proyectos respetan el Detalle aprobado y no eliminan perfiles al desasignar investigadores.
+- [ ] Revisar manualmente el Análisis completo del bloque 5 antes de avanzar a Diseño.

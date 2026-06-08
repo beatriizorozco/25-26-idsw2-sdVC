@@ -40,13 +40,13 @@ Analizar la colaboración necesaria para asociar un investigador a un proyecto. 
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `agregarInvestigador()` desde el estado de contexto correspondiente.
-- **Control**: Se comunica con `InvestigadorController`.
-- **Salida**: Devuelve el control a la navegación definida para el Coordinador.
+- **Entrada**: Recibe `agregarInvestigador(proyectoId)` desde `PROYECTO_ABIERTO`.
+- **Control**: Se comunica con `ProyectoController`.
+- **Salida**: Conserva `PROYECTO_ABIERTO`, con el investigador asociado o sin cambios si se cancela.
 
 ### Clases de control
 
-#### InvestigadorController
+#### ProyectoController
 **Estereotipo**: Control  
 **Responsabilidades**:
 - Coordinar la ejecución del caso de uso `agregarInvestigador()`.
@@ -56,7 +56,7 @@ Analizar la colaboración necesaria para asociar un investigador a un proyecto. 
 
 **Colaboraciones**:
 - **Vista**: Responde a solicitudes de `AgregarInvestigadorView`.
-- **Repositorio**: Delega operaciones de datos a `InvestigadorRepository`.
+- **Repositorio**: Coordina `ProyectoRepository`, `InvestigadorRepository` y `CargaTrabajoRepository`.
 
 ### Clases de entidad (entity)
 
@@ -64,12 +64,12 @@ Analizar la colaboración necesaria para asociar un investigador a un proyecto. 
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Abstraer el acceso a datos de investigadores.
-- Proporcionar operaciones `obtenerPorId(id)` y `asociarInvestigador(proyecto, investigador)`.
+- Proporcionar operaciones para obtener candidatos no asociados.
 - Mantener la consistencia conceptual de investigadores.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
 **Colaboraciones**:
-- **Control**: Responde a `InvestigadorController`.
+- **Control**: Responde a `ProyectoController`.
 - **Entidad**: Gestiona instancias de `Investigador`.
 
 #### Investigador
@@ -82,16 +82,28 @@ Analizar la colaboración necesaria para asociar un investigador a un proyecto. 
 **Colaboraciones**:
 - **Repositorio**: Es gestionado por `InvestigadorRepository`.
 
+#### ProyectoRepository
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Recuperar el proyecto abierto.
+- Persistir la asociación entre el proyecto y el investigador seleccionado.
+
+#### CargaTrabajoRepository
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Aportar la carga de trabajo de los candidatos.
+- Permitir recomendar al investigador compatible con menor carga.
+
 ## Flujo de colaboración
 
 ### Secuencia de operaciones
 
-1. **Inicio**: Estado de contexto -> `AgregarInvestigadorView.agregarInvestigador()`.
-2. **Solicitud principal**: `AgregarInvestigadorView` -> `InvestigadorController.agregarInvestigador(proyecto, investigador)`.
-3. **Acceso a datos**: `AgregarInvestigadorView` -> `InvestigadorController.validarDisponibilidad(investigador)`.
-4. **Validación de disponibilidad**: `InvestigadorController` -> `InvestigadorRepository.obtenerPorId(id)`.
-5. **Persistencia**: `InvestigadorController` -> `InvestigadorRepository.asociarInvestigador(proyecto, investigador)`.
-6. **Finalización**: `AgregarInvestigadorView` devuelve el control al estado de navegación definido.
+1. **Inicio**: `PROYECTO_ABIERTO` -> `AgregarInvestigadorView.agregarInvestigador(proyectoId)`.
+2. **Preparación**: `AgregarInvestigadorView` -> `ProyectoController.prepararCandidatos(proyectoId)`.
+3. **Candidatos**: El controlador obtiene investigadores no asociados y sus cargas de trabajo.
+4. **Evaluación**: `ProyectoController` comprueba compatibilidad y disponibilidad y recomienda al candidato compatible con menor carga.
+5. **Asignación**: `AgregarInvestigadorView` -> `ProyectoController.asociarInvestigador(proyectoId, investigadorId)`.
+6. **Finalización**: Se conserva `PROYECTO_ABIERTO`, con la asociación registrada o sin cambios si se cancela.
 
 ### Patrón de colaboración establecido
 
@@ -106,9 +118,10 @@ Analizar la colaboración necesaria para asociar un investigador a un proyecto. 
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
 |Atender la solicitud `agregarInvestigador()`|`AgregarInvestigadorView`|Recibe la acción del Coordinador|
-|Coordinar reglas del caso de uso|`InvestigadorController`|`agregarInvestigador(proyecto, investigador)`|
-|Aplicar permisos y validaciones|`InvestigadorController`|`validarDisponibilidad(investigador)`|
-|Acceder a datos de investigadores|`InvestigadorRepository`|`obtenerPorId(id)`, `asociarInvestigador(proyecto, investigador)`|
+|Coordinar reglas del caso de uso|`ProyectoController`|`prepararCandidatos(proyectoId)`, `asociarInvestigador(...)`|
+|Evaluar compatibilidad y disponibilidad|`ProyectoController`|`evaluarCompatibilidadYDisponibilidad()`|
+|Comparar cargas|`CargaTrabajoRepository`|`obtenerCargas(candidatos)`|
+|Persistir la asociación|`ProyectoRepository`|`asociarInvestigador(proyectoId, investigadorId)`|
 |Representar atributos de dominio|`Investigador`|Entidad conceptual|
 
 ### Atributos tratados
@@ -123,13 +136,18 @@ Analizar la colaboración necesaria para asociar un investigador a un proyecto. 
 
 ## Colaboraciones relacionadas
 
+- **editarProyecto()**: colaboración disponible desde `PROYECTO_ABIERTO`.
+- **eliminarProyecto()**: colaboración disponible desde `PROYECTO_ABIERTO`.
+- **agregarInvestigador()**: colaboración disponible desde `PROYECTO_ABIERTO`.
+- **eliminarInvestigador()**: colaboración disponible desde `PROYECTO_ABIERTO`.
 - **abrirEntregables()**: colaboración relacionada desde la navegación del caso de uso.
+- **abrirInvestigadores()**: colaboración relacionada desde la navegación del caso de uso.
 - **abrirProyectos()**: colaboración relacionada desde la navegación del caso de uso.
 
 ## Reglas funcionales consideradas
 
 - Mantener la separación entre presentación, coordinación y entidad para el rol Coordinador.
-- Permitir al Coordinador acceso global sobre publicaciones, entregables, proyectos, investigadores, recompensas y perfiles según el caso de uso.
+- Seleccionar perfiles existentes, comprobar compatibilidad y disponibilidad, y recomendar al candidato compatible con menor carga.
 
 ## Características del análisis
 
@@ -157,7 +175,7 @@ Analizar la colaboración necesaria para asociar un investigador a un proyecto. 
 `InvestigadorRepository` abstrae el acceso a datos de investigadores, permitiendo cambiar la implementación sin afectar al controlador.
 
 ### MVC pattern
-Separación clara entre presentación (`AgregarInvestigadorView`), lógica de aplicación (`InvestigadorController`) y datos (`Investigador`, `InvestigadorRepository`).
+Separación clara entre presentación (`AgregarInvestigadorView`), lógica de aplicación (`ProyectoController`) y datos de proyecto, investigador y carga.
 
 ### Sistema de estados
 Mantiene coherencia con el diagrama de contexto del Coordinador, respetando las transiciones de estado establecidas.

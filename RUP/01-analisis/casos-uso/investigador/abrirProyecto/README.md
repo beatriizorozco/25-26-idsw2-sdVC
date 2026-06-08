@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `abrirProyecto()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `abrirProyecto(proyectoId)` desde `PROYECTOS_ABIERTOS` o `ENTREGABLES_ABIERTOS`.
 - **Control**: Se comunica con `ProyectoController`.
-- **Salida**: Devuelve el control a la navegación definida para el Investigador.
+- **Salida**: Presenta `PROYECTO_ABIERTO`, vuelve a `PROYECTOS_ABIERTOS` si no es visible o deriva a consultas relacionadas.
 
 ### Clases de control
 
@@ -64,7 +64,7 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Abstraer el acceso a datos de proyectos.
-- Proporcionar operaciones `obtenerPorId(id)` y `verificarPermisos(actor)`.
+- Proporcionar la operación `obtenerVisiblePorId(proyectoId, investigadorId)`.
 - Mantener la consistencia conceptual de proyectos.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
@@ -82,6 +82,18 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 **Colaboraciones**:
 - **Repositorio**: Es gestionado por `ProyectoRepository`.
 
+#### InvestigadorRepository
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Recuperar el equipo investigador visible para el proyecto.
+- Presentar la composición sin habilitar operaciones de gestión.
+
+#### EntregableRepository
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Recuperar entregables visibles para el Investigador dentro del proyecto.
+- Mantener el alcance de consulta propio del rol.
+
 ## Flujo de colaboración
 
 ### Secuencia de operaciones
@@ -90,8 +102,8 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 2. **Solicitud principal**: `DetalleProyectoView` -> `ProyectoController.obtenerProyecto(id)`.
 3. **Acceso a datos**: `DetalleProyectoView` -> `ProyectoController.prepararAccionesDisponibles(investigador)`.
 4. **Preparación de acciones**: `ProyectoController` -> `ProyectoRepository.obtenerPorId(id)`.
-5. **Verificación de permisos**: `ProyectoController` -> `ProyectoRepository.verificarPermisos(actor)`.
-6. **Finalización**: `DetalleProyectoView` devuelve el control al estado de navegación definido.
+5. **Composición del detalle**: El controlador reúne el equipo y los entregables visibles.
+6. **Finalización**: Presenta `PROYECTO_ABIERTO` o vuelve a `PROYECTOS_ABIERTOS` si no está disponible.
 
 ### Patrón de colaboración establecido
 
@@ -108,7 +120,9 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 |Atender la solicitud `abrirProyecto()`|`DetalleProyectoView`|Recibe la acción del Investigador|
 |Coordinar reglas del caso de uso|`ProyectoController`|`obtenerProyecto(id)`|
 |Aplicar permisos y validaciones|`ProyectoController`|`prepararAccionesDisponibles(investigador)`|
-|Acceder a datos de proyectos|`ProyectoRepository`|`obtenerPorId(id)`, `verificarPermisos(actor)`|
+|Acceder a datos de proyectos|`ProyectoRepository`|`obtenerVisiblePorId(proyectoId, investigadorId)`|
+|Recuperar equipo visible|`InvestigadorRepository`|`obtenerEquipoVisible(proyectoId)`|
+|Recuperar entregables visibles|`EntregableRepository`|`obtenerVisiblesPorProyecto(...)`|
 |Representar atributos de dominio|`Proyecto`|Entidad conceptual|
 
 ### Atributos tratados
@@ -130,9 +144,7 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 ## Reglas funcionales consideradas
 
 - Mantener la separación entre presentación, coordinación y entidad para el rol Investigador.
-- Restringir operaciones de creación, edición y eliminación a publicaciones y entregables propios del Investigador.
-
-- Cuando el caso de uso se inicia desde un estado de detalle, el an?lisis modela un par?metro de contexto para ajustar el alcance sin duplicar el caso de uso. Si no se recibe identificador, el controlador conserva el comportamiento base del caso de uso; si se recibe, recupera o prepara la entidad acotada al contexto.
+- Validar que el proyecto seleccionado sea visible para el Investigador antes de presentar su equipo y entregables visibles.
 
 ## Características del análisis
 

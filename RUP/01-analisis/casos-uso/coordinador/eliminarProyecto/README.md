@@ -14,7 +14,7 @@
 
 ## Propósito
 
-Analizar la colaboración necesaria para eliminar un elemento de proyecto. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `eliminarProyecto()`.
+Analizar la colaboración necesaria para eliminar de forma segura un proyecto sin perder trazabilidad de entregables, equipo o recompensas vinculadas.
 
 ## Diagrama de colaboración
 
@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para eliminar un elemento de proyecto. El an
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `eliminarProyecto()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `eliminarProyecto(proyectoId)` desde `PROYECTO_ABIERTO`.
 - **Control**: Se comunica con `ProyectoController`.
-- **Salida**: Devuelve el control a la navegación definida para el Coordinador.
+- **Salida**: Navega a `PROYECTOS_ABIERTOS` si elimina o conserva `PROYECTO_ABIERTO` si cancela o existen dependencias.
 
 ### Clases de control
 
@@ -64,7 +64,7 @@ Analizar la colaboración necesaria para eliminar un elemento de proyecto. El an
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Abstraer el acceso a datos de proyectos.
-- Proporcionar operaciones `obtenerPorId(id)` y `eliminar(id)`.
+- Proporcionar operaciones `obtenerPorId(proyectoId)`, `obtenerEquipo(proyectoId)` y `eliminar(proyectoId)`.
 - Mantener la consistencia conceptual de proyectos.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
@@ -82,16 +82,28 @@ Analizar la colaboración necesaria para eliminar un elemento de proyecto. El an
 **Colaboraciones**:
 - **Repositorio**: Es gestionado por `ProyectoRepository`.
 
+#### EntregableRepository
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Recuperar entregables vinculados al proyecto antes de eliminar.
+- Aportar dependencias que pueden impedir la eliminación por trazabilidad.
+
+#### RecompensaRepository
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Recuperar recompensas vinculadas al proyecto.
+- Evitar que se pierda la relación entre proyecto completado y recompensa concedida.
+
 ## Flujo de colaboración
 
 ### Secuencia de operaciones
 
-1. **Inicio**: Estado de contexto -> `EliminarProyectoView.eliminarProyecto()`.
-2. **Confirmación previa**: `EliminarProyectoView` -> `ProyectoController.solicitarConfirmacion(id)`.
-3. **Presentación de confirmación**: `ProyectoController` -> `EliminarProyectoView.presentarConfirmacion()`.
-4. **Decisión del actor**: si confirma, `EliminarProyectoView` -> `ProyectoController.confirmarEliminacion(id)`; si cancela, `EliminarProyectoView` -> `ProyectoController.cancelarEliminacion()`.
-5. **Validación y persistencia**: `ProyectoController` -> `ProyectoRepository.obtenerPorId(id)` y `ProyectoRepository.eliminar(id)`.
-6. **Finalización**: si confirma, se actualiza la navegación del proyecto; si cancela, se mantiene el proyecto abierto sin cambios.
+1. **Inicio**: `PROYECTO_ABIERTO` -> `EliminarProyectoView.eliminarProyecto(proyectoId)`.
+2. **Comprobación previa**: `ProyectoController.comprobarEliminacion(proyectoId)`.
+3. **Dependencias**: El controlador obtiene equipo, entregables y recompensas vinculadas.
+4. **Trazabilidad**: Si existen dependencias que deben conservarse, impide la eliminación e informa al Coordinador.
+5. **Confirmación**: Si puede eliminarse, la vista solicita confirmación y el repositorio elimina el proyecto.
+6. **Finalización**: Navega a `PROYECTOS_ABIERTOS` si elimina o conserva `PROYECTO_ABIERTO` sin cambios.
 
 ### Patrón de colaboración establecido
 
@@ -106,9 +118,10 @@ Analizar la colaboración necesaria para eliminar un elemento de proyecto. El an
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
 |Atender la solicitud `eliminarProyecto()`|`EliminarProyectoView`|Recibe la acción del Coordinador|
-|Coordinar reglas del caso de uso|`ProyectoController`|`solicitarConfirmacion(id)`, `confirmarEliminacion(id)`|
-|Aplicar permisos, validaciones y cancelación|`ProyectoController`|`validarEliminacion(id)`, `cancelarEliminacion()`|
-|Acceder a datos de proyectos|`ProyectoRepository`|`obtenerPorId(id)`, `eliminar(id)`|
+|Coordinar reglas del caso de uso|`ProyectoController`|`comprobarEliminacion(proyectoId)`, `confirmarEliminacion(proyectoId)`|
+|Preservar trazabilidad|`ProyectoController`|`validarTrazabilidad(dependencias)`|
+|Consultar dependencias|`EntregableRepository`, `RecompensaRepository`|Obtienen información vinculada|
+|Acceder a datos de proyectos|`ProyectoRepository`|`obtenerPorId(proyectoId)`, `obtenerEquipo(proyectoId)`, `eliminar(proyectoId)`|
 |Representar atributos de dominio|`Proyecto`|Entidad conceptual|
 
 ### Atributos tratados
@@ -123,12 +136,13 @@ Analizar la colaboración necesaria para eliminar un elemento de proyecto. El an
 
 ## Colaboraciones relacionadas
 
-- **abrirProyectos()**: colaboración relacionada desde la navegación del caso de uso.
+- **abrirProyecto()**, **crearProyecto()** y **abrirPanelPrincipal()**: disponibles desde `PROYECTOS_ABIERTOS` tras eliminar.
+- **editarProyecto()**, **eliminarProyecto()**, **agregarInvestigador()**, **eliminarInvestigador()**, **abrirEntregables()**, **abrirInvestigadores()** y **abrirProyectos()**: disponibles desde `PROYECTO_ABIERTO` si se cancela o se impide la eliminación.
 
 ## Reglas funcionales consideradas
 
 - Mantener la separación entre presentación, coordinación y entidad para el rol Coordinador.
-- Permitir al Coordinador acceso global sobre publicaciones, entregables, proyectos, investigadores, recompensas y perfiles según el caso de uso.
+- Impedir la eliminación cuando las dependencias vinculadas deban resolverse o conservarse para mantener la trazabilidad.
 
 ## Características del análisis
 
