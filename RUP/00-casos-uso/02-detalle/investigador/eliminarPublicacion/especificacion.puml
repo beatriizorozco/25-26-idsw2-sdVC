@@ -6,34 +6,34 @@ in1 -[#green]-> eliminarPublicacion
 
 state eliminarPublicacion as "eliminarPublicacion()" {
 
-    state " " as ConfirmandoEliminacion
-    state " " as Eliminando
+    state " " as ConfirmandoRetirada
+    state " " as Retirando
 
-    [*] -[#green]-> ConfirmandoEliminacion
+    [*] -[#green]-> ConfirmandoRetirada
     note on link
-    <b>Investigador</b> solicita eliminar una publicación propia
+    <b>Investigador</b> solicita retirar una publicación propia
     end note
 
-    ConfirmandoEliminacion -[#green]-> Eliminando
+    ConfirmandoRetirada -[#green]-> Retirando
     note on link
-    <b>Sistema</b> presenta la confirmación de eliminación con:
+    <b>Sistema</b> presenta la confirmación de retirada con:
     • ID
     • Título
     • Estado
     • Visibilidad
 
     y permite solicitar las siguientes acciones:
-    • Eliminar definitivamente
+    • Retirar de la publicación activa
     • Cancelar
     end note
 
-    Eliminando -[#green]-> [*]
+    Retirando -[#green]-> [*]
     note on link
-    <b>Sistema</b> elimina la publicación
+    <b>Sistema</b> retira la publicación y conserva su histórico
     y visualiza un mensaje de confirmación
     end note
 
-    ConfirmandoEliminacion -[#red]-> [*]
+    ConfirmandoRetirada -[#red]-> [*]
     note on link
     <b>Investigador</b> solicita cancelar
     <b>Sistema</b> mantiene la publicación sin cambios
@@ -42,12 +42,12 @@ state eliminarPublicacion as "eliminarPublicacion()" {
 
 eliminarPublicacion -[#green]-> MIS_PUBLICACIONES_ABIERTAS
 note on link
-Publicación eliminada
+Publicación retirada
 end note
 
 eliminarPublicacion -[#red]-> MI_PUBLICACION_ABIERTA
 note on link
-Eliminación cancelada
+Retirada cancelada
 end note
 
 @enduml

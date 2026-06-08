@@ -5,11 +5,11 @@
 
 ## Implementación
 
-La eliminación requiere confirmación. El frontend envía `DELETE /api/solicitudes-eliminacion-perfil/{idSolicitud}/perfil`; el backend exige rol Coordinador, desactiva el perfil y marca la solicitud como resuelta. Si la solicitud corresponde al único Coordinador activo, la eliminación se rechaza para no dejar el sistema sin coordinación.
+La desactivación requiere confirmación. El frontend envía `DELETE /api/solicitudes-eliminacion-perfil/{idSolicitud}/perfil`; el backend exige rol Coordinador, desactiva el perfil y marca la solicitud como resuelta. El uso de `DELETE` representa la baja funcional, no un borrado físico. Si la solicitud corresponde al único Coordinador activo, la desactivación se rechaza para no dejar el sistema sin coordinación.
 
 ## Código relacionado
 
 - [`PerfilPage.tsx`](/src/frontend/src/pages/PerfilPage.tsx)
 - [`SolicitudEliminacionPerfilController.java`](/src/backend/src/main/java/es/funiber/investigacion/controller/SolicitudEliminacionPerfilController.java)
 - [`PerfilService.java`](/src/backend/src/main/java/es/funiber/investigacion/service/PerfilService.java)
-- [`EliminacionPerfilResponse.java`](/src/backend/src/main/java/es/funiber/investigacion/dto/EliminacionPerfilResponse.java)
+- [`DesactivacionPerfilResponse.java`](/src/backend/src/main/java/es/funiber/investigacion/dto/DesactivacionPerfilResponse.java)

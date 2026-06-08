@@ -14,7 +14,7 @@
 
 ## Propósito
 
-Analizar la colaboración necesaria para eliminar un elemento propio de entregable. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `eliminarEntregable()`.
+Analizar la colaboración necesaria para retirar un entregable propio conservando sus versiones y trazabilidad. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `eliminarEntregable()`.
 
 ## Diagrama de colaboración
 
@@ -64,7 +64,7 @@ Analizar la colaboración necesaria para eliminar un elemento propio de entregab
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Abstraer el acceso a datos de entregables.
-- Proporcionar operaciones `obtenerPorId(id)` y `eliminar(id)`.
+- Proporcionar operaciones `obtenerPorId(id)` y `retirar(id)`.
 - Mantener la consistencia conceptual de entregables.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
@@ -89,8 +89,8 @@ Analizar la colaboración necesaria para eliminar un elemento propio de entregab
 1. **Inicio**: Estado de contexto -> `EliminarEntregableView.eliminarEntregable()`.
 2. **Confirmación previa**: `EliminarEntregableView` -> `EntregableController.solicitarConfirmacion(id)`.
 3. **Presentación de confirmación**: `EntregableController` -> `EliminarEntregableView.presentarConfirmacion()`.
-4. **Decisión del actor**: si confirma, `EliminarEntregableView` -> `EntregableController.confirmarEliminacion(id)`; si cancela, `EliminarEntregableView` -> `EntregableController.cancelarEliminacion()`.
-5. **Validación y persistencia**: `EntregableController` -> `EntregableRepository.obtenerPorId(id)` y `EntregableRepository.eliminar(id)`.
+4. **Decisión del actor**: si confirma, `EliminarEntregableView` -> `EntregableController.confirmarRetirada(id)`; si cancela, `EliminarEntregableView` -> `EntregableController.cancelarRetirada()`.
+5. **Validación y persistencia**: `EntregableController` -> `EntregableRepository.obtenerPorId(id)` y `EntregableRepository.retirar(id)`.
 6. **Finalización**: si confirma, se presenta el listado de entregables; si cancela, se mantiene el entregable abierto.
 
 ### Patrón de colaboración establecido
@@ -106,9 +106,9 @@ Analizar la colaboración necesaria para eliminar un elemento propio de entregab
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
 |Atender la solicitud `eliminarEntregable()`|`EliminarEntregableView`|Recibe la acción del Investigador|
-|Coordinar reglas del caso de uso|`EntregableController`|`solicitarConfirmacion(id)`, `confirmarEliminacion(id)`|
-|Aplicar permisos, validaciones y cancelación|`EntregableController`|`validarEliminacion(id)`, `cancelarEliminacion()`|
-|Acceder a datos de entregables|`EntregableRepository`|`obtenerPorId(id)`, `eliminar(id)`|
+|Coordinar reglas del caso de uso|`EntregableController`|`solicitarConfirmacion(id)`, `confirmarRetirada(id)`|
+|Aplicar permisos, validaciones y cancelación|`EntregableController`|`validarRetirada(id)`, `cancelarRetirada()`|
+|Acceder a datos de entregables|`EntregableRepository`|`obtenerPorId(id)`, `retirar(id)`|
 |Representar atributos de dominio|`Entregable`|Entidad conceptual|
 
 ### Atributos tratados

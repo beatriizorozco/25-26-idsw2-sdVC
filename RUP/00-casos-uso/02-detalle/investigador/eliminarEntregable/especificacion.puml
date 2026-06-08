@@ -6,17 +6,17 @@ in1 -[#green]-> eliminarEntregable
 
 state eliminarEntregable as "eliminarEntregable()" {
 
-    state " " as SolicitandoEliminacion
-    state " " as ConfirmandoEliminacion
+    state " " as SolicitandoRetirada
+    state " " as ConfirmandoRetirada
 
-    [*] -[#green]-> SolicitandoEliminacion
+    [*] -[#green]-> SolicitandoRetirada
     note on link
-    <b>Investigador</b> solicita eliminar el entregable propio
+    <b>Investigador</b> solicita retirar el entregable propio
     end note
 
-    SolicitandoEliminacion -[#green]-> ConfirmandoEliminacion
+    SolicitandoRetirada -[#green]-> ConfirmandoRetirada
     note on link
-    <b>Sistema</b> presenta una confirmación de eliminación
+    <b>Sistema</b> presenta una confirmación de retirada
     <b>Sistema</b> muestra información del entregable:
     • ID
     • Título
@@ -24,25 +24,25 @@ state eliminarEntregable as "eliminarEntregable()" {
     • Estado
 
     <b>Sistema</b> permite solicitar:
-    • Confirmar eliminación
+    • Confirmar retirada
     • Cancelar
     end note
 
-    ConfirmandoEliminacion -[#green]-> [*]
+    ConfirmandoRetirada -[#green]-> [*]
     note on link
-    <b>Investigador</b> solicita confirmar la eliminación
+    <b>Investigador</b> solicita confirmar la retirada
     end note
 
-    ConfirmandoEliminacion -[#red]-> [*]
+    ConfirmandoRetirada -[#red]-> [*]
     note on link
-    <b>Investigador</b> solicita cancelar la eliminación
+    <b>Investigador</b> solicita cancelar la retirada
     <b>Sistema</b> presenta el entregable sin cambios
     end note
 }
 
 eliminarEntregable -[#green]-> ENTREGABLES_ABIERTOS
 note on link
-Entregable eliminado
+Entregable retirado
 end note
 
 eliminarEntregable -[#red]-> ENTREGABLE_ABIERTO

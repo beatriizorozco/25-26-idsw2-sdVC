@@ -4,7 +4,7 @@
     <b>GIPF - ELIMINAR RECOMPENSA</b>
     ====
     {
-        <b>Confirmación de eliminación</b>
+        <b>Confirmación de anulación</b>
         --
         {
             "¿Está seguro de que desea eliminar esta recompensa?"
@@ -19,7 +19,7 @@
         <b>Resultado</b>
         --
         {
-            "La recompensa ha sido eliminada correctamente."
+            "La recompensa ha sido anulada correctamente."
         }
     }
 }

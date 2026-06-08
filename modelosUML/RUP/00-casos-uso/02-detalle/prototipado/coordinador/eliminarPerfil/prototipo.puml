@@ -18,20 +18,20 @@
 
         --
 
-        <b>Confirmación de eliminación</b>
+        <b>Confirmación de desactivación</b>
         {
-            <b>¿Está seguro de eliminar este perfil?</b>
-            <i>Advertencia: esta acción no se puede deshacer.</i>
+            <b>¿Está seguro de desactivar este perfil?</b>
+            <i>Advertencia: el acceso se revocará, pero el histórico se conservará.</i>
 
             --
             <b>Al confirmar:</b>
-            • Se eliminará el perfil del investigador del sistema
+            • Se desactivará el acceso del investigador y se conservará su histórico
             • Se volverá al listado de solicitudes actualizado
         }
 
         ~~
 
-        {[Confirmar eliminación] | [Cancelar]}
+        {[Confirmar desactivación] | [Cancelar]}
     }
 }
 @endsalt

@@ -74,6 +74,7 @@ El proyecto cubre:
 
 ## Referencias
 
+- [Política de bajas, archivado y conservación histórica](politica-bajas-logicas.md)
 - [Modelo del dominio](00-modelo-del-dominio/modelo-dominio.md)
 - [Actores y casos de uso](01-actores-casos-uso/actores-casos-uso.md)
 - [Diagramas de contexto](01-actores-casos-uso/diagramas-contexto.md)

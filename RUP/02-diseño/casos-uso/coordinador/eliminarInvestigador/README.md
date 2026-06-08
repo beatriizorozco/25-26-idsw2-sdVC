@@ -5,7 +5,7 @@
 
 ## Propósito
 
-Detallar la desasignación segura de un investigador del proyecto sin eliminar su perfil.
+Detallar la desasignación segura de un investigador del proyecto sin eliminar su perfil ni su participación histórica.
 
 ## Diagrama de secuencia
 
@@ -16,16 +16,17 @@ Detallar la desasignación segura de un investigador del proyecto sin eliminar s
 ## Participantes
 
 - **ProyectoDetallePage**: Presenta el miembro seleccionado y solicita confirmación.
-- **ProyectoController**: Expone `DELETE /api/proyectos/{id}/investigadores/{investigadorId}`.
+- **ProyectoController**: Expone `PATCH /api/proyectos/{id}/investigadores/{investigadorId}/desasignacion`.
 - **SesionService**: Exige una sesión de Coordinador.
-- **ProyectoService**: Valida y elimina exclusivamente la asociación.
-- **ProyectoRepository** e **InvestigadorRepository**: Comprueban la pertenencia y actualizan el equipo.
+- **ProyectoService**: Valida y registra la desasignación lógica.
+- **ProyectoRepository** e **InvestigadorRepository**: Comprueban la pertenencia, actualizan el equipo activo y conservan la participación histórica.
 
 ## Decisiones de Diseño
 
 - La API solo se invoca después de confirmación explícita.
 - Eliminar al investigador del proyecto significa desasignarlo.
-- El perfil, su carga y sus datos personales permanecen intactos.
+- El perfil, su carga, sus datos personales y la participación histórica permanecen intactos.
+- La desasignación registra fecha y Coordinador responsable.
 - Cancelar conserva `PROYECTO_ABIERTO`.
 
 ## Referencias

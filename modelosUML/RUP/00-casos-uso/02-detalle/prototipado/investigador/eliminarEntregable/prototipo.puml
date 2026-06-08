@@ -20,6 +20,6 @@
 
     --
 
-    { [Cancelar] | [Eliminar entregable] }
+    { [Cancelar] | [Retirar entregable] }
 }
 @endsalt

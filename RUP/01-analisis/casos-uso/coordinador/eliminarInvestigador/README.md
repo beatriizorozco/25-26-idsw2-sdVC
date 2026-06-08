@@ -86,7 +86,7 @@ Analizar la colaboración necesaria para retirar a un investigador de un proyect
 **Estereotipo**: Entidad
 **Responsabilidades**:
 - Recuperar el proyecto abierto.
-- Retirar únicamente la asociación entre proyecto e investigador.
+- Registrar la desasignación sin borrar la participación histórica entre proyecto e investigador.
 
 #### EntregableRepository
 **Estereotipo**: Entidad
@@ -101,8 +101,8 @@ Analizar la colaboración necesaria para retirar a un investigador de un proyect
 1. **Inicio**: `PROYECTO_ABIERTO` -> `EliminarInvestigadorView.eliminarInvestigador(proyectoId, investigadorId)`.
 2. **Comprobación**: `ProyectoController` recupera proyecto, investigador y responsabilidades pendientes.
 3. **Decisión**: Si existen entregables pendientes, informa que no puede retirarse; si no existen, solicita confirmación.
-4. **Desasignación**: Tras confirmar, `ProyectoRepository.desasociarInvestigador(proyectoId, investigadorId)`.
-5. **Conservación del perfil**: El investigador continúa existiendo y solo desaparece de la composición del proyecto.
+4. **Desasignación**: Tras confirmar, `ProyectoRepository.registrarDesasignacion(proyectoId, investigadorId, fecha, coordinador)`.
+5. **Conservación histórica**: El investigador desaparece de la composición activa, pero se conservan su perfil y su participación histórica.
 6. **Finalización**: Se conserva `PROYECTO_ABIERTO`.
 
 ### Patrón de colaboración establecido
@@ -120,7 +120,7 @@ Analizar la colaboración necesaria para retirar a un investigador de un proyect
 |Atender la solicitud `eliminarInvestigador()`|`EliminarInvestigadorView`|Recibe la acción del Coordinador|
 |Coordinar reglas del caso de uso|`ProyectoController`|`comprobarDesasignacion(...)`, `confirmarDesasignacion(...)`|
 |Comprobar responsabilidades pendientes|`EntregableRepository`|`obtenerPendientesAsignados(...)`|
-|Retirar únicamente la asociación|`ProyectoRepository`|`desasociarInvestigador(proyectoId, investigadorId)`|
+|Registrar la desasignación sin borrar el histórico|`ProyectoRepository`|`registrarDesasignacion(proyectoId, investigadorId, fecha, coordinador)`|
 |Conservar el perfil|`InvestigadorRepository`|`obtenerPorId(investigadorId)` sin eliminación|
 |Representar atributos de dominio|`Investigador`|Entidad conceptual|
 
@@ -147,7 +147,7 @@ Analizar la colaboración necesaria para retirar a un investigador de un proyect
 ## Reglas funcionales consideradas
 
 - Mantener la separación entre presentación, coordinación y entidad para el rol Coordinador.
-- Comprobar responsabilidades pendientes y retirar únicamente la asociación entre proyecto e investigador.
+- Comprobar responsabilidades pendientes y registrar la desasignación sin borrar la participación histórica.
 
 ## Características del análisis
 

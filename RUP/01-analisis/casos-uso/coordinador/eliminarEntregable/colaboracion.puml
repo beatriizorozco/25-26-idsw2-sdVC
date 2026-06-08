@@ -18,15 +18,20 @@ EstadoEntrada -r-> EliminarEntregableView: eliminarEntregable()
 
 EliminarEntregableView -d-> EntregableController: solicitarConfirmacion(id)
 EntregableController --> EliminarEntregableView: presentarConfirmacion()
-EliminarEntregableView --> EntregableController: confirmarEliminacion(id)
-EliminarEntregableView --> EntregableController: cancelarEliminacion()
-EliminarEntregableView --> EntregableController: validarEliminacion(id)
+EliminarEntregableView --> EntregableController: confirmarRetirada(id)
+EliminarEntregableView --> EntregableController: cancelarRetirada()
+EliminarEntregableView --> EntregableController: validarRetirada(id)
 EntregableController --> EntregableRepository: obtenerPorId(id)
-EntregableController --> EntregableRepository: eliminar(id)
+EntregableController --> EntregableRepository: retirar(id, fecha, coordinador, motivo)
 EntregableRepository -- Entregable
-EliminarEntregableView ..> EstadoSalidaExitosa: entregableEliminado()
-EliminarEntregableView ..> EstadoSalidaCancelada: eliminacionCancelada()
+EliminarEntregableView ..> EstadoSalidaExitosa: entregableRetirado()
+EliminarEntregableView ..> EstadoSalidaCancelada: retiradaCancelada()
 EliminarEntregableView ..> AbrirEntregables: abrirEntregables()
 EliminarEntregableView ..> AbrirEntregable: abrirEntregable()
+
+note right of EntregableRepository
+La retirada conserva versiones,
+autoria y relaciones historicas.
+end note
 
 @enduml

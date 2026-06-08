@@ -4,7 +4,7 @@
     <b>GIPF - ELIMINAR PUBLICACIÓN</b>
     ====
     {
-        <b>Confirmación de eliminación</b>
+        <b>Confirmación de retirada</b>
         --
         {
             "¿Está seguro de que desea eliminar esta publicación?"
@@ -19,7 +19,7 @@
         <b>Resultado</b>
         --
         {
-            "La publicación ha sido eliminada correctamente."
+            "La publicación ha sido retirada correctamente."
         }
     }
 }

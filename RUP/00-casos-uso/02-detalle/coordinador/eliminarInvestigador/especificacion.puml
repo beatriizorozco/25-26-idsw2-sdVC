@@ -29,7 +29,8 @@ state eliminarInvestigador as "eliminarInvestigador(investigadorId)" {
     ConfirmandoDesasignacion -[#green]-> [*]
     note on link
     <b>Coordinador</b> confirma
-    <b>Sistema</b> retira la asociación con el proyecto
+    <b>Sistema</b> registra la desasignación y conserva
+    la participación histórica en el proyecto
     end note
 
     ConfirmandoDesasignacion -[#red]-> [*]

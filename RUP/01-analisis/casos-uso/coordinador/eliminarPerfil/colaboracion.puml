@@ -19,17 +19,23 @@ EstadoEntrada -r-> EliminarPerfilView: eliminarPerfil()
 
 EliminarPerfilView -d-> PerfilController: solicitarConfirmacion(idSolicitud, idPerfil)
 PerfilController --> EliminarPerfilView: presentarConfirmacion()
-EliminarPerfilView --> PerfilController: confirmarEliminacion(idSolicitud, idPerfil)
-EliminarPerfilView --> PerfilController: cancelarEliminacion()
-EliminarPerfilView --> PerfilController: validarEliminacion(idPerfil)
+EliminarPerfilView --> PerfilController: confirmarDesactivacion(idSolicitud, idPerfil)
+EliminarPerfilView --> PerfilController: cancelarDesactivacion()
+EliminarPerfilView --> PerfilController: validarDesactivacion(idPerfil)
 PerfilController --> SolicitudEliminacionPerfilRepository: obtenerPorId(idSolicitud)
 PerfilController --> PerfilRepository: obtenerPorId(idPerfil)
-PerfilController --> PerfilRepository: eliminar(idPerfil)
+PerfilController --> PerfilRepository: desactivar(idPerfil, fecha, coordinador)
 PerfilController --> SolicitudEliminacionPerfilRepository: marcarResuelta(idSolicitud)
 PerfilRepository -- Perfil
 SolicitudEliminacionPerfilRepository -- SolicitudEliminacionPerfil
-EliminarPerfilView ..> EstadoSalidaExitosa: perfilEliminado()
-EliminarPerfilView ..> EstadoSalidaCancelada: eliminacionCancelada()
+EliminarPerfilView ..> EstadoSalidaExitosa: perfilDesactivado()
+EliminarPerfilView ..> EstadoSalidaCancelada: desactivacionCancelada()
 EliminarPerfilView ..> AbrirSolicitudesEliminacionPerfil: abrirSolicitudesEliminacionPerfil()
+
+note right of PerfilRepository
+La baja revoca el acceso,
+pero conserva el perfil y
+sus relaciones historicas.
+end note
 
 @enduml

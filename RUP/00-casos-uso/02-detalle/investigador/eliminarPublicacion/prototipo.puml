@@ -20,6 +20,6 @@
 
     --
 
-    { [Cancelar] | [Eliminar definitivamente] }
+    { [Cancelar] | [Retirar de la publicación activa] }
 }
 @endsalt

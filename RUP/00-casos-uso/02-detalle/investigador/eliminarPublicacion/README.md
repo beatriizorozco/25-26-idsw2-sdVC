@@ -14,7 +14,7 @@
 
 ## Propósito
 
-Especificación detallada del caso de uso `eliminarPublicacion()` mediante diagrama de estado, mostrando la conversación entre el Investigador y el Sistema para permitir al investigador solicitar o confirmar la eliminación de publicación cuando su rol lo permite.
+Especificación detallada del caso de uso `eliminarPublicacion()` mediante diagrama de estado, mostrando la conversación entre el Investigador y el Sistema para permitir al investigador solicitar o confirmar la retirada de publicación cuando su rol lo permite.
 
 ## Información del caso de uso
 
@@ -22,11 +22,11 @@ Especificación detallada del caso de uso `eliminarPublicacion()` mediante diagr
 |-|-|
 |**Nombre**|eliminarPublicacion()|
 |**Actor primario**|Investigador|
-|**Objetivo**|Permitir al Investigador solicitar o confirmar la eliminación de publicación cuando su rol lo permite.|
+|**Objetivo**|Permitir al Investigador solicitar o confirmar la retirada de publicación cuando su rol lo permite.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
 |**Precondición**|Usuario autenticado como Investigador y sistema disponible para navegación.|
-|**Postcondición exitosa**|Publicación queda eliminado o marcado para eliminación según corresponda.|
+|**Postcondición exitosa**|La publicación queda retirada de la gestión activa y conserva su autoría y trazabilidad.|
 |**Postcondición de fallo**|No se aplican cambios si la información solicitada no es válida o el actor cancela la operación.|
 
 ## Diagrama de especificación
@@ -51,14 +51,14 @@ Especificación detallada del caso de uso `eliminarPublicacion()` mediante diagr
 
 |![Wireframe: eliminarPublicacion](/images/RUP/00-casos-uso/02-detalle/investigador/eliminarPublicacion/eliminarPublicacion-wireframe.svg)|
 |-|
-|**Estado**: ConfirmandoEliminacion / Eliminando|
+|**Estado**: ConfirmandoRetirada / Retirando|
 
 </div>
 
 **Correspondencia con especificación:**
-- **Investigador** solicita eliminar una publicación propia
-- **Sistema** presenta la confirmación de eliminación con:<br>- ID<br>- Título<br>- Estado<br>- Visibilidad<br>y permite solicitar las siguientes acciones:<br>- Eliminar definitivamente<br>- Cancelar
-- **Sistema** elimina la publicación<br>y visualiza un mensaje de confirmación
+- **Investigador** solicita retirar una publicación propia
+- **Sistema** presenta la confirmación de retirada con:<br>- ID<br>- Título<br>- Estado<br>- Visibilidad<br>y permite solicitar las siguientes acciones:<br>- Retirar de la publicación activa<br>- Cancelar
+- **Sistema** retira la publicación y conserva su histórico<br>y visualiza un mensaje de confirmación
 - **Investigador** solicita cancelar<br>**Sistema** mantiene la publicación sin cambios
 
 ### Validaciones del wireframe
@@ -78,9 +78,9 @@ Especificación detallada del caso de uso `eliminarPublicacion()` mediante diagr
 
 |Actor|Acción|Sistema|Respuesta|
 |-|-|-|-|
-|**Investigador**|solicita eliminar una publicación propia|| |
-||**Sistema**|presenta la confirmación de eliminación con:<br>- ID<br>- Título<br>- Estado<br>- Visibilidad<br>y permite solicitar las siguientes acciones:<br>- Eliminar definitivamente<br>- Cancelar| |
-||**Sistema**|elimina la publicación<br>y visualiza un mensaje de confirmación| |
+|**Investigador**|solicita retirar una publicación propia|| |
+||**Sistema**|presenta la confirmación de retirada con:<br>- ID<br>- Título<br>- Estado<br>- Visibilidad<br>y permite solicitar las siguientes acciones:<br>- Retirar de la publicación activa<br>- Cancelar| |
+||**Sistema**|retira la publicación y conserva su histórico<br>y visualiza un mensaje de confirmación| |
 |**Investigador**|solicita cancelar<br>|| |
 ||**Sistema**|mantiene la publicación sin cambios| |
 
@@ -88,15 +88,15 @@ Especificación detallada del caso de uso `eliminarPublicacion()` mediante diagr
 
 |Estado|Descripción|Responsabilidad|
 |-|-|-|
-|**ConfirmandoEliminacion**|Estado donde el sistema valida o confirma la eliminación de publicación.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
-|**Eliminando**|Estado donde el sistema valida o confirma la eliminación de publicación.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
+|**ConfirmandoRetirada**|Estado donde el sistema valida o confirma la retirada de publicación.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
+|**Retirando**|Estado donde el sistema valida o confirma la retirada de publicación.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
 
 ## Funcionalidad específica
 
-### Patrón de eliminación segura
+### Patrón de retirada segura
 
-- **Confirmación**: la conversación separa solicitud y eliminación.
-- **Sin detalle técnico**: no se define borrado físico ni lógico.
+- **Confirmación**: la conversación separa solicitud y retirada.
+- **Sin detalle técnico**: se aplica una retirada lógica que conserva autoría, relaciones y metadatos.
 - **Retorno al contexto**: el actor vuelve al listado o estado indicado por el diagrama.
 
 ### Información tratada
@@ -105,6 +105,10 @@ Especificación detallada del caso de uso `eliminarPublicacion()` mediante diagr
   - Autor
   - Respuestas
 
+### Reglas de dominio
+- La retirada registra fecha, actor responsable y motivo.
+- La publicación retirada deja de aparecer en los listados activos.
+- Se conservan autoría, proyecto relacionado, metadatos y trazabilidad.
 ## Opciones de navegación
 
 ### Operaciones relacionadas
@@ -152,4 +156,5 @@ Este caso de uso se integra en los diagramas de contexto del Investigador, mante
 - [Actores y casos de uso](../../../01-actores-casos-uso/actores-casos-uso.md)
 - [Modelo del dominio](../../../00-modelo-del-dominio/modelo-dominio.md)
 - [Detalle y prototipado](../../README.md)
+- [Política de bajas, archivado y conservación histórica](../../../politica-bajas-logicas.md)
 - [conversation-log.md](../../../../../conversation-log.md)

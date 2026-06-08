@@ -17,14 +17,18 @@ EstadoEntrada -r-> EliminarPublicacionView: eliminarPublicacion()
 
 EliminarPublicacionView -d-> PublicacionController: solicitarConfirmacion(id)
 PublicacionController --> EliminarPublicacionView: presentarConfirmacion()
-EliminarPublicacionView --> PublicacionController: confirmarEliminacion(id)
-EliminarPublicacionView --> PublicacionController: cancelarEliminacion()
-EliminarPublicacionView --> PublicacionController: validarEliminacion(id)
+EliminarPublicacionView --> PublicacionController: confirmarRetirada(id)
+EliminarPublicacionView --> PublicacionController: cancelarRetirada()
+EliminarPublicacionView --> PublicacionController: validarRetirada(id)
 PublicacionController --> PublicacionRepository: obtenerPorId(id)
-PublicacionController --> PublicacionRepository: eliminar(id)
+PublicacionController --> PublicacionRepository: retirar(id, fecha, investigador, motivo)
 PublicacionRepository -- Publicacion
-EliminarPublicacionView ..> EstadoSalidaExitosa: publicacionEliminada()
-EliminarPublicacionView ..> EstadoSalidaCancelada: eliminacionCancelada()
+note right of PublicacionRepository
+La retirada conserva autoria,
+metadatos y relaciones historicas.
+end note
+EliminarPublicacionView ..> EstadoSalidaExitosa: publicacionRetirada()
+EliminarPublicacionView ..> EstadoSalidaCancelada: retiradaCancelada()
 
 
 @enduml

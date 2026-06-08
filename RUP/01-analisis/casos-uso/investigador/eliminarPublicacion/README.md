@@ -14,7 +14,7 @@
 
 ## Propósito
 
-Analizar la colaboración necesaria para eliminar un elemento propio de publicación. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `eliminarPublicacion()`.
+Analizar la colaboración necesaria para retirar una publicación propia conservando su autoría y trazabilidad. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `eliminarPublicacion()`.
 
 ## Diagrama de colaboración
 
@@ -64,7 +64,7 @@ Analizar la colaboración necesaria para eliminar un elemento propio de publicac
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Abstraer el acceso a datos de publicaciones.
-- Proporcionar operaciones `obtenerPorId(id)` y `eliminar(id)`.
+- Proporcionar operaciones `obtenerPorId(id)` y `retirar(id)`.
 - Mantener la consistencia conceptual de publicaciones.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
@@ -89,8 +89,8 @@ Analizar la colaboración necesaria para eliminar un elemento propio de publicac
 1. **Inicio**: Estado de contexto -> `EliminarPublicacionView.eliminarPublicacion()`.
 2. **Confirmación previa**: `EliminarPublicacionView` -> `PublicacionController.solicitarConfirmacion(id)`.
 3. **Presentación de confirmación**: `PublicacionController` -> `EliminarPublicacionView.presentarConfirmacion()`.
-4. **Decisión del actor**: si confirma, `EliminarPublicacionView` -> `PublicacionController.confirmarEliminacion(id)`; si cancela, `EliminarPublicacionView` -> `PublicacionController.cancelarEliminacion()`.
-5. **Validación y persistencia**: `PublicacionController` -> `PublicacionRepository.obtenerPorId(id)` y `PublicacionRepository.eliminar(id)`.
+4. **Decisión del actor**: si confirma, `EliminarPublicacionView` -> `PublicacionController.confirmarRetirada(id)`; si cancela, `EliminarPublicacionView` -> `PublicacionController.cancelarRetirada()`.
+5. **Validación y persistencia**: `PublicacionController` -> `PublicacionRepository.obtenerPorId(id)` y `PublicacionRepository.retirar(id)`.
 6. **Finalización**: si confirma, se presenta el listado de publicaciones propias; si cancela, se mantiene la publicación abierta.
 
 ### Patrón de colaboración establecido
@@ -106,9 +106,9 @@ Analizar la colaboración necesaria para eliminar un elemento propio de publicac
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
 |Atender la solicitud `eliminarPublicacion()`|`EliminarPublicacionView`|Recibe la acción del Investigador|
-|Coordinar reglas del caso de uso|`PublicacionController`|`solicitarConfirmacion(id)`, `confirmarEliminacion(id)`|
-|Aplicar permisos, validaciones y cancelación|`PublicacionController`|`validarEliminacion(id)`, `cancelarEliminacion()`|
-|Acceder a datos de publicaciones|`PublicacionRepository`|`obtenerPorId(id)`, `eliminar(id)`|
+|Coordinar reglas del caso de uso|`PublicacionController`|`solicitarConfirmacion(id)`, `confirmarRetirada(id)`|
+|Aplicar permisos, validaciones y cancelación|`PublicacionController`|`validarRetirada(id)`, `cancelarRetirada()`|
+|Acceder a datos de publicaciones|`PublicacionRepository`|`obtenerPorId(id)`, `retirar(id)`|
 |Representar atributos de dominio|`Publicacion`|Entidad conceptual|
 
 ### Atributos tratados

@@ -19,21 +19,22 @@ EstadoEntrada -r-> EliminarRecompensaView: eliminarRecompensa()
 
 EliminarRecompensaView -d-> RecompensaController: solicitarConfirmacion(id)
 RecompensaController --> EliminarRecompensaView: presentarConfirmacion()
-EliminarRecompensaView --> RecompensaController: confirmarEliminacion(id)
-EliminarRecompensaView --> RecompensaController: validarEliminacion(id)
+EliminarRecompensaView --> RecompensaController: confirmarAnulacion(id)
+EliminarRecompensaView --> RecompensaController: validarAnulacion(id)
 RecompensaController --> RecompensaRepository: obtenerPorId(id)
 RecompensaController --> ProyectoRepository: verificarProyectoCompletado(recompensa)
-RecompensaController --> RecompensaRepository: eliminar(id)
-EliminarRecompensaView --> RecompensaController: cancelarEliminacion()
+RecompensaController --> RecompensaRepository: anular(id, fecha, coordinador, motivo)
+EliminarRecompensaView --> RecompensaController: cancelarAnulacion()
 RecompensaRepository -- Recompensa
 ProyectoRepository -- Proyecto
 note right of RecompensaController
-La eliminacion borra la recompensa,
+La anulacion conserva la recompensa,
+su concesion y su trazabilidad,
 pero no modifica el proyecto ni la
 carga de trabajo del investigador.
 end note
-EliminarRecompensaView ..> EstadoSalidaExitosa: recompensaEliminada()
-EliminarRecompensaView ..> EstadoSalidaCancelada: eliminacionCancelada()
+EliminarRecompensaView ..> EstadoSalidaExitosa: recompensaAnulada()
+EliminarRecompensaView ..> EstadoSalidaCancelada: anulacionCancelada()
 EliminarRecompensaView ..> AbrirRecompensas: abrirRecompensas()
 
 @enduml

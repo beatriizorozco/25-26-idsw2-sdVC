@@ -30,7 +30,7 @@ ProyectoController --> InvestigadorRepository: obtenerPorId(investigadorId)
 ProyectoController --> EntregableRepository: obtenerPendientesAsignados(proyectoId, investigadorId)
 ProyectoController --> EliminarInvestigadorView: presentarResultadoYConfirmacion()
 EliminarInvestigadorView --> ProyectoController: confirmarDesasignacion(proyectoId, investigadorId)
-ProyectoController --> ProyectoRepository: desasociarInvestigador(proyectoId, investigadorId)
+ProyectoController --> ProyectoRepository: registrarDesasignacion(proyectoId, investigadorId, fecha, coordinador)
 ProyectoRepository -- Proyecto
 InvestigadorRepository -- Investigador
 EntregableRepository -- Entregable

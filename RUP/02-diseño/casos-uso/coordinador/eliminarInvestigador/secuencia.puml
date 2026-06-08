@@ -17,7 +17,7 @@ alt Coordinador cancela
     Frontend --> Coordinador: Conserva PROYECTO_ABIERTO
 else Coordinador confirma
     Coordinador -> Frontend: Confirma desasignacion
-    Frontend -> Api: DELETE /api/proyectos/{id}/investigadores/{investigadorId}\nCookie de sesion
+    Frontend -> Api: PATCH /api/proyectos/{id}/investigadores/{investigadorId}/desasignacion\nCookie de sesion
     activate Api
     Api -> Sesion: exigirCoordinador(authentication)
     activate Sesion
@@ -37,11 +37,11 @@ else Coordinador confirma
             deactivate Api
             Frontend --> Coordinador: Presenta asociación no encontrada
         else Asociacion existente
-            Service -> Repo: desasociarInvestigador(id, investigadorId)
-            Repo --> Service: Equipo actualizado
+            Service -> Repo: registrarDesasignacion(id, investigadorId, fecha, coordinador)
+            Repo --> Service: Participacion desasignada
             note right of Service
-            El perfil del investigador
-            permanece intacto.
+            El perfil y la participacion historica
+            permanecen intactos.
             end note
             Service --> Api: ProyectoDetalleResponse
             deactivate Service

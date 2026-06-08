@@ -6,8 +6,8 @@ Documento de seguimiento para no olvidar actualizaciones documentales y técnica
 
 - [ ] Revisar los diagramas de especificación antes de aceptar el Análisis de cada familia funcional.
 - [ ] Revisar los diagramas de colaboración antes de crear su Diseño.
-- [ ] Revisar transversalmente todos los casos `eliminar...` y clasificarlos como baja lógica, archivado, anulación, desasignación o borrado físico excepcional.
-- [ ] Alinear la documentación de `eliminarPerfil()` con el backend existente: desactivar el acceso y conservar el histórico del usuario.
+- [x] Revisar transversalmente todos los casos `eliminar...` y clasificarlos como baja lógica, archivado, anulación, desasignación o borrado físico excepcional.
+- [x] Alinear la documentación de `eliminarPerfil()` con el backend existente: desactivar el acceso y conservar el histórico del usuario.
 - [ ] Actualizar [`incidencias_y_soluciones.md`](incidencias_y_soluciones.md) con los problemas relevantes y su resolución.
 - [ ] Crear los `README.md` y `secuencia.puml` de Diseño para cada caso revisado.
 - [ ] Revisar que los casos de uso `crear*` en Diseño sigan el patrón de `crearAula`: mostrar formulario, enviar `POST`, crear entidad desde el servicio/repositorio, devolver respuesta creada y notificar éxito.
@@ -148,3 +148,11 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Crear el Diseño del bloque 5 para Coordinador e Investigador con `README.md` y `secuencia.puml`.
 - [ ] Revisar manualmente el Diseño completo del bloque 5 antes de avanzar a Desarrollo.
 - [ ] Diseñar una consulta de histórico de proyectos archivados para el Coordinador antes de cerrar definitivamente la gestión de proyectos.
+
+## Pendiente de bajas lógicas
+
+- [ ] Migrar `eliminarRecompensa()` en Desarrollo desde el borrado físico actual hacia una anulación lógica con fecha, Coordinador responsable y motivo.
+- [ ] Implementar la retirada lógica de publicaciones y entregables cuando sus bloques alcancen Desarrollo.
+- [ ] Diseñar consultas administrativas de perfiles inactivos, proyectos archivados, publicaciones y entregables retirados, y recompensas anuladas.
+- [ ] Implementar las desasignaciones de investigadores como cambios de estado de la participación, sin borrar físicamente la relación histórica con el proyecto.
+- [ ] Reservar el borrado físico para correcciones administrativas excepcionales de registros erróneos sin valor histórico.

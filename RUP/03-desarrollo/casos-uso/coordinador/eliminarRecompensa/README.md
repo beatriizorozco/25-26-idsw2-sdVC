@@ -5,7 +5,9 @@
 
 ## Implementación
 
-La interfaz exige confirmación antes de `DELETE /api/recompensas/{id}`. La operación elimina únicamente la recompensa y conserva proyecto, participantes y carga de trabajo.
+El Diseño actualizado exige confirmación y motivo antes de `PATCH /api/recompensas/{id}/anulacion`. La operación debe anular la recompensa y conservar proyecto, participantes, carga de trabajo y datos originales de concesión.
+
+La implementación actual todavía utiliza borrado físico mediante `DELETE /api/recompensas/{id}`. Debe migrarse a anulación lógica antes de considerar alineado este caso de uso.
 
 ## Código relacionado
 

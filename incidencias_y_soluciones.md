@@ -236,6 +236,25 @@ Después de reiniciar el backend, un usuario demo activo conserva credenciales a
 
 **Validación:** Se alinearon Detalle, Análisis, Diseño, diagramas y listados activos. Se dejó pendiente diseñar una consulta específica del histórico para el Coordinador.
 
+### Semántica destructiva inconsistente en los casos `eliminar...`
+
+**Síntoma:** Varios casos de uso llamados `eliminar...` podían interpretarse como borrados físicos, aunque perfiles, proyectos, publicaciones, entregables y recompensas conservan valor histórico, de auditoría o de trazabilidad.
+
+**Causa:** El nombre funcional del caso de uso se había trasladado literalmente a algunas responsabilidades y operaciones técnicas sin distinguir qué debía desaparecer de los listados activos y qué debía conservarse en el sistema.
+
+**Solución:** Se definió una política transversal de bajas lógicas y se clasificaron los efectos:
+
+- `eliminarPerfil()` desactiva el acceso y conserva el perfil histórico.
+- `eliminarProyecto()` archiva el proyecto.
+- `eliminarInvestigador()` marca la participación como desasignada y conserva su histórico en el proyecto.
+- `eliminarPublicacion()` y `eliminarMiPublicacion()` retiran la publicación.
+- `eliminarEntregable()` retira el entregable.
+- `eliminarRecompensa()` anula la recompensa y conserva su auditoría.
+
+Se alinearon Detalle, Análisis, los Diseños existentes, los diagramas de contexto y la documentación de Desarrollo disponible. El borrado físico queda reservado para correcciones administrativas excepcionales sin valor histórico.
+
+**Validación:** Los PlantUML afectados superaron la validación local, se regeneraron sus SVG y se comprobó que `eliminarPerfil()` ya realiza una desactivación lógica en el backend. Se dejó registrada como tarea pendiente la migración del borrado físico actual de recompensas hacia una anulación lógica.
+
 ## Decisiones de seguridad
 
 ### Almacenamiento de contraseñas

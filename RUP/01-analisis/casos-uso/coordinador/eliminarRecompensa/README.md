@@ -14,7 +14,7 @@
 
 ## Propósito
 
-Analizar la colaboración necesaria para eliminar un elemento de recompensa. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `eliminarRecompensa()`.
+Analizar la colaboración necesaria para anular una recompensa conservando su concesión y trazabilidad. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `eliminarRecompensa()`.
 
 ## Diagrama de colaboración
 
@@ -64,7 +64,7 @@ Analizar la colaboración necesaria para eliminar un elemento de recompensa. El 
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Abstraer el acceso a datos de recompensas.
-- Proporcionar operaciones `obtenerPorId(id)` y `eliminar(id)`.
+- Proporcionar operaciones `obtenerPorId(id)` y `anular(id)`.
 - Mantener la consistencia conceptual de recompensas.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
@@ -86,7 +86,7 @@ Analizar la colaboración necesaria para eliminar un elemento de recompensa. El 
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Representar el proyecto completado asociado a la recompensa.
-- Mantener la trazabilidad del origen aunque la recompensa se elimine.
+- Mantener la trazabilidad del origen aunque la recompensa quede anulada.
 
 ## Flujo de colaboración
 
@@ -95,10 +95,10 @@ Analizar la colaboración necesaria para eliminar un elemento de recompensa. El 
 1. **Inicio**: `RECOMPENSA_ABIERTA` -> `EliminarRecompensaView.eliminarRecompensa()`.
 2. **Confirmación previa**: `EliminarRecompensaView` -> `RecompensaController.solicitarConfirmacion(id)`.
 3. **Presentación de confirmación**: `RecompensaController` -> `EliminarRecompensaView.presentarConfirmacion()`.
-4. **Decisión del actor**: si confirma, `EliminarRecompensaView` -> `RecompensaController.confirmarEliminacion(id)`; si cancela, `EliminarRecompensaView` -> `RecompensaController.cancelarEliminacion()`.
+4. **Decisión del actor**: si confirma, `EliminarRecompensaView` -> `RecompensaController.confirmarAnulacion(id)`; si cancela, `EliminarRecompensaView` -> `RecompensaController.cancelarAnulacion()`.
 5. **Obtención de recompensa**: `RecompensaController` -> `RecompensaRepository.obtenerPorId(id)`.
 6. **Validación de origen**: `RecompensaController` -> `ProyectoRepository.verificarProyectoCompletado(recompensa)`.
-7. **Persistencia**: `RecompensaController` -> `RecompensaRepository.eliminar(id)`.
+7. **Persistencia**: `RecompensaController` -> `RecompensaRepository.anular(id)`.
 8. **Finalización**: si confirma, se presenta el listado de recompensas; si cancela, se mantiene la recompensa abierta.
 
 ### Patrón de colaboración establecido
@@ -114,9 +114,9 @@ Analizar la colaboración necesaria para eliminar un elemento de recompensa. El 
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
 |Atender la solicitud `eliminarRecompensa()`|`EliminarRecompensaView`|Recibe la acción del Coordinador|
-|Coordinar reglas del caso de uso|`RecompensaController`|`solicitarConfirmacion(id)`, `confirmarEliminacion(id)`|
-|Aplicar permisos, validaciones y cancelación|`RecompensaController`|`validarEliminacion(id)`, `cancelarEliminacion()`|
-|Acceder a datos de recompensas|`RecompensaRepository`|`obtenerPorId(id)`, `eliminar(id)`|
+|Coordinar reglas del caso de uso|`RecompensaController`|`solicitarConfirmacion(id)`, `confirmarAnulacion(id)`|
+|Aplicar permisos, validaciones y cancelación|`RecompensaController`|`validarAnulacion(id)`, `cancelarAnulacion()`|
+|Acceder a datos de recompensas|`RecompensaRepository`|`obtenerPorId(id)`, `anular(id)`|
 |Verificar proyecto de origen|`ProyectoRepository`|`verificarProyectoCompletado(recompensa)`|
 |Representar atributos de dominio|`Recompensa`|Entidad conceptual|
 
@@ -137,10 +137,10 @@ Analizar la colaboración necesaria para eliminar un elemento de recompensa. El 
 ## Reglas funcionales consideradas
 
 - Mantener la separación entre presentación, coordinación y entidades de recompensa y proyecto.
-- Eliminar recompensas solo tras confirmación explícita del Coordinador.
+- Anular recompensas solo tras confirmación explícita del Coordinador.
 - Verificar que la recompensa exista y proceda de un proyecto completado.
-- Eliminar la recompensa sin modificar el estado del proyecto ni la carga de trabajo del investigador.
-- Volver al listado de recompensas cuando la eliminación sea exitosa.
+- Anular la recompensa sin modificar el estado del proyecto ni la carga de trabajo del investigador.
+- Volver al listado de recompensas cuando la anulación sea exitosa.
 
 ## Características del análisis
 

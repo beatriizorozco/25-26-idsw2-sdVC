@@ -158,4 +158,5 @@ Este caso de uso corresponde a `PROYECTO_ABIERTO` → `eliminarProyecto()` → `
 - [Actores y casos de uso](../../../01-actores-casos-uso/actores-casos-uso.md)
 - [Modelo del dominio](../../../00-modelo-del-dominio/modelo-dominio.md)
 - [Detalle y prototipado](../../README.md)
+- [Política de bajas, archivado y conservación histórica](../../../politica-bajas-logicas.md)
 - [conversation-log.md](../../../../../conversation-log.md)

@@ -14,7 +14,7 @@
 
 ## Propósito
 
-Analizar la colaboración necesaria para eliminar un perfil desde una solicitud de eliminación abierta. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `eliminarPerfil()`.
+Analizar la colaboración necesaria para desactivar un perfil desde una solicitud de eliminación abierta. El análisis identifica clases Boundary, Control y Entity, sus responsabilidades y colaboraciones necesarias para cumplir con el caso de uso `eliminarPerfil()`.
 
 ## Diagrama de colaboración
 
@@ -64,7 +64,7 @@ Analizar la colaboración necesaria para eliminar un perfil desde una solicitud 
 **Estereotipo**: Entidad
 **Responsabilidades**:
 - Abstraer el acceso a datos de perfiles.
-- Proporcionar operaciones `obtenerPorId(idPerfil)` y `eliminar(idPerfil)`.
+- Proporcionar operaciones `obtenerPorId(idPerfil)` y `desactivar(idPerfil)`.
 - Mantener la consistencia conceptual de perfiles.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
@@ -77,7 +77,7 @@ Analizar la colaboración necesaria para eliminar un perfil desde una solicitud 
 **Responsabilidades**:
 - Abstraer el acceso a la solicitud de eliminación que origina la operación.
 - Proporcionar operaciones `obtenerPorId(idSolicitud)` y `marcarResuelta(idSolicitud)`.
-- Mantener la trazabilidad conceptual entre solicitud pendiente y perfil eliminado.
+- Mantener la trazabilidad conceptual entre solicitud pendiente y perfil desactivado.
 
 **Colaboraciones**:
 - **Control**: Responde a `PerfilController`.
@@ -86,7 +86,7 @@ Analizar la colaboración necesaria para eliminar un perfil desde una solicitud 
 #### SolicitudEliminacionPerfil
 **Estereotipo**: Entidad
 **Responsabilidades**:
-- Representar la solicitud que autoriza la eliminación del perfil.
+- Representar la solicitud que autoriza la desactivación del perfil.
 - Encapsular solicitante, perfil afectado, motivo y estado.
 - Mantener la integridad de la decisión tomada por el Coordinador.
 
@@ -110,8 +110,8 @@ Analizar la colaboración necesaria para eliminar un perfil desde una solicitud 
 1. **Inicio**: `SOLICITUD_ELIMINACION_PERFIL_ABIERTA` -> `EliminarPerfilView.eliminarPerfil()`.
 2. **Confirmación previa**: `EliminarPerfilView` -> `PerfilController.solicitarConfirmacion(idSolicitud, idPerfil)`.
 3. **Presentación de confirmación**: `PerfilController` -> `EliminarPerfilView.presentarConfirmacion()`.
-4. **Decisión del actor**: si confirma, `EliminarPerfilView` -> `PerfilController.confirmarEliminacion(idSolicitud, idPerfil)`; si cancela, `EliminarPerfilView` -> `PerfilController.cancelarEliminacion()`.
-5. **Validación y persistencia**: `PerfilController` -> `PerfilRepository.eliminar(idPerfil)` y `SolicitudEliminacionPerfilRepository.marcarResuelta(idSolicitud)`.
+4. **Decisión del actor**: si confirma, `EliminarPerfilView` -> `PerfilController.confirmarDesactivacion(idSolicitud, idPerfil)`; si cancela, `EliminarPerfilView` -> `PerfilController.cancelarDesactivacion()`.
+5. **Validación y persistencia**: `PerfilController` -> `PerfilRepository.desactivar(idPerfil)` y `SolicitudEliminacionPerfilRepository.marcarResuelta(idSolicitud)`.
 6. **Finalización**: `EliminarPerfilView` dirige a `SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS` si confirma o a `SOLICITUD_ELIMINACION_PERFIL_ABIERTA` si cancela.
 
 ### Patrón de colaboración establecido
@@ -127,9 +127,9 @@ Analizar la colaboración necesaria para eliminar un perfil desde una solicitud 
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
 |-|-|-|
 |Atender la solicitud `eliminarPerfil()`|`EliminarPerfilView`|Recibe la acción del Coordinador|
-|Coordinar reglas del caso de uso|`PerfilController`|`solicitarConfirmacion(idSolicitud, idPerfil)`, `confirmarEliminacion(idSolicitud, idPerfil)`|
-|Aplicar permisos, validaciones y cancelación|`PerfilController`|`validarEliminacion(idPerfil)`, `cancelarEliminacion()`|
-|Acceder a datos de perfiles|`PerfilRepository`|`obtenerPorId(idPerfil)`, `eliminar(idPerfil)`|
+|Coordinar reglas del caso de uso|`PerfilController`|`solicitarConfirmacion(idSolicitud, idPerfil)`, `confirmarDesactivacion(idSolicitud, idPerfil)`|
+|Aplicar permisos, validaciones y cancelación|`PerfilController`|`validarDesactivacion(idPerfil)`, `cancelarDesactivacion()`|
+|Acceder a datos de perfiles|`PerfilRepository`|`obtenerPorId(idPerfil)`, `desactivar(idPerfil)`|
 |Resolver la solicitud asociada|`SolicitudEliminacionPerfilRepository`|`obtenerPorId(idSolicitud)`, `marcarResuelta(idSolicitud)`|
 |Representar atributos de dominio|`Perfil`|Entidad conceptual|
 
@@ -150,7 +150,7 @@ Analizar la colaboración necesaria para eliminar un perfil desde una solicitud 
 
 - Mantener la separación entre presentación, coordinación y entidad para el rol Coordinador.
 - Permitir al Coordinador acceso global sobre publicaciones, entregables, proyectos, investigadores, recompensas y perfiles según el caso de uso.
-- Ejecutar la eliminación de perfil únicamente desde el rol Coordinador y sin flujo de rechazo.
+- Ejecutar la desactivación de perfil únicamente desde el rol Coordinador y sin flujo de rechazo.
 
 ## Características del análisis
 

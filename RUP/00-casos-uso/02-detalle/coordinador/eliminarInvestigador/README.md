@@ -26,7 +26,7 @@ Especificación detallada del caso de uso `eliminarInvestigador()` mediante diag
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
 |**Precondición**|Coordinador autenticado con un proyecto en `PROYECTO_ABIERTO` y un miembro del equipo seleccionado.|
-|**Postcondición exitosa**|La asociación entre el investigador y el proyecto queda retirada; el perfil del investigador se conserva.|
+|**Postcondición exitosa**|La participación queda marcada como desasignada; se conservan el perfil y el histórico de participación en el proyecto.|
 |**Postcondición de fallo**|No se aplican cambios si existen responsabilidades pendientes o el actor cancela.|
 
 ## Diagrama de especificación
@@ -58,7 +58,7 @@ Especificación detallada del caso de uso `eliminarInvestigador()` mediante diag
 **Correspondencia con especificación:**
 - **Coordinador** solicita retirar del proyecto al investigador seleccionado.
 - **Sistema** comprueba responsabilidades pendientes y, si puede retirarse, solicita confirmación.
-- **Coordinador** confirma o cancela; **Sistema** retira únicamente la asociación cuando procede.
+- **Coordinador** confirma o cancela; **Sistema** registra la desasignación y conserva la participación histórica cuando procede.
 
 ### Validaciones del wireframe
 - ¿El campo o bloque **Investigador seleccionado** resulta claro para el Coordinador?
@@ -81,21 +81,21 @@ Especificación detallada del caso de uso `eliminarInvestigador()` mediante diag
 |**Coordinador**|solicita retirar del proyecto al investigador seleccionado|| |
 ||**Sistema**|comprueba entregables y responsabilidades pendientes; si puede retirarse, presenta confirmación| |
 |**Coordinador**|confirma la retirada|| |
-||**Sistema**|retira la asociación con el proyecto y conserva el perfil del investigador| |
+||**Sistema**|registra la desasignación y conserva el perfil y la participación histórica del investigador| |
 
 ## Estados internos del caso de uso
 
 |Estado|Descripción|Responsabilidad|
 |-|-|-|
 |**ComprobandoResponsabilidades**|Comprueba si el investigador mantiene responsabilidades pendientes en el proyecto.|Sistema debe impedir una retirada que deje trabajo sin responsable.|
-|**ConfirmandoDesasignacion**|Solicita confirmación de la retirada.|Sistema debe retirar solo la asociación con el proyecto.|
+|**ConfirmandoDesasignacion**|Solicita confirmación de la retirada.|Sistema debe marcar la participación como desasignada y conservar su histórico.|
 
 ## Funcionalidad específica
 
 ### Patrón de eliminación segura
 
 - **Confirmación**: la conversación separa solicitud y eliminación.
-- **Sin detalle técnico**: no se define borrado físico ni lógico.
+- **Sin eliminación física**: el caso marca la participación como desasignada y conserva al Investigador y su histórico en el proyecto.
 - **Retorno al contexto**: el actor vuelve al listado o estado indicado por el diagrama.
 
 ### Información tratada
@@ -112,7 +112,7 @@ Especificación detallada del caso de uso `eliminarInvestigador()` mediante diag
 
 ## Conexión con diagrama de contexto
 
-Este caso de uso corresponde a `PROYECTO_ABIERTO` → `eliminarInvestigador(investigadorId)` → `PROYECTO_ABIERTO`. El nombre histórico del caso se conserva, pero funcionalmente realiza una desasignación, no elimina el perfil.
+Este caso de uso corresponde a `PROYECTO_ABIERTO` → `eliminarInvestigador(investigadorId)` → `PROYECTO_ABIERTO`. El nombre histórico del caso se conserva, pero funcionalmente registra una desasignación lógica sin eliminar el perfil ni la participación histórica.
 
 ## Vocabulario utilizado
 
@@ -148,4 +148,5 @@ Este caso de uso corresponde a `PROYECTO_ABIERTO` → `eliminarInvestigador(inve
 - [Actores y casos de uso](../../../01-actores-casos-uso/actores-casos-uso.md)
 - [Modelo del dominio](../../../00-modelo-del-dominio/modelo-dominio.md)
 - [Detalle y prototipado](../../README.md)
+- [Política de bajas, archivado y conservación histórica](../../../politica-bajas-logicas.md)
 - [conversation-log.md](../../../../../conversation-log.md)

@@ -14,7 +14,7 @@
 
 ## Propósito
 
-Especificación detallada del caso de uso `eliminarEntregable()` mediante diagrama de estado, mostrando la conversación entre el Investigador y el Sistema para permitir al investigador solicitar o confirmar la eliminación de entregable cuando su rol lo permite.
+Especificación detallada del caso de uso `eliminarEntregable()` mediante diagrama de estado, mostrando la conversación entre el Investigador y el Sistema para permitir al investigador solicitar o confirmar la retirada de entregable cuando su rol lo permite.
 
 ## Información del caso de uso
 
@@ -22,11 +22,11 @@ Especificación detallada del caso de uso `eliminarEntregable()` mediante diagra
 |-|-|
 |**Nombre**|eliminarEntregable()|
 |**Actor primario**|Investigador|
-|**Objetivo**|Permitir al Investigador solicitar o confirmar la eliminación de entregable cuando su rol lo permite.|
+|**Objetivo**|Permitir al Investigador solicitar o confirmar la retirada de entregable cuando su rol lo permite.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
 |**Precondición**|Usuario autenticado como Investigador y sistema disponible para navegación.|
-|**Postcondición exitosa**|Entregable queda eliminado o marcado para eliminación según corresponda.|
+|**Postcondición exitosa**|El entregable queda retirado de la gestión activa y conserva su trazabilidad.|
 |**Postcondición de fallo**|No se aplican cambios si la información solicitada no es válida o el actor cancela la operación.|
 
 ## Diagrama de especificación
@@ -51,15 +51,15 @@ Especificación detallada del caso de uso `eliminarEntregable()` mediante diagra
 
 |![Wireframe: eliminarEntregable](/images/RUP/00-casos-uso/02-detalle/investigador/eliminarEntregable/eliminarEntregable-wireframe.svg)|
 |-|
-|**Estado**: SolicitandoEliminacion / ConfirmandoEliminacion|
+|**Estado**: SolicitandoRetirada / ConfirmandoRetirada|
 
 </div>
 
 **Correspondencia con especificación:**
-- **Investigador** solicita eliminar el entregable propio
-- **Sistema** presenta una confirmación de eliminación<br>**Sistema** muestra información del entregable:<br>- ID<br>- Título<br>- Tipo<br>- Estado<br>**Sistema** permite solicitar:<br>- Confirmar eliminación<br>- Cancelar
-- **Investigador** solicita confirmar la eliminación
-- **Investigador** solicita cancelar la eliminación<br>**Sistema** presenta el entregable sin cambios
+- **Investigador** solicita retirar el entregable propio
+- **Sistema** presenta una confirmación de retirada<br>**Sistema** muestra información del entregable:<br>- ID<br>- Título<br>- Tipo<br>- Estado<br>**Sistema** permite solicitar:<br>- Confirmar retirada<br>- Cancelar
+- **Investigador** solicita confirmar la retirada
+- **Investigador** solicita cancelar la retirada<br>**Sistema** presenta el entregable sin cambios
 
 ### Validaciones del wireframe
 - ¿El campo o bloque **Confirmación** resulta claro para el Investigador?
@@ -78,25 +78,25 @@ Especificación detallada del caso de uso `eliminarEntregable()` mediante diagra
 
 |Actor|Acción|Sistema|Respuesta|
 |-|-|-|-|
-|**Investigador**|solicita eliminar el entregable propio|| |
-||**Sistema**|presenta una confirmación de eliminación<br>**Sistema** muestra información del entregable:<br>- ID<br>- Título<br>- Tipo<br>- Estado<br>**Sistema** permite solicitar:<br>- Confirmar eliminación<br>- Cancelar| |
-|**Investigador**|solicita confirmar la eliminación|| |
-|**Investigador**|solicita cancelar la eliminación<br>|| |
+|**Investigador**|solicita retirar el entregable propio|| |
+||**Sistema**|presenta una confirmación de retirada<br>**Sistema** muestra información del entregable:<br>- ID<br>- Título<br>- Tipo<br>- Estado<br>**Sistema** permite solicitar:<br>- Confirmar retirada<br>- Cancelar| |
+|**Investigador**|solicita confirmar la retirada|| |
+|**Investigador**|solicita cancelar la retirada<br>|| |
 ||**Sistema**|presenta el entregable sin cambios| |
 
 ## Estados internos del caso de uso
 
 |Estado|Descripción|Responsabilidad|
 |-|-|-|
-|**SolicitandoEliminacion**|Estado interno asociado a solicitando eliminacion.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
-|**ConfirmandoEliminacion**|Estado donde el sistema valida o confirma la eliminación de entregable.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
+|**SolicitandoRetirada**|Estado interno asociado a solicitando retirada.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
+|**ConfirmandoRetirada**|Estado donde el sistema valida o confirma la retirada de entregable.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
 
 ## Funcionalidad específica
 
-### Patrón de eliminación segura
+### Patrón de retirada segura
 
-- **Confirmación**: la conversación separa solicitud y eliminación.
-- **Sin detalle técnico**: no se define borrado físico ni lógico.
+- **Confirmación**: la conversación separa solicitud y retirada.
+- **Sin detalle técnico**: se aplica una retirada lógica que conserva versiones, autoría y relaciones.
 - **Retorno al contexto**: el actor vuelve al listado o estado indicado por el diagrama.
 
 ### Información tratada
@@ -105,6 +105,10 @@ Especificación detallada del caso de uso `eliminarEntregable()` mediante diagra
   - Fecha
   - Estado
 
+### Reglas de dominio
+- La retirada registra fecha, actor responsable y motivo.
+- El entregable retirado deja de aparecer en la gestión activa.
+- Se conservan proyecto, autoría, versiones, estado y trazabilidad.
 ## Opciones de navegación
 
 ### Operaciones relacionadas
@@ -152,4 +156,5 @@ Este caso de uso se integra en los diagramas de contexto del Investigador, mante
 - [Actores y casos de uso](../../../01-actores-casos-uso/actores-casos-uso.md)
 - [Modelo del dominio](../../../00-modelo-del-dominio/modelo-dominio.md)
 - [Detalle y prototipado](../../README.md)
+- [Política de bajas, archivado y conservación histórica](../../../politica-bajas-logicas.md)
 - [conversation-log.md](../../../../../conversation-log.md)

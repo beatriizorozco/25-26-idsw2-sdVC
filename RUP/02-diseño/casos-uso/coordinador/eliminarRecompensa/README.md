@@ -5,7 +5,7 @@
 
 ## Propósito
 
-Detallar la eliminación segura de una recompensa mediante confirmación explícita del Coordinador.
+Detallar la anulación segura de una recompensa mediante confirmación explícita y motivo aportado por el Coordinador.
 
 ## Diagrama de secuencia
 
@@ -16,17 +16,18 @@ Detallar la eliminación segura de una recompensa mediante confirmación explíc
 ## Participantes
 
 - **RecompensaDetallePage**: Presenta la confirmación y conserva el detalle si se cancela.
-- **RecompensaController**: Expone `DELETE /api/recompensas/{id}`.
+- **RecompensaController**: Expone `PATCH /api/recompensas/{id}/anulacion`.
 - **SesionService**: Exige una sesión de Coordinador.
-- **RecompensaService**: Recupera y elimina la recompensa.
-- **RecompensaRepository** y **ProyectoRepository**: Mantienen la trazabilidad y ejecutan la eliminación.
+- **RecompensaService**: Recupera y anula la recompensa, conservando su concesión y trazabilidad.
+- **RecompensaRepository** y **ProyectoRepository**: Mantienen la trazabilidad y ejecutan la anulación.
 
 ## Decisiones de Diseño
 
 - La API solo se invoca después de una confirmación explícita.
 - Cancelar conserva `RECOMPENSA_ABIERTA` sin modificar datos.
 - Eliminar una recompensa no modifica el proyecto ni la carga del investigador.
-- La eliminación correcta devuelve `204 No Content` y abre el listado.
+- La anulación correcta devuelve `204 No Content` y abre el listado.
+- La anulación registra fecha, Coordinador responsable y motivo sin borrar la concesión original.
 - Una recompensa inexistente devuelve `404 Not Found`.
 
 ## Referencias

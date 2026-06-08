@@ -30,7 +30,7 @@
 
     --
 
-    { [Volver a Mis publicaciones] | [Editar publicación] | [Eliminar publicación] }
+    { [Volver a Mis publicaciones] | [Editar publicación] | [Retirar publicación] }
 }
 
 @endsalt
@@ -57,6 +57,6 @@
 
     --
 
-    { [Cancelar] | [Eliminar definitivamente] }
+    { [Cancelar] | [Retirar de la publicación activa] }
     }
 @endsalt

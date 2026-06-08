@@ -1,5 +1,5 @@
 @startuml eliminarPerfil-coordinador-diseño
-title Diagrama de secuencia - Eliminar perfil desde solicitud
+title Diagrama de secuencia - Desactivar perfil desde solicitud
 
 actor Coordinador
 participant "EliminarPerfilModal\n(React)" as Frontend
@@ -9,14 +9,14 @@ participant "PerfilService" as PerfilService
 participant "SolicitudEliminacionPerfilRepository" as SolicitudRepository
 participant "PerfilRepository" as PerfilRepository
 
-Coordinador -> Frontend: Solicita eliminar perfil
+Coordinador -> Frontend: Solicita desactivar perfil
 activate Frontend
-Frontend --> Coordinador: Muestra confirmación de eliminación
-alt Cancela eliminación
-    Coordinador -> Frontend: Cancela eliminación
+Frontend --> Coordinador: Muestra confirmación de desactivación
+alt Cancela desactivación
+    Coordinador -> Frontend: Cancela desactivación
     Frontend --> Coordinador: Presenta SOLICITUD_ELIMINACION_PERFIL_ABIERTA
-else Confirma eliminación
-    Coordinador -> Frontend: Confirma eliminación
+else Confirma desactivación
+    Coordinador -> Frontend: Confirma desactivación
     Frontend -> Frontend: Comprobar sesión local
     Frontend -> Api: DELETE /api/solicitudes-eliminacion-perfil/{idSolicitud}/perfil\nCookie de sesión
     activate Api
@@ -30,14 +30,14 @@ else Confirma eliminación
     activate SolicitudRepository
     SolicitudRepository --> PerfilService: SolicitudEliminacionPerfil
     deactivate SolicitudRepository
-    PerfilService -> PerfilRepository: eliminar(idPerfil)
+    PerfilService -> PerfilRepository: desactivar(idPerfil, fecha, coordinador)
     activate PerfilRepository
-    PerfilRepository --> PerfilService: Perfil eliminado
+    PerfilRepository --> PerfilService: Perfil desactivado
     deactivate PerfilRepository
     PerfilService -> SolicitudRepository: marcarResuelta(idSolicitud)
-    PerfilService --> Api: EliminacionPerfilResponse
+    PerfilService --> Api: DesactivacionPerfilResponse
     deactivate PerfilService
-    Api --> Frontend: 200 OK\nEliminacionPerfilResponse
+    Api --> Frontend: 200 OK\nDesactivacionPerfilResponse
     deactivate Api
     Frontend --> Coordinador: Presenta SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS
 end
