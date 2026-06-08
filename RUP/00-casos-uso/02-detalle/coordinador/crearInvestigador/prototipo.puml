@@ -4,16 +4,18 @@
     <b>GIPF - CREAR INVESTIGADOR</b>
     ====
     {
-        <b>Datos mínimos del investigador</b>
+        <b>Datos del investigador</b>
         --
         {
-            {<b>ID del investigador *</b> | [                ]}
-            {<b>Nombre *</b>              | [                ]}
-            {<b>Campo de investigación *</b> | [                ]}
+            {<b>Usuario *</b> | [                         ]}
+            {<b>Nombre completo *</b> | [                         ]}
+            {<b>Correo *</b> | [                         ]}
+            {<b>Sede *</b> | ^Santander^}
+            {<b>Unidad</b> | [                         ]}
+            {<b>Linea de investigacion</b> | [                         ]}
+            {<b>Biografia</b> | "                         "}
         }
-
         ~~
-
         {[Crear investigador] | [Cancelar]}
     }
 }

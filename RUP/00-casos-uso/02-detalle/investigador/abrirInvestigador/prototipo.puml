@@ -7,18 +7,16 @@
         <b>Datos del investigador</b>
         --
         {
-            {<b>ID:</b>        | INV-001}
-            {<b>Nombre:</b>    | Ana}
-            {<b>Apellido:</b>  | López}
-            {<b>Campo:</b>     | Inteligencia Artificial}
-            {<b>Carrera:</b>   | Ingeniería Informática}
-            {<b>Máster:</b>    | Máster en IA}
-            {<b>Rol:</b>    | Coordinador}
+            {<b>Nombre:</b> | Ana Lopez}
+            {<b>Correo:</b> | ana.lopez@funiber.org}
+            {<b>Sede:</b> | Santander}
+            {<b>Tipo:</b> | Investigadora-docente}
+            {<b>Unidad:</b> | Investigacion}
+            {<b>Linea:</b> | Inteligencia artificial}
+            {<b>Proyectos visibles compartidos:</b> | 1}
         }
-
         ~~
-
-        {[Volver]}
+        {[Abrir proyecto] | [Volver]}
     }
 }
 @endsalt

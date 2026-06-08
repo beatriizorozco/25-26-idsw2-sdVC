@@ -22,10 +22,10 @@ Especificación detallada del caso de uso `abrirInvestigadores()` mediante diagr
 |-|-|
 |**Nombre**|abrirInvestigadores()|
 |**Actor primario**|Coordinador|
-|**Objetivo**|Presentar al Coordinador el listado de investigadores con opciones de consulta, filtrado y navegación.|
+|**Objetivo**|Presentar el directorio global de investigadores o los participantes de un proyecto, con consulta y filtrado dentro del alcance recibido.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
-|**Precondición**|Usuario autenticado como Coordinador y sistema disponible para navegación.|
+|**Precondición**|Coordinador autenticado en `PANEL_PRINCIPAL_ABIERTO` o con un proyecto seleccionado en `PROYECTO_ABIERTO`.|
 |**Postcondición exitosa**|El Coordinador visualiza el listado de investigadores y puede continuar la navegación.|
 |**Postcondición de fallo**|No se modifica la información del sistema; el actor permanece en el punto de navegación anterior.|
 
@@ -96,8 +96,9 @@ Especificación detallada del caso de uso `abrirInvestigadores()` mediante diagr
 
 ### Funcionalidad unificada: listar = filtrar = buscar
 
-- **Listar**: muestra investigadores sin criterio aplicado.
-- **Filtrar/Buscar**: permite localizar investigadores por nombre, perfil, área, disponibilidad.
+- **Listar global**: sin proyecto, muestra todos los investigadores activos.
+- **Listar por proyecto**: con `idProyecto`, muestra únicamente sus participantes.
+- **Filtrar/Buscar**: permite localizar investigadores dentro del alcance por nombre, perfil, área, sede o disponibilidad.
 - **Navegar**: permite abrir detalles u operaciones relacionadas según el rol.
 
 ### Información tratada
@@ -114,8 +115,8 @@ Especificación detallada del caso de uso `abrirInvestigadores()` mediante diagr
 - **abrirPanelPrincipal()** -> Navegar a `abrirPanelPrincipal()` cuando el actor solicita esa continuidad.
 
 ### Navegación del sistema
-- **Estado de entrada**: PANEL_PRINCIPAL_ABIERTO.
-- **Estado de salida**: INVESTIGADOR_ABIERTO, PANEL_PRINCIPAL_ABIERTO.
+- **Estado de entrada**: `PANEL_PRINCIPAL_ABIERTO`, `PROYECTO_ABIERTO`.
+- **Estado de salida**: `INVESTIGADORES_ABIERTOS`, `INVESTIGADOR_ABIERTO`, `PANEL_PRINCIPAL_ABIERTO`.
 
 ## Conexión con diagrama de contexto
 

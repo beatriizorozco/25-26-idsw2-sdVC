@@ -35,7 +35,7 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 **Responsabilidades**:
 - Recibir la solicitud `abrirInvestigador()` del Investigador.
 - Presentar la información de investigadores necesaria para el caso de uso.
-- Capturar datos, criterios o confirmaciones introducidos por el Investigador.
+- Presentar el perfil consultable y sus proyectos asociados visibles.
 - Invocar al controlador para ejecutar la operación de análisis.
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
@@ -64,7 +64,7 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Abstraer el acceso a datos de investigadores.
-- Proporcionar operaciones `obtenerPorId(id)` y `verificarPermisos(actor)`.
+- Proporcionar la consulta del perfil activo por identificador.
 - Mantener la consistencia conceptual de investigadores.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
@@ -88,9 +88,9 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 
 1. **Inicio**: Estado de contexto -> `DetalleInvestigadorView.abrirInvestigador()`.
 2. **Solicitud principal**: `DetalleInvestigadorView` -> `InvestigadorController.obtenerInvestigador(id)`.
-3. **Acceso a datos**: `DetalleInvestigadorView` -> `InvestigadorController.prepararAccionesDisponibles(investigador)`.
-4. **Preparación de acciones**: `InvestigadorController` -> `InvestigadorRepository.obtenerPorId(id)`.
-5. **Verificación de permisos**: `InvestigadorController` -> `InvestigadorRepository.verificarPermisos(actor)`.
+3. **Consulta del perfil**: `InvestigadorController` -> `InvestigadorRepository.obtenerActivoPorId(id)`.
+4. **Consulta visible**: `InvestigadorController` -> `ProyectoRepository.obtenerVisiblesCompartidos(idInvestigador, actor)`.
+5. **Presentación**: La vista presenta el perfil sin acciones administrativas.
 6. **Finalización**: `DetalleInvestigadorView` devuelve el control al estado de navegación definido.
 
 ### Patrón de colaboración establecido
@@ -107,8 +107,8 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 |-|-|-|
 |Atender la solicitud `abrirInvestigador()`|`DetalleInvestigadorView`|Recibe la acción del Investigador|
 |Coordinar reglas del caso de uso|`InvestigadorController`|`obtenerInvestigador(id)`|
-|Aplicar permisos y validaciones|`InvestigadorController`|`prepararAccionesDisponibles(investigador)`|
-|Acceder a datos de investigadores|`InvestigadorRepository`|`obtenerPorId(id)`, `verificarPermisos(actor)`|
+|Acceder al perfil activo|`InvestigadorRepository`|`obtenerActivoPorId(id)`|
+|Consultar proyectos visibles compartidos|`ProyectoRepository`|`obtenerVisiblesCompartidos(idInvestigador, actor)`|
 |Representar atributos de dominio|`Investigador`|Entidad conceptual|
 
 ### Atributos tratados

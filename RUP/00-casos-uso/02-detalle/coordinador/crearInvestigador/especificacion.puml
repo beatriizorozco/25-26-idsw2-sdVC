@@ -1,54 +1,40 @@
 @startuml crearInvestigador
-
 skinparam linetype polyline
 
-state in1 as "INVESTIGADORES_ABIERTOS"
-in1 -[#green]-> crearInvestigador
-note on link
-crearInvestigador()
-end note
+state "INVESTIGADORES_ABIERTOS" as Investigadores
+Investigadores -[#green]-> crearInvestigador: crearInvestigador()
 
 state crearInvestigador as "crearInvestigador()" {
-
     state " " as SolicitandoDatos
-    state " " as CreandoInvestigador
+    state " " as ValidandoDatos
+    state " " as RegistrandoInvestigador
 
-    [*] -[#green]-> SolicitandoDatos 
+    [*] -[#green]-> SolicitandoDatos
     note on link
-    <b>Coordinador</b> solicita crear investigador nuevo
-    end note    
-    
-    SolicitandoDatos -[#green]-> CreandoInvestigador
-    note on link
-    <b>Sistema</b> presenta solicitud de datos mínimos del investigador
-    • ID del investigador (obligatorio)
-    • Nombre del investigador (obligatorio)
-    • Campo del investigador (obligatorio)
-    • Permite solicitar crear investigador
+    <b>Coordinador</b> solicita crear investigador
+    <b>Sistema</b> presenta solicitud de datos mínimos
+    • Nombre de usuario, nombre completo y correo
+    • Sede, unidad, línea de investigación y biografía
+    • Permite solicitar registrar investigador
     • Permite solicitar cancelar creación
     end note
-    
-    CreandoInvestigador -[#green]-> [*]
+
+    SolicitandoDatos -[#green]-> ValidandoDatos
     note on link
     <b>Coordinador</b> proporciona datos mínimos
-    <b>Sistema</b> crea investigador y transfiere a edición
+    end note
+
+    ValidandoDatos -[#green]-> RegistrandoInvestigador
+    note on link
+    <b>Sistema</b> valida datos obligatorios y ausencia de duplicados
+    end note
+
+    RegistrandoInvestigador -[#green]-> [*]
+    note on link
+    <b>Sistema</b> registra el investigador activo
     end note
 }
 
-
-crearInvestigador -[#green]-> INVESTIGADOR_ABIERTO
-note on link
-Investigador creado
-end note
-
-crearInvestigador -[#green]-> OPCIONES_PERFIL_ABIERTO
-note on link
-abrirOpcionesPerfil()
-end note
-
-crearInvestigador -[#red]-> INVESTIGADORES_ABIERTOS
-note on link
-Creación cancelada
-end note
-
+crearInvestigador -[#green]-> INVESTIGADOR_ABIERTO: Investigador creado
+crearInvestigador -[#red]-> INVESTIGADORES_ABIERTOS: Creación cancelada o datos no válidos
 @enduml

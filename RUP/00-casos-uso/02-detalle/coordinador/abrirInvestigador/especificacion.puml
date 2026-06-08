@@ -1,67 +1,40 @@
 @startuml abrirInvestigador
-
 skinparam linetype polyline
 
-state in1 as "OPCIONES_PERFIL_ABIERTO"
-in1 -[#green]-> abrirInvestigador
-note on link
-abrirInvestigador(ID)
-end note
+state "OPCIONES_PERFIL_ABIERTO" as Perfil
+state "INVESTIGADORES_ABIERTOS" as Investigadores
 
-state in2 as "INVESTIGADORES_ABIERTOS"
-in2 -[#green]-> abrirInvestigador
-note on link
-abrirInvestigador()
-end note
+Perfil -[#green]-> abrirInvestigador: abrirInvestigador(idCoordinador)
+Investigadores -[#green]-> abrirInvestigador: abrirInvestigador(idInvestigador)
 
+state abrirInvestigador as "abrirInvestigador(idInvestigador)" {
+    state " " as ConsultandoInvestigador
+    state " " as PresentandoInvestigador
 
-state abrirInvestigador as "abrirInvestigador()" {
-
-    state " " as MostrandoLista
-    state " " as FiltrandoLista
-
-    [*] -[#green]-> MostrandoLista 
+    [*] -[#green]-> ConsultandoInvestigador
     note on link
     <b>Coordinador</b> solicita abrir investigador
-    end note    
-    
-    MostrandoLista -[#green]-> FiltrandoLista
-    note on link
-    <b>Sistema</b> presenta perfil de investigador
-    • ID, nombre, apellido, campo, carrera, master y rol de cada investigador
-    • Permite solicitar editar perfil
-    • Permite solicitar abrirInvestigadores
-
-  
-    
-
     end note
-    FiltrandoLista -[#green]-> [*]
+
+    ConsultandoInvestigador -[#green]-> PresentandoInvestigador
     note on link
-    <b>Coordinador</b> solicita una de las opciones
+    <b>Sistema</b> presenta el perfil consultable
+    • Nombre, correo, sede, unidad, línea y biografía
+    • Condición de investigador-docente según sede
+    • Proyectos asociados
+    • Permite solicitar abrir investigadores
+    • Permite solicitar abrir proyectos
+    • Permite solicitar abrir opciones de perfil cuando consulta su propio perfil
+    end note
+
+    PresentandoInvestigador -[#green]-> [*]
+    note on link
+    <b>Coordinador</b> solicita una opción
     end note
 }
 
-abrirInvestigador -[#green]-> INVESTIGADOR_ABIERTO
-note on link
-Investigador mostrado
-end note
-
-abrirInvestigador -[#green]-> OPCIONES_PERFIL_ABIERTO
-note on link
-abrirOpcionesPerfil()
-end note
-
-abrirInvestigador -[#green]-> INVESTIGADORES_ABIERTOS
-note on link
-abrirInvestigadores()
-end note
-
-abrirInvestigador -[#green]-> PROYECTOS_ABIERTOS
-note on link
-abrirProyectos()
-end note
-
-
-
+abrirInvestigador -[#green]-> INVESTIGADOR_ABIERTO: Investigador presentado
+abrirInvestigador -[#green]-> OPCIONES_PERFIL_ABIERTO: abrirOpcionesPerfil()
+abrirInvestigador -[#green]-> INVESTIGADORES_ABIERTOS: abrirInvestigadores()
+abrirInvestigador -[#green]-> PROYECTOS_ABIERTOS: abrirProyectos()
 @enduml

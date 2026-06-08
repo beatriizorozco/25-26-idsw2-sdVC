@@ -1,68 +1,45 @@
 @startuml abrirInvestigadores
-
 skinparam linetype polyline
 
-state in1 as "PANEL_PRINCIPAL_ABIERTO"
-in1 -[#green]-> abrirInvestigadores
-note on link
-abrirInvestigadores()
-end note
+state "PANEL_PRINCIPAL_ABIERTO" as Panel
+state "PROYECTO_ABIERTO" as Proyecto
 
-state in2 as "PROYECTO_ABIERTO"
-in2 -[#green]-> abrirInvestigadores
-note on link
-abrirInvestigadores(ID)
-end note
+Panel -[#green]-> abrirInvestigadores: abrirInvestigadores()
+Proyecto -[#green]-> abrirInvestigadores: abrirInvestigadores(idProyecto)
 
-state abrirInvestigadores as "abrirInvestigadores()" {
+state abrirInvestigadores as "abrirInvestigadores(idProyecto opcional)" {
+    state " " as MostrandoInvestigadores
+    state " " as FiltrandoInvestigadores
 
-    state " " as MostrandoLista
-    state " " as FiltrandoLista
-
-    [*] -[#green]-> MostrandoLista 
+    [*] -[#green]-> MostrandoInvestigadores
     note on link
     <b>Investigador</b> solicita abrir investigadores
-    end note    
-    
-    MostrandoLista -[#green]-> FiltrandoLista
+    end note
+
+    MostrandoInvestigadores -[#green]-> FiltrandoInvestigadores
     note on link
-    <b>Sistema</b> presenta lista de investigadores
-    • ID, nombre, campo de cada investigador
+    <b>Sistema</b> presenta investigadores activos
+    • Sin proyecto: presenta el directorio global
+    • Con proyecto: presenta sus participantes
+    • Nombre, sede, perfil y área
     • Permite solicitar filtrar lista
     • Permite solicitar abrir investigador
     • Permite solicitar abrir panel principal
-    
     end note
-    
-    FiltrandoLista -[#green]-> FiltrandoLista
+
+    FiltrandoInvestigadores -[#green]-> FiltrandoInvestigadores
     note on link
     <b>Investigador</b> solicita filtrar lista
-    <b>Sistema</b> presenta lista filtrada
+    <b>Sistema</b> presenta investigadores coincidentes dentro del alcance
     end note
-    
-    FiltrandoLista -[#green]-> [*]
+
+    FiltrandoInvestigadores -[#green]-> [*]
     note on link
-    <b>Investigador</b> solicita una de las opciones
+    <b>Investigador</b> solicita una opción
     end note
 }
 
-
-
-abrirInvestigadores -[#green]-> INVESTIGADORES_ABIERTOS
-note on link
-Investigadores abiertos
-end note
-
-abrirInvestigadores -[#green]-> INVESTIGADOR_ABIERTO
-note on link
-abrirInvestigador()
-end note
-
-
-
-abrirInvestigadores -[#green]-> PANEL_PRINCIPAL_ABIERTO
-note on link
-abrirPanelPrincipal()
-end note
-
+abrirInvestigadores -[#green]-> INVESTIGADORES_ABIERTOS: Investigadores presentados
+abrirInvestigadores -[#green]-> INVESTIGADOR_ABIERTO: abrirInvestigador(idInvestigador)
+abrirInvestigadores -[#green]-> PANEL_PRINCIPAL_ABIERTO: abrirPanelPrincipal()
 @enduml

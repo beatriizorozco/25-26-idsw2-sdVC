@@ -22,10 +22,10 @@ Especificación detallada del caso de uso `abrirInvestigadores()` mediante diagr
 |-|-|
 |**Nombre**|abrirInvestigadores()|
 |**Actor primario**|Investigador|
-|**Objetivo**|Presentar al Investigador el listado de investigadores con opciones de consulta, filtrado y navegación.|
+|**Objetivo**|Presentar el directorio global de investigadores o los participantes de un proyecto, siempre en modo consulta.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
-|**Precondición**|Usuario autenticado como Investigador y sistema disponible para navegación.|
+|**Precondición**|Investigador autenticado en `PANEL_PRINCIPAL_ABIERTO` o con un proyecto propio seleccionado en `PROYECTO_ABIERTO`.|
 |**Postcondición exitosa**|El Investigador visualiza el listado de investigadores y puede continuar la navegación.|
 |**Postcondición de fallo**|No se modifica la información del sistema; el actor permanece en el punto de navegación anterior.|
 
@@ -96,8 +96,9 @@ Especificación detallada del caso de uso `abrirInvestigadores()` mediante diagr
 
 ### Funcionalidad unificada: listar = filtrar = buscar
 
-- **Listar**: muestra investigadores sin criterio aplicado.
-- **Filtrar/Buscar**: permite localizar investigadores por nombre, perfil, área, disponibilidad.
+- **Listar global**: sin proyecto, muestra todos los investigadores activos.
+- **Listar por proyecto**: con `idProyecto`, muestra únicamente sus participantes.
+- **Filtrar/Buscar**: permite localizar investigadores dentro del alcance por nombre, perfil, área o sede.
 - **Navegar**: permite abrir detalles u operaciones relacionadas según el rol.
 
 ### Información tratada

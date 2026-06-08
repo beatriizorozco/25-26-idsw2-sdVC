@@ -1,37 +1,34 @@
 @startuml abrirInvestigadores-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoEntrada1
-rectangle #CDEBA5 ":PROYECTO_ABIERTO" as EstadoEntrada2
-package abrirInvestigadores as "abrirInvestigadores()" {
+actor Coordinador
+rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as Panel
+rectangle #CDEBA5 ":PROYECTO_ABIERTO" as ProyectoAbierto
+package abrirInvestigadores as "abrirInvestigadores(idProyecto opcional)" {
     rectangle #629EF9 ListarInvestigadoresView
-    rectangle #b5bd68 InvestigadorController
+    rectangle #b5bd68 InvestigadoresController
     rectangle #F2AC4E InvestigadorRepository
+    rectangle #F2AC4E ProyectoRepository
     rectangle #F2AC4E Investigador
 }
-
-rectangle #CDEBA5 ":INVESTIGADOR_ABIERTO" as EstadoSalida
+rectangle #CDEBA5 ":INVESTIGADORES_ABIERTOS" as InvestigadoresAbiertos
 rectangle #CDEBA5 ":Collaboration AbrirInvestigador" as AbrirInvestigador
 rectangle #CDEBA5 ":Collaboration CrearInvestigador" as CrearInvestigador
-rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanelPrincipal
+rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanel
 
-EstadoEntrada1 -r-> ListarInvestigadoresView: abrirInvestigadores()
-EstadoEntrada2 -r-> ListarInvestigadoresView: abrirInvestigadores(idProyecto)
-
-ListarInvestigadoresView -d-> InvestigadorController: listarInvestigadores(contexto)
-ListarInvestigadoresView --> InvestigadorController: filtrarInvestigadores(criterio)
-InvestigadorController --> InvestigadorRepository: obtenerTodos()
-InvestigadorController --> InvestigadorRepository: obtenerPorContexto(contexto)
-InvestigadorController --> InvestigadorRepository: buscarPorCriterio(criterio)
+Coordinador -- Panel
+Coordinador -- ProyectoAbierto
+Panel -r-> ListarInvestigadoresView: abrirInvestigadores()
+ProyectoAbierto -r-> ListarInvestigadoresView: abrirInvestigadores(idProyecto)
+ListarInvestigadoresView -d-> InvestigadoresController: listarInvestigadores(idProyecto) : List<Investigador>
+InvestigadoresController --> InvestigadorRepository: obtenerActivos() : List<Investigador>
+InvestigadoresController --> ProyectoRepository: obtenerParticipantes(idProyecto) : List<Investigador>
+ListarInvestigadoresView --> InvestigadoresController: filtrarInvestigadores(idProyecto, criterio) : List<Investigador>
+InvestigadoresController --> InvestigadorRepository: buscarActivos(criterio) : List<Investigador>
 InvestigadorRepository -- Investigador
-note right of InvestigadorController
-Contexto opcional:
-- sin identificador: listado global
-- con identificador: listado acotado
-end note
-ListarInvestigadoresView ..> EstadoSalida: continuarNavegacion()
-ListarInvestigadoresView ..> AbrirInvestigador: abrirInvestigador()
+ProyectoRepository -- Investigador
+ListarInvestigadoresView ..> InvestigadoresAbiertos: investigadoresPresentados()
+ListarInvestigadoresView ..> AbrirInvestigador: abrirInvestigador(idInvestigador)
 ListarInvestigadoresView ..> CrearInvestigador: crearInvestigador()
-ListarInvestigadoresView ..> AbrirPanelPrincipal: abrirPanelPrincipal()
-
+ListarInvestigadoresView ..> AbrirPanel: abrirPanelPrincipal()
 @enduml

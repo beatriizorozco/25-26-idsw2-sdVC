@@ -26,7 +26,7 @@ Especificación detallada del caso de uso `crearInvestigador()` mediante diagram
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
 |**Precondición**|Usuario autenticado como Coordinador y sistema disponible para navegación.|
-|**Postcondición exitosa**|El nuevo investigador queda registrado y disponible para consulta o edición.|
+|**Postcondición exitosa**|El nuevo investigador queda activo y se presenta su detalle.|
 |**Postcondición de fallo**|No se aplican cambios si la información solicitada no es válida o el actor cancela la operación.|
 
 ## Diagrama de especificación
@@ -58,12 +58,12 @@ Especificación detallada del caso de uso `crearInvestigador()` mediante diagram
 **Correspondencia con especificación:**
 - crearInvestigador()
 - **Coordinador** solicita crear investigador nuevo
-- **Sistema** presenta solicitud de datos mínimos del investigador<br>- ID del investigador (obligatorio)<br>- Nombre del investigador (obligatorio)<br>- Campo del investigador (obligatorio)<br>- Permite solicitar crear investigador<br>- Permite solicitar cancelar creación
-- **Coordinador** proporciona datos mínimos<br>**Sistema** crea investigador y transfiere a edición
+- **Sistema** presenta el formulario de alta con usuario, nombre completo, correo, sede, unidad, línea de investigación y biografía.
+- **Coordinador** proporciona los datos y solicita crear el investigador.<br>**Sistema** valida la unicidad, registra el perfil y abre su detalle.
 
 ### Validaciones del wireframe
 - ¿El campo o bloque **Datos mínimos del investigador** resulta claro para el Coordinador?
-- ¿El campo o bloque **ID del investigador *** resulta claro para el Coordinador?
+- ¿Los campos obligatorios permiten identificar y contactar correctamente al investigador?
 - ¿El campo o bloque **Nombre *** resulta claro para el Coordinador?
 - ¿El campo o bloque **Campo de investigación *** resulta claro para el Coordinador?
 - ¿Las acciones disponibles mantienen una navegación coherente con el rol Coordinador?
@@ -78,9 +78,9 @@ Especificación detallada del caso de uso `crearInvestigador()` mediante diagram
 |Actor|Acción|Sistema|Respuesta|
 |-|-|-|-|
 |**Coordinador**|solicita crear investigador nuevo|| |
-||**Sistema**|presenta solicitud de datos mínimos del investigador<br>- ID del investigador (obligatorio)<br>- Nombre del investigador (obligatorio)<br>- Campo del investigador (obligatorio)<br>- Permite solicitar crear investigador<br>- Permite solicitar cancelar creación| |
-|**Coordinador**|proporciona datos mínimos<br>|| |
-||**Sistema**|crea investigador y transfiere a edición| |
+||**Sistema**|presenta el formulario de alta y permite cancelar| |
+|**Coordinador**|proporciona los datos y solicita crear investigador|| |
+||**Sistema**|valida usuario y correo, registra el investigador y abre su detalle| |
 
 ## Estados internos del caso de uso
 
@@ -93,8 +93,8 @@ Especificación detallada del caso de uso `crearInvestigador()` mediante diagram
 
 ### Patrón crear -> usar
 
-- **Crear mínimo**: solicita solo los datos necesarios para registrar investigador.
-- **Continuidad**: tras la creación, el actor puede abrir o editar la entidad creada.
+- **Crear mínimo**: solicita nombre de usuario, nombre completo, correo, sede, unidad, línea de investigación y biografía.
+- **Continuidad**: tras la creación, el sistema abre el detalle del investigador creado.
 - **Validación temprana**: el prototipo permite detectar si faltan datos antes del desarrollo.
 
 ### Información tratada
@@ -106,11 +106,11 @@ Especificación detallada del caso de uso `crearInvestigador()` mediante diagram
 ## Opciones de navegación
 
 ### Operaciones relacionadas
-- **abrirOpcionesPerfil()** -> Navegar a `abrirOpcionesPerfil()` cuando el actor solicita esa continuidad.
+- **abrirInvestigador()** -> Presentar el investigador recién creado.
 
 ### Navegación del sistema
 - **Estado de entrada**: INVESTIGADORES_ABIERTOS.
-- **Estado de salida**: INVESTIGADOR_ABIERTO, OPCIONES_PERFIL_ABIERTO.
+- **Estado de salida**: `INVESTIGADOR_ABIERTO` si se registra; `INVESTIGADORES_ABIERTOS` si se cancela o los datos no son válidos.
 
 ## Conexión con diagrama de contexto
 

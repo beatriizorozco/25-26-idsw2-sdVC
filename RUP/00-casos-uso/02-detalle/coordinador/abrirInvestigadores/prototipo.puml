@@ -4,28 +4,16 @@
     <b>GIPF - INVESTIGADORES</b>
     ====
     {
-        <b>Filtrar / buscar:</b>
-        {
-            {<b>ID:</b> | [        ]
-             <b>Nombre:</b> | [                    ]}
-            {<b>Campo:</b> | [                    ]
-             <b>Estado:</b> | { "Todos" | "Activo" | "Inactivo" }}
-        }
-
+        {<b>Nombre, sede o linea:</b> | [                              ]}
+        {<b>Contexto:</b> | { "Directorio activo" | "Participantes del proyecto" }}
         ~~
-
-        <b>Lista de investigadores</b>
-        --
         {
-            {<b>ID</b> | <b>Nombre</b> | <b>Campo</b>}
-            {"INV-001" | "Ana López"   | "Inteligencia Artificial"}
-            {"INV-002" | "Mario García" | "Big Data"}
-            {"INV-003" | "Lucía Pérez" | "Ciberseguridad"}
+            {<b>Nombre</b> | <b>Sede</b> | <b>Linea</b> | <b>Tipo</b>}
+            {"Ana Lopez" | "Santander" | "Inteligencia artificial" | "Investigadora-docente"}
+            {"Mario Garcia" | "Barcelona" | "Produccion cientifica" | "Investigador"}
         }
-
         ~~
-
-        {[Abrir investigador] | [Crear investigador] | [Aplicar filtros] | [Limpiar filtros] | [Panel principal]}
+        {[Abrir investigador] | [Crear investigador] | [Aplicar filtro] | [Volver]}
     }
 }
 @endsalt

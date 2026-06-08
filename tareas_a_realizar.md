@@ -159,6 +159,16 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 
 ## Pendiente de bajas lógicas
 
+## Pendiente inmediato del bloque 6
+
+- [x] Identificar los casos del bloque 6 de investigadores y separarlos de la desasignacion de participantes del bloque 5.
+- [x] Revisar y corregir el Detalle de investigadores para Coordinador e Investigador.
+- [x] Modelar `abrirInvestigadores(idProyecto)` como un unico caso con alcance global o contextual.
+- [x] Corregir `abrirInvestigador()` para presentar un perfil individual y sus proyectos asociados o visibles.
+- [x] Corregir `crearInvestigador()` para registrar un perfil nuevo sin prometer una edicion inexistente.
+- [x] Crear y revisar el Analisis del bloque 6 para Coordinador e Investigador.
+- [ ] Revisar manualmente el bloque 6 antes de avanzar a Diseno.
+
 - [ ] Migrar `eliminarRecompensa()` en Desarrollo desde el borrado físico actual hacia una anulación lógica con fecha, Coordinador responsable y motivo.
 - [ ] Implementar la retirada lógica de publicaciones y entregables cuando sus bloques alcancen Desarrollo.
 - [ ] Diseñar consultas administrativas de perfiles inactivos, proyectos archivados, publicaciones y entregables retirados, y recompensas anuladas.

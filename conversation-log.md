@@ -435,3 +435,27 @@ Durante la prueba manual apareció un error al subir archivos porque el navegado
 Se actualizaron los README de Desarrollo, `tareas_a_realizar.md` e `incidencias_y_soluciones.md`. La validación final terminó con 38 pruebas backend correctas, `npm run build`, `npm run lint` y `git diff --check` sin errores.
 
 **Decisión:** el Desarrollo del bloque 5 queda funcional y técnicamente verificado. Antes de pasar al bloque 6 se realizará una prueba manual completa desde el navegador con Coordinador e Investigador, comprobando proyectos activos y archivados, asignaciones, finalización automática y permisos de subida, descarga y eliminación de adjuntos.
+
+---
+
+## [2026-06-09 00:00] Inicio de sesión - Revisión del bloque 6 de investigadores
+
+**Prompt:** el usuario inició una nueva sesión mediante la skill `session-memory` y solicitó revisar el Detalle y realizar el Análisis del bloque 6 de investigadores.
+
+**Resultado:** se utilizó la skill `session-memory`. Se recuperó el cierre del bloque 5, se comprobó que el repositorio está en `main` tras el commit `74ffc5b` y se contrastaron los casos existentes con los diagramas de contexto de Coordinador e Investigador. El bloque 6 queda delimitado como el directorio y la consulta de investigadores: para Coordinador incluye `abrirInvestigadores()`, `abrirInvestigador()` y `crearInvestigador()`; para Investigador incluye `abrirInvestigadores()` y `abrirInvestigador()`.
+
+**Decisión:** `eliminarInvestigador()` no formará parte del bloque 6 porque representa la desasignación de un investigador desde un proyecto y ya pertenece al bloque 5. La revisión distinguirá la apertura global del directorio desde `PANEL_PRINCIPAL_ABIERTO` y la apertura contextual desde `PROYECTO_ABIERTO`, manteniendo un único caso de uso cuando el comportamiento interno pueda resolverse mediante un proyecto opcional.
+
+---
+
+## [2026-06-09 00:20] Fin de sesión - Detalle y Análisis del bloque 6 de investigadores
+
+**Prompt:** cierre de sesión solicitado mediante la skill `session-memory` tras revisar el Detalle y completar el Análisis del bloque 6.
+
+**Resultado:** se utilizó la skill `session-memory`. Durante la sesión se revisaron y corrigieron los casos de uso de investigadores para Coordinador e Investigador. Para Coordinador se trabajaron `abrirInvestigadores()`, `abrirInvestigador()` y `crearInvestigador()`; para Investigador se revisaron `abrirInvestigadores()` y `abrirInvestigador()`. Se alinearon los README, diagramas de especificación y prototipos con los diagramas de contexto y con las reglas reales del proyecto.
+
+Se modeló `abrirInvestigadores(idProyecto)` como un único caso de uso con dos alcances: sin identificador presenta el directorio global de investigadores activos al Coordinador; con identificador presenta los participantes del proyecto visible. `abrirInvestigador()` quedó definido como la consulta de un perfil individual, mostrando su condición docente según la sede y sus proyectos asociados o visibles. `crearInvestigador()` registra usuario, nombre, correo, sede y datos profesionales, comprueba duplicados y abre el detalle creado, sin redirigir a un caso de edición inexistente.
+
+También se creó y revisó el Análisis MVC de los cinco casos, diferenciando actores, vistas, controladores, `InvestigadorRepository`, `ProyectoRepository` y entidades conceptuales. Se corrigió la ubicación de las validaciones y permisos, evitando delegarlos incorrectamente en los repositorios. Los quince SVG de especificación, prototipado y colaboración fueron regenerados mediante PlantUML y se comprobó su presencia en `images/RUP`. `tareas_a_realizar.md` quedó actualizado con el seguimiento del bloque 6. La verificación final incluyó validación PlantUML, búsqueda de contradicciones residuales y `git diff --check` sin errores. No se realizó ningún commit durante la sesión.
+
+**Decisión:** el Detalle y el Análisis del bloque 6 quedan terminados y técnicamente verificados. `eliminarInvestigador()` continúa perteneciendo al bloque 5 porque representa una desasignación de proyecto, no la baja del perfil. El siguiente paso será revisar manualmente el bloque 6 y, si se aprueba, comenzar su Diseño.

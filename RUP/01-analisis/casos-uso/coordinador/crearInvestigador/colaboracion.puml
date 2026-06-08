@@ -1,25 +1,24 @@
 @startuml crearInvestigador-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":INVESTIGADORES_ABIERTOS" as EstadoEntrada
+actor Coordinador
+rectangle #CDEBA5 ":INVESTIGADORES_ABIERTOS" as InvestigadoresAbiertos
 package crearInvestigador as "crearInvestigador()" {
     rectangle #629EF9 CrearInvestigadorView
-    rectangle #b5bd68 InvestigadorController
+    rectangle #b5bd68 CrearInvestigadorController
     rectangle #F2AC4E InvestigadorRepository
     rectangle #F2AC4E Investigador
 }
+rectangle #CDEBA5 ":INVESTIGADOR_ABIERTO" as InvestigadorAbierto
+rectangle #CDEBA5 ":INVESTIGADORES_ABIERTOS" as CreacionCancelada
 
-rectangle #CDEBA5 ":INVESTIGADOR_ABIERTO" as EstadoSalida
-rectangle #CDEBA5 ":Collaboration AbrirOpcionesPerfil" as AbrirOpcionesPerfil
-
-EstadoEntrada -r-> CrearInvestigadorView: crearInvestigador()
-
-CrearInvestigadorView -d-> InvestigadorController: crearInvestigador(datos)
-CrearInvestigadorView --> InvestigadorController: validarInvestigador(datos)
-InvestigadorController --> InvestigadorRepository: existeDuplicado(datos)
-InvestigadorController --> InvestigadorRepository: guardar(entidad)
+Coordinador -- InvestigadoresAbiertos
+InvestigadoresAbiertos -r-> CrearInvestigadorView: crearInvestigador()
+CrearInvestigadorView -d-> CrearInvestigadorController: registrarInvestigador(datosMinimos) : Investigador
+CrearInvestigadorController --> InvestigadorRepository: existeUsuarioOCorreo(datosMinimos) : boolean
+CrearInvestigadorController --> Investigador: crear(datosMinimos) : Investigador
+CrearInvestigadorController --> InvestigadorRepository: guardar(Investigador) : Investigador
 InvestigadorRepository -- Investigador
-CrearInvestigadorView ..> EstadoSalida: continuarNavegacion()
-CrearInvestigadorView ..> AbrirOpcionesPerfil: abrirOpcionesPerfil()
-
+CrearInvestigadorView ..> InvestigadorAbierto: abrirInvestigador(idInvestigador)
+CrearInvestigadorView ..> CreacionCancelada: cancelarCreacion()
 @enduml

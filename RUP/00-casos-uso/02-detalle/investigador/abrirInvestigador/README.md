@@ -22,7 +22,7 @@ Especificación detallada del caso de uso `abrirInvestigador()` mediante diagram
 |-|-|
 |**Nombre**|abrirInvestigador()|
 |**Actor primario**|Investigador|
-|**Objetivo**|Presentar al Investigador el detalle de investigador y las acciones disponibles según su rol.|
+|**Objetivo**|Presentar al Investigador el perfil consultable de otro investigador y sus proyectos asociados visibles.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
 |**Precondición**|Usuario autenticado como Investigador y sistema disponible para navegación.|
@@ -51,7 +51,7 @@ Especificación detallada del caso de uso `abrirInvestigador()` mediante diagram
 
 |![Wireframe: abrirInvestigador](/images/RUP/00-casos-uso/02-detalle/investigador/abrirInvestigador/abrirInvestigador-wireframe.svg)|
 |-|
-|**Estado**: MostrandoLista / FiltrandoLista|
+|**Estado**: PresentandoInvestigador|
 
 </div>
 
@@ -89,8 +89,8 @@ Especificación detallada del caso de uso `abrirInvestigador()` mediante diagram
 
 |Estado|Descripción|Responsabilidad|
 |-|-|-|
-|**MostrandoLista**|Estado interno asociado a mostrando lista.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
-|**FiltrandoLista**|Estado interno asociado a filtrando lista.|Sistema debe mantener la conversación coherente con el objetivo del caso de uso.|
+|**ConsultandoInvestigador**|Recupera el investigador seleccionado.|Sistema debe localizar el perfil solicitado.|
+|**PresentandoInvestigador**|Presenta sus datos y proyectos asociados visibles.|Sistema debe mantener el caso en modo consulta.|
 
 ## Funcionalidad específica
 

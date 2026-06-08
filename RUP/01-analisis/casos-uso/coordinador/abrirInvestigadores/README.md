@@ -64,7 +64,7 @@ Analizar la colaboración necesaria para presentar a Coordinador el listado de i
 **Estereotipo**: Entidad  
 **Responsabilidades**:
 - Abstraer el acceso a datos de investigadores.
-- Proporcionar operaciones `obtenerTodos()` y `buscarPorCriterio(criterio)`.
+- Proporcionar consultas de investigadores activos y participantes de un proyecto.
 - Mantener la consistencia conceptual de investigadores.
 - Encapsular restricciones de consulta o modificación asociadas al rol.
 
@@ -88,9 +88,9 @@ Analizar la colaboración necesaria para presentar a Coordinador el listado de i
 
 1. **Inicio**: Estado de contexto -> `ListarInvestigadoresView.abrirInvestigadores()`.
 2. **Solicitud principal**: `ListarInvestigadoresView` -> `InvestigadorController.listarInvestigadores()`.
-3. **Acceso a datos**: `ListarInvestigadoresView` -> `InvestigadorController.filtrarInvestigadores(criterio)`.
-4. **Filtrado o refinamiento**: `InvestigadorController` -> `InvestigadorRepository.obtenerTodos()`.
-5. **Búsqueda**: `InvestigadorController` -> `InvestigadorRepository.buscarPorCriterio(criterio)`.
+3. **Listado global**: `InvestigadoresController` -> `InvestigadorRepository.obtenerActivos()`.
+4. **Listado contextual**: `InvestigadoresController` -> `ProyectoRepository.obtenerParticipantes(idProyecto)`.
+5. **Búsqueda**: `InvestigadoresController` filtra dentro del alcance recibido.
 6. **Finalización**: `ListarInvestigadoresView` devuelve el control al estado de navegación definido.
 
 ### Patrón de colaboración establecido
@@ -108,7 +108,8 @@ Analizar la colaboración necesaria para presentar a Coordinador el listado de i
 |Atender la solicitud `abrirInvestigadores()`|`ListarInvestigadoresView`|Recibe la acción del Coordinador|
 |Coordinar reglas del caso de uso|`InvestigadorController`|`listarInvestigadores()`|
 |Aplicar permisos y validaciones|`InvestigadorController`|`filtrarInvestigadores(criterio)`|
-|Acceder a datos de investigadores|`InvestigadorRepository`|`obtenerTodos()`, `buscarPorCriterio(criterio)`|
+|Listar el directorio global|`InvestigadorRepository`|`obtenerActivos()`, `buscarActivos(criterio)`|
+|Listar participantes de un proyecto|`ProyectoRepository`|`obtenerParticipantes(idProyecto)`|
 |Representar atributos de dominio|`Investigador`|Entidad conceptual|
 
 ### Atributos tratados
