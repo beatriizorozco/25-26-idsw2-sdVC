@@ -1,0 +1,63 @@
+@startuml agregarInvestigador-coordinador-diseno
+title Diagrama de secuencia - Agregar investigador a proyecto
+
+actor Coordinador
+participant "AgregarInvestigadorDialog\n(React)" as Frontend
+participant "ProyectoController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "ProyectoService" as Service
+participant "ProyectoRepository" as Repo
+participant "InvestigadorRepository" as InvestigadorRepo
+participant "CargaTrabajoRepository" as CargaRepo
+
+Coordinador -> Frontend: Solicita agregar investigador
+activate Frontend
+Frontend -> Api: GET /api/proyectos/{id}/candidatos\nCookie de sesion
+activate Api
+Api -> Sesion: exigirCoordinador(authentication)
+Sesion --> Api: Coordinador autenticado
+Api -> Service: obtenerCandidatos(id)
+activate Service
+Service -> Repo: obtenerPorId(id)
+Repo --> Service: Proyecto
+Service -> InvestigadorRepo: obtenerNoAsociados(id)
+InvestigadorRepo --> Service: Candidatos
+Service -> CargaRepo: obtenerCargas(candidatos)
+CargaRepo --> Service: Cargas y disponibilidad
+Service -> Service: evaluarCompatibilidadYRecomendarMenorCarga()
+Service --> Api: Lista<CandidatoProyectoResponse>
+deactivate Service
+Api --> Frontend: 200 OK\nCandidatos ordenados
+deactivate Api
+Frontend --> Coordinador: Presenta candidatos y recomendacion
+alt Coordinador cancela
+    Coordinador -> Frontend: Cancela asignacion
+    Frontend --> Coordinador: Conserva PROYECTO_ABIERTO
+else Coordinador confirma
+    Coordinador -> Frontend: Selecciona candidato y confirma
+    Frontend -> Api: POST /api/proyectos/{id}/investigadores/{investigadorId}\nCookie de sesion
+    activate Api
+    Api -> Sesion: exigirCoordinador(authentication)
+    Sesion --> Api: Coordinador autenticado
+    Api -> Service: asociarInvestigador(id, investigadorId)
+    activate Service
+    Service -> InvestigadorRepo: obtenerCandidatoDisponible(id, investigadorId)
+    InvestigadorRepo --> Service: Investigador / vacio
+    alt Candidato invalido o ya asociado
+        Service --> Api: ValidacionException / ConflictoException
+        deactivate Service
+        Api --> Frontend: 400 Bad Request / 409 Conflict
+        deactivate Api
+        Frontend --> Coordinador: Presenta error y conserva candidatos
+    else Candidato valido
+        Service -> Repo: asociarInvestigador(id, investigadorId)
+        Repo --> Service: Equipo actualizado
+        Service --> Api: ProyectoDetalleResponse
+        deactivate Service
+        Api --> Frontend: 200 OK\nInvestigador asociado
+        deactivate Api
+        Frontend --> Coordinador: Presenta PROYECTO_ABIERTO
+    end
+end
+deactivate Frontend
+@enduml

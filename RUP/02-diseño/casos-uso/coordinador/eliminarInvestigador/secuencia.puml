@@ -1,0 +1,61 @@
+@startuml eliminarInvestigador-coordinador-diseno
+title Diagrama de secuencia - Eliminar investigador de proyecto
+
+actor Coordinador
+participant "ProyectoDetallePage\n(React)" as Frontend
+participant "ProyectoController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "ProyectoService" as Service
+participant "ProyectoRepository" as Repo
+participant "InvestigadorRepository" as InvestigadorRepo
+
+Coordinador -> Frontend: Solicita eliminar investigador del proyecto
+activate Frontend
+Frontend --> Coordinador: Presenta confirmacion de desasignacion
+alt Coordinador cancela
+    Coordinador -> Frontend: Cancela desasignacion
+    Frontend --> Coordinador: Conserva PROYECTO_ABIERTO
+else Coordinador confirma
+    Coordinador -> Frontend: Confirma desasignacion
+    Frontend -> Api: DELETE /api/proyectos/{id}/investigadores/{investigadorId}\nCookie de sesion
+    activate Api
+    Api -> Sesion: exigirCoordinador(authentication)
+    activate Sesion
+    alt Sesion de Coordinador activa
+        Sesion --> Api: Coordinador autenticado
+        deactivate Sesion
+        Api -> Service: desasignarInvestigador(id, investigadorId)
+        activate Service
+        Service -> Repo: obtenerPorId(id)
+        Repo --> Service: Proyecto / vacio
+        Service -> InvestigadorRepo: obtenerAsociado(id, investigadorId)
+        InvestigadorRepo --> Service: Investigador / vacio
+        alt Asociacion inexistente
+            Service --> Api: RecursoNoEncontradoException
+            deactivate Service
+            Api --> Frontend: 404 Not Found
+            deactivate Api
+            Frontend --> Coordinador: Presenta asociación no encontrada
+        else Asociacion existente
+            Service -> Repo: desasociarInvestigador(id, investigadorId)
+            Repo --> Service: Equipo actualizado
+            note right of Service
+            El perfil del investigador
+            permanece intacto.
+            end note
+            Service --> Api: ProyectoDetalleResponse
+            deactivate Service
+            Api --> Frontend: 200 OK\nInvestigador desasignado
+            deactivate Api
+            Frontend --> Coordinador: Presenta PROYECTO_ABIERTO
+        end
+    else Sesion ausente o rol invalido
+        Sesion --> Api: SesionNoValidaException / AccesoDenegadoException
+        deactivate Sesion
+        Api --> Frontend: 401 Unauthorized / 403 Forbidden
+        deactivate Api
+        Frontend --> Coordinador: Presenta error de acceso
+    end
+end
+deactivate Frontend
+@enduml

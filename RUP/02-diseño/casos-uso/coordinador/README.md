@@ -30,3 +30,13 @@
 - [Crear Recompensa](crearRecompensa/README.md)
 - [Editar Recompensa](editarRecompensa/README.md)
 - [Eliminar Recompensa](eliminarRecompensa/README.md)
+
+## Gestión de proyectos
+
+- [Abrir Proyectos](abrirProyectos/README.md)
+- [Abrir Proyecto](abrirProyecto/README.md)
+- [Crear Proyecto](crearProyecto/README.md)
+- [Editar Proyecto](editarProyecto/README.md)
+- [Eliminar Proyecto](eliminarProyecto/README.md)
+- [Agregar Investigador](agregarInvestigador/README.md)
+- [Eliminar Investigador](eliminarInvestigador/README.md)

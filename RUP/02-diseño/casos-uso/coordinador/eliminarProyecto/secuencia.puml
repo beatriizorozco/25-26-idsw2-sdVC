@@ -1,0 +1,57 @@
+@startuml eliminarProyecto-coordinador-diseno
+title Diagrama de secuencia - Eliminar proyecto
+
+actor Coordinador
+participant "ProyectoDetallePage\n(React)" as Frontend
+participant "ProyectoController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "ProyectoService" as Service
+participant "ProyectoRepository" as Repo
+participant "EntregableRepository" as EntregableRepo
+participant "RecompensaRepository" as RecompensaRepo
+
+Coordinador -> Frontend: Solicita eliminar proyecto
+activate Frontend
+Frontend -> Api: GET /api/proyectos/{id}/comprobacion-eliminacion\nCookie de sesion
+activate Api
+Api -> Sesion: exigirCoordinador(authentication)
+Sesion --> Api: Coordinador autenticado
+Api -> Service: comprobarEliminacion(id)
+activate Service
+Service -> Repo: obtenerPorId(id)
+Repo --> Service: Proyecto / vacio
+Service -> EntregableRepo: contarPorProyecto(id)
+EntregableRepo --> Service: Numero de entregables
+Service -> RecompensaRepo: contarPorProyecto(id)
+RecompensaRepo --> Service: Numero de recompensas
+Service -> Service: validarTrazabilidad()
+Service --> Api: ComprobacionEliminacionResponse
+deactivate Service
+Api --> Frontend: 200 OK\nResultado de comprobacion
+deactivate Api
+alt Eliminacion impedida
+    Frontend --> Coordinador: Explica dependencias y conserva PROYECTO_ABIERTO
+else Eliminacion permitida
+    Frontend --> Coordinador: Presenta confirmacion
+    alt Coordinador cancela
+        Coordinador -> Frontend: Cancela eliminacion
+        Frontend --> Coordinador: Conserva PROYECTO_ABIERTO
+    else Coordinador confirma
+        Coordinador -> Frontend: Confirma eliminacion
+        Frontend -> Api: DELETE /api/proyectos/{id}\nCookie de sesion
+        activate Api
+        Api -> Sesion: exigirCoordinador(authentication)
+        Sesion --> Api: Coordinador autenticado
+        Api -> Service: eliminarSiMantieneTrazabilidad(id)
+        activate Service
+        Service -> Repo: eliminar(id)
+        Repo --> Service: Proyecto eliminado
+        Service --> Api: eliminacion completada
+        deactivate Service
+        Api --> Frontend: 204 No Content
+        deactivate Api
+        Frontend --> Coordinador: Presenta PROYECTOS_ABIERTOS
+    end
+end
+deactivate Frontend
+@enduml

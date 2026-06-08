@@ -1,0 +1,41 @@
+@startuml abrirProyectos-coordinador-diseno
+title Diagrama de secuencia - Abrir proyectos como Coordinador
+
+actor Coordinador
+participant "ProyectosPage\n(React)" as Frontend
+participant "ProyectoController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "ProyectoService" as Service
+participant "ProyectoRepository" as Repo
+
+Coordinador -> Frontend: Solicita abrir proyectos
+activate Frontend
+Frontend -> Api: GET /api/proyectos?criterio={criterio}&investigadorId={id?}\nCookie de sesion
+activate Api
+Api -> Sesion: exigirCoordinador(authentication)
+activate Sesion
+alt Sesion de Coordinador activa
+    Sesion --> Api: Coordinador autenticado
+    deactivate Sesion
+    Api -> Service: listar(criterio, investigadorId?)
+    activate Service
+    alt Sin investigador seleccionado
+        Service -> Repo: buscarTodos(criterio)
+    else Con investigador seleccionado
+        Service -> Repo: buscarPorInvestigador(criterio, investigadorId)
+    end
+    Repo --> Service: Lista<Proyecto>
+    Service --> Api: Lista<ProyectoResumenResponse>
+    deactivate Service
+    Api --> Frontend: 200 OK\nLista de proyectos
+    deactivate Api
+    Frontend --> Coordinador: Presenta PROYECTOS_ABIERTOS
+else Sesion ausente o rol invalido
+    Sesion --> Api: SesionNoValidaException / AccesoDenegadoException
+    deactivate Sesion
+    Api --> Frontend: 401 Unauthorized / 403 Forbidden
+    deactivate Api
+    Frontend --> Coordinador: Presenta error de acceso
+end
+deactivate Frontend
+@enduml

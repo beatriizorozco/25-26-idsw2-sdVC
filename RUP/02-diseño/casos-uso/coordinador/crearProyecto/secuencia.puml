@@ -1,0 +1,59 @@
+@startuml crearProyecto-coordinador-diseno
+title Diagrama de secuencia - Crear proyecto
+
+actor Coordinador
+participant "CrearProyectoForm\n(React)" as Frontend
+participant "ProyectoController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "ProyectoService" as Service
+participant "ConvocatoriaRepository" as ConvocatoriaRepo
+participant "ProyectoRepository" as Repo
+
+Coordinador -> Frontend: Solicita crear proyecto
+activate Frontend
+Frontend -> Api: GET /api/proyectos/opciones-creacion\nCookie de sesion
+activate Api
+Api -> Sesion: exigirCoordinador(authentication)
+Sesion --> Api: Coordinador autenticado
+Api -> Service: prepararCreacion()
+activate Service
+Service -> ConvocatoriaRepo: obtenerDisponibles()
+ConvocatoriaRepo --> Service: Convocatorias importadas
+Service --> Api: OpcionesCreacionProyectoResponse
+deactivate Service
+Api --> Frontend: 200 OK\nOpciones de creacion
+deactivate Api
+Frontend --> Coordinador: Presenta formulario minimo
+alt Coordinador cancela
+    Coordinador -> Frontend: Cancela creacion
+    Frontend --> Coordinador: Conserva PROYECTOS_ABIERTOS
+else Coordinador guarda
+    Coordinador -> Frontend: Introduce datos y guarda
+    Frontend -> Api: POST /api/proyectos\nProyectoCreateRequest + cookie
+    activate Api
+    Api -> Sesion: exigirCoordinador(authentication)
+    Sesion --> Api: Coordinador autenticado
+    Api -> Service: crear(datos, coordinador)
+    activate Service
+    Service -> ConvocatoriaRepo: obtenerImportada(datos.convocatoriaId)
+    ConvocatoriaRepo --> Service: Convocatoria / vacio
+    Service -> Service: validarDatosYFechas(datos)
+    Service -> Service: asignarCodigoCoordinadorYEstadoCreado()
+    alt Datos invalidos
+        Service --> Api: ValidacionException
+        deactivate Service
+        Api --> Frontend: 400 Bad Request
+        deactivate Api
+        Frontend --> Coordinador: Presenta errores y conserva formulario
+    else Datos validos
+        Service -> Repo: guardar(proyecto)
+        Repo --> Service: Proyecto creado
+        Service --> Api: ProyectoDetalleResponse
+        deactivate Service
+        Api --> Frontend: 201 Created\nProyecto creado
+        deactivate Api
+        Frontend --> Coordinador: Presenta PROYECTO_ABIERTO
+    end
+end
+deactivate Frontend
+@enduml

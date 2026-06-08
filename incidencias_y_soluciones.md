@@ -209,6 +209,23 @@ Después de reiniciar el backend, un usuario demo activo conserva credenciales a
 
 **Validación:** Se actualizaron los README, diagramas de especificación, prototipos y colaboraciones de Análisis afectados. Todos los PlantUML de Detalle y Análisis del bloque 5 superaron `-checkonly`, se regeneraron sus SVG y `git diff --check` no detectó errores.
 
+### Diseño de proyectos sin separación suficiente de permisos y asociaciones
+
+**Síntoma:** Al trasladar el bloque 5 a Diseño existía el riesgo de tratar la consulta del Investigador como una consulta global, crear perfiles durante la asignación o eliminar perfiles al retirar miembros de un proyecto.
+
+**Causa:** Las operaciones de proyectos comparten entidades y navegación, pero sus permisos y efectos cambian según el actor y según se gestione el proyecto o únicamente su composición.
+
+**Solución:** El Diseño del bloque 5 establece endpoints y servicios diferenciados:
+
+- El Coordinador consulta y gestiona proyectos mediante rutas globales de `/api/proyectos`.
+- El Investigador consulta exclusivamente proyectos visibles mediante `/api/proyectos/me`, tomando su identidad de la sesión.
+- `agregarInvestigador()` asocia un perfil existente y recomienda al candidato compatible y disponible con menor carga.
+- `eliminarInvestigador()` elimina únicamente la asociación con el proyecto.
+- `eliminarProyecto()` exige comprobación previa de dependencias y trazabilidad.
+- `crearProyecto()` asigna en servidor código, Coordinador y estado inicial.
+
+**Validación:** Se crearon los nueve diseños del bloque 5 con README, secuencia PlantUML y SVG. Todos los diagramas superaron `plantuml -checkonly` y los enlaces utilizan el nombre normalizado `secuencia.svg`.
+
 ## Decisiones de seguridad
 
 ### Almacenamiento de contraseñas

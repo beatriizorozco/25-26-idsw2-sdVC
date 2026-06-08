@@ -1,0 +1,51 @@
+@startuml abrirProyecto-coordinador-diseno
+title Diagrama de secuencia - Abrir proyecto como Coordinador
+
+actor Coordinador
+participant "ProyectoDetallePage\n(React)" as Frontend
+participant "ProyectoController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "ProyectoService" as Service
+participant "ProyectoRepository" as Repo
+participant "InvestigadorRepository" as InvestigadorRepo
+participant "EntregableRepository" as EntregableRepo
+
+Coordinador -> Frontend: Selecciona proyecto
+activate Frontend
+Frontend -> Api: GET /api/proyectos/{id}\nCookie de sesion
+activate Api
+Api -> Sesion: exigirCoordinador(authentication)
+activate Sesion
+alt Sesion de Coordinador activa
+    Sesion --> Api: Coordinador autenticado
+    deactivate Sesion
+    Api -> Service: obtenerDetalleGlobal(id)
+    activate Service
+    Service -> Repo: obtenerPorId(id)
+    Repo --> Service: Proyecto / vacio
+    alt Proyecto inexistente
+        Service --> Api: RecursoNoEncontradoException
+        deactivate Service
+        Api --> Frontend: 404 Not Found
+        deactivate Api
+        Frontend --> Coordinador: Presenta proyecto no encontrado
+    else Proyecto existente
+        Service -> InvestigadorRepo: obtenerEquipo(id)
+        InvestigadorRepo --> Service: Equipo
+        Service -> EntregableRepo: obtenerPorProyecto(id)
+        EntregableRepo --> Service: Entregables
+        Service --> Api: ProyectoDetalleResponse
+        deactivate Service
+        Api --> Frontend: 200 OK\nDetalle del proyecto
+        deactivate Api
+        Frontend --> Coordinador: Presenta PROYECTO_ABIERTO
+    end
+else Sesion ausente o rol invalido
+    Sesion --> Api: SesionNoValidaException / AccesoDenegadoException
+    deactivate Sesion
+    Api --> Frontend: 401 Unauthorized / 403 Forbidden
+    deactivate Api
+    Frontend --> Coordinador: Presenta error de acceso
+end
+deactivate Frontend
+@enduml

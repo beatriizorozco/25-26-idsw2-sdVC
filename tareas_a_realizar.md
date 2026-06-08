@@ -142,4 +142,6 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Revisar el Análisis del bloque 5 para Coordinador: `abrirProyectos()`, `abrirProyecto()`, `crearProyecto()`, `editarProyecto()`, `eliminarProyecto()`, `agregarInvestigador()` y `eliminarInvestigador()`.
 - [x] Revisar el Análisis del bloque 5 para Investigador: `abrirProyectos()` y `abrirProyecto()`.
 - [x] Validar que las colaboraciones de proyectos respetan el Detalle aprobado y no eliminan perfiles al desasignar investigadores.
-- [ ] Revisar manualmente el Análisis completo del bloque 5 antes de avanzar a Diseño.
+- [x] Revisar manualmente el Análisis completo del bloque 5 antes de avanzar a Diseño.
+- [x] Crear el Diseño del bloque 5 para Coordinador e Investigador con `README.md` y `secuencia.puml`.
+- [ ] Revisar manualmente el Diseño completo del bloque 5 antes de avanzar a Desarrollo.

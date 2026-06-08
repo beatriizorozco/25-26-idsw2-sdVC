@@ -24,3 +24,8 @@
 
 - [Abrir Recompensas](abrirRecompensas/README.md)
 - [Abrir Recompensa](abrirRecompensa/README.md)
+
+## Consulta de proyectos
+
+- [Abrir Proyectos](abrirProyectos/README.md)
+- [Abrir Proyecto](abrirProyecto/README.md)

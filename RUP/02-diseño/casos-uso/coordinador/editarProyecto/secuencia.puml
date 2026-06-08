@@ -1,0 +1,58 @@
+@startuml editarProyecto-coordinador-diseno
+title Diagrama de secuencia - Editar proyecto
+
+actor Coordinador
+participant "EditarProyectoForm\n(React)" as Frontend
+participant "ProyectoController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "ProyectoService" as Service
+participant "ProyectoRepository" as Repo
+participant "ConvocatoriaRepository" as ConvocatoriaRepo
+
+Coordinador -> Frontend: Solicita editar proyecto
+activate Frontend
+Frontend --> Coordinador: Presenta formulario precargado
+alt Coordinador cancela
+    Coordinador -> Frontend: Cancela edicion
+    Frontend --> Coordinador: Conserva PROYECTO_ABIERTO
+else Coordinador guarda
+    Coordinador -> Frontend: Modifica datos y guarda
+    Frontend -> Api: PATCH /api/proyectos/{id}\nProyectoUpdateRequest + cookie
+    activate Api
+    Api -> Sesion: exigirCoordinador(authentication)
+    activate Sesion
+    alt Sesion de Coordinador activa
+        Sesion --> Api: Coordinador autenticado
+        deactivate Sesion
+        Api -> Service: actualizar(id, cambios)
+        activate Service
+        Service -> Repo: obtenerPorId(id)
+        Repo --> Service: Proyecto / vacio
+        Service -> ConvocatoriaRepo: obtenerImportada(cambios.convocatoriaId?)
+        ConvocatoriaRepo --> Service: Convocatoria / vacio
+        Service -> Service: aplicarCambiosYValidarFechas()
+        alt Proyecto inexistente o datos invalidos
+            Service --> Api: RecursoNoEncontradoException / ValidacionException
+            deactivate Service
+            Api --> Frontend: 404 Not Found / 400 Bad Request
+            deactivate Api
+            Frontend --> Coordinador: Presenta error y conserva formulario
+        else Cambios validos
+            Service -> Repo: guardar(proyecto)
+            Repo --> Service: Proyecto actualizado
+            Service --> Api: ProyectoDetalleResponse
+            deactivate Service
+            Api --> Frontend: 200 OK\nProyecto actualizado
+            deactivate Api
+            Frontend --> Coordinador: Presenta PROYECTO_ABIERTO
+        end
+    else Sesion ausente o rol invalido
+        Sesion --> Api: SesionNoValidaException / AccesoDenegadoException
+        deactivate Sesion
+        Api --> Frontend: 401 Unauthorized / 403 Forbidden
+        deactivate Api
+        Frontend --> Coordinador: Presenta error de acceso
+    end
+end
+deactivate Frontend
+@enduml
