@@ -29,3 +29,8 @@
 
 - [Abrir Proyectos](abrirProyectos/README.md)
 - [Abrir Proyecto](abrirProyecto/README.md)
+
+## Consulta de investigadores
+
+- [Abrir Investigadores](abrirInvestigadores/README.md)
+- [Abrir Investigador](abrirInvestigador/README.md)

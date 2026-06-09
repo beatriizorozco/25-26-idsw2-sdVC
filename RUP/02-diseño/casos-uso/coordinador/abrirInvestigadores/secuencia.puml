@@ -1,0 +1,43 @@
+@startuml abrirInvestigadores-coordinador-diseno
+title Diagrama de secuencia - Abrir investigadores como Coordinador
+
+actor Coordinador
+participant "InvestigadoresPage\n(React)" as Frontend
+participant "InvestigadorController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "InvestigadorService" as Service
+participant "InvestigadorRepository" as InvestigadorRepo
+participant "ProyectoRepository" as ProyectoRepo
+
+Coordinador -> Frontend: Solicita abrir investigadores
+activate Frontend
+Frontend -> Api: GET /api/investigadores?criterio={criterio}&proyectoId={id?}\nCookie de sesion
+activate Api
+Api -> Sesion: exigirCoordinador(authentication)
+activate Sesion
+alt Sesion de Coordinador activa
+    Sesion --> Api: Coordinador autenticado
+    deactivate Sesion
+    Api -> Service: listar(criterio, proyectoId?)
+    activate Service
+    alt Sin proyecto seleccionado
+        Service -> InvestigadorRepo: buscarActivos(criterio)
+        InvestigadorRepo --> Service: Lista<Investigador>
+    else Con proyecto seleccionado
+        Service -> ProyectoRepo: obtenerParticipantes(proyectoId, criterio)
+        ProyectoRepo --> Service: Lista<Investigador>
+    end
+    Service --> Api: Lista<InvestigadorResumenResponse>
+    deactivate Service
+    Api --> Frontend: 200 OK\nDirectorio de investigadores
+    deactivate Api
+    Frontend --> Coordinador: Presenta INVESTIGADORES_ABIERTOS
+else Sesion ausente o rol invalido
+    Sesion --> Api: SesionNoValidaException / AccesoDenegadoException
+    deactivate Sesion
+    Api --> Frontend: 401 Unauthorized / 403 Forbidden
+    deactivate Api
+    Frontend --> Coordinador: Presenta error de acceso
+end
+deactivate Frontend
+@enduml

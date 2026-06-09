@@ -1,0 +1,54 @@
+@startuml crearInvestigador-coordinador-diseno
+title Diagrama de secuencia - Crear investigador
+
+actor Coordinador
+participant "CrearInvestigadorPage\n(React)" as Frontend
+participant "InvestigadorController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "InvestigadorService" as Service
+participant "InvestigadorRepository" as Repo
+
+Coordinador -> Frontend: Solicita crear investigador
+activate Frontend
+Frontend --> Coordinador: Presenta formulario de alta
+alt Coordinador cancela
+    Coordinador -> Frontend: Cancela creacion
+    Frontend --> Coordinador: Conserva INVESTIGADORES_ABIERTOS
+else Coordinador guarda
+    Coordinador -> Frontend: Introduce datos y guarda
+    Frontend -> Api: POST /api/investigadores\nInvestigadorCreateRequest + cookie
+    activate Api
+    Api -> Sesion: exigirCoordinador(authentication)
+    activate Sesion
+    alt Sesion de Coordinador activa
+        Sesion --> Api: Coordinador autenticado
+        deactivate Sesion
+        Api -> Service: crear(datos)
+        activate Service
+        Service -> Repo: existeUsuarioOCorreo(datos)
+        Repo --> Service: true / false
+        alt Usuario o correo duplicados
+            Service --> Api: ValidacionException
+            deactivate Service
+            Api --> Frontend: 400 Bad Request
+            deactivate Api
+            Frontend --> Coordinador: Presenta errores y conserva formulario
+        else Datos validos
+            Service -> Repo: guardar(investigador)
+            Repo --> Service: Investigador creado
+            Service --> Api: InvestigadorDetalleResponse
+            deactivate Service
+            Api --> Frontend: 201 Created\nInvestigador creado
+            deactivate Api
+            Frontend --> Coordinador: Presenta INVESTIGADOR_ABIERTO
+        end
+    else Sesion ausente o rol invalido
+        Sesion --> Api: SesionNoValidaException / AccesoDenegadoException
+        deactivate Sesion
+        Api --> Frontend: 401 Unauthorized / 403 Forbidden
+        deactivate Api
+        Frontend --> Coordinador: Presenta error de acceso
+    end
+end
+deactivate Frontend
+@enduml

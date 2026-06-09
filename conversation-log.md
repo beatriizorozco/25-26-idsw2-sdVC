@@ -459,3 +459,25 @@ Se modeló `abrirInvestigadores(idProyecto)` como un único caso de uso con dos 
 También se creó y revisó el Análisis MVC de los cinco casos, diferenciando actores, vistas, controladores, `InvestigadorRepository`, `ProyectoRepository` y entidades conceptuales. Se corrigió la ubicación de las validaciones y permisos, evitando delegarlos incorrectamente en los repositorios. Los quince SVG de especificación, prototipado y colaboración fueron regenerados mediante PlantUML y se comprobó su presencia en `images/RUP`. `tareas_a_realizar.md` quedó actualizado con el seguimiento del bloque 6. La verificación final incluyó validación PlantUML, búsqueda de contradicciones residuales y `git diff --check` sin errores. No se realizó ningún commit durante la sesión.
 
 **Decisión:** el Detalle y el Análisis del bloque 6 quedan terminados y técnicamente verificados. `eliminarInvestigador()` continúa perteneciendo al bloque 5 porque representa una desasignación de proyecto, no la baja del perfil. El siguiente paso será revisar manualmente el bloque 6 y, si se aprueba, comenzar su Diseño.
+
+---
+
+## [2026-06-10 01:19] Inicio de sesión - Diseño del bloque 6 de investigadores
+
+**Prompt:** inicio de sesión solicitado mediante la skill `session-memory` para comenzar el Diseño del bloque 6: investigadores.
+
+**Resultado:** se utilizó la skill `session-memory`. Se revisaron `conversation-log.md`, `tareas_a_realizar.md`, la rama activa `main` y los commits recientes. El bloque 6 llega con Detalle y Análisis ya cerrados en primera iteración para Coordinador e Investigador. Se confirmó que el siguiente paso consiste en construir el Diseño de `abrirInvestigadores()`, `abrirInvestigador()` y `crearInvestigador()` para Coordinador, además de `abrirInvestigadores()` y `abrirInvestigador()` para Investigador, reutilizando el patrón ya asentado en el bloque 5.
+
+**Decisión:** la sesión se centrará en crear los README de Diseño, sus diagramas `secuencia.puml` y los SVG correspondientes, manteniendo la trazabilidad con Detalle y Análisis antes de pasar al Desarrollo del bloque 6.
+
+---
+
+## [2026-06-10 01:32] Fin de sesión - Diseño del bloque 6 de investigadores completado
+
+**Prompt:** cierre de sesión solicitado mediante la skill `session-memory`.
+
+**Resultado:** se utilizó la skill `session-memory`. Durante la sesión se creó el Diseño completo del bloque 6 de investigadores. Se añadieron los README y los diagramas `secuencia.puml` para `abrirInvestigadores()`, `abrirInvestigador()` y `crearInvestigador()` del Coordinador, además de `abrirInvestigadores()` y `abrirInvestigador()` del Investigador. El diseño se apoyó en el patrón del bloque 5 para mantener consistencia de estructura, rutas, estilo documental y nivel de detalle.
+
+Las secuencias definen el comportamiento esperado entre frontend, controlador, `SesionService`, servicios y repositorios, diferenciando correctamente el acceso global del Coordinador frente al acceso contextual del Investigador. También se mantuvo la decisión previa de no introducir `eliminarInvestigador()` en este bloque, ya que sigue perteneciendo al bloque 5 como desasignación dentro de proyecto. Los cinco diagramas se validaron con PlantUML y sus SVG quedaron publicados en `images/RUP/02-diseño/casos-uso/...`. Además, se actualizaron los índices de Diseño de Coordinador e Investigador para incluir los nuevos casos y `tareas_a_realizar.md` quedó alineado con el estado actual. No se realizó ningún commit durante la sesión.
+
+**Decisión:** el bloque 6 queda con Detalle, Análisis y Diseño terminados. El siguiente paso recomendado es revisar manualmente este bloque completo y, si se aprueba, comenzar el Desarrollo de investigadores para Coordinador e Investigador.

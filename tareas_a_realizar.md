@@ -167,7 +167,8 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Corregir `abrirInvestigador()` para presentar un perfil individual y sus proyectos asociados o visibles.
 - [x] Corregir `crearInvestigador()` para registrar un perfil nuevo sin prometer una edicion inexistente.
 - [x] Crear y revisar el Analisis del bloque 6 para Coordinador e Investigador.
-- [ ] Revisar manualmente el bloque 6 antes de avanzar a Diseno.
+- [x] Crear el Diseño del bloque 6 para Coordinador e Investigador con `README.md`, `secuencia.puml` y SVG.
+- [ ] Revisar manualmente el bloque 6 antes de avanzar a Desarrollo.
 
 - [ ] Migrar `eliminarRecompensa()` en Desarrollo desde el borrado físico actual hacia una anulación lógica con fecha, Coordinador responsable y motivo.
 - [ ] Implementar la retirada lógica de publicaciones y entregables cuando sus bloques alcancen Desarrollo.
