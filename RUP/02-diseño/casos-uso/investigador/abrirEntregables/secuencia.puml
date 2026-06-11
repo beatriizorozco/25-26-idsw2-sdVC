@@ -1,0 +1,23 @@
+@startuml abrirEntregables-investigador-diseno
+title Diagrama de secuencia - Abrir entregables de proyecto
+actor Investigador
+participant "EntregablesPage\n(React)" as Frontend
+participant "EntregableController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "EntregableService" as Service
+participant "ProyectoRepository" as ProyectoRepo
+participant "EntregableRepository" as Repo
+
+Investigador -> Frontend: Solicita abrir entregables del proyecto
+Frontend -> Api: GET /api/proyectos/{proyectoId}/entregables?filtro=\nCookie de sesion
+Api -> Sesion: exigirInvestigador(authentication)
+Sesion --> Api: Investigador autenticado
+Api -> Service: listarVisiblesPorProyecto(proyectoId, filtro, investigador)
+Service -> ProyectoRepo: verificarParticipacion(proyectoId, investigador)
+ProyectoRepo --> Service: Proyecto visible / acceso denegado
+Service -> Repo: buscarActivosPorProyecto(proyectoId, filtro)
+Repo --> Service: Entregables activos
+Service --> Api: List<EntregableResumenResponse>
+Api --> Frontend: 200 OK
+Frontend --> Investigador: Presenta ENTREGABLES_ABIERTOS
+@enduml

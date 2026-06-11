@@ -6,7 +6,9 @@ rectangle #CDEBA5 ":ENTREGABLE_ABIERTO" as EstadoEntrada2
 package abrirEntregables as "abrirEntregables()" {
     rectangle #629EF9 ListarEntregablesView
     rectangle #b5bd68 EntregableController
+    rectangle #F2AC4E ProyectoRepository
     rectangle #F2AC4E EntregableRepository
+    rectangle #F2AC4E Proyecto
     rectangle #F2AC4E Entregable
 }
 
@@ -16,18 +18,18 @@ rectangle #CDEBA5 ":Collaboration CrearEntregable" as CrearEntregable
 rectangle #CDEBA5 ":Collaboration AbrirProyecto" as AbrirProyecto
 
 EstadoEntrada1 -r-> ListarEntregablesView: abrirEntregables(idProyecto)
-EstadoEntrada2 -r-> ListarEntregablesView: abrirEntregables(idEntregable)
+EstadoEntrada2 -r-> ListarEntregablesView: abrirEntregables(idProyecto)
 
-ListarEntregablesView -d-> EntregableController: listarEntregables(contexto)
-ListarEntregablesView --> EntregableController: filtrarEntregables(criterio)
-EntregableController --> EntregableRepository: obtenerPropios(investigador)
-EntregableController --> EntregableRepository: obtenerPorContexto(contexto)
-EntregableController --> EntregableRepository: buscarPorCriterio(criterio)
+ListarEntregablesView -d-> EntregableController: listarEntregables(idProyecto, investigador)
+ListarEntregablesView --> EntregableController: filtrarEntregables(idProyecto, criterio, investigador)
+EntregableController --> ProyectoRepository: verificarParticipacion(idProyecto, investigador)
+EntregableController --> EntregableRepository: obtenerActivosPorProyecto(idProyecto)
+EntregableController --> EntregableRepository: buscarActivosPorProyecto(idProyecto, criterio)
+ProyectoRepository -- Proyecto
 EntregableRepository -- Entregable
 note right of EntregableController
-Contexto opcional:
-- sin identificador: listado propio
-- con identificador: listado propio acotado
+El Investigador consulta entregables
+de proyectos en los que participa.
 end note
 ListarEntregablesView ..> EstadoSalida: continuarNavegacion()
 ListarEntregablesView ..> AbrirEntregable: abrirEntregable()

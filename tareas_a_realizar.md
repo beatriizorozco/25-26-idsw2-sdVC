@@ -170,6 +170,16 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Crear el Diseño del bloque 6 para Coordinador e Investigador con `README.md`, `secuencia.puml` y SVG.
 - [ ] Revisar manualmente el bloque 6 antes de avanzar a Desarrollo.
 
+## Pendiente inmediato del bloque 7
+
+- [x] Identificar el bloque 7 como gestión de entregables para Coordinador e Investigador.
+- [x] Revisar y corregir las colaboraciones de Análisis de los diez casos de entregables.
+- [x] Confirmar que `abrirEntregables()` siempre queda acotado al proyecto abierto.
+- [x] Confirmar que el Investigador puede consultar entregables del proyecto, pero solo modificar o retirar los propios.
+- [x] Diseñar la retirada lógica conservando autoría, proyecto, archivos y versiones.
+- [x] Crear el Diseño del bloque 7 con `README.md` y `secuencia.puml` para los diez casos.
+- [ ] Revisar manualmente el Diseño del bloque 7 antes de comenzar Desarrollo.
+
 - [ ] Migrar `eliminarRecompensa()` en Desarrollo desde el borrado físico actual hacia una anulación lógica con fecha, Coordinador responsable y motivo.
 - [ ] Implementar la retirada lógica de publicaciones y entregables cuando sus bloques alcancen Desarrollo.
 - [ ] Diseñar consultas administrativas de perfiles inactivos, proyectos archivados, publicaciones y entregables retirados, y recompensas anuladas.

@@ -1,0 +1,23 @@
+@startuml abrirEntregable-coordinador-diseno
+title Diagrama de secuencia - Abrir entregable
+actor Coordinador
+participant "EntregableDetallePage\n(React)" as Frontend
+participant "EntregableController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "EntregableService" as Service
+participant "EntregableRepository" as Repo
+participant "ArchivoRepository" as ArchivoRepo
+
+Coordinador -> Frontend: Selecciona entregable
+Frontend -> Api: GET /api/entregables/{id}\nCookie de sesion
+Api -> Sesion: exigirCoordinador(authentication)
+Sesion --> Api: Coordinador autenticado
+Api -> Service: obtenerDetalle(id)
+Service -> Repo: obtenerActivoPorId(id)
+Repo --> Service: Entregable / vacio
+Service -> ArchivoRepo: obtenerPorEntregable(id)
+ArchivoRepo --> Service: Archivos y versiones
+Service --> Api: EntregableDetalleResponse
+Api --> Frontend: 200 OK
+Frontend --> Coordinador: Presenta ENTREGABLE_ABIERTO\ncon editar y retirar
+@enduml

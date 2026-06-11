@@ -503,3 +503,24 @@ Las secuencias definen el comportamiento esperado entre frontend, controlador, `
 En paralelo se avanzó en la implementación del módulo de investigadores: controlador, servicio, DTOs, pruebas de integración backend y la nueva pantalla frontend de directorio y detalle. Sin embargo, la verificación manual quedó bloqueada por un problema de arranque del backend. Se intentó estabilizar `tools/start-dev.ps1`, pero el fallo persistente terminó localizándose en el arranque de Spring Boot bajo el entorno actual, con errores relacionados con la JVM y con `JAVA_TOOL_OPTIONS`, además de ejecuciones fallidas de `spring-boot:run`. El frontend siguió compilando correctamente con `npm run build`, por lo que el bloqueo actual afecta al proceso backend y al script de arranque, no a la estructura del bloque 6.
 
 **Decisión:** el contenido funcional y documental del bloque 6 queda bastante avanzado, pero la sesión no cierra la validación manual porque el backend no está arrancando de forma estable. El siguiente paso recomendado es aislar el problema del entorno Java y del lanzamiento de Spring Boot en una terminal limpia, recuperar un arranque estable y, en cuanto funcione, revisar visualmente el bloque 6 en navegador antes de continuar.
+
+---
+
+## [10:05] Inicio de sesión - Decidir revisión del bloque 6 o salto al bloque 7
+
+**Prompt:** inicio de sesión solicitado mediante la skill `session-memory` para decidir si conviene revisar globalmente el bloque 6 o pasar a revisar Desarrollo y Análisis del bloque 7.
+
+**Resultado:** se utilizó la skill `session-memory`. Se revisó el cierre anterior, `conversation-log.md` y `tareas_a_realizar.md`. El bloque 6 de investigadores llega con Detalle, Análisis, Diseño y gran parte del Desarrollo ya preparados, pero con una validación manual pendiente por el problema de arranque del backend detectado al final de la sesión anterior.
+
+**Decisión:** antes de avanzar al bloque 7 conviene cerrar una revisión global breve del bloque 6, centrada en confirmar consistencia documental y, sobre todo, recuperar un arranque estable del backend para poder validar manualmente la funcionalidad. Solo después de esa comprobación tendrá sentido pasar a Análisis y Desarrollo del bloque 7 con tranquilidad.
+---
+
+## [10:58] Fin de sesión - Análisis corregido y Diseño del bloque 7 completado
+
+**Prompt:** el usuario decidió aplazar la reparación del arranque de Spring Boot y solicitó avanzar al bloque 7. Al finalizar el Diseño, pidió cerrar la sesión utilizando la skill `session-memory`.
+
+**Resultado:** se utilizó la skill `session-memory`. Se identificó el bloque 7 como la gestión de entregables, compuesto por `abrirEntregables()`, `abrirEntregable()`, `crearEntregable()`, `editarEntregable()` y `eliminarEntregable()` para Coordinador e Investigador. Se revisaron los diagramas de contexto, el Detalle y el Análisis existentes. Las diez colaboraciones de Análisis se corrigieron para establecer que el listado siempre pertenece al proyecto abierto, eliminar el supuesto listado global, comprobar la participación del Investigador para consultar y exigir autoría para editar o retirar.
+
+Se creó el Diseño completo de los diez casos mediante sus `README.md` y `secuencia.puml`. Las secuencias distinguen el acceso global del Coordinador y los permisos del Investigador, incorporan archivos y versiones, validación del proyecto, prevención de duplicados y retirada lógica con motivo, fecha y responsable. También se actualizaron los índices de Diseño por actor y `tareas_a_realizar.md`. Finalmente se regeneraron los diez SVG de Análisis y se generaron los diez SVG de Diseño mediante PlantUML local. La verificación confirmó que todos los casos cuentan con README, fuente PlantUML y SVG, y `git diff --check` no detectó errores. No se realizó ningún commit durante la sesión.
+
+**Decisión:** el Análisis corregido y el Diseño del bloque 7 quedan terminados. El problema local de arranque de Spring Boot queda aplazado por decisión del usuario para priorizar la finalización documental del trabajo. El siguiente paso será revisar manualmente el Diseño del bloque 7 y, si se aprueba, comenzar su Desarrollo.

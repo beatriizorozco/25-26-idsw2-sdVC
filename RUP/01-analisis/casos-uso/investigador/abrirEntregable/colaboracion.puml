@@ -5,7 +5,9 @@ rectangle #CDEBA5 ":ENTREGABLES_ABIERTOS" as EstadoEntrada
 package abrirEntregable as "abrirEntregable()" {
     rectangle #629EF9 DetalleEntregableView
     rectangle #b5bd68 EntregableController
+    rectangle #F2AC4E ProyectoRepository
     rectangle #F2AC4E EntregableRepository
+    rectangle #F2AC4E Proyecto
     rectangle #F2AC4E Entregable
 }
 
@@ -16,10 +18,11 @@ rectangle #CDEBA5 ":Collaboration AbrirEntregables" as AbrirEntregables
 
 EstadoEntrada -r-> DetalleEntregableView: abrirEntregable()
 
-DetalleEntregableView -d-> EntregableController: obtenerEntregable(id)
-DetalleEntregableView --> EntregableController: prepararAccionesDisponibles(investigador)
-EntregableController --> EntregableRepository: obtenerPorId(id)
-EntregableController --> EntregableRepository: verificarPermisos(actor)
+DetalleEntregableView -d-> EntregableController: obtenerEntregable(id, investigador)
+DetalleEntregableView --> EntregableController: prepararAccionesPorAutoria(entregable, investigador)
+EntregableController --> EntregableRepository: obtenerActivoPorId(id)
+EntregableController --> ProyectoRepository: verificarParticipacion(entregable.proyectoId, investigador)
+ProyectoRepository -- Proyecto
 EntregableRepository -- Entregable
 DetalleEntregableView ..> EstadoSalida: continuarNavegacion()
 DetalleEntregableView ..> EditarEntregable: editarEntregable()

@@ -18,8 +18,7 @@ EstadoEntrada -r-> DetalleEntregableView: abrirEntregable()
 
 DetalleEntregableView -d-> EntregableController: obtenerEntregable(id)
 DetalleEntregableView --> EntregableController: prepararAccionesDisponibles(coordinador)
-EntregableController --> EntregableRepository: obtenerPorId(id)
-EntregableController --> EntregableRepository: verificarPermisos(actor)
+EntregableController --> EntregableRepository: obtenerActivoPorId(id)
 EntregableRepository -- Entregable
 DetalleEntregableView ..> EstadoSalida: continuarNavegacion()
 DetalleEntregableView ..> EditarEntregable: editarEntregable()

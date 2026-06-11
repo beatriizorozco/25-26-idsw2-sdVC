@@ -1,0 +1,29 @@
+@startuml editarEntregable-coordinador-diseno
+title Diagrama de secuencia - Editar entregable
+actor Coordinador
+participant "EditarEntregableForm\n(React)" as Frontend
+participant "EntregableController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "EntregableService" as Service
+participant "EntregableRepository" as Repo
+participant "ArchivoRepository" as ArchivoRepo
+
+Coordinador -> Frontend: Modifica datos y guarda
+Frontend -> Api: PATCH /api/entregables/{id}\nEntregableUpdateRequest + archivo? + cookie
+Api -> Sesion: exigirCoordinador(authentication)
+Sesion --> Api: Coordinador autenticado
+Api -> Service: actualizar(id, cambios, archivo?, coordinador)
+Service -> Repo: obtenerActivoPorId(id)
+Repo --> Service: Entregable / vacio
+Service -> Service: aplicarCambiosYValidar()
+alt Datos invalidos o entregable retirado
+  Service --> Api: ValidacionException / RecursoNoEncontradoException
+  Api --> Frontend: 400 Bad Request / 404 Not Found
+else Cambios validos
+  Service -> Repo: guardar(entregable)
+  Service -> ArchivoRepo: agregarVersionOpcional(entregable, archivo, coordinador)
+  Service --> Api: EntregableDetalleResponse
+  Api --> Frontend: 200 OK
+  Frontend --> Coordinador: Presenta ENTREGABLE_ABIERTO actualizado
+end
+@enduml

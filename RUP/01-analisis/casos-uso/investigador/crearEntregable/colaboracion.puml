@@ -5,8 +5,12 @@ rectangle #CDEBA5 ":ENTREGABLES_ABIERTOS" as EstadoEntrada
 package crearEntregable as "crearEntregable()" {
     rectangle #629EF9 CrearEntregableView
     rectangle #b5bd68 EntregableController
+    rectangle #F2AC4E ProyectoRepository
     rectangle #F2AC4E EntregableRepository
+    rectangle #F2AC4E ArchivoRepository
+    rectangle #F2AC4E Proyecto
     rectangle #F2AC4E Entregable
+    rectangle #F2AC4E ArchivoAdjunto
 }
 
 rectangle #CDEBA5 ":ENTREGABLE_ABIERTO" as EstadoSalida
@@ -16,11 +20,14 @@ rectangle #CDEBA5 ":Collaboration AbrirEntregables" as AbrirEntregables
 
 EstadoEntrada -r-> CrearEntregableView: crearEntregable()
 
-CrearEntregableView -d-> EntregableController: crearEntregable(datos)
-CrearEntregableView --> EntregableController: validarEntregable(datos)
-EntregableController --> EntregableRepository: existeDuplicado(datos)
+CrearEntregableView -d-> EntregableController: crearEntregable(idProyecto, datos, archivo?, investigador)
+EntregableController --> ProyectoRepository: verificarParticipacion(idProyecto, investigador)
+EntregableController --> EntregableRepository: existeTituloEnProyecto(idProyecto, datos.titulo)
 EntregableController --> EntregableRepository: guardar(entidad)
+EntregableController --> ArchivoRepository: guardarOpcional(entregable, archivo, investigador)
+ProyectoRepository -- Proyecto
 EntregableRepository -- Entregable
+ArchivoRepository -- ArchivoAdjunto
 CrearEntregableView ..> EstadoSalida: continuarNavegacion()
 CrearEntregableView ..> EditarEntregable: editarEntregable()
 CrearEntregableView ..> EliminarEntregable: eliminarEntregable()

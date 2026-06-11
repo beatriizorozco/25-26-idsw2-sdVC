@@ -17,10 +17,9 @@ EstadoEntrada -r-> EliminarEntregableView: eliminarEntregable()
 
 EliminarEntregableView -d-> EntregableController: solicitarConfirmacion(id)
 EntregableController --> EliminarEntregableView: presentarConfirmacion()
-EliminarEntregableView --> EntregableController: confirmarRetirada(id)
+EliminarEntregableView --> EntregableController: confirmarRetiradaPropia(id, motivo, investigador)
 EliminarEntregableView --> EntregableController: cancelarRetirada()
-EliminarEntregableView --> EntregableController: validarRetirada(id)
-EntregableController --> EntregableRepository: obtenerPorId(id)
+EntregableController --> EntregableRepository: obtenerActivoPorIdYAutor(id, investigador)
 EntregableController --> EntregableRepository: retirar(id, fecha, investigador, motivo)
 EntregableRepository -- Entregable
 EliminarEntregableView ..> EstadoSalidaExitosa: entregableRetirado()

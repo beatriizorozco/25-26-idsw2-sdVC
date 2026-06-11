@@ -1,0 +1,25 @@
+@startuml abrirEntregable-investigador-diseno
+title Diagrama de secuencia - Abrir entregable visible
+actor Investigador
+participant "EntregableDetallePage\n(React)" as Frontend
+participant "EntregableController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "EntregableService" as Service
+participant "ProyectoRepository" as ProyectoRepo
+participant "EntregableRepository" as Repo
+participant "ArchivoRepository" as ArchivoRepo
+
+Investigador -> Frontend: Selecciona entregable
+Frontend -> Api: GET /api/entregables/{id}\nCookie de sesion
+Api -> Sesion: exigirInvestigador(authentication)
+Sesion --> Api: Investigador autenticado
+Api -> Service: obtenerDetalleVisible(id, investigador)
+Service -> Repo: obtenerActivoPorId(id)
+Repo --> Service: Entregable / vacio
+Service -> ProyectoRepo: verificarParticipacion(proyectoId, investigador)
+ProyectoRepo --> Service: Proyecto visible / acceso denegado
+Service -> ArchivoRepo: obtenerPorEntregable(id)
+Service --> Api: EntregableDetalleResponse + esAutor
+Api --> Frontend: 200 OK
+Frontend --> Investigador: Presenta ENTREGABLE_ABIERTO\nEditar y retirar solo si es autor
+@enduml

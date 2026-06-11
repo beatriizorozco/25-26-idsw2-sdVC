@@ -1,0 +1,32 @@
+@startuml crearEntregable-investigador-diseno
+title Diagrama de secuencia - Crear entregable propio
+actor Investigador
+participant "CrearEntregableForm\n(React)" as Frontend
+participant "EntregableController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "EntregableService" as Service
+participant "ProyectoRepository" as ProyectoRepo
+participant "EntregableRepository" as Repo
+participant "ArchivoRepository" as ArchivoRepo
+
+Investigador -> Frontend: Introduce datos y archivo opcional
+Frontend -> Api: POST /api/proyectos/{proyectoId}/entregables\nEntregableCreateRequest + archivo? + cookie
+Api -> Sesion: exigirInvestigador(authentication)
+Sesion --> Api: Investigador autenticado
+Api -> Service: crearPropio(proyectoId, datos, archivo?, investigador)
+Service -> ProyectoRepo: verificarParticipacion(proyectoId, investigador)
+ProyectoRepo --> Service: Proyecto visible / acceso denegado
+Service -> Repo: existeTituloActivo(proyectoId, titulo)
+Service -> Service: validarDatosYAsignarAutor(investigador)
+alt Datos invalidos, duplicados o sin participacion
+  Service --> Api: ValidacionException / ConflictoException / AccesoDenegadoException
+  Api --> Frontend: 400 / 409 / 403
+else Datos validos
+  Service -> Repo: guardar(entregable)
+  Repo --> Service: Entregable creado
+  Service -> ArchivoRepo: guardarOpcional(entregable, archivo, investigador)
+  Service --> Api: EntregableDetalleResponse
+  Api --> Frontend: 201 Created
+  Frontend --> Investigador: Presenta ENTREGABLE_ABIERTO
+end
+@enduml

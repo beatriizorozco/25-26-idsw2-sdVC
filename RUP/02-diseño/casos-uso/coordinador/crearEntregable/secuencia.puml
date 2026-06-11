@@ -1,0 +1,35 @@
+@startuml crearEntregable-coordinador-diseno
+title Diagrama de secuencia - Crear entregable
+actor Coordinador
+participant "CrearEntregableForm\n(React)" as Frontend
+participant "EntregableController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "EntregableService" as Service
+participant "ProyectoRepository" as ProyectoRepo
+participant "EntregableRepository" as Repo
+participant "ArchivoRepository" as ArchivoRepo
+
+Coordinador -> Frontend: Introduce datos y archivo opcional
+Frontend -> Api: POST /api/proyectos/{proyectoId}/entregables\nEntregableCreateRequest + archivo? + cookie
+Api -> Sesion: exigirCoordinador(authentication)
+Sesion --> Api: Coordinador autenticado
+Api -> Service: crear(proyectoId, datos, archivo?, coordinador)
+Service -> ProyectoRepo: obtenerActivoPorId(proyectoId)
+ProyectoRepo --> Service: Proyecto / vacio
+Service -> Repo: existeTituloActivo(proyectoId, titulo)
+Repo --> Service: true / false
+Service -> Service: validarDatosYArchivo()
+alt Datos invalidos o duplicados
+  Service --> Api: ValidacionException / ConflictoException
+  Api --> Frontend: 400 Bad Request / 409 Conflict
+  Frontend --> Coordinador: Presenta error y conserva formulario
+else Datos validos
+  Service -> Repo: guardar(entregable)
+  Repo --> Service: Entregable creado
+  Service -> ArchivoRepo: guardarOpcional(entregable, archivo, coordinador)
+  ArchivoRepo --> Service: Archivo / vacio
+  Service --> Api: EntregableDetalleResponse
+  Api --> Frontend: 201 Created
+  Frontend --> Coordinador: Presenta ENTREGABLE_ABIERTO
+end
+@enduml

@@ -1,0 +1,32 @@
+@startuml eliminarEntregable-investigador-diseno
+title Diagrama de secuencia - Retirar entregable propio
+actor Investigador
+participant "EntregableDetallePage\n(React)" as Frontend
+participant "EntregableController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "EntregableService" as Service
+participant "EntregableRepository" as Repo
+
+Investigador -> Frontend: Solicita retirar entregable propio
+Frontend --> Investigador: Presenta confirmacion y solicita motivo
+alt Investigador cancela
+  Frontend --> Investigador: Conserva ENTREGABLE_ABIERTO
+else Investigador confirma
+  Investigador -> Frontend: Confirma retirada con motivo
+  Frontend -> Api: PATCH /api/entregables/{id}/retirada\nmotivo + cookie
+  Api -> Sesion: exigirInvestigador(authentication)
+  Sesion --> Api: Investigador autenticado
+  Api -> Service: retirarPropio(id, motivo, investigador)
+  Service -> Repo: obtenerActivoPorIdYAutor(id, investigador)
+  Repo --> Service: Entregable propio / vacio
+  Service -> Repo: retirar(id, fecha, investigador, motivo)
+  Repo --> Service: Entregable retirado
+  note right of Repo
+  Conserva autoria, proyecto,
+  archivos y versiones.
+  end note
+  Service --> Api: EntregableRetiradoResponse
+  Api --> Frontend: 200 OK
+  Frontend --> Investigador: Presenta ENTREGABLES_ABIERTOS
+end
+@enduml
