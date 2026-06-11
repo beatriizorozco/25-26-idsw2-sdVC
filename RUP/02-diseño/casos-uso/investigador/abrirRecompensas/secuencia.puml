@@ -1,4 +1,4 @@
-@startuml abrirRecompensas-investigador-diseno
+﻿@startuml abrirRecompensas-investigador-diseno
 title Diagrama de secuencia - Abrir recompensas propias
 
 actor Investigador
@@ -8,6 +8,7 @@ participant "SesionService" as Sesion
 participant "RecompensaService" as Service
 participant "RecompensaRepository" as Repo
 participant "ProyectoRepository" as ProyectoRepo
+database "Base de Datos" as DB
 
 Investigador -> Frontend: Solicita abrir recompensas
 activate Frontend
@@ -21,8 +22,12 @@ alt Sesion de Investigador activa
     Api -> Service: listarPropias(investigadorId, criterio)
     activate Service
     Service -> Repo: buscarPropiasDeProyectosCompletados(investigadorId, criterio)
+    Repo -> DB: SELECT r.* FROM recompensas r JOIN proyectos p ON p.id = r.proyecto_id WHERE r.beneficiario_id = ? AND p.estado = 'COMPLETADO' AND r.anulada = false
+    DB --> Repo: Resultado de persistencia
     Repo --> Service: Lista<Recompensa>
     Service -> ProyectoRepo: obtenerResumenes(proyectoIds)
+    ProyectoRepo -> DB: SELECT * FROM proyectos WHERE id IN (?)
+    DB --> ProyectoRepo: Resultado de persistencia
     ProyectoRepo --> Service: Proyectos completados
     Service --> Api: Lista<RecompensaResumenResponse>
     deactivate Service

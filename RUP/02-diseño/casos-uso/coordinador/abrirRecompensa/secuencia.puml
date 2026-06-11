@@ -1,4 +1,4 @@
-@startuml abrirRecompensa-coordinador-diseno
+﻿@startuml abrirRecompensa-coordinador-diseno
 title Diagrama de secuencia - Abrir recompensa como Coordinador
 
 actor Coordinador
@@ -9,6 +9,7 @@ participant "RecompensaService" as Service
 participant "RecompensaRepository" as Repo
 participant "ProyectoRepository" as ProyectoRepo
 participant "InvestigadorRepository" as InvestigadorRepo
+database "Base de Datos" as DB
 
 Coordinador -> Frontend: Selecciona una recompensa
 activate Frontend
@@ -22,11 +23,17 @@ alt Sesion de Coordinador activa
     Api -> Service: obtenerGlobal(id)
     activate Service
     Service -> Repo: obtenerPorId(id)
+    Repo -> DB: SELECT * FROM recompensas WHERE id = ?
+    DB --> Repo: Resultado de persistencia
     Repo --> Service: Recompensa
     alt Recompensa existente
         Service -> ProyectoRepo: obtenerCompletado(recompensa.proyectoId)
+        ProyectoRepo -> DB: SELECT * FROM proyectos WHERE id = ? AND estado = 'COMPLETADO'
+        DB --> ProyectoRepo: Resultado de persistencia
         ProyectoRepo --> Service: Proyecto completado
         Service -> InvestigadorRepo: obtenerBeneficiario(recompensa.investigadorId)
+        InvestigadorRepo -> DB: SELECT * FROM usuarios WHERE id = ? AND activo = true
+        DB --> InvestigadorRepo: Resultado de persistencia
         InvestigadorRepo --> Service: Beneficiario con sede y condicion
         Service -> Service: validarTipoSegunBeneficiario()
         Service --> Api: RecompensaDetalleResponse

@@ -1,4 +1,4 @@
-@startuml abrirSolicitudesEliminacionPerfil-coordinador-diseño
+﻿@startuml abrirSolicitudesEliminacionPerfil-coordinador-diseño
 title Diagrama de secuencia - Abrir solicitudes de eliminación de perfil
 
 actor Coordinador
@@ -7,6 +7,7 @@ participant "SolicitudEliminacionPerfilController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "SolicitudEliminacionPerfilService" as SolicitudService
 participant "SolicitudEliminacionPerfilRepository" as SolicitudRepository
+database "Base de Datos" as DB
 
 Coordinador -> Frontend: Solicita abrir solicitudes de eliminación
 activate Frontend
@@ -22,8 +23,12 @@ alt Sesión de Coordinador activa
     activate SolicitudService
     alt Sin criterio
         SolicitudService -> SolicitudRepository: obtenerPendientes()
+        SolicitudRepository -> DB: SELECT * FROM solicitudes_eliminacion_perfil WHERE estado = 'PENDIENTE' ORDER BY fecha_creacion DESC
+        DB --> SolicitudRepository: Resultado de persistencia
     else Con criterio
         SolicitudService -> SolicitudRepository: buscarPorCriterio(criterio)
+    SolicitudRepository -> DB: SELECT s.* FROM solicitudes_eliminacion_perfil s JOIN usuarios u ON u.id = s.usuario_id\nWHERE s.estado = 'PENDIENTE' AND (LOWER(u.nombre_completo) LIKE ? OR LOWER(s.motivo) LIKE ?)\nORDER BY s.fecha_creacion DESC
+        DB --> SolicitudRepository: Resultado de persistencia
     end
     activate SolicitudRepository
     SolicitudRepository --> SolicitudService: List<SolicitudEliminacionPerfil>

@@ -1,4 +1,4 @@
-@startuml abrirOpcionesCargaTrabajo-coordinador-diseno
+﻿@startuml abrirOpcionesCargaTrabajo-coordinador-diseno
 title Diagrama de secuencia - Abrir opciones de carga de trabajo del Coordinador
 
 actor Coordinador
@@ -9,6 +9,7 @@ participant "CargaTrabajoService" as Service
 participant "CargaTrabajoRepository" as CargaRepo
 participant "PersonaRepository" as PersonaRepo
 participant "ProyectoRepository" as ProyectoRepo
+database "Base de Datos" as DB
 
 Coordinador -> Frontend: Solicita abrir carga de trabajo
 activate Frontend
@@ -23,19 +24,29 @@ alt Sesion de Coordinador activa
     Api -> Service: obtenerPanelCargaTrabajo(coordinador, filtros)
     activate Service
     Service -> CargaRepo: obtenerResumenGlobal(filtros)
+    CargaRepo -> DB: SELECT u.*, c.* FROM usuarios u LEFT JOIN cargas_trabajo c ON c.usuario_id = u.id WHERE u.activo = true
+    DB --> CargaRepo: Resultado de persistencia
     activate CargaRepo
     CargaRepo --> Service: ResumenCargaTrabajo
     Service -> CargaRepo: obtenerDetallePorPersona(filtros)
+    CargaRepo -> DB: SELECT u.*, c.* FROM usuarios u LEFT JOIN cargas_trabajo c ON c.usuario_id = u.id WHERE u.activo = true
+    DB --> CargaRepo: Resultado de persistencia
     CargaRepo --> Service: List<CargaTrabajoPersona>
     Service -> ProyectoRepo: obtenerProyectosLibres()
+ProyectoRepo -> DB: SELECT p.* FROM proyectos p WHERE p.archivado = false AND p.estado <> 'COMPLETADO'\nAND NOT EXISTS (SELECT 1 FROM proyecto_investigadores pi WHERE pi.proyecto_id = p.id)
+    DB --> ProyectoRepo: Resultado de persistencia
     activate ProyectoRepo
     ProyectoRepo --> Service: List<ProyectoLibre>
     deactivate ProyectoRepo
     Service -> PersonaRepo: obtenerInvestigadoresDocentesPorSede()
+    PersonaRepo -> DB: SELECT * FROM usuarios WHERE rol = 'INVESTIGADOR' AND activo = true AND sede IN (?)
+    DB --> PersonaRepo: Resultado de persistencia
     activate PersonaRepo
     PersonaRepo --> Service: List<Persona>
     deactivate PersonaRepo
     Service -> CargaRepo: sugerirInvestigadoresDocentesConMenorCarga(proyectosLibres, sedesDocentes)
+    CargaRepo -> DB: SELECT u.*, c.* FROM usuarios u JOIN cargas_trabajo c ON c.usuario_id = u.id WHERE u.activo = true ORDER BY (c.horas_docencia + c.horas_investigacion + c.horas_gestion_academica) ASC
+    DB --> CargaRepo: Resultado de persistencia
     CargaRepo --> Service: List<SugerenciaAsignacion>
     deactivate CargaRepo
     Service -> Service: calcularMargenDocente(maximo16h)

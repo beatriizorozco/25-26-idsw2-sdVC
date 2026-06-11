@@ -1,4 +1,4 @@
-@startuml agregarInvestigador-coordinador-diseno
+﻿@startuml agregarInvestigador-coordinador-diseno
 title Diagrama de secuencia - Agregar investigador a proyecto
 
 actor Coordinador
@@ -9,6 +9,7 @@ participant "ProyectoService" as Service
 participant "ProyectoRepository" as Repo
 participant "InvestigadorRepository" as InvestigadorRepo
 participant "CargaTrabajoRepository" as CargaRepo
+database "Base de Datos" as DB
 
 Coordinador -> Frontend: Solicita agregar investigador
 activate Frontend
@@ -19,10 +20,16 @@ Sesion --> Api: Coordinador autenticado
 Api -> Service: obtenerCandidatos(id)
 activate Service
 Service -> Repo: obtenerActivoPorId(id)
+Repo -> DB: SELECT * FROM proyectos WHERE id = ? AND archivado = false
+DB --> Repo: Resultado de persistencia
 Repo --> Service: Proyecto
 Service -> InvestigadorRepo: obtenerNoAsociados(id)
+InvestigadorRepo -> DB: SELECT * FROM usuarios WHERE rol = 'INVESTIGADOR' AND activo = true AND id NOT IN (SELECT usuario_id FROM proyecto_investigadores WHERE proyecto_id = ?)
+DB --> InvestigadorRepo: Resultado de persistencia
 InvestigadorRepo --> Service: Candidatos
 Service -> CargaRepo: obtenerCargas(candidatos)
+CargaRepo -> DB: SELECT * FROM cargas_trabajo WHERE usuario_id IN (?)
+DB --> CargaRepo: Resultado de persistencia
 CargaRepo --> Service: Cargas y disponibilidad
 Service -> Service: evaluarCompatibilidadYRecomendarMenorCarga()
 Service --> Api: Lista<CandidatoProyectoResponse>
@@ -42,10 +49,16 @@ else Coordinador confirma
     Api -> Service: asociarInvestigador(id, investigadorId)
     activate Service
     Service -> Repo: obtenerActivoPorId(id)
+    Repo -> DB: SELECT * FROM proyectos WHERE id = ? AND archivado = false
+    DB --> Repo: Resultado de persistencia
     Repo --> Service: Proyecto / vacio
     Service -> InvestigadorRepo: obtenerCandidatoDisponible(id, investigadorId)
+    InvestigadorRepo -> DB: SELECT * FROM usuarios WHERE id = ? AND rol = 'INVESTIGADOR' AND activo = true
+    DB --> InvestigadorRepo: Resultado de persistencia
     InvestigadorRepo --> Service: Investigador / vacio
     Service -> CargaRepo: obtenerCargaActual(investigadorId)
+    CargaRepo -> DB: SELECT * FROM cargas_trabajo WHERE usuario_id = ?
+    DB --> CargaRepo: Resultado de persistencia
     CargaRepo --> Service: Carga y disponibilidad actualizadas
     Service -> Service: reevaluarCompatibilidadYDisponibilidad()
     alt Proyecto no disponible, candidato invalido o ya asociado
@@ -56,6 +69,8 @@ else Coordinador confirma
         Frontend --> Coordinador: Presenta error y conserva candidatos
     else Candidato valido
         Service -> Repo: registrarAsignacion(id, investigadorId, fecha, coordinador)
+        Repo -> DB: INSERT INTO proyecto_investigadores (proyecto_id, usuario_id) VALUES (?, ?)\nINSERT INTO movimientos_participacion_proyecto (proyecto_id, investigador_id, tipo, responsable_id, fecha) VALUES (?, ?, 'ASIGNACION', ?, ?)
+        DB --> Repo: Resultado de persistencia
         Repo --> Service: Participacion activa
         Service --> Api: ProyectoDetalleResponse
         deactivate Service

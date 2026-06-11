@@ -6,7 +6,9 @@ package editarEntregable as "editarEntregable()" {
     rectangle #629EF9 EditarEntregableView
     rectangle #b5bd68 EntregableController
     rectangle #F2AC4E EntregableRepository
+    rectangle #F2AC4E ArchivoRepository
     rectangle #F2AC4E Entregable
+    rectangle #F2AC4E ArchivoAdjunto
 }
 
 rectangle #CDEBA5 ":ENTREGABLE_ABIERTO" as EstadoSalida
@@ -18,7 +20,9 @@ EstadoEntrada -r-> EditarEntregableView: editarEntregable()
 EditarEntregableView -d-> EntregableController: editarEntregablePropio(id, datos, archivo?, investigador)
 EntregableController --> EntregableRepository: obtenerActivoPorIdYAutor(id, investigador)
 EntregableController --> EntregableRepository: actualizar(entidad)
+EntregableController --> ArchivoRepository: agregarVersionOpcional(entregable, archivo, investigador)
 EntregableRepository -- Entregable
+ArchivoRepository -- ArchivoAdjunto
 EditarEntregableView ..> EstadoSalida: continuarNavegacion()
 EditarEntregableView ..> AbrirEntregables: abrirEntregables()
 EditarEntregableView ..> EliminarEntregable: eliminarEntregable()

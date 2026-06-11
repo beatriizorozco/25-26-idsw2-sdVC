@@ -1,4 +1,4 @@
-@startuml crearRecompensa-coordinador-diseno
+﻿@startuml crearRecompensa-coordinador-diseno
 title Diagrama de secuencia - Crear recompensa
 
 actor Coordinador
@@ -9,6 +9,7 @@ participant "RecompensaService" as Service
 participant "ProyectoRepository" as ProyectoRepo
 participant "InvestigadorRepository" as InvestigadorRepo
 participant "RecompensaRepository" as Repo
+database "Base de Datos" as DB
 
 Coordinador -> Frontend: Solicita crear recompensa
 activate Frontend
@@ -22,6 +23,8 @@ alt Sesion de Coordinador activa
     Api -> Service: prepararCreacion()
     activate Service
     Service -> ProyectoRepo: obtenerCompletadosPendientesRecompensa()
+    ProyectoRepo -> DB: SELECT * FROM proyectos WHERE estado = 'COMPLETADO'\nAND archivado = true
+    DB --> ProyectoRepo: Resultado de persistencia
     ProyectoRepo --> Service: Proyectos disponibles
     Service --> Api: OpcionesCreacionRecompensaResponse
     deactivate Service
@@ -40,8 +43,12 @@ alt Sesion de Coordinador activa
         Api -> Service: obtenerBeneficiariosElegibles(proyectoId)
         activate Service
         Service -> ProyectoRepo: obtenerCompletado(proyectoId)
+        ProyectoRepo -> DB: SELECT * FROM proyectos WHERE id = ? AND estado = 'COMPLETADO'
+        DB --> ProyectoRepo: Resultado de persistencia
         ProyectoRepo --> Service: Proyecto completado
         Service -> InvestigadorRepo: obtenerElegiblesPorProyecto(proyectoId)
+        InvestigadorRepo -> DB: SELECT u.* FROM usuarios u\nJOIN proyecto_investigadores pi ON pi.usuario_id = u.id\nWHERE pi.proyecto_id = ? AND u.activo = true
+        DB --> InvestigadorRepo: Resultado de persistencia
         InvestigadorRepo --> Service: Beneficiarios elegibles
         Service --> Api: Lista<BeneficiarioElegibleResponse>
         deactivate Service
@@ -60,6 +67,8 @@ alt Sesion de Coordinador activa
             Api -> Service: obtenerTiposPermitidos(proyectoId, investigadorId)
             activate Service
             Service -> InvestigadorRepo: obtenerElegible(proyectoId, investigadorId)
+            InvestigadorRepo -> DB: SELECT * FROM usuarios WHERE id = ? AND rol = 'INVESTIGADOR' AND activo = true
+            DB --> InvestigadorRepo: Resultado de persistencia
             InvestigadorRepo --> Service: Beneficiario con sede y condicion
             Service -> Service: calcularTiposPermitidos(beneficiario)
             Service --> Api: TiposRecompensaPermitidosResponse
@@ -80,11 +89,17 @@ alt Sesion de Coordinador activa
                 Api -> Service: crear(datos)
                 activate Service
                 Service -> ProyectoRepo: obtenerCompletado(datos.proyectoId)
+                ProyectoRepo -> DB: SELECT * FROM proyectos WHERE id = ? AND estado = 'COMPLETADO'
+                DB --> ProyectoRepo: Resultado de persistencia
                 ProyectoRepo --> Service: Proyecto completado
                 Service -> InvestigadorRepo: obtenerElegible(datos.proyectoId, datos.investigadorId)
+                InvestigadorRepo -> DB: SELECT * FROM usuarios WHERE id = ? AND rol = 'INVESTIGADOR' AND activo = true
+                DB --> InvestigadorRepo: Resultado de persistencia
                 InvestigadorRepo --> Service: Beneficiario con sede y condicion
                 Service -> Service: validarTipoYValor(datos, beneficiario)\nReduccion: 4, 8, 12 o 16 horas
                 Service -> Repo: existeDuplicado(proyectoId, investigadorId, tipo)
+                Repo -> DB: SELECT EXISTS(SELECT 1 FROM recompensas WHERE proyecto_id = ? AND beneficiario_id = ? AND tipo = ? AND anulada = false)
+                DB --> Repo: Resultado de persistencia
                 Repo --> Service: true / false
                 alt Datos invalidos o recompensa duplicada
                     Service --> Api: ValidacionException / ConflictoException
@@ -94,6 +109,8 @@ alt Sesion de Coordinador activa
                     Frontend --> Coordinador: Presenta error y conserva formulario
                 else Recompensa valida
                     Service -> Repo: guardar(recompensa)
+        Repo -> DB: INSERT INTO recompensas (proyecto_id, beneficiario_id, tipo, concepto,\nimporte_economico, horas_reduccion_docente, activa) VALUES (?, ?, ?, ?, ?, ?, true)
+                    DB --> Repo: Resultado de persistencia
                     Repo --> Service: Recompensa creada
                     Service --> Api: RecompensaDetalleResponse
                     deactivate Service

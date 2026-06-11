@@ -6,6 +6,7 @@ participant "EntregableController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "EntregableService" as Service
 participant "EntregableRepository" as Repo
+database "Base de Datos" as DB
 
 Investigador -> Frontend: Solicita retirar entregable propio
 Frontend --> Investigador: Presenta confirmacion y solicita motivo
@@ -18,8 +19,12 @@ else Investigador confirma
   Sesion --> Api: Investigador autenticado
   Api -> Service: retirarPropio(id, motivo, investigador)
   Service -> Repo: obtenerActivoPorIdYAutor(id, investigador)
+  Repo -> DB: SELECT * FROM entregables\nWHERE id = ? AND autor_id = ? AND retirado = false
+  DB --> Repo: Entregable propio / vacio
   Repo --> Service: Entregable propio / vacio
   Service -> Repo: retirar(id, fecha, investigador, motivo)
+  Repo -> DB: UPDATE entregables SET retirado = true,\nfecha_retirada = ?, retirado_por_id = ?, motivo_retirada = ?\nWHERE id = ? AND autor_id = ?
+  DB --> Repo: Entregable retirado
   Repo --> Service: Entregable retirado
   note right of Repo
   Conserva autoria, proyecto,

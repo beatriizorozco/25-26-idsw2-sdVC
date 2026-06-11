@@ -1,4 +1,4 @@
-@startuml iniciarSesion-diseño
+﻿@startuml iniciarSesion-diseño
 title Diagrama de secuencia - Iniciar sesión
 
 actor Coordinador
@@ -7,7 +7,7 @@ participant "AuthController\n(Spring Boot)" as Api
 participant "Spring Security" as Security
 participant "AuthService" as Auth
 participant "UsuarioRepository" as Repo
-database "PostgreSQL" as Database
+database "Base de Datos" as DB
 participant "SesionService" as Sesion
 
 note over Coordinador, Frontend
@@ -32,10 +32,10 @@ Api -> Auth: autenticar(usuario, contrasena)
 activate Auth
 Auth -> Repo: findByNombreUsuario(usuario)
 activate Repo
-Repo -> Database: SELECT usuario
-activate Database
-Database --> Repo: Usuario o vacío
-deactivate Database
+Repo -> DB: SELECT * FROM usuarios WHERE nombre_usuario = ?
+activate DB
+DB --> Repo: Usuario o vacío
+deactivate DB
 Repo --> Auth: Optional<Usuario>
 deactivate Repo
 Auth -> Auth: validarCredenciales(usuario, contrasena, activo)

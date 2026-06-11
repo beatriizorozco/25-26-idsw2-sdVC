@@ -1,4 +1,4 @@
-@startuml eliminarPerfil-coordinador-diseño
+﻿@startuml eliminarPerfil-coordinador-diseño
 title Diagrama de secuencia - Desactivar perfil desde solicitud
 
 actor Coordinador
@@ -8,6 +8,7 @@ participant "SesionService" as Sesion
 participant "PerfilService" as PerfilService
 participant "SolicitudEliminacionPerfilRepository" as SolicitudRepository
 participant "PerfilRepository" as PerfilRepository
+database "Base de Datos" as DB
 
 Coordinador -> Frontend: Solicita desactivar perfil
 activate Frontend
@@ -27,14 +28,20 @@ else Confirma desactivación
     Api -> PerfilService: eliminarPerfilDesdeSolicitud(coordinador, idSolicitud)
     activate PerfilService
     PerfilService -> SolicitudRepository: obtenerPorId(idSolicitud)
+    SolicitudRepository -> DB: SELECT * FROM usuarios WHERE id = ?
+    DB --> SolicitudRepository: Resultado de persistencia
     activate SolicitudRepository
     SolicitudRepository --> PerfilService: SolicitudEliminacionPerfil
     deactivate SolicitudRepository
     PerfilService -> PerfilRepository: desactivar(idPerfil, fecha, coordinador)
+    PerfilRepository -> DB: UPDATE usuarios SET activo = false WHERE id = ?
+    DB --> PerfilRepository: Resultado de persistencia
     activate PerfilRepository
     PerfilRepository --> PerfilService: Perfil desactivado
     deactivate PerfilRepository
     PerfilService -> SolicitudRepository: marcarResuelta(idSolicitud)
+    SolicitudRepository -> DB: UPDATE solicitudes_eliminacion_perfil SET estado = 'RESUELTA' WHERE id = ?
+    DB --> SolicitudRepository: Resultado de persistencia
     PerfilService --> Api: DesactivacionPerfilResponse
     deactivate PerfilService
     Api --> Frontend: 200 OK\nDesactivacionPerfilResponse

@@ -1,4 +1,4 @@
-@startuml editarProyecto-coordinador-diseno
+﻿@startuml editarProyecto-coordinador-diseno
 title Diagrama de secuencia - Editar proyecto
 
 actor Coordinador
@@ -8,6 +8,7 @@ participant "SesionService" as Sesion
 participant "ProyectoService" as Service
 participant "ProyectoRepository" as Repo
 participant "ConvocatoriaRepository" as ConvocatoriaRepo
+database "Base de Datos" as DB
 
 Coordinador -> Frontend: Solicita editar proyecto
 activate Frontend
@@ -27,8 +28,12 @@ else Coordinador guarda
         Api -> Service: actualizar(id, cambios)
         activate Service
         Service -> Repo: obtenerActivoPorId(id)
+        Repo -> DB: SELECT * FROM proyectos WHERE id = ? AND archivado = false
+        DB --> Repo: Resultado de persistencia
         Repo --> Service: Proyecto / vacio
         Service -> ConvocatoriaRepo: obtenerImportada(cambios.convocatoriaId?)
+        ConvocatoriaRepo -> DB: SELECT * FROM convocatorias WHERE id = ? AND importada = true
+        DB --> ConvocatoriaRepo: Resultado de persistencia
         ConvocatoriaRepo --> Service: Convocatoria / vacio
         Service -> Service: aplicarCambiosYValidarFechas()
         alt Proyecto inexistente, archivado o datos invalidos
@@ -39,6 +44,8 @@ else Coordinador guarda
             Frontend --> Coordinador: Presenta error y conserva formulario
         else Cambios validos
             Service -> Repo: guardar(proyecto)
+        Repo -> DB: UPDATE proyectos SET codigo = ?, nombre = ?, descripcion = ?, area = ?, sede = ?,\nestado = ?, fecha_inicio = ?, fecha_fin = ?, convocatoria_id = ? WHERE id = ?
+            DB --> Repo: Resultado de persistencia
             Repo --> Service: Proyecto actualizado
             Service --> Api: ProyectoDetalleResponse
             deactivate Service

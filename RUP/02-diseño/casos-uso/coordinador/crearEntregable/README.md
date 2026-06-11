@@ -22,8 +22,7 @@ Detallar el registro de un entregable dentro del proyecto abierto, con archivo i
 ## Decisiones de Diseño
 
 - La creación se realiza dentro de un proyecto activo.
-- Se impiden títulos activos duplicados dentro del mismo proyecto.
-- El archivo inicial es opcional y queda asociado a la autoría del Coordinador.
+- El archivo inicial es opcional y registra al Coordinador como responsable de la subida.
 - Una creación correcta devuelve `201 Created` y abre el entregable.
 
 ## Referencias

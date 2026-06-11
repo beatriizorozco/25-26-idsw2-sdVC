@@ -1,4 +1,4 @@
-@startuml editarRecompensa-coordinador-diseno
+﻿@startuml editarRecompensa-coordinador-diseno
 title Diagrama de secuencia - Editar recompensa
 
 actor Coordinador
@@ -9,6 +9,7 @@ participant "RecompensaService" as Service
 participant "RecompensaRepository" as Repo
 participant "ProyectoRepository" as ProyectoRepo
 participant "InvestigadorRepository" as InvestigadorRepo
+database "Base de Datos" as DB
 
 Coordinador -> Frontend: Solicita editar recompensa
 activate Frontend
@@ -22,6 +23,8 @@ alt Sesion de Coordinador activa
     Api -> Service: prepararEdicion(id)
     activate Service
     Service -> Repo: obtenerPorId(id)
+    Repo -> DB: SELECT * FROM recompensas WHERE id = ?
+    DB --> Repo: Resultado de persistencia
     Repo --> Service: Recompensa / vacio
     alt Recompensa inexistente
         Service --> Api: RecursoNoEncontradoException
@@ -31,8 +34,12 @@ alt Sesion de Coordinador activa
         Frontend --> Coordinador: Presenta recompensa no encontrada
     else Recompensa existente
         Service -> ProyectoRepo: obtenerCompletado(recompensa.proyectoId)
+        ProyectoRepo -> DB: SELECT * FROM proyectos WHERE id = ? AND estado = 'COMPLETADO'
+        DB --> ProyectoRepo: Resultado de persistencia
         ProyectoRepo --> Service: Proyecto completado
         Service -> InvestigadorRepo: obtenerElegiblesPorProyecto(recompensa.proyectoId)
+        InvestigadorRepo -> DB: SELECT u.* FROM usuarios u\nJOIN proyecto_investigadores pi ON pi.usuario_id = u.id\nWHERE pi.proyecto_id = ? AND u.activo = true
+        DB --> InvestigadorRepo: Resultado de persistencia
         InvestigadorRepo --> Service: Beneficiarios elegibles con tipos permitidos
         Service --> Api: RecompensaEdicionResponse con beneficiarios elegibles
         deactivate Service
@@ -52,10 +59,16 @@ alt Sesion de Coordinador activa
             Api -> Service: actualizar(id, datos)
             activate Service
             Service -> Repo: obtenerPorId(id)
+            Repo -> DB: SELECT * FROM recompensas WHERE id = ?
+            DB --> Repo: Resultado de persistencia
             Repo --> Service: Recompensa existente
             Service -> ProyectoRepo: obtenerCompletado(recompensa.proyectoId)
+            ProyectoRepo -> DB: SELECT * FROM proyectos WHERE id = ? AND estado = 'COMPLETADO'
+            DB --> ProyectoRepo: Resultado de persistencia
             ProyectoRepo --> Service: Proyecto completado
             Service -> InvestigadorRepo: obtenerElegible(recompensa.proyectoId, datos.investigadorId)
+            InvestigadorRepo -> DB: SELECT * FROM usuarios WHERE id = ? AND rol = 'INVESTIGADOR' AND activo = true
+            DB --> InvestigadorRepo: Resultado de persistencia
             InvestigadorRepo --> Service: Beneficiario con sede y condicion
             Service -> Service: validarTipoYValor(datos, beneficiario)\nReduccion: 4, 8, 12 o 16 horas
             alt Cambio invalido
@@ -66,6 +79,8 @@ alt Sesion de Coordinador activa
                 Frontend --> Coordinador: Presenta error y conserva formulario
             else Cambio valido
                 Service -> Repo: guardar(recompensaActualizada)
+        Repo -> DB: UPDATE recompensas SET tipo = ?, concepto = ?, importe_economico = ?,\nhoras_reduccion_docente = ? WHERE id = ? AND activa = true
+                DB --> Repo: Resultado de persistencia
                 Repo --> Service: Recompensa actualizada
                 Service --> Api: RecompensaDetalleResponse
                 deactivate Service

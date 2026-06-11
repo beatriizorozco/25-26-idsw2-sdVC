@@ -8,6 +8,7 @@ participant "EntregableService" as Service
 participant "ProyectoRepository" as ProyectoRepo
 participant "EntregableRepository" as Repo
 participant "ArchivoRepository" as ArchivoRepo
+database "Base de Datos" as DB
 
 Investigador -> Frontend: Introduce datos y archivo opcional
 Frontend -> Api: POST /api/proyectos/{proyectoId}/entregables\nEntregableCreateRequest + archivo? + cookie
@@ -15,16 +16,21 @@ Api -> Sesion: exigirInvestigador(authentication)
 Sesion --> Api: Investigador autenticado
 Api -> Service: crearPropio(proyectoId, datos, archivo?, investigador)
 Service -> ProyectoRepo: verificarParticipacion(proyectoId, investigador)
+ProyectoRepo -> DB: SELECT 1 FROM proyecto_investigadores\nWHERE proyecto_id = ? AND investigador_id = ?\nAND activo = true
+DB --> ProyectoRepo: Participacion / vacio
 ProyectoRepo --> Service: Proyecto visible / acceso denegado
-Service -> Repo: existeTituloActivo(proyectoId, titulo)
 Service -> Service: validarDatosYAsignarAutor(investigador)
-alt Datos invalidos, duplicados o sin participacion
-  Service --> Api: ValidacionException / ConflictoException / AccesoDenegadoException
-  Api --> Frontend: 400 / 409 / 403
+alt Datos invalidos o sin participacion
+  Service --> Api: ValidacionException / AccesoDenegadoException
+  Api --> Frontend: 400 / 403
 else Datos validos
   Service -> Repo: guardar(entregable)
+  Repo -> DB: INSERT INTO entregables\n(proyecto_id, titulo, descripcion, autor_id, retirado)\nVALUES (?, ?, ?, ?, false)
+  DB --> Repo: Entregable creado con ID
   Repo --> Service: Entregable creado
   Service -> ArchivoRepo: guardarOpcional(entregable, archivo, investigador)
+  ArchivoRepo -> DB: INSERT INTO archivos_entregable\n(entregable_id, version, archivo, subido_por_id)\nVALUES (?, 1, ?, ?)
+  DB --> ArchivoRepo: Archivo / vacio
   Service --> Api: EntregableDetalleResponse
   Api --> Frontend: 201 Created
   Frontend --> Investigador: Presenta ENTREGABLE_ABIERTO

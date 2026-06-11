@@ -17,7 +17,6 @@ Detallar la creación de un entregable propio dentro de un proyecto en el que pa
 
 - Se exige participación activa en el proyecto.
 - El servidor asigna automáticamente al Investigador autenticado como autor.
-- Se impiden títulos activos duplicados dentro del proyecto.
 - El archivo inicial es opcional y queda asociado al entregable creado.
 
 ## Referencias

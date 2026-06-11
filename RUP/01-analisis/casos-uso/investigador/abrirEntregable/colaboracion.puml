@@ -7,8 +7,10 @@ package abrirEntregable as "abrirEntregable()" {
     rectangle #b5bd68 EntregableController
     rectangle #F2AC4E ProyectoRepository
     rectangle #F2AC4E EntregableRepository
+    rectangle #F2AC4E ArchivoRepository
     rectangle #F2AC4E Proyecto
     rectangle #F2AC4E Entregable
+    rectangle #F2AC4E ArchivoAdjunto
 }
 
 rectangle #CDEBA5 ":ENTREGABLE_ABIERTO" as EstadoSalida
@@ -22,8 +24,10 @@ DetalleEntregableView -d-> EntregableController: obtenerEntregable(id, investiga
 DetalleEntregableView --> EntregableController: prepararAccionesPorAutoria(entregable, investigador)
 EntregableController --> EntregableRepository: obtenerActivoPorId(id)
 EntregableController --> ProyectoRepository: verificarParticipacion(entregable.proyectoId, investigador)
+EntregableController --> ArchivoRepository: obtenerPorEntregable(id)
 ProyectoRepository -- Proyecto
 EntregableRepository -- Entregable
+ArchivoRepository -- ArchivoAdjunto
 DetalleEntregableView ..> EstadoSalida: continuarNavegacion()
 DetalleEntregableView ..> EditarEntregable: editarEntregable()
 DetalleEntregableView ..> EliminarEntregable: eliminarEntregable()

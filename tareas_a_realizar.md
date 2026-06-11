@@ -178,7 +178,14 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Confirmar que el Investigador puede consultar entregables del proyecto, pero solo modificar o retirar los propios.
 - [x] Diseñar la retirada lógica conservando autoría, proyecto, archivos y versiones.
 - [x] Crear el Diseño del bloque 7 con `README.md` y `secuencia.puml` para los diez casos.
-- [ ] Revisar manualmente el Diseño del bloque 7 antes de comenzar Desarrollo.
+- [x] Revisar manualmente el Análisis y el Diseño del bloque 7 antes de comenzar Desarrollo.
+- [x] Completar los diez diagramas de secuencia del bloque 7 con Base de Datos y consultas SQL.
+- [ ] Implementar el Desarrollo del bloque 7 para la gestión de entregables.
+
+## Pendiente transversal de Diseño
+
+- [x] Revisar los diagramas de secuencia de bloques anteriores que terminaban en Repository y añadir su interacción y consulta con Base de Datos.
+- [x] Documentar explícitamente los cuatro diagramas de sesión y navegación que no requieren persistencia.
 
 - [ ] Migrar `eliminarRecompensa()` en Desarrollo desde el borrado físico actual hacia una anulación lógica con fecha, Coordinador responsable y motivo.
 - [ ] Implementar la retirada lógica de publicaciones y entregables cuando sus bloques alcancen Desarrollo.

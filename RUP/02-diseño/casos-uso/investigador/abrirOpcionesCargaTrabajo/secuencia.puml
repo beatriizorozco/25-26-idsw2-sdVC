@@ -1,4 +1,4 @@
-@startuml abrirOpcionesCargaTrabajo-investigador-diseno
+﻿@startuml abrirOpcionesCargaTrabajo-investigador-diseno
 title Diagrama de secuencia - Abrir carga de trabajo propia del Investigador
 
 actor Investigador
@@ -7,6 +7,7 @@ participant "CargaTrabajoController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "CargaTrabajoService" as Service
 participant "CargaTrabajoRepository" as CargaRepo
+database "Base de Datos" as DB
 
 Investigador -> Frontend: Solicita abrir carga de trabajo
 activate Frontend
@@ -21,6 +22,8 @@ alt Sesion activa
     Api -> Service: obtenerCargaPropia(investigador)
     activate Service
     Service -> CargaRepo: obtenerPorUsuario(investigador)
+    CargaRepo -> DB: SELECT * FROM cargas_trabajo WHERE usuario_id = ?
+    DB --> CargaRepo: Resultado de persistencia
     activate CargaRepo
     CargaRepo --> Service: CargaTrabajo
     deactivate CargaRepo

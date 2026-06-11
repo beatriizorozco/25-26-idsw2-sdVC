@@ -7,6 +7,11 @@ participant "PanelPrincipalController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "PanelPrincipalService" as Panel
 
+note over Sesion, Panel
+No accede a Base de Datos:
+las acciones se calculan desde la sesión y el rol autenticado.
+end note
+
 Coordinador -> Frontend: Solicita abrir el panel principal
 activate Frontend
 Frontend -> Frontend: Comprobar sesión local

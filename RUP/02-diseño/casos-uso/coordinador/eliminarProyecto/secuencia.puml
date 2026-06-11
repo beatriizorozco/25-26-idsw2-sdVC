@@ -1,4 +1,4 @@
-@startuml eliminarProyecto-coordinador-diseno
+﻿@startuml eliminarProyecto-coordinador-diseno
 title Diagrama de secuencia - Archivar proyecto
 
 actor Coordinador
@@ -7,6 +7,7 @@ participant "ProyectoController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "ProyectoService" as Service
 participant "ProyectoRepository" as Repo
+database "Base de Datos" as DB
 
 Coordinador -> Frontend: Solicita archivar proyecto
 activate Frontend
@@ -20,6 +21,8 @@ alt Sesion de Coordinador activa
     Api -> Service: prepararArchivado(id)
     activate Service
     Service -> Repo: obtenerActivoPorId(id)
+    Repo -> DB: SELECT * FROM proyectos WHERE id = ? AND archivado = false
+    DB --> Repo: Resultado de persistencia
     Repo --> Service: Proyecto / vacio
     alt Proyecto inexistente o ya archivado
         Service --> Api: RecursoNoEncontradoException / ConflictoException
@@ -29,6 +32,8 @@ alt Sesion de Coordinador activa
         Frontend --> Coordinador: Presenta error y conserva PROYECTO_ABIERTO
     else Proyecto activo
         Service -> Repo: obtenerResumenHistorico(id)
+        Repo -> DB: SELECT p.*, COUNT(pi.usuario_id) AS participantes FROM proyectos p LEFT JOIN proyecto_investigadores pi ON pi.proyecto_id = p.id WHERE p.id = ? GROUP BY p.id
+        DB --> Repo: Resultado de persistencia
         Repo --> Service: Estado, equipo y elementos vinculados
         Service --> Api: OpcionesArchivadoProyectoResponse
         deactivate Service
@@ -47,6 +52,8 @@ alt Sesion de Coordinador activa
             Api -> Service: archivar(id, motivo, coordinador)
             activate Service
             Service -> Repo: obtenerActivoPorId(id)
+            Repo -> DB: SELECT * FROM proyectos WHERE id = ? AND archivado = false
+            DB --> Repo: Resultado de persistencia
             Repo --> Service: Proyecto / vacio
             alt Proyecto inexistente o archivado durante la confirmacion
                 Service --> Api: RecursoNoEncontradoException / ConflictoException
@@ -56,6 +63,8 @@ alt Sesion de Coordinador activa
                 Frontend --> Coordinador: Presenta conflicto
             else Proyecto activo
                 Service -> Repo: archivar(id, fecha, coordinador, motivo)
+                Repo -> DB: UPDATE proyectos SET archivado = true, estado = 'COMPLETADO', fecha_archivado = ?, archivado_por_id = ?, motivo_archivado = ? WHERE id = ?
+                DB --> Repo: Resultado de persistencia
                 Repo --> Service: Proyecto archivado
                 note right of Service
                 Se conservan estado, equipo,

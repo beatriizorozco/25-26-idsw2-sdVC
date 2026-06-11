@@ -1,4 +1,4 @@
-@startuml editarCargaTrabajo-investigador-diseno
+﻿@startuml editarCargaTrabajo-investigador-diseno
 title Diagrama de secuencia - Editar carga de trabajo propia del Investigador
 
 actor Investigador
@@ -7,6 +7,7 @@ participant "CargaTrabajoController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "CargaTrabajoService" as Service
 participant "CargaTrabajoRepository" as CargaRepo
+database "Base de Datos" as DB
 
 Investigador -> Frontend: Solicita editar su carga de trabajo
 activate Frontend
@@ -34,10 +35,14 @@ alt Sesion activa
         Frontend --> Investigador: Presenta error de limite docente
     else Carga valida
         Service -> CargaRepo: obtenerPorUsuario(investigador)
+        CargaRepo -> DB: SELECT * FROM cargas_trabajo WHERE usuario_id = ?
+        DB --> CargaRepo: Resultado de persistencia
         activate CargaRepo
         CargaRepo --> Service: CargaTrabajo
         Service -> Service: actualizarCampos(cargaTrabajo, datos)
         Service -> CargaRepo: guardar(cargaTrabajoActualizada)
+        CargaRepo -> DB: UPDATE cargas_trabajo SET horas_docencia = ?, horas_investigacion = ?,\nhoras_gestion_academica = ?, observaciones = ?, fecha_actualizacion = CURRENT_TIMESTAMP\nWHERE usuario_id = ?
+        DB --> CargaRepo: Resultado de persistencia
         CargaRepo --> Service: CargaTrabajo actualizada
         deactivate CargaRepo
         Service --> Api: CargaTrabajoPropiaResponse

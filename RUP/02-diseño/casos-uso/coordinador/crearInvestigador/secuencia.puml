@@ -1,4 +1,4 @@
-@startuml crearInvestigador-coordinador-diseno
+﻿@startuml crearInvestigador-coordinador-diseno
 title Diagrama de secuencia - Crear investigador
 
 actor Coordinador
@@ -8,6 +8,7 @@ participant "SesionService" as Sesion
 participant "InvestigadorService" as Service
 participant "UsuarioRepository" as Repo
 participant "CargaTrabajoRepository" as CargaRepo
+database "Base de Datos" as DB
 
 Coordinador -> Frontend: Solicita crear investigador
 activate Frontend
@@ -27,8 +28,12 @@ else Coordinador guarda
         Api -> Service: crear(sesion, datos)
         activate Service
         Service -> Repo: findByNombreUsuario(datos.usuario)
+        Repo -> DB: SELECT * FROM usuarios WHERE nombre_usuario = ?
+        DB --> Repo: Resultado de persistencia
         Repo --> Service: Usuario / vacio
         Service -> Repo: existsByEmailIgnoreCase(datos.email)
+        Repo -> DB: SELECT EXISTS(SELECT 1 FROM usuarios WHERE LOWER(email) = LOWER(?))
+        DB --> Repo: Resultado de persistencia
         Repo --> Service: true / false
         alt Usuario o correo duplicados
             Service --> Api: ValidacionException
@@ -38,8 +43,12 @@ else Coordinador guarda
             Frontend --> Coordinador: Presenta errores y conserva formulario
         else Datos validos
             Service -> Repo: save(usuarioInvestigador)
+        Repo -> DB: INSERT INTO usuarios (nombre_usuario, nombre_completo, correo, sede, rol, activo)\nVALUES (?, ?, ?, ?, 'INVESTIGADOR', true)
+            DB --> Repo: Resultado de persistencia
             Repo --> Service: Usuario creado
             Service -> CargaRepo: save(cargaInicial)
+        CargaRepo -> DB: INSERT INTO cargas_trabajo (usuario_id, horas_docencia, horas_investigacion,\nhoras_gestion_academica, fecha_actualizacion) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+            DB --> CargaRepo: Resultado de persistencia
             CargaRepo --> Service: CargaTrabajo creada
             Service --> Api: InvestigadorDetalleResponse
             deactivate Service

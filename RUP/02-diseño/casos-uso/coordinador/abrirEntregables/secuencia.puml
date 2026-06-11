@@ -7,6 +7,7 @@ participant "SesionService" as Sesion
 participant "EntregableService" as Service
 participant "ProyectoRepository" as ProyectoRepo
 participant "EntregableRepository" as Repo
+database "Base de Datos" as DB
 
 Coordinador -> Frontend: Solicita abrir entregables del proyecto
 Frontend -> Api: GET /api/proyectos/{proyectoId}/entregables?filtro=\nCookie de sesion
@@ -14,8 +15,12 @@ Api -> Sesion: exigirCoordinador(authentication)
 Sesion --> Api: Coordinador autenticado
 Api -> Service: listarPorProyecto(proyectoId, filtro)
 Service -> ProyectoRepo: obtenerActivoPorId(proyectoId)
+ProyectoRepo -> DB: SELECT * FROM proyectos\nWHERE id = ? AND archivado = false
+DB --> ProyectoRepo: Proyecto / vacio
 ProyectoRepo --> Service: Proyecto / vacio
 Service -> Repo: buscarActivosPorProyecto(proyectoId, filtro)
+Repo -> DB: SELECT * FROM entregables\nWHERE proyecto_id = ? AND retirado = false\nAND coincide_filtro = true
+DB --> Repo: Entregables activos
 Repo --> Service: Entregables activos
 Service --> Api: List<EntregableResumenResponse>
 Api --> Frontend: 200 OK

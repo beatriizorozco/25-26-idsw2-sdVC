@@ -1,4 +1,4 @@
-@startuml abrirInvestigador-coordinador-diseno
+﻿@startuml abrirInvestigador-coordinador-diseno
 title Diagrama de secuencia - Abrir investigador como Coordinador
 
 actor Coordinador
@@ -8,6 +8,7 @@ participant "SesionService" as Sesion
 participant "InvestigadorService" as Service
 participant "UsuarioRepository" as UsuarioRepo
 participant "ProyectoRepository" as ProyectoRepo
+database "Base de Datos" as DB
 
 Coordinador -> Frontend: Selecciona investigador
 activate Frontend
@@ -21,6 +22,8 @@ alt Sesion valida
     Api -> Service: obtenerDetalle(sesion, id, proyectoId?)
     activate Service
     Service -> UsuarioRepo: findById(id)
+    UsuarioRepo -> DB: SELECT * FROM usuarios WHERE id = ?
+    DB --> UsuarioRepo: Resultado de persistencia
     UsuarioRepo --> Service: Usuario / vacio
     alt Investigador inexistente, inactivo o no autorizado
         Service --> Api: RecursoNoEncontradoException
@@ -30,6 +33,8 @@ alt Sesion valida
         Frontend --> Coordinador: Presenta investigador no disponible
     else Investigador existente
         Service -> ProyectoRepo: obtenerPorInvestigador(id, proyectoId?)
+        ProyectoRepo -> DB: SELECT p.* FROM proyectos p JOIN proyecto_investigadores pi ON pi.proyecto_id = p.id WHERE pi.usuario_id = ?
+        DB --> ProyectoRepo: Resultado de persistencia
         ProyectoRepo --> Service: Lista<ProyectoResumen>
         Service --> Api: InvestigadorDetalleResponse
         deactivate Service

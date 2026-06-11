@@ -22,7 +22,6 @@ EstadoEntrada -r-> CrearEntregableView: crearEntregable()
 
 CrearEntregableView -d-> EntregableController: crearEntregable(idProyecto, datos, archivo?, investigador)
 EntregableController --> ProyectoRepository: verificarParticipacion(idProyecto, investigador)
-EntregableController --> EntregableRepository: existeTituloEnProyecto(idProyecto, datos.titulo)
 EntregableController --> EntregableRepository: guardar(entidad)
 EntregableController --> ArchivoRepository: guardarOpcional(entregable, archivo, investigador)
 ProyectoRepository -- Proyecto

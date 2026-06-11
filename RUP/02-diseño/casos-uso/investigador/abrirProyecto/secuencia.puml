@@ -1,4 +1,4 @@
-@startuml abrirProyecto-investigador-diseno
+﻿@startuml abrirProyecto-investigador-diseno
 title Diagrama de secuencia - Abrir proyecto como Investigador
 
 actor Investigador
@@ -9,6 +9,7 @@ participant "ProyectoService" as Service
 participant "ProyectoRepository" as Repo
 participant "InvestigadorRepository" as InvestigadorRepo
 participant "EntregableRepository" as EntregableRepo
+database "Base de Datos" as DB
 
 Investigador -> Frontend: Selecciona proyecto
 activate Frontend
@@ -22,6 +23,8 @@ alt Sesion de Investigador activa
     Api -> Service: obtenerDetalleVisible(id, investigadorId)
     activate Service
     Service -> Repo: obtenerActivoVisiblePorId(id, investigadorId)
+    Repo -> DB: SELECT p.* FROM proyectos p JOIN proyecto_investigadores pi ON pi.proyecto_id = p.id WHERE p.id = ? AND pi.usuario_id = ? AND p.archivado = false
+    DB --> Repo: Resultado de persistencia
     Repo --> Service: Proyecto / vacio
     alt Proyecto inexistente, archivado o no visible
         Service --> Api: RecursoNoEncontradoException
@@ -31,8 +34,12 @@ alt Sesion de Investigador activa
         Frontend --> Investigador: Presenta proyecto no encontrado
     else Proyecto visible
         Service -> InvestigadorRepo: obtenerEquipoVisible(id)
+        InvestigadorRepo -> DB: SELECT u.* FROM usuarios u JOIN proyecto_investigadores pi ON pi.usuario_id = u.id WHERE pi.proyecto_id = ?
+        DB --> InvestigadorRepo: Resultado de persistencia
         InvestigadorRepo --> Service: Equipo visible
         Service -> EntregableRepo: obtenerVisiblesPorProyecto(id, investigadorId)
+        EntregableRepo -> DB: SELECT * FROM entregables WHERE proyecto_id = ? AND retirado = false
+        DB --> EntregableRepo: Resultado de persistencia
         EntregableRepo --> Service: Entregables visibles
         Service --> Api: ProyectoDetalleResponse
         deactivate Service

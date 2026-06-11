@@ -1,4 +1,4 @@
-@startuml abrirProyecto-coordinador-diseno
+﻿@startuml abrirProyecto-coordinador-diseno
 title Diagrama de secuencia - Abrir proyecto como Coordinador
 
 actor Coordinador
@@ -9,6 +9,7 @@ participant "ProyectoService" as Service
 participant "ProyectoRepository" as Repo
 participant "InvestigadorRepository" as InvestigadorRepo
 participant "EntregableRepository" as EntregableRepo
+database "Base de Datos" as DB
 
 Coordinador -> Frontend: Selecciona proyecto
 activate Frontend
@@ -22,6 +23,8 @@ alt Sesion de Coordinador activa
     Api -> Service: obtenerDetalleGlobal(id)
     activate Service
     Service -> Repo: obtenerActivoPorId(id)
+    Repo -> DB: SELECT * FROM proyectos WHERE id = ? AND archivado = false
+    DB --> Repo: Resultado de persistencia
     Repo --> Service: Proyecto / vacio
     alt Proyecto inexistente o archivado
         Service --> Api: RecursoNoEncontradoException
@@ -31,8 +34,12 @@ alt Sesion de Coordinador activa
         Frontend --> Coordinador: Presenta proyecto no disponible
     else Proyecto existente
         Service -> InvestigadorRepo: obtenerEquipo(id)
+        InvestigadorRepo -> DB: SELECT u.* FROM usuarios u JOIN proyecto_investigadores pi ON pi.usuario_id = u.id WHERE pi.proyecto_id = ?
+        DB --> InvestigadorRepo: Resultado de persistencia
         InvestigadorRepo --> Service: Equipo
         Service -> EntregableRepo: obtenerPorProyecto(id)
+        EntregableRepo -> DB: SELECT * FROM entregables WHERE proyecto_id = ? AND retirado = false
+        DB --> EntregableRepo: Resultado de persistencia
         EntregableRepo --> Service: Entregables
         Service --> Api: ProyectoDetalleResponse
         deactivate Service

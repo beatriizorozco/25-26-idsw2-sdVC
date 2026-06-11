@@ -7,6 +7,11 @@ participant "ConfirmarCierreSesionModal\n(React)" as Modal
 participant "AuthController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 
+note over Api, Sesion
+No accede a Base de Datos:
+se invalida la sesión y su cookie.
+end note
+
 Coordinador -> Frontend: Solicita cerrar sesión
 activate Frontend
 Frontend -> Modal: abrir()

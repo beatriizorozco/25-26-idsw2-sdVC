@@ -7,6 +7,7 @@ participant "SesionService" as Sesion
 participant "EntregableService" as Service
 participant "EntregableRepository" as Repo
 participant "ArchivoRepository" as ArchivoRepo
+database "Base de Datos" as DB
 
 Investigador -> Frontend: Modifica datos y guarda
 Frontend -> Api: PATCH /api/entregables/{id}\nEntregableUpdateRequest + archivo? + cookie
@@ -14,6 +15,8 @@ Api -> Sesion: exigirInvestigador(authentication)
 Sesion --> Api: Investigador autenticado
 Api -> Service: actualizarPropio(id, cambios, archivo?, investigador)
 Service -> Repo: obtenerActivoPorIdYAutor(id, investigador)
+Repo -> DB: SELECT * FROM entregables\nWHERE id = ? AND autor_id = ? AND retirado = false
+DB --> Repo: Entregable propio / vacio
 Repo --> Service: Entregable propio / vacio
 Service -> Service: aplicarCambiosYValidar()
 alt No es autor, esta retirado o datos invalidos
@@ -21,7 +24,11 @@ alt No es autor, esta retirado o datos invalidos
   Api --> Frontend: 403 / 404 / 400
 else Cambios validos
   Service -> Repo: guardar(entregable)
+  Repo -> DB: UPDATE entregables SET titulo = ?,\ndescripcion = ?, estado = ? WHERE id = ? AND autor_id = ?
+  DB --> Repo: Entregable actualizado
   Service -> ArchivoRepo: agregarVersionOpcional(entregable, archivo, investigador)
+  ArchivoRepo -> DB: INSERT INTO archivos_entregable\n(entregable_id, version, archivo, subido_por_id)\nVALUES (?, siguiente_version, ?, ?)
+  DB --> ArchivoRepo: Nueva version / vacio
   Service --> Api: EntregableDetalleResponse
   Api --> Frontend: 200 OK
   Frontend --> Investigador: Presenta ENTREGABLE_ABIERTO actualizado

@@ -1,4 +1,4 @@
-@startuml abrirProyectos-coordinador-diseno
+﻿@startuml abrirProyectos-coordinador-diseno
 title Diagrama de secuencia - Abrir proyectos como Coordinador
 
 actor Coordinador
@@ -7,6 +7,7 @@ participant "ProyectoController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "ProyectoService" as Service
 participant "ProyectoRepository" as Repo
+database "Base de Datos" as DB
 
 Coordinador -> Frontend: Solicita abrir proyectos
 activate Frontend
@@ -21,8 +22,12 @@ alt Sesion de Coordinador activa
     activate Service
     alt Sin investigador seleccionado
         Service -> Repo: buscarActivos(criterio)
+        Repo -> DB: SELECT * FROM proyectos WHERE archivado = false\nAND (LOWER(codigo) LIKE ? OR LOWER(nombre) LIKE ?) ORDER BY nombre
+        DB --> Repo: Resultado de persistencia
     else Con investigador seleccionado
         Service -> Repo: buscarActivosPorInvestigador(criterio, investigadorId)
+        Repo -> DB: SELECT p.* FROM proyectos p JOIN proyecto_investigadores pi ON pi.proyecto_id = p.id WHERE pi.usuario_id = ? AND p.archivado = false
+        DB --> Repo: Resultado de persistencia
     end
     Repo --> Service: Lista<Proyecto>
     Service --> Api: Lista<ProyectoResumenResponse>

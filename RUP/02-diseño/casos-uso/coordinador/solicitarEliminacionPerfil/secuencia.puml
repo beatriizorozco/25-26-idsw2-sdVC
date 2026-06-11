@@ -1,4 +1,4 @@
-@startuml solicitarEliminacionPerfil-coordinador-diseño
+﻿@startuml solicitarEliminacionPerfil-coordinador-diseño
 title Diagrama de secuencia - Solicitar eliminación de perfil por Coordinador
 
 actor Coordinador
@@ -7,6 +7,7 @@ participant "PerfilController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "PerfilService" as PerfilService
 participant "SolicitudEliminacionPerfilRepository" as SolicitudRepository
+database "Base de Datos" as DB
 
 Coordinador -> Frontend: Solicita eliminación de perfil
 activate Frontend
@@ -27,7 +28,11 @@ else Confirma solicitud
     activate PerfilService
     PerfilService -> PerfilService: validarSolicitud(datos)
     PerfilService -> SolicitudRepository: existePendiente(perfil)
+    SolicitudRepository -> DB: SELECT EXISTS(SELECT 1 FROM solicitudes_eliminacion_perfil WHERE usuario_id = ? AND estado = 'PENDIENTE')
+    DB --> SolicitudRepository: Resultado de persistencia
     PerfilService -> SolicitudRepository: guardar(solicitud)
+    SolicitudRepository -> DB: INSERT INTO solicitudes_eliminacion_perfil (usuario_id, motivo, estado, fecha_creacion)\nVALUES (?, ?, 'PENDIENTE', CURRENT_TIMESTAMP)
+    DB --> SolicitudRepository: Resultado de persistencia
     activate SolicitudRepository
     SolicitudRepository --> PerfilService: Solicitud registrada
     deactivate SolicitudRepository

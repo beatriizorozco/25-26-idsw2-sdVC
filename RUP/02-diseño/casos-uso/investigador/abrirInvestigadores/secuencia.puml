@@ -1,4 +1,4 @@
-@startuml abrirInvestigadores-investigador-diseno
+﻿@startuml abrirInvestigadores-investigador-diseno
 title Diagrama de secuencia - Abrir investigadores como Investigador
 
 actor Investigador
@@ -8,6 +8,7 @@ participant "SesionService" as Sesion
 participant "InvestigadorService" as Service
 participant "UsuarioRepository" as UsuarioRepo
 participant "ProyectoRepository" as ProyectoRepo
+database "Base de Datos" as DB
 
 Investigador -> Frontend: Solicita abrir investigadores del proyecto
 activate Frontend
@@ -22,9 +23,13 @@ alt Sesion valida
     activate Service
     alt Sin proyecto seleccionado
         Service -> UsuarioRepo: findByRolAndActivoTrueOrderByNombreCompletoAsc(INVESTIGADOR)
+        UsuarioRepo -> DB: SELECT * FROM usuarios WHERE rol = ? AND activo = true ORDER BY nombre_completo
+        DB --> UsuarioRepo: Resultado de persistencia
         UsuarioRepo --> Service: Lista<Usuario>
     else Rol investigador con proyecto seleccionado
         Service -> ProyectoRepo: findById(proyectoId)
+        ProyectoRepo -> DB: SELECT * FROM proyectos WHERE id = ?
+        DB --> ProyectoRepo: Resultado de persistencia
         ProyectoRepo --> Service: Proyecto / vacio
     end
     alt Proyecto no visible

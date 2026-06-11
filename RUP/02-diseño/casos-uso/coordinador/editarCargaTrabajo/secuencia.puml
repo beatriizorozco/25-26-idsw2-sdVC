@@ -1,4 +1,4 @@
-@startuml editarCargaTrabajo-coordinador-diseno
+﻿@startuml editarCargaTrabajo-coordinador-diseno
 title Diagrama de secuencia - Editar carga de trabajo por Coordinador
 
 actor Coordinador
@@ -8,6 +8,7 @@ participant "SesionService" as Sesion
 participant "CargaTrabajoService" as Service
 participant "PersonaRepository" as PersonaRepo
 participant "CargaTrabajoRepository" as CargaRepo
+database "Base de Datos" as DB
 
 Coordinador -> Frontend: Solicita editar carga de una persona
 activate Frontend
@@ -22,10 +23,14 @@ alt Sesion de Coordinador activa
     Api -> Service: obtenerCargaDePersona(coordinador, personaId)
     activate Service
     Service -> PersonaRepo: obtenerPorId(personaId)
+    PersonaRepo -> DB: SELECT * FROM usuarios WHERE id = ?
+    DB --> PersonaRepo: Resultado de persistencia
     activate PersonaRepo
     PersonaRepo --> Service: Persona con sede
     deactivate PersonaRepo
     Service -> CargaRepo: obtenerPorPersona(personaId)
+    CargaRepo -> DB: SELECT * FROM cargas_trabajo WHERE usuario_id = ?
+    DB --> CargaRepo: Resultado de persistencia
     activate CargaRepo
     CargaRepo --> Service: CargaTrabajo
     deactivate CargaRepo
@@ -44,6 +49,8 @@ alt Sesion de Coordinador activa
     Api -> Service: actualizarCargaDePersona(coordinador, personaId, datos)
     activate Service
     Service -> PersonaRepo: obtenerPorId(personaId)
+    PersonaRepo -> DB: SELECT * FROM usuarios WHERE id = ?
+    DB --> PersonaRepo: Resultado de persistencia
     activate PersonaRepo
     PersonaRepo --> Service: Persona con sede
     deactivate PersonaRepo
@@ -58,13 +65,19 @@ alt Sesion de Coordinador activa
         Frontend --> Coordinador: Presenta error de limite docente
     else Carga valida
         Service -> CargaRepo: obtenerPorPersona(personaId)
+        CargaRepo -> DB: SELECT * FROM cargas_trabajo WHERE usuario_id = ?
+        DB --> CargaRepo: Resultado de persistencia
         activate CargaRepo
         CargaRepo --> Service: CargaTrabajo
         Service -> Service: actualizarCampos(cargaTrabajo, datos)
         Service -> CargaRepo: guardar(cargaTrabajoActualizada)
+        CargaRepo -> DB: UPDATE cargas_trabajo SET horas_docencia = ?, horas_investigacion = ?,\nhoras_gestion_academica = ?, observaciones = ?, fecha_actualizacion = CURRENT_TIMESTAMP\nWHERE usuario_id = ?
+        DB --> CargaRepo: Resultado de persistencia
         CargaRepo --> Service: CargaTrabajo actualizada
         deactivate CargaRepo
         Service -> CargaRepo: recalcularPrioridadParaProyectosLibres(personaId)
+        CargaRepo -> DB: UPDATE cargas_trabajo SET fecha_actualizacion = CURRENT_TIMESTAMP WHERE usuario_id = ?
+        DB --> CargaRepo: Resultado de persistencia
         CargaRepo --> Service: Prioridad actualizada
         Service --> Api: CargaTrabajoResponse
         deactivate Service

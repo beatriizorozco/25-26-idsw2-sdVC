@@ -1,4 +1,4 @@
-@startuml abrirInvestigador-investigador-diseno
+﻿@startuml abrirInvestigador-investigador-diseno
 title Diagrama de secuencia - Abrir investigador como Investigador
 
 actor Investigador
@@ -8,6 +8,7 @@ participant "SesionService" as Sesion
 participant "InvestigadorService" as Service
 participant "UsuarioRepository" as UsuarioRepo
 participant "ProyectoRepository" as ProyectoRepo
+database "Base de Datos" as DB
 
 Investigador -> Frontend: Selecciona investigador visible
 activate Frontend
@@ -21,12 +22,18 @@ alt Sesion valida
     Api -> Service: obtenerDetalle(sesion, id, proyectoId?)
     activate Service
     Service -> UsuarioRepo: findById(id)
+    UsuarioRepo -> DB: SELECT * FROM usuarios WHERE id = ?
+    DB --> UsuarioRepo: Resultado de persistencia
     UsuarioRepo --> Service: Usuario / vacio
     alt Consulta desde directorio general
         Service -> ProyectoRepo: findDistinctByInvestigadoresIdOrderByNombreAsc(sesion.usuario.id)
+        ProyectoRepo -> DB: SELECT DISTINCT p.* FROM proyectos p JOIN proyecto_investigadores pi ON pi.proyecto_id = p.id WHERE pi.usuario_id = ? ORDER BY p.nombre
+        DB --> ProyectoRepo: Resultado de persistencia
         ProyectoRepo --> Service: Lista<ProyectoResumen>
     else Consulta desde proyecto compartido
         Service -> ProyectoRepo: findById(proyectoId)
+        ProyectoRepo -> DB: SELECT * FROM proyectos WHERE id = ?
+        DB --> ProyectoRepo: Resultado de persistencia
         ProyectoRepo --> Service: Proyecto / vacio
     end
     alt Investigador inexistente o no visible

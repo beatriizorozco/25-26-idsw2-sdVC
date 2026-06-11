@@ -11,6 +11,7 @@ package eliminarEntregable as "eliminarEntregable()" {
 
 rectangle #CDEBA5 ":ENTREGABLES_ABIERTOS" as EstadoSalidaExitosa
 rectangle #CDEBA5 ":ENTREGABLE_ABIERTO" as EstadoSalidaCancelada
+rectangle #CDEBA5 ":Collaboration AbrirEntregables" as AbrirEntregables
 rectangle #CDEBA5 ":Collaboration AbrirEntregable" as AbrirEntregable
 
 EstadoEntrada -r-> EliminarEntregableView: eliminarEntregable()
@@ -24,6 +25,7 @@ EntregableController --> EntregableRepository: retirar(id, fecha, investigador, 
 EntregableRepository -- Entregable
 EliminarEntregableView ..> EstadoSalidaExitosa: entregableRetirado()
 EliminarEntregableView ..> EstadoSalidaCancelada: retiradaCancelada()
+EliminarEntregableView ..> AbrirEntregables: abrirEntregables()
 EliminarEntregableView ..> AbrirEntregable: abrirEntregable()
 
 note right of EntregableRepository

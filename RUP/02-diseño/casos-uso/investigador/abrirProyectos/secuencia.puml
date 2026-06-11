@@ -1,4 +1,4 @@
-@startuml abrirProyectos-investigador-diseno
+﻿@startuml abrirProyectos-investigador-diseno
 title Diagrama de secuencia - Abrir proyectos como Investigador
 
 actor Investigador
@@ -7,6 +7,7 @@ participant "ProyectoController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "ProyectoService" as Service
 participant "ProyectoRepository" as Repo
+database "Base de Datos" as DB
 
 Investigador -> Frontend: Solicita abrir proyectos
 activate Frontend
@@ -20,6 +21,8 @@ alt Sesion de Investigador activa
     Api -> Service: listarVisiblesPropios(investigadorId, criterio)
     activate Service
     Service -> Repo: buscarActivosVisiblesPorInvestigador(investigadorId, criterio)
+    Repo -> DB: SELECT p.* FROM proyectos p JOIN proyecto_investigadores pi ON pi.proyecto_id = p.id WHERE pi.usuario_id = ? AND p.archivado = false
+    DB --> Repo: Resultado de persistencia
     Repo --> Service: Lista<Proyecto>
     Service --> Api: Lista<ProyectoResumenResponse>
     deactivate Service

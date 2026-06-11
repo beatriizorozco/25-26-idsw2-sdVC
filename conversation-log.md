@@ -524,3 +524,13 @@ En paralelo se avanzó en la implementación del módulo de investigadores: cont
 Se creó el Diseño completo de los diez casos mediante sus `README.md` y `secuencia.puml`. Las secuencias distinguen el acceso global del Coordinador y los permisos del Investigador, incorporan archivos y versiones, validación del proyecto, prevención de duplicados y retirada lógica con motivo, fecha y responsable. También se actualizaron los índices de Diseño por actor y `tareas_a_realizar.md`. Finalmente se regeneraron los diez SVG de Análisis y se generaron los diez SVG de Diseño mediante PlantUML local. La verificación confirmó que todos los casos cuentan con README, fuente PlantUML y SVG, y `git diff --check` no detectó errores. No se realizó ningún commit durante la sesión.
 
 **Decisión:** el Análisis corregido y el Diseño del bloque 7 quedan terminados. El problema local de arranque de Spring Boot queda aplazado por decisión del usuario para priorizar la finalización documental del trabajo. El siguiente paso será revisar manualmente el Diseño del bloque 7 y, si se aprueba, comenzar su Desarrollo.
+
+---
+
+## [17:54] Inicio de sesión - Revisión del Análisis del bloque 7
+
+**Prompt:** el usuario inició una nueva sesión mediante la skill `session-memory` y solicitó revisar el Análisis para confirmar si puede pasar a Diseño.
+
+**Resultado:** se utilizó la skill `session-memory`. Se revisaron `conversation-log.md`, `tareas_a_realizar.md`, la rama activa `main`, el estado limpio del repositorio y los commits recientes. El bloque 7 de entregables ya cuenta con Detalle, Análisis y una primera versión de Diseño incluida en el commit `d35bcb5`.
+
+**Decisión:** antes de considerar aprobado el paso a Diseño, se auditarán las diez colaboraciones de Análisis y sus README contra los diagramas de contexto y las especificaciones detalladas. Se corregirá cualquier texto genérico, permiso incorrecto o contradicción de navegación encontrada.

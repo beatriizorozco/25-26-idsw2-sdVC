@@ -8,6 +8,7 @@ participant "EntregableService" as Service
 participant "ProyectoRepository" as ProyectoRepo
 participant "EntregableRepository" as Repo
 participant "ArchivoRepository" as ArchivoRepo
+database "Base de Datos" as DB
 
 Investigador -> Frontend: Selecciona entregable
 Frontend -> Api: GET /api/entregables/{id}\nCookie de sesion
@@ -15,10 +16,16 @@ Api -> Sesion: exigirInvestigador(authentication)
 Sesion --> Api: Investigador autenticado
 Api -> Service: obtenerDetalleVisible(id, investigador)
 Service -> Repo: obtenerActivoPorId(id)
+Repo -> DB: SELECT * FROM entregables\nWHERE id = ? AND retirado = false
+DB --> Repo: Entregable / vacio
 Repo --> Service: Entregable / vacio
 Service -> ProyectoRepo: verificarParticipacion(proyectoId, investigador)
+ProyectoRepo -> DB: SELECT 1 FROM proyecto_investigadores\nWHERE proyecto_id = ? AND investigador_id = ?\nAND activo = true
+DB --> ProyectoRepo: Participacion / vacio
 ProyectoRepo --> Service: Proyecto visible / acceso denegado
 Service -> ArchivoRepo: obtenerPorEntregable(id)
+ArchivoRepo -> DB: SELECT * FROM archivos_entregable\nWHERE entregable_id = ?\nORDER BY version DESC
+DB --> ArchivoRepo: Archivos y versiones
 Service --> Api: EntregableDetalleResponse + esAutor
 Api --> Frontend: 200 OK
 Frontend --> Investigador: Presenta ENTREGABLE_ABIERTO\nEditar y retirar solo si es autor
