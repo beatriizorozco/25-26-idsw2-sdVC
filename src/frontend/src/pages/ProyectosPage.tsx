@@ -399,38 +399,48 @@ function ProyectoDetalle(props: {
           </div>
         ))}
       </div>
-      <h3 className="subsection-title">Archivos adjuntos</h3>
-      {errorArchivo && <p className="form-error">{errorArchivo}</p>}
-      <div className="file-upload-row">
-        <input
-          type="file"
-          aria-label="Seleccionar archivo del proyecto"
-          onChange={(event) => setArchivoSubida(event.target.files?.[0] ?? null)}
-        />
-        <button className="secondary-button" type="button" disabled={!archivoSubida || procesandoArchivo} onClick={() => void subirArchivo()}>
-          <Upload size={17} /> Subir
-        </button>
-      </div>
-      <div className="project-files">
-        {archivos.length === 0 && <p className="empty-state">No hay archivos adjuntos.</p>}
-        {archivos.map((archivo) => (
-          <div className="project-file-row" key={archivo.id}>
-            <FileText size={18} />
-            <span>
-              <strong>{archivo.nombre}</strong>
-              <small>{formatearTamano(archivo.tamano)} · {archivo.subidoPor}</small>
-            </span>
-            <button className="icon-button" title="Descargar archivo" type="button" onClick={() => void descargarArchivoProyecto(proyecto.id, archivo)}>
-              <Download size={17} />
-            </button>
-            {props.rol === 'COORDINADOR' && (
-              <button className="icon-button danger-icon" title="Eliminar archivo" type="button" disabled={procesandoArchivo} onClick={() => void eliminarArchivo(archivo)}>
-                <Trash2 size={17} />
-              </button>
-            )}
+      <section className="project-resource-section">
+        <div className="section-title resource-title">
+          <span className="action-icon"><FileText size={20} /></span>
+          <div>
+            <h2>Documentación del proyecto</h2>
+            <p>Material de consulta y archivos de apoyo compartidos.</p>
           </div>
-        ))}
-      </div>
+        </div>
+        {errorArchivo && <p className="form-error">{errorArchivo}</p>}
+        {!proyecto.archivado && (
+          <div className="file-upload-row">
+            <input
+              type="file"
+              aria-label="Seleccionar documento del proyecto"
+              onChange={(event) => setArchivoSubida(event.target.files?.[0] ?? null)}
+            />
+            <button className="secondary-button" type="button" disabled={!archivoSubida || procesandoArchivo} onClick={() => void subirArchivo()}>
+              <Upload size={17} /> Subir
+            </button>
+          </div>
+        )}
+        <div className="project-files">
+          {archivos.length === 0 && <p className="empty-state">No hay documentación registrada.</p>}
+          {archivos.map((archivo) => (
+            <div className="project-file-row" key={archivo.id}>
+              <FileText size={18} />
+              <span>
+                <strong>{archivo.nombre}</strong>
+                <small>{formatearTamano(archivo.tamano)} · {archivo.subidoPor}</small>
+              </span>
+              <button className="icon-button" title="Descargar documento" type="button" onClick={() => void descargarArchivoProyecto(proyecto.id, archivo)}>
+                <Download size={17} />
+              </button>
+              {props.rol === 'COORDINADOR' && !proyecto.archivado && (
+                <button className="icon-button danger-icon" title="Eliminar documento" type="button" disabled={procesandoArchivo} onClick={() => void eliminarArchivo(archivo)}>
+                  <Trash2 size={17} />
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
       <EntregablesProyecto proyectoId={proyecto.id} proyectoArchivado={proyecto.archivado} rol={props.rol} />
       {props.rol === 'COORDINADOR' && !proyecto.archivado && (
         <>
@@ -443,7 +453,7 @@ function ProyectoDetalle(props: {
               <button className="icon-button" type="button" onClick={props.onCancelarAsignacion}><X size={17} /></button>
             </div>
           )}
-          <div className="form-actions">
+          <div className="form-actions project-main-actions">
             <button className="primary-button" type="button" onClick={props.onEditar}><Pencil size={17} /> Editar</button>
             <button className="secondary-button" type="button" onClick={props.onPrepararAsignacion}><UserPlus size={17} /> Agregar investigador</button>
             <button className="danger-button" type="button" onClick={props.onArchivar}><Archive size={17} /> Archivar</button>

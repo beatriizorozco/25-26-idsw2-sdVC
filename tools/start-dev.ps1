@@ -6,6 +6,21 @@ $frontendDirectory = Join-Path $workspace "src\frontend"
 $backendUrl = "http://127.0.0.1:8080/api/auth/csrf"
 $backendLog = Join-Path $backendDirectory "backend-run.log"
 $backendErrorLog = Join-Path $backendDirectory "backend-run.err.log"
+$javaHome = $env:JAVA_HOME
+
+if ([string]::IsNullOrWhiteSpace($javaHome) -or -not (Test-Path (Join-Path $javaHome "bin\java.exe"))) {
+    $javaHome = "C:\Program Files\Microsoft\jdk-17.0.12.7-hotspot"
+}
+
+if (-not (Test-Path (Join-Path $javaHome "bin\java.exe"))) {
+    Write-Error "No se encontro un JDK valido. Configura JAVA_HOME con un JDK 17."
+    exit 1
+}
+
+# Evita reutilizar una caché CDS incompatible cuando VS Code actualiza su JDK integrado.
+$env:JAVA_HOME = $javaHome
+$env:Path = "$(Join-Path $javaHome 'bin');$env:Path"
+$env:JAVA_TOOL_OPTIONS = "-Xshare:off -Dstdout.encoding=UTF-8 -Dstderr.encoding=UTF-8"
 
 function Test-BackendPort {
     $client = [System.Net.Sockets.TcpClient]::new()

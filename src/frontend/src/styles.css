@@ -998,14 +998,41 @@ textarea {
   margin-bottom: 6px;
 }
 
+.project-resource-section,
 .deliverables-section {
   margin-top: 30px;
   border-top: 1px solid #d5e1ea;
   padding-top: 24px;
 }
 
+.resource-title,
+.deliverables-title {
+  align-items: flex-start;
+}
+
+.resource-title h2,
+.resource-title p,
+.deliverables-title h2,
+.deliverables-title p {
+  margin: 0;
+}
+
+.resource-title p,
+.deliverables-title p {
+  margin-top: 4px;
+  color: #70808a;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
 .deliverables-title .compact-button {
   margin-left: auto;
+}
+
+.project-main-actions {
+  border-top: 1px solid #d5e1ea;
+  margin-top: 28px;
+  padding-top: 20px;
 }
 
 .deliverables-layout,

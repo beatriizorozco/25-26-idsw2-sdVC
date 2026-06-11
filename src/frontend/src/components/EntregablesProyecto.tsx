@@ -105,7 +105,10 @@ export function EntregablesProyecto({ proyectoId, proyectoArchivado, rol }: Prop
     <section className="deliverables-section">
       <div className="section-title deliverables-title">
         <span className="action-icon"><FileCheck2 size={20} /></span>
-        <h2>Entregables</h2>
+        <div>
+          <h2>Entregables</h2>
+          <p>Resultados formales presentados durante el proyecto.</p>
+        </div>
         {!proyectoArchivado && modo === 'lista' && (
           <button className="secondary-button compact-button" type="button" onClick={abrirCreacion}>
             <Plus size={16} /> Nuevo

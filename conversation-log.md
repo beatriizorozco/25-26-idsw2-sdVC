@@ -548,3 +548,29 @@ Después se implementó el Desarrollo completo del bloque 7 de entregables. El b
 La revisión final confirmó que las 43 pruebas del backend terminan con 0 fallos y 0 errores, que el frontend genera correctamente la compilación de producción y que `git diff --check` no detecta errores. No se realizó ningún commit durante la sesión.
 
 **Decisión:** el Diseño transversal y el Desarrollo automático del bloque 7 quedan terminados y verificados. La próxima sesión debe realizar la prueba manual en navegador con Coordinador e Investigador, comprobando permisos, creación, versionado, descarga y retirada lógica de entregables antes de continuar con el siguiente bloque o con la revisión global final.
+
+---
+
+## [20:44] Fin de sesión - Arranque estabilizado y presentación de recursos del proyecto mejorada
+
+**Prompt:** el usuario solicitó corregir el fallo de inicio de Spring Boot, revisar la convivencia entre archivos adjuntos y entregables, aplicar los cambios visuales necesarios y cerrar la sesión mediante la skill `session-memory`.
+
+**Resultado:** se utilizó la skill `session-memory`. Se localizó la causa real del fallo de Spring Boot en una caché CDS incompatible que mezclaba archivos del JDK 25 integrado por una extensión de VS Code con la ejecución requerida en Java 17, provocando `java.lang.UnsatisfiedLinkError: boolean java.io.Console.istty()`. Se actualizó `tools/start-dev.ps1` para validar y forzar un JDK 17 disponible, priorizarlo en `PATH` y desactivar la caché problemática mediante `-Xshare:off`. La verificación confirmó que Spring Boot responde correctamente en `/api/auth/csrf`.
+
+También se revisó la distinción funcional entre documentación y entregables. Los antiguos archivos adjuntos se renombraron visualmente como **Documentación del proyecto**, definidos como material compartido de consulta y apoyo, mientras que los entregables permanecen como resultados formales con estado, autoría y versiones. Ambas secciones quedaron separadas visualmente, con textos explicativos y acciones generales del proyecto diferenciadas. Los proyectos archivados ya no permiten subir ni eliminar documentación.
+
+La revisión final confirmó 43 pruebas backend con 0 fallos y 0 errores, compilación de producción del frontend correcta y `git diff --check` sin errores. Quedan modificados `tools/start-dev.ps1`, `ProyectosPage.tsx`, `EntregablesProyecto.tsx` y `styles.css`. No se realizó ningún commit durante la sesión.
+
+**Decisión:** el arranque local queda estabilizado y la separación conceptual entre documentación y entregables queda clara y coherente. La próxima sesión debe comprobar visualmente la pantalla de proyectos con ambos roles, probar creación, versionado, descarga y retirada de entregables, y después continuar con el siguiente bloque o con la revisión global final.
+
+---
+
+## [22:59] Inicio de sesión - Preparación del bloque 8 de publicaciones
+
+**Prompt:** el usuario inició una nueva sesión mediante la skill `session-memory` y preguntó si el proyecto está preparado para pasar al bloque 8.
+
+**Resultado:** se utilizó la skill `session-memory`. Se revisaron `conversation-log.md`, `tareas_a_realizar.md`, la rama activa `main`, los commits recientes, el estado del repositorio y los diagramas de contexto. El bloque 7 de entregables cuenta con Detalle, Análisis, Diseño y Desarrollo terminados, 43 pruebas backend superadas y compilación de producción del frontend correcta. Su única comprobación pendiente es la prueba manual completa en navegador. También permanecen sin commit los últimos ajustes visuales que distinguen la documentación del proyecto de sus entregables y la estabilización de `tools/start-dev.ps1`.
+
+Se identificó el bloque 8 como la familia funcional de publicaciones para Coordinador e Investigador: consulta de publicaciones globales, apertura de una publicación, respuesta, consulta de publicaciones propias, apertura de publicación propia, creación, edición y retirada lógica. Las convocatorias se mantienen separadas para un bloque posterior porque son entidades importadas y no siguen el mismo ciclo de gestión.
+
+**Decisión:** el proyecto está preparado para comenzar el bloque 8 sin bloquearse por la prueba manual pendiente del bloque 7. Antes de avanzar profundamente conviene conservar los últimos ajustes en un commit independiente y comenzar el bloque 8 revisando su Detalle contra los diagramas de contexto, prestando especial atención a la diferencia entre publicaciones globales y propias y a la retirada lógica.
