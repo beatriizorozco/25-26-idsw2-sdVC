@@ -2,52 +2,42 @@
 skinparam linetype polyline
 
 state in1 as "MI_PUBLICACION_ABIERTA"
-in1 -[#green]-> eliminarPublicacion
+in1 -[#green]-> eliminarPublicacion : eliminarPublicacion()
 
 state eliminarPublicacion as "eliminarPublicacion()" {
-
+    state " " as VerificandoAutoria
     state " " as ConfirmandoRetirada
-    state " " as Retirando
+    state " " as PublicacionRetirada
 
-    [*] -[#green]-> ConfirmandoRetirada
+    [*] -[#green]-> VerificandoAutoria
     note on link
-    <b>Investigador</b> solicita retirar una publicación propia
+    <b>Investigador</b> solicita retirar una publicacion propia
     end note
 
-    ConfirmandoRetirada -[#green]-> Retirando
+    VerificandoAutoria -[#green]-> ConfirmandoRetirada
     note on link
-    <b>Sistema</b> presenta la confirmación de retirada con:
-    • ID
-    • Título
-    • Estado
-    • Visibilidad
-
-    y permite solicitar las siguientes acciones:
-    • Retirar de la publicación activa
-    • Cancelar
+    <b>Sistema</b> verifica que el Investigador es su autor
+    <b>Sistema</b> presenta la publicacion y solicita un motivo
     end note
 
-    Retirando -[#green]-> [*]
+    ConfirmandoRetirada -[#green]-> PublicacionRetirada
     note on link
-    <b>Sistema</b> retira la publicación y conserva su histórico
-    y visualiza un mensaje de confirmación
+    <b>Investigador</b> indica el motivo y confirma la retirada
+    end note
+
+    PublicacionRetirada -[#green]-> [*]
+    note on link
+    <b>Sistema</b> retira la publicacion de los listados activos
+    y conserva autoria, relaciones, fecha, motivo y responsable
     end note
 
     ConfirmandoRetirada -[#red]-> [*]
     note on link
     <b>Investigador</b> solicita cancelar
-    <b>Sistema</b> mantiene la publicación sin cambios
+    <b>Sistema</b> mantiene la publicacion activa
     end note
 }
 
-eliminarPublicacion -[#green]-> MIS_PUBLICACIONES_ABIERTAS
-note on link
-Publicación retirada
-end note
-
-eliminarPublicacion -[#red]-> MI_PUBLICACION_ABIERTA
-note on link
-Retirada cancelada
-end note
-
+eliminarPublicacion -[#green]-> MIS_PUBLICACIONES_ABIERTAS : Publicacion retirada
+eliminarPublicacion -[#red]-> MI_PUBLICACION_ABIERTA : Retirada cancelada
 @enduml

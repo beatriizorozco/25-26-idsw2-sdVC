@@ -1,67 +1,51 @@
 @startuml editarPublicacion
-
 skinparam linetype polyline
 
-state in2 as "PUBLICACION_ABIERTA"
-in2 -[#green]-> editarPublicacion
-note on link
-editarPublicacion()
-end note
-
+state in1 as "PUBLICACION_ABIERTA"
+state in2 as "MI_PUBLICACION_ABIERTA"
+in1 -[#green]-> editarPublicacion : editarPublicacion()
+in2 -[#green]-> editarPublicacion : editarPublicacion()
 
 state editarPublicacion as "editarPublicacion()" {
+    state " " as VerificandoPermiso
+    state " " as EditandoDatos
+    state " " as ValidandoDatos
 
-    state " " as EditandoContenido
-    state " " as CambiosGuardados
-
-    [*] -[#green]-> EditandoContenido
+    [*] -[#green]-> VerificandoPermiso
     note on link
-    <b>Coordinador</b> solicita editar publicación
+    <b>Coordinador</b> solicita editar publicacion
     end note
 
-    EditandoContenido -[#green]-> CambiosGuardados
+    VerificandoPermiso -[#green]-> EditandoDatos
     note on link
-    <b>Sistema</b> presenta contenido editable
-    • Título
-    • Texto
-    <b>Sistema</b> permite introducir modificaciones
+    <b>Sistema</b> verifica el permiso global del Coordinador
+    <b>Sistema</b> presenta titulo, contenido, estado,
+    visibilidad y adjuntos editables
+    end note
+
+    EditandoDatos -[#green]-> ValidandoDatos
+    note on link
     <b>Coordinador</b> introduce cambios y solicita guardar
     end note
 
-    EditandoContenido -[#red]-> [*]
+    ValidandoDatos -[#green]-> [*]
     note on link
-    <b>Coordinador</b> solicita cancelar edición
+    <b>Sistema</b> registra los cambios, conserva la trazabilidad
+    y presenta la publicacion actualizada
     end note
 
-    CambiosGuardados -[#green]-> [*]
+    ValidandoDatos -[#red]-> EditandoDatos
     note on link
-    <b>Sistema</b> presenta confirmación de cambios guardados
+    <b>Sistema</b> presenta los errores de validacion
+    end note
+
+    EditandoDatos -[#red]-> [*]
+    note on link
+    <b>Coordinador</b> solicita cancelar
+    <b>Sistema</b> mantiene la publicacion sin cambios
     end note
 }
 
-
-editarPublicacion -[#green]-> PUBLICACION_ABIERTA
-note on link
-Publicación editada
-end note
-
-editarPublicacion -[#red]-> PUBLICACION_ABIERTA
-note on link
-Edición cancelada
-end note
-
-editarPublicacion -[#green]-> PUBLICACIONES_ABIERTAS
-note on link
-eliminarPublicacion()
-end note
-
-editarPublicacion -[#green]-> PUBLICACIONES_ABIERTAS
-note on link
-abrirPublicaciones()
-end note
-
-
-
-
-
+editarPublicacion -[#green]-> PUBLICACION_ABIERTA : Contexto global conservado
+editarPublicacion -[#green]-> MI_PUBLICACION_ABIERTA : Contexto propio conservado
 @enduml

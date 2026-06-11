@@ -25,7 +25,7 @@ Especificación detallada del caso de uso `eliminarPublicacion()` mediante diagr
 |**Objetivo**|Permitir al Investigador solicitar o confirmar la retirada de publicación cuando su rol lo permite.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
-|**Precondición**|Usuario autenticado como Investigador y sistema disponible para navegación.|
+|**Precondición**|Investigador autenticado con una publicación propia activa en `MI_PUBLICACION_ABIERTA`.|
 |**Postcondición exitosa**|La publicación queda retirada de la gestión activa y conserva su autoría y trazabilidad.|
 |**Postcondición de fallo**|No se aplican cambios si la información solicitada no es válida o el actor cancela la operación.|
 
@@ -109,6 +109,7 @@ Especificación detallada del caso de uso `eliminarPublicacion()` mediante diagr
 - La retirada registra fecha, actor responsable y motivo.
 - La publicación retirada deja de aparecer en los listados activos.
 - Se conservan autoría, proyecto relacionado, metadatos y trazabilidad.
+- El Investigador solo puede retirar publicaciones de las que sea autor.
 ## Opciones de navegación
 
 ### Operaciones relacionadas

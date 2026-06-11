@@ -25,7 +25,7 @@ Especificación detallada del caso de uso `abrirMiPublicacion()` mediante diagra
 |**Objetivo**|Presentar al Coordinador el detalle de publicación propia y las acciones disponibles según su rol.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
-|**Precondición**|Usuario autenticado como Coordinador y sistema disponible para navegación.|
+|**Precondición**|Coordinador autenticado en `MIS_PUBLICACIONES_ABIERTAS` con una publicación propia seleccionada.|
 |**Postcondición exitosa**|El Coordinador visualiza el detalle de publicación propia y puede continuar la navegación.|
 |**Postcondición de fallo**|No se modifica la información del sistema; el actor permanece en el punto de navegación anterior.|
 

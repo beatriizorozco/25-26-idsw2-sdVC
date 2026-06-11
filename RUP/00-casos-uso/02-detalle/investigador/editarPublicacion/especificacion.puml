@@ -2,74 +2,47 @@
 skinparam linetype polyline
 
 state in1 as "MI_PUBLICACION_ABIERTA"
-in1 -[#green]-> editarPublicacion
+in1 -[#green]-> editarPublicacion : editarPublicacion()
 
 state editarPublicacion as "editarPublicacion()" {
-
-    state " " as MostrandoPublicacion
+    state " " as VerificandoAutoria
     state " " as EditandoDatos
     state " " as ValidandoDatos
 
-    [*] -[#green]-> MostrandoPublicacion
+    [*] -[#green]-> VerificandoAutoria
     note on link
-    <b>Investigador</b> solicita editar una publicación propia
+    <b>Investigador</b> solicita editar una publicacion propia
     end note
 
-    MostrandoPublicacion -[#green]-> EditandoDatos
+    VerificandoAutoria -[#green]-> EditandoDatos
     note on link
-    <b>Sistema</b> presenta el formulario de edición con los datos actuales:
-    • Título
-    • Estado
-    • Visibilidad
-    • Descripción
-    • Adjuntos (opcional)
-
-    y permite solicitar las siguientes acciones:
-    • Guardar cambios
-    • Cancelar
+    <b>Sistema</b> verifica que el Investigador es su autor
+    <b>Sistema</b> presenta titulo, contenido, estado,
+    visibilidad y adjuntos editables
     end note
 
     EditandoDatos -[#green]-> ValidandoDatos
     note on link
-    <b>Investigador</b> solicita guardar cambios
+    <b>Investigador</b> introduce cambios y solicita guardar
     end note
 
     ValidandoDatos -[#green]-> [*]
     note on link
-    <b>Sistema</b> visualiza la publicación actualizada
+    <b>Sistema</b> registra los cambios, conserva la trazabilidad
+    y presenta la publicacion actualizada
     end note
 
     ValidandoDatos -[#red]-> EditandoDatos
     note on link
-    <b>Sistema</b> muestra errores de introducción
-    <b>Sistema</b> permite introducir correcciones
+    <b>Sistema</b> presenta los errores de validacion
     end note
 
     EditandoDatos -[#red]-> [*]
     note on link
     <b>Investigador</b> solicita cancelar
-    <b>Sistema</b> visualiza la publicación sin cambios
+    <b>Sistema</b> mantiene la publicacion sin cambios
     end note
 }
 
-editarPublicacion -[#green]-> MI_PUBLICACION_ABIERTA
-note on link
-Publicación actualizada
-end note
-
-editarPublicacion -[#red]-> MI_PUBLICACION_ABIERTA
-note on link
-Edición cancelada
-end note
-
-editarPublicacion -[#green]-> MIS_PUBLICACIONES_ABIERTAS
-note on link
-abrirMisPublicaciones()
-end note
-
-editarPublicacion -[#green]-> MIS_PUBLICACIONES_ABIERTAS
-note on link
-eliminarPublicacion()
-end note
-
+editarPublicacion -[#green]-> MI_PUBLICACION_ABIERTA : Publicacion actualizada o sin cambios
 @enduml

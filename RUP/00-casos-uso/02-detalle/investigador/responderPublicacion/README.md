@@ -25,7 +25,7 @@ Especificación detallada del caso de uso `responderPublicacion()` mediante diag
 |**Objetivo**|Permitir al Investigador registrar una respuesta dentro de una publicación.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
-|**Precondición**|Usuario autenticado como Investigador y sistema disponible para navegación.|
+|**Precondición**|Investigador autenticado con una publicación activa en `PUBLICACION_ABIERTA`.|
 |**Postcondición exitosa**|La respuesta queda asociada a la publicación.|
 |**Postcondición de fallo**|No se aplican cambios si la información solicitada no es válida o el actor cancela la operación.|
 
@@ -110,7 +110,7 @@ Especificación detallada del caso de uso `responderPublicacion()` mediante diag
 
 ### Navegación del sistema
 - **Estado de entrada**: PUBLICACION_ABIERTA.
-- **Estado de salida**: PUBLICACION_ABIERTA, PUBLICACIONES_ABIERTAS.
+- **Estado de salida**: PUBLICACION_ABIERTA.
 
 ## Conexión con diagrama de contexto
 

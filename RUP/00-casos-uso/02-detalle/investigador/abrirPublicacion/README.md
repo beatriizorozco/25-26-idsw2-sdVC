@@ -25,7 +25,7 @@ Especificación detallada del caso de uso `abrirPublicacion()` mediante diagrama
 |**Objetivo**|Presentar al Investigador el detalle de publicación y las acciones disponibles según su rol.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
-|**Precondición**|Usuario autenticado como Investigador y sistema disponible para navegación.|
+|**Precondición**|Investigador autenticado en `PUBLICACIONES_ABIERTAS` con una publicación activa seleccionada.|
 |**Postcondición exitosa**|El Investigador visualiza el detalle de publicación y puede continuar la navegación.|
 |**Postcondición de fallo**|No se modifica la información del sistema; el actor permanece en el punto de navegación anterior.|
 

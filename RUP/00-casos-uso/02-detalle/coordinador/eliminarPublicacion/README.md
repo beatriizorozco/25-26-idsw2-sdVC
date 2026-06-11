@@ -25,7 +25,7 @@ Especificación detallada del caso de uso `eliminarPublicacion()` mediante diagr
 |**Objetivo**|Permitir al Coordinador solicitar o confirmar la retirada de publicación cuando su rol lo permite.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
-|**Precondición**|Usuario autenticado como Coordinador y sistema disponible para navegación.|
+|**Precondición**|Coordinador autenticado con una publicación abierta en `PUBLICACION_ABIERTA` o `MI_PUBLICACION_ABIERTA`.|
 |**Postcondición exitosa**|La publicación queda retirada de la gestión activa y conserva su autoría y trazabilidad.|
 |**Postcondición de fallo**|No se aplican cambios si la información solicitada no es válida o el actor cancela la operación.|
 
@@ -112,8 +112,8 @@ Especificación detallada del caso de uso `eliminarPublicacion()` mediante diagr
 - **abrirPublicaciones()** -> Navegar a `abrirPublicaciones()` cuando el actor solicita esa continuidad.
 
 ### Navegación del sistema
-- **Estado de entrada**: PUBLICACION_ABIERTA.
-- **Estado de salida**: PUBLICACIONES_ABIERTAS.
+- **Estado de entrada**: PUBLICACION_ABIERTA, MI_PUBLICACION_ABIERTA.
+- **Estado de salida**: PUBLICACIONES_ABIERTAS, MIS_PUBLICACIONES_ABIERTAS, según el contexto de origen.
 
 ## Conexión con diagrama de contexto
 

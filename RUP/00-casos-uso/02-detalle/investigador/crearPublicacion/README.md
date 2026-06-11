@@ -25,7 +25,7 @@ Especificación detallada del caso de uso `crearPublicacion()` mediante diagrama
 |**Objetivo**|Permitir al Investigador registrar un nuevo publicación dentro de la plataforma.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
-|**Precondición**|Usuario autenticado como Investigador y sistema disponible para navegación.|
+|**Precondición**|Investigador autenticado en `MIS_PUBLICACIONES_ABIERTAS`.|
 |**Postcondición exitosa**|El nuevo publicación queda registrado y disponible para consulta o edición.|
 |**Postcondición de fallo**|No se aplican cambios si la información solicitada no es válida o el actor cancela la operación.|
 

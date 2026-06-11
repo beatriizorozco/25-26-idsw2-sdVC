@@ -196,3 +196,16 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [ ] Diseñar consultas administrativas de perfiles inactivos, proyectos archivados, publicaciones y entregables retirados, y recompensas anuladas.
 - [x] Implementar las desasignaciones de investigadores conservando un movimiento histórico de asignación y desasignación.
 - [ ] Reservar el borrado físico para correcciones administrativas excepcionales de registros erróneos sin valor histórico.
+
+## Pendiente inmediato del bloque 8
+
+- [x] Identificar el bloque 8 como gestión de publicaciones para Coordinador e Investigador.
+- [x] Separar publicaciones de convocatorias importadas, que pertenecen a un bloque posterior.
+- [x] Auditar el Detalle contra los diagramas de contexto y detectar duplicidades del Coordinador.
+- [x] Establecer `editarPublicacion()` y `eliminarPublicacion()` como capacidades canónicas reutilizables según actor, permiso y contexto.
+- [x] Corregir `responderPublicacion()` para regresar siempre a `PUBLICACION_ABIERTA`.
+- [x] Definir la retirada de publicaciones como baja lógica con fecha, motivo, responsable y conservación histórica.
+- [x] Completar y revisar el Detalle de los casos canónicos de publicaciones.
+- [ ] Crear y revisar el Análisis del bloque 8 aplicando responsabilidad única, OCP y separación de políticas de autorización.
+- [ ] Crear y revisar el Diseño del bloque 8 con consultas a Base de Datos.
+- [ ] Implementar y probar el Desarrollo del bloque 8.

@@ -14,7 +14,7 @@
 
 ## Propósito
 
-Especificación detallada del caso de uso `crearPublicacion()` mediante diagrama de estado, mostrando la conversación entre el Coordinador y el Sistema para permitir al coordinador registrar un nuevo publicación dentro de la plataforma.
+Especificación detallada del caso de uso `crearPublicacion()` mediante diagrama de estado, mostrando la conversación entre el Coordinador y el Sistema para registrar una publicación propia cuyo autor se obtiene de la sesión autenticada.
 
 ## Información del caso de uso
 
@@ -22,11 +22,11 @@ Especificación detallada del caso de uso `crearPublicacion()` mediante diagrama
 |-|-|
 |**Nombre**|crearPublicacion()|
 |**Actor primario**|Coordinador|
-|**Objetivo**|Permitir al Coordinador registrar un nuevo publicación dentro de la plataforma.|
+|**Objetivo**|Permitir al Coordinador registrar una publicación propia dentro de la plataforma.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
-|**Precondición**|Usuario autenticado como Coordinador y sistema disponible para navegación.|
-|**Postcondición exitosa**|El nuevo publicación queda registrado y disponible para consulta o edición.|
+|**Precondición**|Coordinador autenticado en `MIS_PUBLICACIONES_ABIERTAS`.|
+|**Postcondición exitosa**|La nueva publicación queda registrada con el Coordinador autenticado como autor y disponible para consulta o edición.|
 |**Postcondición de fallo**|No se aplican cambios si la información solicitada no es válida o el actor cancela la operación.|
 
 ## Diagrama de especificación

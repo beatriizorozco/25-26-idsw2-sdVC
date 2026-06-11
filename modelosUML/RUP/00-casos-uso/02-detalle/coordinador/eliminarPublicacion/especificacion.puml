@@ -1,46 +1,45 @@
 @startuml eliminarPublicacion
-
 skinparam linetype polyline
 
-state in2 as "PUBLICACION_ABIERTA"
-in2 -[#green]-> eliminarPublicacion
-note on link
-eliminarPublicacion()
-end note
+state in1 as "PUBLICACION_ABIERTA"
+state in2 as "MI_PUBLICACION_ABIERTA"
+in1 -[#green]-> eliminarPublicacion : eliminarPublicacion()
+in2 -[#green]-> eliminarPublicacion : eliminarPublicacion()
 
 state eliminarPublicacion as "eliminarPublicacion()" {
-
+    state " " as VerificandoPermiso
     state " " as ConfirmandoRetirada
     state " " as PublicacionRetirada
 
-    [*] -[#green]-> ConfirmandoRetirada
+    [*] -[#green]-> VerificandoPermiso
     note on link
-    <b>Coordinador</b> solicita retirar publicación
+    <b>Coordinador</b> solicita retirar publicacion
+    end note
+
+    VerificandoPermiso -[#green]-> ConfirmandoRetirada
+    note on link
+    <b>Sistema</b> verifica el permiso global del Coordinador
+    <b>Sistema</b> presenta la publicacion y solicita un motivo
     end note
 
     ConfirmandoRetirada -[#green]-> PublicacionRetirada
     note on link
-    <b>Sistema</b> presenta confirmación de retirada
-    <b>Coordinador</b> solicita confirmar retirada
-    <b>Sistema</b> presenta la retirada de la publicación
-    end note
-
-    ConfirmandoRetirada -[#red]-> [*]
-    note on link
-    <b>Coordinador</b> solicita cancelar la operación
+    <b>Coordinador</b> indica el motivo y confirma la retirada
     end note
 
     PublicacionRetirada -[#green]-> [*]
     note on link
-    <b>Sistema</b> presenta confirmación de retirada
+    <b>Sistema</b> retira la publicacion de los listados activos
+    y conserva autoria, relaciones, fecha, motivo y responsable
+    end note
+
+    ConfirmandoRetirada -[#red]-> [*]
+    note on link
+    <b>Coordinador</b> solicita cancelar
+    <b>Sistema</b> mantiene la publicacion activa
     end note
 }
 
-
-
-eliminarPublicacion -[#green]-> PUBLICACIONES_ABIERTAS
-note on link
-abrirPublicaciones()
-end note
-
+eliminarPublicacion -[#green]-> PUBLICACIONES_ABIERTAS : Publicacion global retirada
+eliminarPublicacion -[#green]-> MIS_PUBLICACIONES_ABIERTAS : Publicacion propia retirada
 @enduml

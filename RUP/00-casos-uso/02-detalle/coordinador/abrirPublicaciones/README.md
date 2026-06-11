@@ -25,7 +25,7 @@ Especificación detallada del caso de uso `abrirPublicaciones()` mediante diagra
 |**Objetivo**|Presentar al Coordinador el listado de publicaciones con opciones de consulta, filtrado y navegación.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
-|**Precondición**|Usuario autenticado como Coordinador y sistema disponible para navegación.|
+|**Precondición**|Coordinador autenticado en `PANEL_PRINCIPAL_ABIERTO` o `PUBLICACION_ABIERTA`.|
 |**Postcondición exitosa**|El Coordinador visualiza el listado de publicaciones y puede continuar la navegación.|
 |**Postcondición de fallo**|No se modifica la información del sistema; el actor permanece en el punto de navegación anterior.|
 

@@ -75,8 +75,6 @@ Esta carpeta contiene la especificación detallada y el prototipado de los casos
 - [abrirMisPublicaciones](coordinador/abrirMisPublicaciones/) - Consulta de publicaciones propias.
 - [abrirMiPublicacion](coordinador/abrirMiPublicacion/) - Consulta del detalle de una publicación propia.
 - [crearPublicacion](coordinador/crearPublicacion/) - Creación de publicación propia.
-- [editarMiPublicacion](coordinador/editarMiPublicacion/) - Edición de publicación propia.
-- [eliminarMiPublicacion](coordinador/eliminarMiPublicacion/) - Eliminación de publicación propia.
 
 #### Recompensas
 - [abrirRecompensas](coordinador/abrirRecompensas/) - Consulta de recompensas.

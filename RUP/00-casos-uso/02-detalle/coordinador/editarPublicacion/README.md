@@ -25,7 +25,7 @@ Especificación detallada del caso de uso `editarPublicacion()` mediante diagram
 |**Objetivo**|Permitir al Coordinador actualizar la información de publicación manteniendo la trazabilidad del sistema.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
-|**Precondición**|Usuario autenticado como Coordinador y sistema disponible para navegación.|
+|**Precondición**|Coordinador autenticado con una publicación abierta en `PUBLICACION_ABIERTA` o `MI_PUBLICACION_ABIERTA`.|
 |**Postcondición exitosa**|La información de publicación queda actualizada.|
 |**Postcondición de fallo**|No se aplican cambios si la información solicitada no es válida o el actor cancela la operación.|
 
@@ -100,8 +100,14 @@ Especificación detallada del caso de uso `editarPublicacion()` mediante diagram
 ### Información tratada
   - Título
   - Contenido
-  - Autor
-  - Respuestas
+  - Estado
+  - Visibilidad
+  - Adjuntos
+
+### Principios de diseño aplicables
+- **Responsabilidad única**: El caso de uso solo coordina la edición; la autorización y la persistencia se delegarán a colaboradores específicos en Análisis y Diseño.
+- **OCP**: La misma capacidad admite contexto global o propio sin crear variantes como `editarMiPublicacion()`.
+- **Inversión de dependencias**: El caso expresa reglas del dominio sin depender de tecnología de interfaz o almacenamiento.
 
 ## Opciones de navegación
 
@@ -110,8 +116,8 @@ Especificación detallada del caso de uso `editarPublicacion()` mediante diagram
 - **abrirPublicaciones()** -> Navegar a `abrirPublicaciones()` cuando el actor solicita esa continuidad.
 
 ### Navegación del sistema
-- **Estado de entrada**: PUBLICACION_ABIERTA.
-- **Estado de salida**: PUBLICACION_ABIERTA, PUBLICACIONES_ABIERTAS.
+- **Estado de entrada**: PUBLICACION_ABIERTA, MI_PUBLICACION_ABIERTA.
+- **Estado de salida**: Se conserva el estado de detalle desde el que comenzó la edición.
 
 ## Conexión con diagrama de contexto
 

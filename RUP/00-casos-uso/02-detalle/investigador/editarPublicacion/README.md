@@ -25,7 +25,7 @@ Especificación detallada del caso de uso `editarPublicacion()` mediante diagram
 |**Objetivo**|Permitir al Investigador actualizar la información de publicación manteniendo la trazabilidad del sistema.|
 |**Tipo**|Primario, esencial|
 |**Nivel**|Objetivo de usuario|
-|**Precondición**|Usuario autenticado como Investigador y sistema disponible para navegación.|
+|**Precondición**|Investigador autenticado con una publicación propia abierta en `MI_PUBLICACION_ABIERTA`.|
 |**Postcondición exitosa**|La información de publicación queda actualizada.|
 |**Postcondición de fallo**|No se aplican cambios si la información solicitada no es válida o el actor cancela la operación.|
 
@@ -106,8 +106,14 @@ Especificación detallada del caso de uso `editarPublicacion()` mediante diagram
 ### Información tratada
   - Título
   - Contenido
-  - Autor
-  - Respuestas
+  - Estado
+  - Visibilidad
+  - Adjuntos
+
+### Principios de diseño aplicables
+- **Responsabilidad única**: El caso de uso coordina la edición y delega la comprobación de autoría.
+- **OCP**: La regla de autorización puede ampliarse sin modificar el flujo de edición.
+- **Segregación de interfaces**: El Investigador solo recibe operaciones permitidas sobre publicaciones propias.
 
 ## Opciones de navegación
 
