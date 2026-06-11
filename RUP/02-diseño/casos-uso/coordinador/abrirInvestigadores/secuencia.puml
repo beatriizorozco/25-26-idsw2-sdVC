@@ -6,36 +6,44 @@ participant "InvestigadoresPage\n(React)" as Frontend
 participant "InvestigadorController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "InvestigadorService" as Service
-participant "InvestigadorRepository" as InvestigadorRepo
+participant "UsuarioRepository" as UsuarioRepo
 participant "ProyectoRepository" as ProyectoRepo
 
 Coordinador -> Frontend: Solicita abrir investigadores
 activate Frontend
 Frontend -> Api: GET /api/investigadores?criterio={criterio}&proyectoId={id?}\nCookie de sesion
 activate Api
-Api -> Sesion: exigirCoordinador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 activate Sesion
-alt Sesion de Coordinador activa
-    Sesion --> Api: Coordinador autenticado
+alt Sesion valida
+    Sesion --> Api: SesionResponse(usuario, rol)
     deactivate Sesion
-    Api -> Service: listar(criterio, proyectoId?)
+    Api -> Service: listar(sesion, criterio, proyectoId?)
     activate Service
-    alt Sin proyecto seleccionado
-        Service -> InvestigadorRepo: buscarActivos(criterio)
-        InvestigadorRepo --> Service: Lista<Investigador>
+    alt Rol Coordinador y sin proyecto seleccionado
+        Service -> UsuarioRepo: findByRolAndActivoTrueOrderByNombreCompletoAsc(INVESTIGADOR)
+        UsuarioRepo --> Service: Lista<Usuario>
     else Con proyecto seleccionado
         Service -> ProyectoRepo: obtenerParticipantes(proyectoId, criterio)
-        ProyectoRepo --> Service: Lista<Investigador>
+        ProyectoRepo --> Service: Lista<Usuario>
+    else Rol no autorizado
+        Service --> Api: AccesoNoPermitidoException
+        deactivate Service
+        Api --> Frontend: 403 Forbidden
+        deactivate Api
+        Frontend --> Coordinador: Presenta error de acceso
     end
-    Service --> Api: Lista<InvestigadorResumenResponse>
-    deactivate Service
-    Api --> Frontend: 200 OK\nDirectorio de investigadores
-    deactivate Api
-    Frontend --> Coordinador: Presenta INVESTIGADORES_ABIERTOS
-else Sesion ausente o rol invalido
-    Sesion --> Api: SesionNoValidaException / AccesoDenegadoException
+    alt Respuesta exitosa
+        Service --> Api: Lista<InvestigadorResumenResponse>
+        deactivate Service
+        Api --> Frontend: 200 OK\nDirectorio de investigadores
+        deactivate Api
+        Frontend --> Coordinador: Presenta INVESTIGADORES_ABIERTOS
+    end
+else Sesion ausente o invalida
+    Sesion --> Api: SesionNoValidaException
     deactivate Sesion
-    Api --> Frontend: 401 Unauthorized / 403 Forbidden
+    Api --> Frontend: 401 Unauthorized
     deactivate Api
     Frontend --> Coordinador: Presenta error de acceso
 end

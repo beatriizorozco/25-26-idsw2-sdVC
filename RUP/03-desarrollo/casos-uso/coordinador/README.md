@@ -40,3 +40,9 @@
 - [Eliminar Proyecto](eliminarProyecto/README.md)
 - [Agregar Investigador](agregarInvestigador/README.md)
 - [Eliminar Investigador](eliminarInvestigador/README.md)
+
+## Gestión de investigadores
+
+- [Abrir Investigadores](abrirInvestigadores/README.md)
+- [Abrir Investigador](abrirInvestigador/README.md)
+- [Crear Investigador](crearInvestigador/README.md)

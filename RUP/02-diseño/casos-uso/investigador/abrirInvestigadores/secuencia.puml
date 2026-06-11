@@ -2,31 +2,43 @@
 title Diagrama de secuencia - Abrir investigadores como Investigador
 
 actor Investigador
-participant "InvestigadoresProyectoPage\n(React)" as Frontend
+participant "InvestigadoresPage\n(React)" as Frontend
 participant "InvestigadorController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "InvestigadorService" as Service
+participant "UsuarioRepository" as UsuarioRepo
 participant "ProyectoRepository" as ProyectoRepo
 
 Investigador -> Frontend: Solicita abrir investigadores del proyecto
 activate Frontend
-Frontend -> Api: GET /api/investigadores/me?proyectoId={id}&criterio={criterio}\nCookie de sesion
+Frontend -> Api: GET /api/investigadores?proyectoId={id?}&criterio={criterio}\nCookie de sesion
 activate Api
-Api -> Sesion: exigirInvestigador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 activate Sesion
-alt Sesion de Investigador activa
-    Sesion --> Api: Investigador autenticado
+alt Sesion valida
+    Sesion --> Api: SesionResponse(usuario, rol)
     deactivate Sesion
-    Api -> Service: listarVisiblesEnProyecto(investigadorId, proyectoId, criterio)
+    Api -> Service: listar(sesion, criterio, proyectoId?)
     activate Service
-    Service -> ProyectoRepo: obtenerParticipantesVisibles(proyectoId, investigadorId, criterio)
-    ProyectoRepo --> Service: Lista<Investigador>
+    alt Sin proyecto seleccionado
+        Service -> UsuarioRepo: findByRolAndActivoTrueOrderByNombreCompletoAsc(INVESTIGADOR)
+        UsuarioRepo --> Service: Lista<Usuario>
+    else Rol investigador con proyecto seleccionado
+        Service -> ProyectoRepo: findById(proyectoId)
+        ProyectoRepo --> Service: Proyecto / vacio
+    end
     alt Proyecto no visible
         Service --> Api: RecursoNoEncontradoException
         deactivate Service
         Api --> Frontend: 404 Not Found
         deactivate Api
         Frontend --> Investigador: Presenta proyecto no disponible
+    else Rol no autorizado
+        Service --> Api: AccesoNoPermitidoException
+        deactivate Service
+        Api --> Frontend: 403 Forbidden
+        deactivate Api
+        Frontend --> Investigador: Presenta error de acceso
     else Proyecto visible
         Service --> Api: Lista<InvestigadorResumenResponse>
         deactivate Service
@@ -34,10 +46,10 @@ alt Sesion de Investigador activa
         deactivate Api
         Frontend --> Investigador: Presenta INVESTIGADORES_ABIERTOS
     end
-else Sesion ausente o rol invalido
-    Sesion --> Api: SesionNoValidaException / AccesoDenegadoException
+else Sesion ausente o invalida
+    Sesion --> Api: SesionNoValidaException
     deactivate Sesion
-    Api --> Frontend: 401 Unauthorized / 403 Forbidden
+    Api --> Frontend: 401 Unauthorized
     deactivate Api
     Frontend --> Investigador: Presenta error de acceso
 end

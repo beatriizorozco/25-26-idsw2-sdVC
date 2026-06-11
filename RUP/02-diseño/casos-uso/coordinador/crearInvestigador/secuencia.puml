@@ -2,11 +2,12 @@
 title Diagrama de secuencia - Crear investigador
 
 actor Coordinador
-participant "CrearInvestigadorPage\n(React)" as Frontend
+participant "InvestigadoresPage\n(React)" as Frontend
 participant "InvestigadorController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "InvestigadorService" as Service
-participant "InvestigadorRepository" as Repo
+participant "UsuarioRepository" as Repo
+participant "CargaTrabajoRepository" as CargaRepo
 
 Coordinador -> Frontend: Solicita crear investigador
 activate Frontend
@@ -18,14 +19,16 @@ else Coordinador guarda
     Coordinador -> Frontend: Introduce datos y guarda
     Frontend -> Api: POST /api/investigadores\nInvestigadorCreateRequest + cookie
     activate Api
-    Api -> Sesion: exigirCoordinador(authentication)
+    Api -> Sesion: obtenerSesionActual(authentication)
     activate Sesion
-    alt Sesion de Coordinador activa
-        Sesion --> Api: Coordinador autenticado
+    alt Sesion valida
+        Sesion --> Api: SesionResponse(usuario, rol)
         deactivate Sesion
-        Api -> Service: crear(datos)
+        Api -> Service: crear(sesion, datos)
         activate Service
-        Service -> Repo: existeUsuarioOCorreo(datos)
+        Service -> Repo: findByNombreUsuario(datos.usuario)
+        Repo --> Service: Usuario / vacio
+        Service -> Repo: existsByEmailIgnoreCase(datos.email)
         Repo --> Service: true / false
         alt Usuario o correo duplicados
             Service --> Api: ValidacionException
@@ -34,18 +37,20 @@ else Coordinador guarda
             deactivate Api
             Frontend --> Coordinador: Presenta errores y conserva formulario
         else Datos validos
-            Service -> Repo: guardar(investigador)
-            Repo --> Service: Investigador creado
+            Service -> Repo: save(usuarioInvestigador)
+            Repo --> Service: Usuario creado
+            Service -> CargaRepo: save(cargaInicial)
+            CargaRepo --> Service: CargaTrabajo creada
             Service --> Api: InvestigadorDetalleResponse
             deactivate Service
             Api --> Frontend: 201 Created\nInvestigador creado
             deactivate Api
             Frontend --> Coordinador: Presenta INVESTIGADOR_ABIERTO
         end
-    else Sesion ausente o rol invalido
-        Sesion --> Api: SesionNoValidaException / AccesoDenegadoException
+    else Sesion ausente o invalida
+        Sesion --> Api: SesionNoValidaException
         deactivate Sesion
-        Api --> Frontend: 401 Unauthorized / 403 Forbidden
+        Api --> Frontend: 401 Unauthorized
         deactivate Api
         Frontend --> Coordinador: Presenta error de acceso
     end

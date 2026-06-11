@@ -6,24 +6,29 @@ participant "InvestigadorDetallePage\n(React)" as Frontend
 participant "InvestigadorController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "InvestigadorService" as Service
-participant "InvestigadorRepository" as InvestigadorRepo
+participant "UsuarioRepository" as UsuarioRepo
 participant "ProyectoRepository" as ProyectoRepo
 
 Investigador -> Frontend: Selecciona investigador visible
 activate Frontend
-Frontend -> Api: GET /api/investigadores/me/{id}?proyectoId={proyectoId}\nCookie de sesion
+Frontend -> Api: GET /api/investigadores/{id}?proyectoId={proyectoId?}\nCookie de sesion
 activate Api
-Api -> Sesion: exigirInvestigador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 activate Sesion
-alt Sesion de Investigador activa
-    Sesion --> Api: Investigador autenticado
+alt Sesion valida
+    Sesion --> Api: SesionResponse(usuario, rol)
     deactivate Sesion
-    Api -> Service: obtenerDetalleVisible(investigadorId, id, proyectoId)
+    Api -> Service: obtenerDetalle(sesion, id, proyectoId?)
     activate Service
-    Service -> InvestigadorRepo: obtenerActivoPorId(id)
-    InvestigadorRepo --> Service: Investigador / vacio
-    Service -> ProyectoRepo: obtenerVisiblesCompartidos(id, investigadorId, proyectoId)
-    ProyectoRepo --> Service: Lista<Proyecto>
+    Service -> UsuarioRepo: findById(id)
+    UsuarioRepo --> Service: Usuario / vacio
+    alt Consulta desde directorio general
+        Service -> ProyectoRepo: findDistinctByInvestigadoresIdOrderByNombreAsc(sesion.usuario.id)
+        ProyectoRepo --> Service: Lista<ProyectoResumen>
+    else Consulta desde proyecto compartido
+        Service -> ProyectoRepo: findById(proyectoId)
+        ProyectoRepo --> Service: Proyecto / vacio
+    end
     alt Investigador inexistente o no visible
         Service --> Api: RecursoNoEncontradoException
         deactivate Service
@@ -37,10 +42,10 @@ alt Sesion de Investigador activa
         deactivate Api
         Frontend --> Investigador: Presenta INVESTIGADOR_ABIERTO
     end
-else Sesion ausente o rol invalido
-    Sesion --> Api: SesionNoValidaException / AccesoDenegadoException
+else Sesion ausente o invalida
+    Sesion --> Api: SesionNoValidaException
     deactivate Sesion
-    Api --> Frontend: 401 Unauthorized / 403 Forbidden
+    Api --> Frontend: 401 Unauthorized
     deactivate Api
     Frontend --> Investigador: Presenta error de acceso
 end

@@ -18,6 +18,9 @@ import type {
   Proyecto,
   ProyectoRequest,
   ArchivoProyecto,
+  InvestigadorCreateRequest,
+  InvestigadorDetalle,
+  InvestigadorResumen,
 } from '../types'
 
 const API_URL = import.meta.env.VITE_API_URL ?? '/api'
@@ -316,6 +319,28 @@ export async function eliminarArchivoProyecto(proyectoId: number, archivoId: num
   await request<void>(`/proyectos/${proyectoId}/archivos/${archivoId}`, {
     method: 'DELETE',
     headers: { [token.headerName]: token.token },
+  })
+}
+
+export function listarInvestigadores(criterio = '', proyectoId?: number): Promise<InvestigadorResumen[]> {
+  const query = new URLSearchParams()
+  if (criterio.trim()) query.set('criterio', criterio.trim())
+  if (proyectoId) query.set('proyectoId', String(proyectoId))
+  const suffix = query.size ? `?${query.toString()}` : ''
+  return request<InvestigadorResumen[]>(`/investigadores${suffix}`)
+}
+
+export function obtenerInvestigador(id: number, proyectoId?: number): Promise<InvestigadorDetalle> {
+  const suffix = proyectoId ? `?proyectoId=${proyectoId}` : ''
+  return request<InvestigadorDetalle>(`/investigadores/${id}${suffix}`)
+}
+
+export async function crearInvestigador(datos: InvestigadorCreateRequest): Promise<InvestigadorDetalle> {
+  const token = await obtenerTokenCsrf()
+  return request<InvestigadorDetalle>('/investigadores', {
+    method: 'POST',
+    headers: { [token.headerName]: token.token },
+    body: JSON.stringify(datos),
   })
 }
 

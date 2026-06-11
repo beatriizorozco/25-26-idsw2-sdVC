@@ -5,7 +5,7 @@
 
 ## Propósito
 
-Detallar la consulta del perfil visible de un investigador desde el contexto de un proyecto compartido.
+Detallar la consulta del perfil visible de un investigador desde el directorio general o desde el contexto de un proyecto compartido.
 
 ## Diagrama de secuencia
 
@@ -16,17 +16,18 @@ Detallar la consulta del perfil visible de un investigador desde el contexto de 
 ## Participantes
 
 - **InvestigadorDetallePage**: Presenta el perfil visible del investigador seleccionado.
-- **InvestigadorController**: Expone `GET /api/investigadores/me/{id}`.
-- **SesionService**: Exige una sesión de Investigador.
+- **InvestigadorController**: Expone `GET /api/investigadores/{id}`.
+- **SesionService**: Recupera la sesión autenticada y su rol.
 - **InvestigadorService**: Comprueba la visibilidad y compone el detalle.
-- **InvestigadorRepository** y **ProyectoRepository**: Recuperan el perfil y sus proyectos visibles compartidos.
+- **UsuarioRepository** y **ProyectoRepository**: Recuperan el perfil y sus proyectos visibles compartidos.
 
 ## Decisiones de Diseño
 
-- El Investigador solo puede abrir perfiles compartidos en un proyecto visible.
-- `proyectoId` forma parte del contexto para comprobar visibilidad.
+- El Investigador puede abrir perfiles activos desde el directorio global o desde un proyecto compartido.
+- `proyectoId` forma parte del contexto cuando la consulta nace desde un proyecto.
+- El mismo recurso de detalle se reutiliza para Coordinador e Investigador con validación de alcance en servicio.
 - Un perfil ajeno o no visible responde `404 Not Found`.
-- El detalle no muestra acciones exclusivas del Coordinador.
+- El detalle solo muestra proyectos visibles y no incluye acciones exclusivas del Coordinador.
 
 ## Referencias
 

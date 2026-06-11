@@ -706,6 +706,58 @@ textarea {
   grid-template-columns: minmax(0, 1.2fr) minmax(340px, 0.8fr);
 }
 
+.investigators-workspace {
+  max-width: 1220px;
+}
+
+.investigators-layout {
+  grid-template-columns: minmax(0, 1.05fr) minmax(390px, 0.95fr);
+}
+
+.investigators-title .compact-button {
+  margin-left: auto;
+}
+
+.investigator-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.investigator-row,
+.static-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #d5e1ea;
+  border-radius: 5px;
+  padding: 14px;
+  text-align: left;
+  background: #ffffff;
+}
+
+.investigator-row:hover,
+.investigator-row.selected {
+  border-color: #8fbbd2;
+  background: #f4f9fc;
+}
+
+.investigator-row strong,
+.investigator-row small {
+  display: block;
+}
+
+.investigator-row small {
+  margin-top: 4px;
+  color: #70808a;
+}
+
+.investigator-row b {
+  color: #00689d;
+  font-size: 13px;
+}
+
 .rewards-title {
   align-items: center;
 }

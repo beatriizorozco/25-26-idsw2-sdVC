@@ -481,3 +481,25 @@ También se creó y revisó el Análisis MVC de los cinco casos, diferenciando a
 Las secuencias definen el comportamiento esperado entre frontend, controlador, `SesionService`, servicios y repositorios, diferenciando correctamente el acceso global del Coordinador frente al acceso contextual del Investigador. También se mantuvo la decisión previa de no introducir `eliminarInvestigador()` en este bloque, ya que sigue perteneciendo al bloque 5 como desasignación dentro de proyecto. Los cinco diagramas se validaron con PlantUML y sus SVG quedaron publicados en `images/RUP/02-diseño/casos-uso/...`. Además, se actualizaron los índices de Diseño de Coordinador e Investigador para incluir los nuevos casos y `tareas_a_realizar.md` quedó alineado con el estado actual. No se realizó ningún commit durante la sesión.
 
 **Decisión:** el bloque 6 queda con Detalle, Análisis y Diseño terminados. El siguiente paso recomendado es revisar manualmente este bloque completo y, si se aprueba, comenzar el Desarrollo de investigadores para Coordinador e Investigador.
+
+---
+
+## [2026-06-11 00:00] Inicio de sesión - Revisión del diseño del bloque 6
+
+**Prompt:** inicio de sesión solicitado mediante la skill `session-memory` para revisar si el Diseño del bloque 6 de investigadores está bien resuelto y, si lo está, pasar a Desarrollo.
+
+**Resultado:** se utilizó la skill `session-memory`. Se revisaron `conversation-log.md`, `tareas_a_realizar.md`, la rama activa `main`, el estado del repositorio y los commits recientes. El bloque 6 llega con Detalle, Análisis y Diseño ya creados, incluyendo el commit `b37558f`, centrado en el Diseño de investigadores para Coordinador e Investigador.
+
+**Decisión:** la sesión se dedicará primero a contrastar los cinco casos de Diseño con sus artefactos previos y con los diagramas de contexto. Si la revisión confirma coherencia funcional y trazabilidad suficiente, el siguiente paso será comenzar el Desarrollo del bloque 6; si aparecen inconsistencias, se corregirán antes de avanzar.
+
+---
+
+## [04:00] Fin de sesión
+
+**Prompt:** cierre automático de sesión solicitado mediante la skill `session-memory`.
+
+**Resultado:** se utilizó la skill `session-memory`. Durante la sesión se revisó y ajustó el Diseño del bloque 6 de investigadores para alinearlo con la implementación real del backend y la navegación existente. Se corrigieron los README y secuencias de `abrirInvestigadores()`, `abrirInvestigador()` y `crearInvestigador()` para Coordinador, además de `abrirInvestigadores()` y `abrirInvestigador()` para Investigador, afinando participantes, repositorios utilizados, alcance global o contextual y la creación inicial de `CargaTrabajo` al registrar un nuevo investigador. También se añadieron los README de Desarrollo del bloque 6 para Coordinador e Investigador y se actualizaron sus índices.
+
+En paralelo se avanzó en la implementación del módulo de investigadores: controlador, servicio, DTOs, pruebas de integración backend y la nueva pantalla frontend de directorio y detalle. Sin embargo, la verificación manual quedó bloqueada por un problema de arranque del backend. Se intentó estabilizar `tools/start-dev.ps1`, pero el fallo persistente terminó localizándose en el arranque de Spring Boot bajo el entorno actual, con errores relacionados con la JVM y con `JAVA_TOOL_OPTIONS`, además de ejecuciones fallidas de `spring-boot:run`. El frontend siguió compilando correctamente con `npm run build`, por lo que el bloqueo actual afecta al proceso backend y al script de arranque, no a la estructura del bloque 6.
+
+**Decisión:** el contenido funcional y documental del bloque 6 queda bastante avanzado, pero la sesión no cierra la validación manual porque el backend no está arrancando de forma estable. El siguiente paso recomendado es aislar el problema del entorno Java y del lanzamiento de Spring Boot en una terminal limpia, recuperar un arranque estable y, en cuanto funcione, revisar visualmente el bloque 6 en navegador antes de continuar.

@@ -17,15 +17,16 @@ Detallar la consulta del directorio de investigadores por el Coordinador, tanto 
 
 - **InvestigadoresPage**: Presenta el directorio activo o los participantes del proyecto.
 - **InvestigadorController**: Expone `GET /api/investigadores`.
-- **SesionService**: Exige una sesión de Coordinador.
-- **InvestigadorService**: Resuelve el alcance global o contextual.
-- **InvestigadorRepository** y **ProyectoRepository**: Recuperan investigadores activos o participantes del proyecto.
+- **SesionService**: Recupera la sesión autenticada y su rol.
+- **InvestigadorService**: Resuelve el alcance global o contextual y valida permisos.
+- **UsuarioRepository** y **ProyectoRepository**: Recuperan investigadores activos o participantes del proyecto.
 
 ## Decisiones de Diseño
 
 - El mismo endpoint acepta `proyectoId` opcional para no duplicar el caso de uso.
-- Sin `proyectoId` se consulta el directorio global de investigadores activos.
-- Con `proyectoId` se limita el listado a los participantes del proyecto seleccionado.
+- La decisión de alcance se resuelve en servicio a partir de la sesión autenticada.
+- Sin `proyectoId` el Coordinador consulta el directorio global de investigadores activos.
+- Con `proyectoId` el listado se limita a los participantes del proyecto seleccionado.
 - El filtrado se aplica en servidor dentro del alcance recibido.
 - El listado permite abrir el detalle del investigador y, en alcance global, iniciar su alta.
 

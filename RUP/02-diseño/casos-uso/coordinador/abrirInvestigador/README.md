@@ -17,14 +17,15 @@ Detallar la consulta del perfil de un investigador por el Coordinador, incluyend
 
 - **InvestigadorDetallePage**: Presenta el perfil consultado.
 - **InvestigadorController**: Expone `GET /api/investigadores/{id}`.
-- **SesionService**: Exige una sesión de Coordinador.
+- **SesionService**: Recupera la sesión autenticada y su rol.
 - **InvestigadorService**: Recupera el perfil activo y compone sus relaciones visibles.
-- **InvestigadorRepository** y **ProyectoRepository**: Recuperan el investigador y sus proyectos asociados.
+- **UsuarioRepository** y **ProyectoRepository**: Recuperan el investigador y sus proyectos asociados.
 
 ## Decisiones de Diseño
 
 - Solo se pueden consultar investigadores activos.
-- Un investigador inexistente o inactivo responde `404 Not Found`.
+- El mismo detalle puede abrirse desde directorio global o desde un proyecto, manteniendo `proyectoId` como contexto opcional.
+- Un investigador inexistente, inactivo o fuera del alcance visible responde `404 Not Found`.
 - El detalle incluye proyectos asociados para mantener la continuidad de navegación.
 - No se introducen acciones de edición porque ese caso no forma parte del bloque 6.
 

@@ -15,16 +15,19 @@ Detallar el alta de un nuevo investigador por el Coordinador, validando unicidad
 
 ## Participantes
 
-- **CrearInvestigadorPage**: Presenta el formulario de alta.
+- **InvestigadoresPage**: Presenta el formulario de alta dentro del directorio de investigadores.
 - **InvestigadorController**: Expone `POST /api/investigadores`.
-- **SesionService**: Exige una sesión de Coordinador.
+- **SesionService**: Recupera la sesión autenticada y su rol.
 - **InvestigadorService**: Valida, registra y devuelve el perfil creado.
-- **InvestigadorRepository**: Comprueba duplicados y persiste el nuevo investigador.
+- **UsuarioRepository**: Comprueba duplicados y persiste el nuevo investigador.
+- **CargaTrabajoRepository**: Registra la carga inicial vacía asociada al nuevo perfil.
 
 ## Decisiones de Diseño
 
+- Solo el Coordinador puede completar el alta.
 - El usuario y el correo deben ser únicos antes de persistir el perfil.
 - La sede condiciona la futura interpretación docente del perfil, pero no bloquea su alta.
+- El alta crea también una carga de trabajo inicial vacía para mantener la consistencia del perfil.
 - La cancelación no modifica estado y devuelve al directorio.
 - La creación exitosa responde `201 Created` y abre el detalle del investigador nuevo.
 

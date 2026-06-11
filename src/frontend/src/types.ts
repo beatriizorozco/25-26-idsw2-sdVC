@@ -187,3 +187,46 @@ export interface ArchivoProyecto {
   fechaSubida: string
 }
 
+export interface InvestigadorResumen {
+  id: number
+  usuario: string
+  nombreCompleto: string
+  sede: string
+  unidad: string
+  lineaInvestigacion: string
+  investigadorDocente: boolean
+  cargaSemanal: number
+}
+
+export interface ProyectoInvestigador {
+  id: number
+  codigo: string
+  nombre: string
+  sede: string
+  area: string
+  estado: string
+}
+
+export interface InvestigadorDetalle {
+  id: number
+  usuario: string
+  nombreCompleto: string
+  email: string
+  sede: string
+  unidad: string
+  lineaInvestigacion: string
+  biografia: string
+  investigadorDocente: boolean
+  proyectos: ProyectoInvestigador[]
+}
+
+export interface InvestigadorCreateRequest {
+  usuario: string
+  nombreCompleto: string
+  email: string
+  sede: string
+  unidad: string
+  lineaInvestigacion: string
+  biografia: string
+}
+

@@ -5,7 +5,7 @@
 
 ## Propósito
 
-Detallar la consulta de investigadores visibles para el Investigador autenticado dentro del proyecto desde el que navega.
+Detallar la consulta de investigadores visibles para el Investigador autenticado, tanto desde el directorio general como desde el contexto de un proyecto compartido.
 
 ## Diagrama de secuencia
 
@@ -15,18 +15,19 @@ Detallar la consulta de investigadores visibles para el Investigador autenticado
 
 ## Participantes
 
-- **InvestigadoresProyectoPage**: Presenta los participantes visibles del proyecto.
-- **InvestigadorController**: Expone `GET /api/investigadores/me`.
-- **SesionService**: Exige una sesión de Investigador.
-- **InvestigadorService**: Limita el alcance al proyecto visible.
-- **ProyectoRepository**: Recupera los participantes del proyecto.
+- **InvestigadoresPage**: Presenta el directorio global en modo consulta o los participantes visibles de un proyecto compartido.
+- **InvestigadorController**: Expone `GET /api/investigadores`.
+- **SesionService**: Recupera la sesión autenticada y su rol.
+- **InvestigadorService**: Resuelve si la consulta es global o contextual.
+- **UsuarioRepository** y **ProyectoRepository**: Recuperan el directorio activo o los participantes del proyecto visible.
 
 ## Decisiones de Diseño
 
-- El Investigador nunca accede al directorio global.
-- `proyectoId` es obligatorio para mantener el alcance visible.
+- Sin `proyectoId` el Investigador consulta el directorio global en modo solo lectura.
+- Con `proyectoId` la consulta se limita a los participantes del proyecto compartido.
+- El endpoint se reutiliza con distinta política de autorización según el rol autenticado.
 - Un proyecto ajeno o inexistente responde `404 Not Found`.
-- El listado solo permite abrir perfiles visibles dentro del mismo proyecto.
+- El listado solo permite abrir perfiles activos visibles para el usuario autenticado.
 
 ## Referencias
 

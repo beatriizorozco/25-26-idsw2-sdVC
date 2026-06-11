@@ -6,41 +6,41 @@ participant "InvestigadorDetallePage\n(React)" as Frontend
 participant "InvestigadorController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "InvestigadorService" as Service
-participant "InvestigadorRepository" as InvestigadorRepo
+participant "UsuarioRepository" as UsuarioRepo
 participant "ProyectoRepository" as ProyectoRepo
 
 Coordinador -> Frontend: Selecciona investigador
 activate Frontend
-Frontend -> Api: GET /api/investigadores/{id}\nCookie de sesion
+Frontend -> Api: GET /api/investigadores/{id}?proyectoId={id?}\nCookie de sesion
 activate Api
-Api -> Sesion: exigirCoordinador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 activate Sesion
-alt Sesion de Coordinador activa
-    Sesion --> Api: Coordinador autenticado
+alt Sesion valida
+    Sesion --> Api: SesionResponse(usuario, rol)
     deactivate Sesion
-    Api -> Service: obtenerDetalle(id)
+    Api -> Service: obtenerDetalle(sesion, id, proyectoId?)
     activate Service
-    Service -> InvestigadorRepo: obtenerActivoPorId(id)
-    InvestigadorRepo --> Service: Investigador / vacio
-    alt Investigador inexistente o inactivo
+    Service -> UsuarioRepo: findById(id)
+    UsuarioRepo --> Service: Usuario / vacio
+    alt Investigador inexistente, inactivo o no autorizado
         Service --> Api: RecursoNoEncontradoException
         deactivate Service
         Api --> Frontend: 404 Not Found
         deactivate Api
         Frontend --> Coordinador: Presenta investigador no disponible
     else Investigador existente
-        Service -> ProyectoRepo: obtenerPorInvestigador(id)
-        ProyectoRepo --> Service: Lista<Proyecto>
+        Service -> ProyectoRepo: obtenerPorInvestigador(id, proyectoId?)
+        ProyectoRepo --> Service: Lista<ProyectoResumen>
         Service --> Api: InvestigadorDetalleResponse
         deactivate Service
         Api --> Frontend: 200 OK\nDetalle del investigador
         deactivate Api
         Frontend --> Coordinador: Presenta INVESTIGADOR_ABIERTO
     end
-else Sesion ausente o rol invalido
-    Sesion --> Api: SesionNoValidaException / AccesoDenegadoException
+else Sesion ausente o invalida
+    Sesion --> Api: SesionNoValidaException
     deactivate Sesion
-    Api --> Frontend: 401 Unauthorized / 403 Forbidden
+    Api --> Frontend: 401 Unauthorized
     deactivate Api
     Frontend --> Coordinador: Presenta error de acceso
 end
