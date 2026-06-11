@@ -1,6 +1,6 @@
 ﻿# FUNIBER > Investigador > abrirPublicaciones > Diseno
 
-> |[Inicio](/README.md)|[Contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/abrirPublicaciones/README.md)|[Analisis](/RUP/01-analisis/casos-uso/investigador/abrirPublicaciones/README.md)|**Diseno**|Desarrollo|Pruebas|
+> |[Inicio](/README.md)|[Contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/abrirPublicaciones/README.md)|[Analisis](/RUP/01-analisis/casos-uso/investigador/abrirPublicaciones/README.md)|**Diseno**|[Desarrollo](/RUP/03-desarrollo/casos-uso/investigador/abrirPublicaciones/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
 ## Proposito

@@ -574,3 +574,17 @@ La revisión final confirmó 43 pruebas backend con 0 fallos y 0 errores, compil
 Se identificó el bloque 8 como la familia funcional de publicaciones para Coordinador e Investigador: consulta de publicaciones globales, apertura de una publicación, respuesta, consulta de publicaciones propias, apertura de publicación propia, creación, edición y retirada lógica. Las convocatorias se mantienen separadas para un bloque posterior porque son entidades importadas y no siguen el mismo ciclo de gestión.
 
 **Decisión:** el proyecto está preparado para comenzar el bloque 8 sin bloquearse por la prueba manual pendiente del bloque 7. Antes de avanzar profundamente conviene conservar los últimos ajustes en un commit independiente y comenzar el bloque 8 revisando su Detalle contra los diagramas de contexto, prestando especial atención a la diferencia entre publicaciones globales y propias y a la retirada lógica.
+
+---
+
+## [00:25] Fin de sesión - Desarrollo del bloque 8 de publicaciones completado
+
+**Prompt:** el usuario solicitó implementar el Desarrollo del bloque 8, valorar si el 57 % de capacidad semanal restante permite terminar el proyecto y cerrar la sesión mediante la skill `session-memory`.
+
+**Resultado:** se utilizó la skill `session-memory`. Se implementó el bloque 8 completo de publicaciones para Coordinador e Investigador. El backend incorpora la migración `V10__publicaciones.sql`, entidades separadas para publicaciones, respuestas y archivos, repositorios específicos, DTOs, `PublicacionService`, `PublicacionController` y `PoliticaPublicacion`. La política desacoplada centraliza las autorizaciones y permite que el Coordinador gestione cualquier publicación mientras que el Investigador solo modifica o retira las propias, cumpliendo responsabilidad única, OCP y separación de responsabilidades. La retirada es lógica y conserva autoría, contenido, respuestas, archivos, fecha, responsable y motivo.
+
+El frontend incorpora `PublicacionesPage.tsx`, rutas para publicaciones globales y propias, filtrado, detalle, creación con archivo opcional, edición, respuestas, descarga y confirmación de retirada. Se añadieron los dieciséis README de Desarrollo para ambos actores, se actualizaron sus índices, se enlazó Desarrollo desde los README de Diseño y se actualizó `tareas_a_realizar.md`.
+
+La validación final confirmó que las 45 pruebas backend terminan con 0 fallos y 0 errores, que Flyway aplica correctamente las diez migraciones, que el frontend genera la compilación de producción y que `git diff --check` no detecta errores. No se realizó ningún commit durante la sesión.
+
+**Decisión:** el Desarrollo automático y la documentación del bloque 8 quedan terminados. La próxima sesión debe probar manualmente el bloque 8 en navegador con Coordinador e Investigador, comprobar permisos, archivos, respuestas y retirada lógica, y después continuar con el siguiente bloque. Con un 57 % de capacidad semanal restante existe margen razonable para completar el proyecto y corregir errores si se priorizan los bloques pendientes, las pruebas manuales críticas y la revisión final.

@@ -42,3 +42,14 @@
 - [Crear Entregable](crearEntregable/README.md)
 - [Editar Entregable](editarEntregable/README.md)
 - [Eliminar Entregable](eliminarEntregable/README.md)
+
+## Gestión de publicaciones
+
+- [Abrir Publicaciones](abrirPublicaciones/README.md)
+- [Abrir Publicación](abrirPublicacion/README.md)
+- [Abrir Mis Publicaciones](abrirMisPublicaciones/README.md)
+- [Abrir Mi Publicación](abrirMiPublicacion/README.md)
+- [Crear Publicación](crearPublicacion/README.md)
+- [Editar Publicación](editarPublicacion/README.md)
+- [Eliminar Publicación](eliminarPublicacion/README.md)
+- [Responder Publicación](responderPublicacion/README.md)

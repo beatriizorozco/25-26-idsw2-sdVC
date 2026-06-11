@@ -260,3 +260,39 @@ export interface InvestigadorCreateRequest {
   biografia: string
 }
 
+export interface ArchivoPublicacion {
+  id: number
+  nombre: string
+  tipoContenido: string
+  tamano: number
+  subidoPor: string
+  fechaSubida: string
+}
+
+export interface RespuestaPublicacion {
+  id: number
+  autor: string
+  autorNombre: string
+  contenido: string
+  fecha: string
+}
+
+export interface Publicacion {
+  id: number
+  titulo: string
+  contenido: string
+  autorId: number
+  autor: string
+  autorNombre: string
+  fechaCreacion: string
+  fechaActualizacion: string
+  propia: boolean
+  respuestas: RespuestaPublicacion[]
+  archivos: ArchivoPublicacion[]
+}
+
+export interface PublicacionRequest {
+  titulo: string
+  contenido: string
+}
+

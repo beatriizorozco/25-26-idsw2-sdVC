@@ -24,6 +24,9 @@ import type {
   InvestigadorCreateRequest,
   InvestigadorDetalle,
   InvestigadorResumen,
+  Publicacion,
+  PublicacionRequest,
+  ArchivoPublicacion,
 } from '../types'
 
 const API_URL = import.meta.env.VITE_API_URL ?? '/api'
@@ -413,5 +416,59 @@ export async function crearInvestigador(datos: InvestigadorCreateRequest): Promi
     headers: { [token.headerName]: token.token },
     body: JSON.stringify(datos),
   })
+}
+
+export function listarPublicaciones(criterio = '', propias = false): Promise<Publicacion[]> {
+  const query = criterio.trim() ? `?criterio=${encodeURIComponent(criterio.trim())}` : ''
+  return request<Publicacion[]>(`/publicaciones${propias ? '/me' : ''}${query}`)
+}
+
+export function obtenerPublicacion(id: number, propia = false): Promise<Publicacion> {
+  return request<Publicacion>(`/publicaciones${propia ? '/me' : ''}/${id}`)
+}
+
+async function enviarPublicacion(path: string, method: 'POST' | 'PATCH', datos: PublicacionRequest, archivo?: File | null) {
+  const token = await obtenerTokenCsrf()
+  const cuerpo = new FormData()
+  cuerpo.append('datos', new Blob([JSON.stringify(datos)], { type: 'application/json' }))
+  if (archivo) cuerpo.append('archivo', archivo)
+  const response = await fetch(`${API_URL}${path}`, { method, credentials: 'include', headers: { [token.headerName]: token.token }, body: cuerpo })
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ mensaje: 'No se pudo guardar la publicación.' }))
+    throw new Error(error.mensaje ?? 'No se pudo guardar la publicación.')
+  }
+  return response.json() as Promise<Publicacion>
+}
+
+export function crearPublicacion(datos: PublicacionRequest, archivo?: File | null) {
+  return enviarPublicacion('/publicaciones', 'POST', datos, archivo)
+}
+
+export function actualizarPublicacion(id: number, datos: PublicacionRequest, archivo?: File | null) {
+  return enviarPublicacion(`/publicaciones/${id}`, 'PATCH', datos, archivo)
+}
+
+export async function responderPublicacion(id: number, contenido: string): Promise<Publicacion> {
+  const token = await obtenerTokenCsrf()
+  return request<Publicacion>(`/publicaciones/${id}/respuestas`, {
+    method: 'POST', headers: { [token.headerName]: token.token }, body: JSON.stringify({ contenido }),
+  })
+}
+
+export async function retirarPublicacion(id: number, motivo: string): Promise<void> {
+  const token = await obtenerTokenCsrf()
+  await request<void>(`/publicaciones/${id}`, {
+    method: 'DELETE', headers: { [token.headerName]: token.token }, body: JSON.stringify({ motivo }),
+  })
+}
+
+export async function descargarArchivoPublicacion(publicacionId: number, archivo: ArchivoPublicacion): Promise<void> {
+  const response = await fetch(`${API_URL}/publicaciones/${publicacionId}/archivos/${archivo.id}`, { credentials: 'include' })
+  if (!response.ok) throw new Error('No se pudo descargar el archivo.')
+  const enlace = document.createElement('a')
+  enlace.href = URL.createObjectURL(await response.blob())
+  enlace.download = archivo.nombre
+  enlace.click()
+  URL.revokeObjectURL(enlace.href)
 }
 

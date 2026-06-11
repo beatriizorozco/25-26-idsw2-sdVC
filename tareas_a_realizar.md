@@ -208,4 +208,6 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Completar y revisar el Detalle de los casos canónicos de publicaciones.
 - [x] Crear y revisar el Análisis del bloque 8 aplicando responsabilidad única, OCP y separación de políticas de autorización.
 - [x] Crear y revisar el Diseño del bloque 8 con consultas a Base de Datos.
-- [ ] Implementar y probar el Desarrollo del bloque 8.
+- [x] Implementar el Desarrollo del bloque 8 aplicando responsabilidad única, OCP y políticas de autorización separadas.
+- [x] Validar automáticamente el bloque 8 con pruebas de integración backend y compilación de producción frontend.
+- [ ] Probar manualmente el bloque 8 en navegador con Coordinador e Investigador.

@@ -1,6 +1,6 @@
 ﻿# FUNIBER > Coordinador > editarPublicacion > Diseno
 
-> |[Inicio](/README.md)|[Contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/editarPublicacion/README.md)|[Analisis](/RUP/01-analisis/casos-uso/coordinador/editarPublicacion/README.md)|**Diseno**|Desarrollo|Pruebas|
+> |[Inicio](/README.md)|[Contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/editarPublicacion/README.md)|[Analisis](/RUP/01-analisis/casos-uso/coordinador/editarPublicacion/README.md)|**Diseno**|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/editarPublicacion/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
 ## Proposito
