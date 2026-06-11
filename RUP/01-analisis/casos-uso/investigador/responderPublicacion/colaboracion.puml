@@ -1,25 +1,31 @@
-@startuml responderPublicacion-analisis
+﻿@startuml responderPublicacion-investigador-analisis
 skinparam linetype polyline
 
 rectangle #CDEBA5 ":PUBLICACION_ABIERTA" as EstadoEntrada
 package responderPublicacion as "responderPublicacion()" {
-    rectangle #629EF9 ResponderPublicacionView
+    rectangle #629EF9 "responderPublicacionView" as View
     rectangle #b5bd68 PublicacionController
+    rectangle #b5bd68 PoliticaPublicacion
     rectangle #F2AC4E PublicacionRepository
     rectangle #F2AC4E Publicacion
+    rectangle #F2AC4E RespuestaRepository
+    rectangle #F2AC4E Respuesta
 }
-
 rectangle #CDEBA5 ":PUBLICACION_ABIERTA" as EstadoSalida
-rectangle #CDEBA5 ":Collaboration AbrirPublicaciones" as AbrirPublicaciones
 
-EstadoEntrada -r-> ResponderPublicacionView: responderPublicacion()
-
-ResponderPublicacionView -d-> PublicacionController: responderPublicacion(id, respuesta)
-ResponderPublicacionView --> PublicacionController: validarRespuesta(respuesta)
-PublicacionController --> PublicacionRepository: obtenerPorId(id)
-PublicacionController --> PublicacionRepository: guardarRespuesta(respuesta)
+EstadoEntrada -r-> View: responderPublicacion()
+View -d-> PublicacionController: responderPublicacion(solicitud, actor)
+PublicacionController --> PublicacionRepository: obtenerActivaPorId(id)
+PublicacionController --> PoliticaPublicacion: permitirResponder(actor, publicacion)
+PublicacionController --> RespuestaRepository: guardar(respuesta)
 PublicacionRepository -- Publicacion
-ResponderPublicacionView ..> EstadoSalida: continuarNavegacion()
-ResponderPublicacionView ..> AbrirPublicaciones: abrirPublicaciones()
+RespuestaRepository -- Respuesta
+View ..> EstadoSalida: continuarNavegacion()
 
+note right of PoliticaPublicacion
+Responsabilidad unica:
+autoriza sin persistir ni presentar.
+Permite ampliar reglas sin modificar
+la coordinacion del caso de uso.
+end note
 @enduml

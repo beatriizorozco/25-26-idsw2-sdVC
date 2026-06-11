@@ -50,17 +50,12 @@ Esta carpeta contiene el análisis MVC de los casos de uso del Coordinador, orga
 
 - [abrirPublicaciones()](abrirPublicaciones/README.md)
 - [abrirPublicacion()](abrirPublicacion/README.md)
+- [abrirMisPublicaciones()](abrirMisPublicaciones/README.md)
+- [abrirMiPublicacion()](abrirMiPublicacion/README.md)
 - [crearPublicacion()](crearPublicacion/README.md)
 - [editarPublicacion()](editarPublicacion/README.md)
 - [eliminarPublicacion()](eliminarPublicacion/README.md)
 - [responderPublicacion()](responderPublicacion/README.md)
-
-## CRUD de publicaciones propias
-
-- [abrirMisPublicaciones()](abrirMisPublicaciones/README.md)
-- [abrirMiPublicacion()](abrirMiPublicacion/README.md)
-- [editarMiPublicacion()](editarMiPublicacion/README.md)
-- [eliminarMiPublicacion()](eliminarMiPublicacion/README.md)
 
 ## Consulta e importación de convocatorias
 

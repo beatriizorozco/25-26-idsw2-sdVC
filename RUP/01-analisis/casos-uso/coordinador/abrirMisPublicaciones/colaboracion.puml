@@ -1,37 +1,30 @@
-@startuml abrirMisPublicaciones-analisis
+﻿@startuml abrirMisPublicaciones-coordinador-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoEntrada1
-rectangle #CDEBA5 ":MI_PUBLICACION_ABIERTA" as EstadoEntrada2
+rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoEntrada
 package abrirMisPublicaciones as "abrirMisPublicaciones()" {
-    rectangle #629EF9 ListarPublicacionesView
+    rectangle #629EF9 "abrirMisPublicacionesView" as View
     rectangle #b5bd68 PublicacionController
+    rectangle #b5bd68 PoliticaPublicacion
     rectangle #F2AC4E PublicacionRepository
     rectangle #F2AC4E Publicacion
+
 }
-
 rectangle #CDEBA5 ":MIS_PUBLICACIONES_ABIERTAS" as EstadoSalida
-rectangle #CDEBA5 ":Collaboration AbrirMiPublicacion" as AbrirMiPublicacion
-rectangle #CDEBA5 ":Collaboration CrearPublicacion" as CrearPublicacion
-rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanelPrincipal
 
-EstadoEntrada1 -r-> ListarPublicacionesView: abrirMisPublicaciones()
-EstadoEntrada2 -r-> ListarPublicacionesView: abrirMisPublicaciones(idPublicacion)
+EstadoEntrada -r-> View: abrirMisPublicaciones()
+View -d-> PublicacionController: abrirMisPublicaciones(solicitud, actor)
 
-ListarPublicacionesView -d-> PublicacionController: listarPublicaciones(contexto)
-ListarPublicacionesView --> PublicacionController: filtrarPublicaciones(criterio)
-PublicacionController --> PublicacionRepository: obtenerTodos()
-PublicacionController --> PublicacionRepository: obtenerPorContexto(contexto)
-PublicacionController --> PublicacionRepository: buscarPorCriterio(criterio)
+PublicacionController --> PoliticaPublicacion: alcancePropio(actor)
+PublicacionController --> PublicacionRepository: buscarActivasPorAutor(actor, filtro)
 PublicacionRepository -- Publicacion
-note right of PublicacionController
-Contexto opcional:
-- sin identificador: listado global
-- con identificador: listado acotado
-end note
-ListarPublicacionesView ..> EstadoSalida: continuarNavegacion()
-ListarPublicacionesView ..> AbrirMiPublicacion: abrirMiPublicacion()
-ListarPublicacionesView ..> CrearPublicacion: crearPublicacion()
-ListarPublicacionesView ..> AbrirPanelPrincipal: abrirPanelPrincipal()
 
+View ..> EstadoSalida: continuarNavegacion()
+
+note right of PoliticaPublicacion
+Responsabilidad unica:
+autoriza sin persistir ni presentar.
+Permite ampliar reglas sin modificar
+la coordinacion del caso de uso.
+end note
 @enduml

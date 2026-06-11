@@ -1,33 +1,30 @@
-@startuml abrirPublicaciones-analisis
+﻿@startuml abrirPublicaciones-investigador-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoEntrada1
-rectangle #CDEBA5 ":PUBLICACION_ABIERTA" as EstadoEntrada2
+rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoEntrada
 package abrirPublicaciones as "abrirPublicaciones()" {
-    rectangle #629EF9 ListarPublicacionesView
+    rectangle #629EF9 "abrirPublicacionesView" as View
     rectangle #b5bd68 PublicacionController
+    rectangle #b5bd68 PoliticaPublicacion
     rectangle #F2AC4E PublicacionRepository
     rectangle #F2AC4E Publicacion
+
 }
-
 rectangle #CDEBA5 ":PUBLICACIONES_ABIERTAS" as EstadoSalida
-rectangle #CDEBA5 ":Collaboration AbrirPublicacion" as AbrirPublicacion
 
-EstadoEntrada1 -r-> ListarPublicacionesView: abrirPublicaciones()
-EstadoEntrada2 -r-> ListarPublicacionesView: abrirPublicaciones(idPublicacion)
+EstadoEntrada -r-> View: abrirPublicaciones()
+View -d-> PublicacionController: abrirPublicaciones(solicitud, actor)
 
-ListarPublicacionesView -d-> PublicacionController: listarPublicaciones(contexto)
-ListarPublicacionesView --> PublicacionController: filtrarPublicaciones(criterio)
-PublicacionController --> PublicacionRepository: obtenerPropios(investigador)
-PublicacionController --> PublicacionRepository: obtenerPorContexto(contexto)
-PublicacionController --> PublicacionRepository: buscarPorCriterio(criterio)
+PublicacionController --> PoliticaPublicacion: permitirConsultaGlobal(actor)
+PublicacionController --> PublicacionRepository: buscarActivas(filtro)
 PublicacionRepository -- Publicacion
-note right of PublicacionController
-Contexto opcional:
-- sin identificador: listado propio
-- con identificador: listado propio acotado
-end note
-ListarPublicacionesView ..> EstadoSalida: continuarNavegacion()
-ListarPublicacionesView ..> AbrirPublicacion: abrirPublicacion()
 
+View ..> EstadoSalida: continuarNavegacion()
+
+note right of PoliticaPublicacion
+Responsabilidad unica:
+autoriza sin persistir ni presentar.
+Permite ampliar reglas sin modificar
+la coordinacion del caso de uso.
+end note
 @enduml

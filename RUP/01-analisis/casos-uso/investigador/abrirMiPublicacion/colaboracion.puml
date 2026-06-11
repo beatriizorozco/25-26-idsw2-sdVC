@@ -1,29 +1,36 @@
-@startuml abrirMiPublicacion-analisis
+﻿@startuml abrirMiPublicacion-investigador-analisis
 skinparam linetype polyline
 
 rectangle #CDEBA5 ":MIS_PUBLICACIONES_ABIERTAS" as EstadoEntrada
 package abrirMiPublicacion as "abrirMiPublicacion()" {
-    rectangle #629EF9 DetallePublicacionView
+    rectangle #629EF9 "abrirMiPublicacionView" as View
     rectangle #b5bd68 PublicacionController
+    rectangle #b5bd68 PoliticaPublicacion
     rectangle #F2AC4E PublicacionRepository
     rectangle #F2AC4E Publicacion
+    rectangle #F2AC4E RespuestaRepository
+    rectangle #F2AC4E ArchivoPublicacionRepository
+    rectangle #F2AC4E Respuesta
+    rectangle #F2AC4E ArchivoPublicacion
 }
-
 rectangle #CDEBA5 ":MI_PUBLICACION_ABIERTA" as EstadoSalida
-rectangle #CDEBA5 ":Collaboration EditarPublicacion" as EditarPublicacion
-rectangle #CDEBA5 ":Collaboration EliminarPublicacion" as EliminarPublicacion
-rectangle #CDEBA5 ":Collaboration AbrirMisPublicaciones" as AbrirMisPublicaciones
 
-EstadoEntrada -r-> DetallePublicacionView: abrirMiPublicacion()
+EstadoEntrada -r-> View: abrirMiPublicacion()
+View -d-> PublicacionController: abrirMiPublicacion(solicitud, actor)
+PublicacionController --> PublicacionRepository: obtenerActivaPorId(id)
+PublicacionController --> PoliticaPublicacion: exigirAutoria(actor, publicacion)
 
-DetallePublicacionView -d-> PublicacionController: obtenerPublicacion(id)
-DetallePublicacionView --> PublicacionController: prepararAccionesDisponibles(investigador)
-PublicacionController --> PublicacionRepository: obtenerPorId(id)
-PublicacionController --> PublicacionRepository: verificarPermisos(actor)
 PublicacionRepository -- Publicacion
-DetallePublicacionView ..> EstadoSalida: continuarNavegacion()
-DetallePublicacionView ..> EditarPublicacion: editarPublicacion()
-DetallePublicacionView ..> EliminarPublicacion: eliminarPublicacion()
-DetallePublicacionView ..> AbrirMisPublicaciones: abrirMisPublicaciones()
+PublicacionController --> RespuestaRepository: buscarPorPublicacion(id)
+PublicacionController --> ArchivoPublicacionRepository: buscarPorPublicacion(id)
+RespuestaRepository -- Respuesta
+ArchivoPublicacionRepository -- ArchivoPublicacion
+View ..> EstadoSalida: continuarNavegacion()
 
+note right of PoliticaPublicacion
+Responsabilidad unica:
+autoriza sin persistir ni presentar.
+Permite ampliar reglas sin modificar
+la coordinacion del caso de uso.
+end note
 @enduml

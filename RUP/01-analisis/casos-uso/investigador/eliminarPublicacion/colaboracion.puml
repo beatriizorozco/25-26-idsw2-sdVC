@@ -1,34 +1,30 @@
-@startuml eliminarPublicacion-analisis
+﻿@startuml eliminarPublicacion-investigador-analisis
 skinparam linetype polyline
 
 rectangle #CDEBA5 ":MI_PUBLICACION_ABIERTA" as EstadoEntrada
 package eliminarPublicacion as "eliminarPublicacion()" {
-    rectangle #629EF9 EliminarPublicacionView
+    rectangle #629EF9 "eliminarPublicacionView" as View
     rectangle #b5bd68 PublicacionController
+    rectangle #b5bd68 PoliticaPublicacion
     rectangle #F2AC4E PublicacionRepository
     rectangle #F2AC4E Publicacion
+
 }
+rectangle #CDEBA5 ":MIS_PUBLICACIONES_ABIERTAS" as EstadoSalida
 
-rectangle #CDEBA5 ":MIS_PUBLICACIONES_ABIERTAS" as EstadoSalidaExitosa
-rectangle #CDEBA5 ":MI_PUBLICACION_ABIERTA" as EstadoSalidaCancelada
-
-
-EstadoEntrada -r-> EliminarPublicacionView: eliminarPublicacion()
-
-EliminarPublicacionView -d-> PublicacionController: solicitarConfirmacion(id)
-PublicacionController --> EliminarPublicacionView: presentarConfirmacion()
-EliminarPublicacionView --> PublicacionController: confirmarRetirada(id)
-EliminarPublicacionView --> PublicacionController: cancelarRetirada()
-EliminarPublicacionView --> PublicacionController: validarRetirada(id)
-PublicacionController --> PublicacionRepository: obtenerPorId(id)
-PublicacionController --> PublicacionRepository: retirar(id, fecha, investigador, motivo)
+EstadoEntrada -r-> View: eliminarPublicacion()
+View -d-> PublicacionController: eliminarPublicacion(solicitud, actor)
+PublicacionController --> PublicacionRepository: obtenerActivaPorId(id)
+PublicacionController --> PoliticaPublicacion: exigirAutoria(actor, publicacion)
+PublicacionController --> PublicacionRepository: retirar(publicacion, motivo, actor)
 PublicacionRepository -- Publicacion
-note right of PublicacionRepository
-La retirada conserva autoria,
-metadatos y relaciones historicas.
+
+View ..> EstadoSalida: continuarNavegacion()
+
+note right of PoliticaPublicacion
+Responsabilidad unica:
+autoriza sin persistir ni presentar.
+Permite ampliar reglas sin modificar
+la coordinacion del caso de uso.
 end note
-EliminarPublicacionView ..> EstadoSalidaExitosa: publicacionRetirada()
-EliminarPublicacionView ..> EstadoSalidaCancelada: retiradaCancelada()
-
-
 @enduml

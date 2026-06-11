@@ -1,0 +1,32 @@
+﻿@startuml editarPublicacion-coordinador-diseno
+title Diagrama de secuencia - editarPublicacion
+actor Coordinador
+participant "editarPublicacionPage\n(React)" as Frontend
+participant "PublicacionController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "PublicacionService" as Service
+participant "PoliticaPublicacion" as Policy
+participant "PublicacionRepository" as Repo
+participant "ArchivoPublicacionRepository" as ArchivoRepo
+database "Base de Datos" as DB
+
+Coordinador -> Frontend: Solicita editarPublicacion()
+Frontend -> Api: PATCH /api/publicaciones/{id} + PublicacionUpdateRequest + cookie
+Api -> Sesion: exigirCoordinador(authentication)
+Sesion --> Api: Actor autenticado
+Api -> Service: actualizar(id, cambios, actor)
+Service -> Repo: obtenerActivaPorId(id)
+Repo -> DB: SELECT * FROM publicaciones WHERE id = ? AND retirada = false
+DB --> Repo: Publicacion / vacio
+Service -> Policy: permitirGestionGlobal(actor, publicacion)
+Service -> Service: aplicarCambiosYValidar()
+Service -> Repo: guardar(publicacion)
+Repo -> DB: UPDATE publicaciones SET titulo = ?, contenido = ?,\nestado = ?, visibilidad = ? WHERE id = ? AND retirada = false
+DB --> Repo: Publicacion actualizada
+Service -> ArchivoRepo: agregarAdjuntosOpcionales(publicacion, adjuntos, actor)
+ArchivoRepo -> DB: INSERT INTO archivos_publicacion\n(publicacion_id, nombre, contenido, subido_por_id, retirado)\nVALUES (?, ?, ?, ?, false)
+DB --> ArchivoRepo: Adjuntos creados / vacio
+Service --> Api: Resultado del caso de uso
+Api --> Frontend: 200 OK (PublicacionResponse)
+Frontend --> Coordinador: Presenta Estado de detalle de origen
+@enduml

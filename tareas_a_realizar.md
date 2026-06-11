@@ -206,6 +206,6 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Corregir `responderPublicacion()` para regresar siempre a `PUBLICACION_ABIERTA`.
 - [x] Definir la retirada de publicaciones como baja lógica con fecha, motivo, responsable y conservación histórica.
 - [x] Completar y revisar el Detalle de los casos canónicos de publicaciones.
-- [ ] Crear y revisar el Análisis del bloque 8 aplicando responsabilidad única, OCP y separación de políticas de autorización.
-- [ ] Crear y revisar el Diseño del bloque 8 con consultas a Base de Datos.
+- [x] Crear y revisar el Análisis del bloque 8 aplicando responsabilidad única, OCP y separación de políticas de autorización.
+- [x] Crear y revisar el Diseño del bloque 8 con consultas a Base de Datos.
 - [ ] Implementar y probar el Desarrollo del bloque 8.

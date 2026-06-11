@@ -1,0 +1,28 @@
+﻿@startuml eliminarPublicacion-coordinador-diseno
+title Diagrama de secuencia - eliminarPublicacion
+actor Coordinador
+participant "eliminarPublicacionPage\n(React)" as Frontend
+participant "PublicacionController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "PublicacionService" as Service
+participant "PoliticaPublicacion" as Policy
+participant "PublicacionRepository" as Repo
+
+database "Base de Datos" as DB
+
+Coordinador -> Frontend: Solicita eliminarPublicacion()
+Frontend -> Api: DELETE /api/publicaciones/{id} + RetiradaRequest + cookie
+Api -> Sesion: exigirCoordinador(authentication)
+Sesion --> Api: Actor autenticado
+Api -> Service: retirar(id, motivo, actor)
+Service -> Repo: obtenerActivaPorId(id)
+Repo -> DB: SELECT * FROM publicaciones WHERE id = ? AND retirada = false
+DB --> Repo: Publicacion / vacio
+Service -> Policy: permitirGestionGlobal(actor, publicacion)
+Service -> Repo: retirar(id, motivo, actor)
+Repo -> DB: UPDATE publicaciones SET retirada = true,\nfecha_retirada = CURRENT_TIMESTAMP, motivo_retirada = ?, retirado_por_id = ?\nWHERE id = ? AND retirada = false
+DB --> Repo: Publicacion retirada
+Service --> Api: Resultado del caso de uso
+Api --> Frontend: 204 No Content
+Frontend --> Coordinador: Presenta Listado correspondiente al contexto de origen
+@enduml

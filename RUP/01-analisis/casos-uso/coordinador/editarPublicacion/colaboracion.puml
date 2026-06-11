@@ -1,27 +1,32 @@
-@startuml editarPublicacion-analisis
+﻿@startuml editarPublicacion-coordinador-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":PUBLICACION_ABIERTA" as EstadoEntrada
+rectangle #CDEBA5 ":PUBLICACION_ABIERTA o MI_PUBLICACION_ABIERTA" as EstadoEntrada
 package editarPublicacion as "editarPublicacion()" {
-    rectangle #629EF9 EditarPublicacionView
+    rectangle #629EF9 "editarPublicacionView" as View
     rectangle #b5bd68 PublicacionController
+    rectangle #b5bd68 PoliticaPublicacion
     rectangle #F2AC4E PublicacionRepository
     rectangle #F2AC4E Publicacion
+    rectangle #F2AC4E ArchivoPublicacionRepository
+    rectangle #F2AC4E ArchivoPublicacion
 }
+rectangle #CDEBA5 ":Estado de detalle de origen" as EstadoSalida
 
-rectangle #CDEBA5 ":PUBLICACION_ABIERTA" as EstadoSalida
-rectangle #CDEBA5 ":Collaboration EliminarPublicacion" as EliminarPublicacion
-rectangle #CDEBA5 ":Collaboration AbrirPublicaciones" as AbrirPublicaciones
-
-EstadoEntrada -r-> EditarPublicacionView: editarPublicacion()
-
-EditarPublicacionView -d-> PublicacionController: editarPublicacion(id, datos)
-EditarPublicacionView --> PublicacionController: validarCambios(datos)
-PublicacionController --> PublicacionRepository: obtenerPorId(id)
-PublicacionController --> PublicacionRepository: actualizar(entidad)
+EstadoEntrada -r-> View: editarPublicacion()
+View -d-> PublicacionController: editarPublicacion(solicitud, actor)
+PublicacionController --> PublicacionRepository: obtenerActivaPorId(id)
+PublicacionController --> PoliticaPublicacion: permitirGestionGlobal(actor, publicacion)
+PublicacionController --> PublicacionRepository: actualizar(publicacion)
 PublicacionRepository -- Publicacion
-EditarPublicacionView ..> EstadoSalida: continuarNavegacion()
-EditarPublicacionView ..> EliminarPublicacion: eliminarPublicacion()
-EditarPublicacionView ..> AbrirPublicaciones: abrirPublicaciones()
+PublicacionController --> ArchivoPublicacionRepository: gestionarAdjuntosOpcionales(publicacion, adjuntos)
+ArchivoPublicacionRepository -- ArchivoPublicacion
+View ..> EstadoSalida: continuarNavegacion()
 
+note right of PoliticaPublicacion
+Responsabilidad unica:
+autoriza sin persistir ni presentar.
+Permite ampliar reglas sin modificar
+la coordinacion del caso de uso.
+end note
 @enduml

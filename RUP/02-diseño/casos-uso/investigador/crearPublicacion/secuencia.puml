@@ -1,0 +1,29 @@
+﻿@startuml crearPublicacion-investigador-diseno
+title Diagrama de secuencia - crearPublicacion
+actor Investigador
+participant "crearPublicacionPage\n(React)" as Frontend
+participant "PublicacionController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "PublicacionService" as Service
+participant "PoliticaPublicacion" as Policy
+participant "PublicacionRepository" as Repo
+participant "ArchivoPublicacionRepository" as ArchivoRepo
+database "Base de Datos" as DB
+
+Investigador -> Frontend: Solicita crearPublicacion()
+Frontend -> Api: POST /api/publicaciones + PublicacionCreateRequest + cookie
+Api -> Sesion: exigirInvestigador(authentication)
+Sesion --> Api: Actor autenticado
+Api -> Service: crear(datos, actor)
+Service -> Policy: permitirCrear(actor)
+Service -> Service: validarYAsignarAutor(datos, actor)
+Service -> Repo: guardar(publicacion)
+Repo -> DB: INSERT INTO publicaciones\n(titulo, contenido, estado, visibilidad, autor_id, retirada)\nVALUES (?, ?, ?, ?, ?, false)
+DB --> Repo: Publicacion creada
+Service -> ArchivoRepo: guardarAdjuntosOpcionales(publicacion, adjuntos, actor)
+ArchivoRepo -> DB: INSERT INTO archivos_publicacion\n(publicacion_id, nombre, contenido, subido_por_id, retirado)\nVALUES (?, ?, ?, ?, false)
+DB --> ArchivoRepo: Adjuntos creados / vacio
+Service --> Api: Resultado del caso de uso
+Api --> Frontend: 201 Created (PublicacionResponse)
+Frontend --> Investigador: Presenta MI_PUBLICACION_ABIERTA
+@enduml

@@ -1,27 +1,32 @@
-@startuml editarPublicacion-analisis
+﻿@startuml editarPublicacion-investigador-analisis
 skinparam linetype polyline
 
 rectangle #CDEBA5 ":MI_PUBLICACION_ABIERTA" as EstadoEntrada
 package editarPublicacion as "editarPublicacion()" {
-    rectangle #629EF9 EditarPublicacionView
+    rectangle #629EF9 "editarPublicacionView" as View
     rectangle #b5bd68 PublicacionController
+    rectangle #b5bd68 PoliticaPublicacion
     rectangle #F2AC4E PublicacionRepository
     rectangle #F2AC4E Publicacion
+    rectangle #F2AC4E ArchivoPublicacionRepository
+    rectangle #F2AC4E ArchivoPublicacion
 }
-
 rectangle #CDEBA5 ":MI_PUBLICACION_ABIERTA" as EstadoSalida
-rectangle #CDEBA5 ":Collaboration AbrirMisPublicaciones" as AbrirMisPublicaciones
-rectangle #CDEBA5 ":Collaboration EliminarPublicacion" as EliminarPublicacion
 
-EstadoEntrada -r-> EditarPublicacionView: editarPublicacion()
-
-EditarPublicacionView -d-> PublicacionController: editarPublicacion(id, datos)
-EditarPublicacionView --> PublicacionController: validarCambios(datos)
-PublicacionController --> PublicacionRepository: obtenerPorId(id)
-PublicacionController --> PublicacionRepository: actualizar(entidad)
+EstadoEntrada -r-> View: editarPublicacion()
+View -d-> PublicacionController: editarPublicacion(solicitud, actor)
+PublicacionController --> PublicacionRepository: obtenerActivaPorId(id)
+PublicacionController --> PoliticaPublicacion: exigirAutoria(actor, publicacion)
+PublicacionController --> PublicacionRepository: actualizar(publicacion)
 PublicacionRepository -- Publicacion
-EditarPublicacionView ..> EstadoSalida: continuarNavegacion()
-EditarPublicacionView ..> AbrirMisPublicaciones: abrirMisPublicaciones()
-EditarPublicacionView ..> EliminarPublicacion: eliminarPublicacion()
+PublicacionController --> ArchivoPublicacionRepository: gestionarAdjuntosOpcionales(publicacion, adjuntos)
+ArchivoPublicacionRepository -- ArchivoPublicacion
+View ..> EstadoSalida: continuarNavegacion()
 
+note right of PoliticaPublicacion
+Responsabilidad unica:
+autoriza sin persistir ni presentar.
+Permite ampliar reglas sin modificar
+la coordinacion del caso de uso.
+end note
 @enduml
