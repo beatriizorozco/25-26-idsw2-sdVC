@@ -18,6 +18,9 @@ import type {
   Proyecto,
   ProyectoRequest,
   ArchivoProyecto,
+  ArchivoEntregable,
+  Entregable,
+  EntregableRequest,
   InvestigadorCreateRequest,
   InvestigadorDetalle,
   InvestigadorResumen,
@@ -320,6 +323,74 @@ export async function eliminarArchivoProyecto(proyectoId: number, archivoId: num
     method: 'DELETE',
     headers: { [token.headerName]: token.token },
   })
+}
+
+export function listarEntregables(proyectoId: number): Promise<Entregable[]> {
+  return request<Entregable[]>(`/proyectos/${proyectoId}/entregables`)
+}
+
+export function obtenerEntregable(id: number): Promise<Entregable> {
+  return request<Entregable>(`/entregables/${id}`)
+}
+
+async function enviarEntregable(
+  path: string,
+  method: 'POST' | 'PATCH',
+  datos: EntregableRequest,
+  archivo?: File | null,
+): Promise<Entregable> {
+  const token = await obtenerTokenCsrf()
+  const cuerpo = new FormData()
+  cuerpo.append('datos', new Blob([JSON.stringify(datos)], { type: 'application/json' }))
+  if (archivo) cuerpo.append('archivo', archivo)
+  const response = await fetch(`${API_URL}${path}`, {
+    method,
+    credentials: 'include',
+    headers: { [token.headerName]: token.token },
+    body: cuerpo,
+  })
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ mensaje: 'No se pudo guardar el entregable.' }))
+    throw new Error(error.mensaje ?? 'No se pudo guardar el entregable.')
+  }
+  return response.json() as Promise<Entregable>
+}
+
+export function crearEntregable(
+  proyectoId: number,
+  datos: EntregableRequest,
+  archivo?: File | null,
+): Promise<Entregable> {
+  return enviarEntregable(`/proyectos/${proyectoId}/entregables`, 'POST', datos, archivo)
+}
+
+export function actualizarEntregable(
+  id: number,
+  datos: EntregableRequest,
+  archivo?: File | null,
+): Promise<Entregable> {
+  return enviarEntregable(`/entregables/${id}`, 'PATCH', datos, archivo)
+}
+
+export async function retirarEntregable(id: number, motivo: string): Promise<Entregable> {
+  const token = await obtenerTokenCsrf()
+  return request<Entregable>(`/entregables/${id}/retirada`, {
+    method: 'PATCH',
+    headers: { [token.headerName]: token.token },
+    body: JSON.stringify({ motivo }),
+  })
+}
+
+export async function descargarArchivoEntregable(entregableId: number, archivo: ArchivoEntregable): Promise<void> {
+  const response = await fetch(`${API_URL}/entregables/${entregableId}/archivos/${archivo.id}`, {
+    credentials: 'include',
+  })
+  if (!response.ok) throw new Error('No se pudo descargar la version.')
+  const enlace = document.createElement('a')
+  enlace.href = URL.createObjectURL(await response.blob())
+  enlace.download = archivo.nombre
+  enlace.click()
+  URL.revokeObjectURL(enlace.href)
 }
 
 export function listarInvestigadores(criterio = '', proyectoId?: number): Promise<InvestigadorResumen[]> {

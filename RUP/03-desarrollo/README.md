@@ -35,6 +35,16 @@ La cuarta iteración implementa recompensas vinculadas a proyectos completados:
 - Recompensa económica para cualquier Investigador elegible.
 - Reducción docente únicamente para investigadores-docentes.
 
+## Séptima iteración
+
+La séptima iteración implementa entregables vinculados a proyectos:
+
+- Creación y consulta por participantes.
+- Versionado y descarga de archivos.
+- Gestión global por Coordinador.
+- Edición y retirada limitada a la autoría para Investigadores.
+- Retirada lógica con conservación del histórico.
+
 ## Stack implementado
 
 - **Backend**: Java 17, Spring Boot, Spring Security, Spring Data JPA y Flyway.

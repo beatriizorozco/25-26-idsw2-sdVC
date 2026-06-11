@@ -998,6 +998,88 @@ textarea {
   margin-bottom: 6px;
 }
 
+.deliverables-section {
+  margin-top: 30px;
+  border-top: 1px solid #d5e1ea;
+  padding-top: 24px;
+}
+
+.deliverables-title .compact-button {
+  margin-left: auto;
+}
+
+.deliverables-layout,
+.deliverable-list,
+.version-list {
+  display: grid;
+  gap: 9px;
+}
+
+.deliverable-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #d5e1ea;
+  border-radius: 5px;
+  padding: 12px;
+  text-align: left;
+  background: #ffffff;
+}
+
+.deliverable-row:hover,
+.deliverable-row.selected {
+  border-color: #8fbbd2;
+  background: #f4f9fc;
+}
+
+.deliverable-row strong,
+.deliverable-row small {
+  display: block;
+}
+
+.deliverable-row small {
+  margin-top: 3px;
+  color: #70808a;
+}
+
+.deliverable-row b {
+  color: #00689d;
+  font-size: 12px;
+}
+
+.deliverable-detail {
+  border-left: 3px solid #d5e8f2;
+  margin-top: 12px;
+  padding-left: 14px;
+}
+
+.deliverable-detail p {
+  color: #536a76;
+  line-height: 1.5;
+}
+
+.version-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 0;
+  padding: 6px 0;
+  color: #00689d;
+  text-align: left;
+  background: transparent;
+}
+
+.deliverable-form input,
+.deliverable-form textarea,
+.deliverable-form select {
+  min-height: 44px;
+  border: 1px solid #a9c3d2;
+  border-radius: 5px;
+  padding: 10px 11px;
+  background: #fafdff;
+}
+
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

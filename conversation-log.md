@@ -534,3 +534,17 @@ Se creó el Diseño completo de los diez casos mediante sus `README.md` y `secue
 **Resultado:** se utilizó la skill `session-memory`. Se revisaron `conversation-log.md`, `tareas_a_realizar.md`, la rama activa `main`, el estado limpio del repositorio y los commits recientes. El bloque 7 de entregables ya cuenta con Detalle, Análisis y una primera versión de Diseño incluida en el commit `d35bcb5`.
 
 **Decisión:** antes de considerar aprobado el paso a Diseño, se auditarán las diez colaboraciones de Análisis y sus README contra los diagramas de contexto y las especificaciones detalladas. Se corregirá cualquier texto genérico, permiso incorrecto o contradicción de navegación encontrada.
+
+---
+
+## [18:56] Fin de sesión - Diseño transversal y Desarrollo del bloque 7 completados
+
+**Prompt:** el usuario solicitó completar y revisar el Desarrollo del bloque 7 y, una vez terminado, cerrar la sesión mediante la skill `session-memory`.
+
+**Resultado:** se utilizó la skill `session-memory`. Primero se completó una revisión transversal de los 50 diagramas de secuencia de Diseño: 46 documentan ahora el acceso a base de datos con consultas SQL concretas y los cuatro casos de navegación o sesión sin persistencia lo indican expresamente. Se corrigieron consultas genéricas o incoherentes, se regeneraron todos los SVG de Diseño y se comprobó su correspondencia con las fuentes PlantUML.
+
+Después se implementó el Desarrollo completo del bloque 7 de entregables. El backend incorpora la migración `V9__entregables.sql`, entidades, repositorios, DTOs, servicio y controlador para gestionar entregables, archivos y versiones. Se aplicaron permisos diferenciados para Coordinador e Investigador, edición y retirada restringidas por autoría, conservación histórica mediante retirada lógica y bloqueo de modificaciones en proyectos archivados. El frontend integra la gestión de entregables dentro del detalle de proyecto, incluyendo listado, consulta, creación, edición, retirada y descarga de versiones. También se añadieron los diez README de Desarrollo y se actualizaron los índices y `tareas_a_realizar.md`.
+
+La revisión final confirmó que las 43 pruebas del backend terminan con 0 fallos y 0 errores, que el frontend genera correctamente la compilación de producción y que `git diff --check` no detecta errores. No se realizó ningún commit durante la sesión.
+
+**Decisión:** el Diseño transversal y el Desarrollo automático del bloque 7 quedan terminados y verificados. La próxima sesión debe realizar la prueba manual en navegador con Coordinador e Investigador, comprobando permisos, creación, versionado, descarga y retirada lógica de entregables antes de continuar con el siguiente bloque o con la revisión global final.

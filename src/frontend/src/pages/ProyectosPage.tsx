@@ -31,6 +31,7 @@ import {
   subirArchivoProyecto,
 } from '../services/api'
 import type { ArchivoProyecto, InvestigadorProyecto, Proyecto, ProyectoRequest, Rol } from '../types'
+import { EntregablesProyecto } from '../components/EntregablesProyecto'
 
 interface Props {
   rol: Rol
@@ -430,6 +431,7 @@ function ProyectoDetalle(props: {
           </div>
         ))}
       </div>
+      <EntregablesProyecto proyectoId={proyecto.id} proyectoArchivado={proyecto.archivado} rol={props.rol} />
       {props.rol === 'COORDINADOR' && !proyecto.archivado && (
         <>
           {props.candidatos.length > 0 && (

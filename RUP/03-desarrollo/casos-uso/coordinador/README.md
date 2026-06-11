@@ -46,3 +46,11 @@
 - [Abrir Investigadores](abrirInvestigadores/README.md)
 - [Abrir Investigador](abrirInvestigador/README.md)
 - [Crear Investigador](crearInvestigador/README.md)
+
+## Gestión de entregables
+
+- [Abrir Entregables](abrirEntregables/README.md)
+- [Abrir Entregable](abrirEntregable/README.md)
+- [Crear Entregable](crearEntregable/README.md)
+- [Editar Entregable](editarEntregable/README.md)
+- [Eliminar Entregable](eliminarEntregable/README.md)

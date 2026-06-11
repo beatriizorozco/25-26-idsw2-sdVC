@@ -187,6 +187,36 @@ export interface ArchivoProyecto {
   fechaSubida: string
 }
 
+export interface ArchivoEntregable {
+  id: number
+  version: number
+  nombre: string
+  tipoContenido: string
+  tamano: number
+  subidoPor: string
+  fechaSubida: string
+}
+
+export interface Entregable {
+  id: number
+  proyectoId: number
+  titulo: string
+  descripcion: string
+  estado: string
+  autorId: number
+  autor: string
+  autorNombre: string
+  fechaCreacion: string
+  propio: boolean
+  archivos: ArchivoEntregable[]
+}
+
+export interface EntregableRequest {
+  titulo: string
+  descripcion: string
+  estado: string
+}
+
 export interface InvestigadorResumen {
   id: number
   usuario: string

@@ -180,7 +180,11 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Crear el Diseño del bloque 7 con `README.md` y `secuencia.puml` para los diez casos.
 - [x] Revisar manualmente el Análisis y el Diseño del bloque 7 antes de comenzar Desarrollo.
 - [x] Completar los diez diagramas de secuencia del bloque 7 con Base de Datos y consultas SQL.
-- [ ] Implementar el Desarrollo del bloque 7 para la gestión de entregables.
+- [x] Implementar el Desarrollo del bloque 7 para la gestión de entregables.
+- [x] Implementar versiones de archivo y descarga por entregable.
+- [x] Aplicar permisos: Coordinador gestiona cualquier entregable e Investigador solo modifica o retira los propios.
+- [x] Implementar retirada lógica conservando autoría, proyecto y versiones.
+- [ ] Probar manualmente el bloque 7 en navegador con Coordinador e Investigador.
 
 ## Pendiente transversal de Diseño
 
