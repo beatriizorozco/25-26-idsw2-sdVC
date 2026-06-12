@@ -598,3 +598,13 @@ La validación final confirmó que las 45 pruebas backend terminan con 0 fallos 
 **Resultado:** se utilizó la skill `session-memory`. Se recuperó el contexto de la sesión anterior: el bloque 8 está implementado y validado automáticamente, pero permanece pendiente su prueba manual real. Se identificó el bloque 9 como la familia de convocatorias importadas del Coordinador, formada inicialmente por `abrirConvocatorias()`, `abrirConvocatoria()` e `importarConvocatoria()`.
 
 **Decisión:** antes de crear el Análisis del bloque 9 se diagnosticará y corregirá el fallo real de arranque de Spring Boot, se validará el bloque 8 contra el backend en ejecución y se evitará aceptar únicamente las pruebas automatizadas como evidencia suficiente. Después se modelará el bloque 9 separando vista, coordinación, importación y persistencia para respetar responsabilidad única y permitir extensiones mediante OCP.
+
+---
+
+## [12:32] Fin de sesión - Bloque 8 validado y diseño del bloque 9 completado
+
+**Prompt:** cierre automático de sesión solicitado mediante la skill `session-memory`.
+
+**Resultado:** se utilizó la skill `session-memory` para cerrar y documentar la sesión. Se corrigió el fallo de arranque de Spring Boot causado por `java.io.Console.istty()` ajustando `JAVA_TOOL_OPTIONS` en `tools/start-dev.ps1`. Se validó manualmente el desarrollo del bloque 8 con Coordinador e Investigador, incluyendo creación, consulta, respuesta, edición y retirada de publicaciones, y se confirmó el control de permisos. También se revisó el análisis del bloque 9 contra los diagramas de contexto y el detalle de convocatorias, corrigiendo la navegación de `abrirConvocatoria()` y separando la previsualización de la confirmación en `importarConvocatoria()`. Se completó el diseño del bloque 9 con diagramas de secuencia, consultas SQL explícitas y componentes extensibles acordes con SOLID, especialmente SRP y OCP. Además, se adaptó el README principal del proyecto y se actualizaron `incidencias_y_soluciones.md` y `tareas_a_realizar.md`. Las comprobaciones finalizaron correctamente: 45 pruebas backend superadas, compilación frontend correcta, diagramas PlantUML válidos y enlaces de los nuevos README verificados.
+
+**Decisión:** el análisis y el diseño del bloque 9 quedan revisados y preparados. La próxima sesión comenzará con el desarrollo del bloque 9, manteniendo un registro extensible de importadores de convocatorias, y continuará con las pruebas manuales de listado, filtrado, detalle, cancelación e importación confirmada.
