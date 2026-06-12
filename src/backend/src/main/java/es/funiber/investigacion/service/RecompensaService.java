@@ -28,20 +28,23 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class RecompensaService {
 
-    private static final BigDecimal HORAS_POR_ASIGNATURA = new BigDecimal("4");
-    private static final BigDecimal MAXIMA_REDUCCION_DOCENTE = new BigDecimal("16");
-
     private final RecompensaRepository recompensaRepository;
     private final ProyectoRepository proyectoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final AccesoUsuarioService accesoUsuarios;
+    private final RegistroReglasRecompensa reglasRecompensa;
 
     public RecompensaService(
             RecompensaRepository recompensaRepository,
             ProyectoRepository proyectoRepository,
-            UsuarioRepository usuarioRepository) {
+            UsuarioRepository usuarioRepository,
+            AccesoUsuarioService accesoUsuarios,
+            RegistroReglasRecompensa reglasRecompensa) {
         this.recompensaRepository = recompensaRepository;
         this.proyectoRepository = proyectoRepository;
         this.usuarioRepository = usuarioRepository;
+        this.accesoUsuarios = accesoUsuarios;
+        this.reglasRecompensa = reglasRecompensa;
     }
 
     @Transactional(readOnly = true)
@@ -183,10 +186,7 @@ public class RecompensaService {
     }
 
     private List<String> tiposPermitidos(Usuario beneficiario) {
-        if (beneficiario.esInvestigadorDocente()) {
-            return List.of(TipoRecompensa.ECONOMICA.name(), TipoRecompensa.REDUCCION_DOCENTE.name());
-        }
-        return List.of(TipoRecompensa.ECONOMICA.name());
+        return reglasRecompensa.tiposPermitidos(beneficiario).stream().map(TipoRecompensa::name).toList();
     }
 
     private List<String> tiposPendientes(Proyecto proyecto, Usuario beneficiario) {
@@ -216,16 +216,7 @@ public class RecompensaService {
     }
 
     private void validarDatos(RecompensaRequest request, Usuario beneficiario) {
-        if (!tiposPermitidos(beneficiario).contains(request.tipo().name())) {
-            throw new IllegalArgumentException(
-                    "La reduccion docente solo puede concederse a investigadores-docentes.");
-        }
-        if (request.tipo() == TipoRecompensa.REDUCCION_DOCENTE
-                && (request.valor().compareTo(MAXIMA_REDUCCION_DOCENTE) > 0
-                || request.valor().remainder(HORAS_POR_ASIGNATURA).compareTo(BigDecimal.ZERO) != 0)) {
-            throw new IllegalArgumentException(
-                    "La reduccion docente debe corresponder a asignaturas completas de 4 horas, hasta un maximo de 16.");
-        }
+        reglasRecompensa.validar(request.tipo(), beneficiario, request.valor());
     }
 
     private void validarDuplicado(
@@ -278,28 +269,11 @@ public class RecompensaService {
     }
 
     private Usuario exigirCoordinador(String nombreUsuario) {
-        Usuario usuario = buscarUsuarioActivo(nombreUsuario);
-        if (usuario.getRol() != Rol.COORDINADOR) {
-            throw new AccesoNoPermitidoException();
-        }
-        return usuario;
+        return accesoUsuarios.exigirRol(nombreUsuario, Rol.COORDINADOR);
     }
 
     private Usuario exigirInvestigador(String nombreUsuario) {
-        Usuario usuario = buscarUsuarioActivo(nombreUsuario);
-        if (usuario.getRol() != Rol.INVESTIGADOR) {
-            throw new AccesoNoPermitidoException();
-        }
-        return usuario;
-    }
-
-    private Usuario buscarUsuarioActivo(String nombreUsuario) {
-        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuario)
-                .orElseThrow(() -> new RecursoNoEncontradoException("No se encontro el perfil solicitado."));
-        if (!usuario.isActivo()) {
-            throw new RecursoNoEncontradoException("No se encontro el perfil solicitado.");
-        }
-        return usuario;
+        return accesoUsuarios.exigirRol(nombreUsuario, Rol.INVESTIGADOR);
     }
 
     private boolean contiene(String valor, String filtro) {

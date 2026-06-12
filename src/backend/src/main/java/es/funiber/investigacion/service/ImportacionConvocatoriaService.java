@@ -13,15 +13,15 @@ public class ImportacionConvocatoriaService {
     private final RegistroImportadoresConvocatoria registro;
     private final ValidadorConvocatoria validador;
     private final ConvocatoriaRepository convocatorias;
-    private final UsuarioRepository usuarios;
     private final PoliticaConvocatoria politica;
+    private final AccesoUsuarioService accesoUsuarios;
     public ImportacionConvocatoriaService(RegistroImportadoresConvocatoria registro, ValidadorConvocatoria validador,
-            ConvocatoriaRepository convocatorias, UsuarioRepository usuarios, PoliticaConvocatoria politica) {
-        this.registro = registro; this.validador = validador; this.convocatorias = convocatorias; this.usuarios = usuarios; this.politica = politica;
+            ConvocatoriaRepository convocatorias, PoliticaConvocatoria politica, AccesoUsuarioService accesoUsuarios) {
+        this.registro = registro; this.validador = validador; this.convocatorias = convocatorias; this.politica = politica; this.accesoUsuarios = accesoUsuarios;
     }
     @Transactional(readOnly = true)
     public PrevisualizacionConvocatoriaResponse previsualizar(String nombreUsuario, FuenteConvocatoriaRequest fuente) {
-        politica.exigirImportacion(usuario(nombreUsuario));
+        politica.exigirImportacion(accesoUsuarios.buscarActivo(nombreUsuario));
         DatosConvocatoria datos = registro.obtenerCompatible(fuente).extraer(fuente);
         validador.validar(datos);
         String mensaje = validador.yaIncorporada(datos.referenciaExterna())
@@ -31,7 +31,7 @@ public class ImportacionConvocatoriaService {
     }
     @Transactional
     public ConvocatoriaResponse confirmar(String nombreUsuario, ConfirmarImportacionConvocatoriaRequest request) {
-        Usuario actor = usuario(nombreUsuario);
+        Usuario actor = accesoUsuarios.buscarActivo(nombreUsuario);
         politica.exigirImportacion(actor);
         if (request == null || request.datos() == null) throw new IllegalArgumentException("No hay una previsualizacion para confirmar.");
         DatosConvocatoria datos = request.datos().aModelo();
@@ -41,5 +41,4 @@ public class ImportacionConvocatoriaService {
                 .orElseGet(() -> new Convocatoria(datos, actor));
         return ConvocatoriaResponse.desde(convocatorias.save(convocatoria));
     }
-    private Usuario usuario(String nombre) { return usuarios.findByNombreUsuario(nombre).filter(Usuario::isActivo).orElseThrow(() -> new RecursoNoEncontradoException("No se encontro el perfil solicitado.")); }
 }

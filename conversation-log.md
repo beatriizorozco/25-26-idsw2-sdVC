@@ -618,3 +618,15 @@ La validación final confirmó que las 45 pruebas backend terminan con 0 fallos 
 **Resultado:** se utilizó la skill `session-memory`. Se revisaron el historial, `tareas_a_realizar.md`, la rama activa `main`, los commits recientes y el estado del repositorio. Se confirmó que el bloque 8 está validado y que el bloque 9 dispone de Detalle, Análisis y Diseño revisados para `abrirConvocatorias()`, `abrirConvocatoria()` e `importarConvocatoria()`.
 
 **Decisión:** se implementará el bloque 9 respetando que las convocatorias son importadas y no tienen CRUD manual. El backend separará consulta, política, validación, selección extensible de importadores y persistencia; el frontend cubrirá listado, filtrado, detalle, previsualización, cancelación y confirmación. Finalmente se añadirán pruebas y documentación de Desarrollo.
+
+---
+
+## [18:04] Fin de sesión - Desarrollo del bloque 9 y auditoría SOLID transversal completados
+
+**Prompt:** el usuario solicitó revisar que los bloques ya implementados cumplieran SOLID, corregir los incumplimientos, probar el proyecto completo y cerrar la sesión mediante la skill `session-memory`.
+
+**Resultado:** se utilizó la skill `session-memory`. Se completó el Desarrollo del bloque 9 de convocatorias y se realizó una auditoría SOLID transversal de los bloques implementados. Se centralizaron la resolución de usuarios activos y la autorización por roles en `AccesoUsuarioService`; el panel principal pasó a componerse mediante proveedores de acciones extensibles; las reglas de recompensas económica y de reducción docente se separaron en estrategias registradas automáticamente; y el tratamiento común de archivos se delegó en `ProcesadorArchivoService`. También se sustituyeron las sugerencias de proyectos libres escritas directamente en el servicio de carga por consultas a proyectos reales persistidos.
+
+La refactorización reduce duplicación, delimita responsabilidades y permite añadir acciones de panel o tipos de recompensa sin modificar los coordinadores existentes, reforzando especialmente SRP, OCP y DIP. Se actualizaron `incidencias_y_soluciones.md` y `tareas_a_realizar.md` con las decisiones adoptadas. La validación final confirmó 48 pruebas backend superadas sin fallos ni errores, compilación de producción del frontend correcta y `git diff --check` limpio. No se realizó ningún commit durante la sesión.
+
+**Decisión:** los bloques implementados quedan revisados y alineados con SOLID dentro del alcance actual. El siguiente paso recomendado es realizar una regresión manual global de los flujos principales y preparar el despliegue, conservando el Desarrollo del bloque 9 y la refactorización SOLID en un commit claramente identificado.

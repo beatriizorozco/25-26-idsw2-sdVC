@@ -12,14 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ConsultaConvocatoriaService {
     private final ConvocatoriaRepository convocatorias;
-    private final UsuarioRepository usuarios;
     private final PoliticaConvocatoria politica;
-    public ConsultaConvocatoriaService(ConvocatoriaRepository convocatorias, UsuarioRepository usuarios, PoliticaConvocatoria politica) {
-        this.convocatorias = convocatorias; this.usuarios = usuarios; this.politica = politica;
+    private final AccesoUsuarioService accesoUsuarios;
+    public ConsultaConvocatoriaService(ConvocatoriaRepository convocatorias, PoliticaConvocatoria politica, AccesoUsuarioService accesoUsuarios) {
+        this.convocatorias = convocatorias; this.politica = politica; this.accesoUsuarios = accesoUsuarios;
     }
     @Transactional(readOnly = true)
     public List<ConvocatoriaResponse> listar(String nombreUsuario, String texto, String area, String estado) {
-        politica.exigirConsulta(usuario(nombreUsuario));
+        politica.exigirConsulta(accesoUsuarios.buscarActivo(nombreUsuario));
         String fTexto = normalizar(texto), fArea = normalizar(area), fEstado = normalizar(estado);
         return convocatorias.findAllByOrderByFechaCierreAsc().stream()
                 .filter(c -> fTexto.isBlank() || normalizar(c.getTitulo()).contains(fTexto)
@@ -31,10 +31,9 @@ public class ConsultaConvocatoriaService {
     }
     @Transactional(readOnly = true)
     public ConvocatoriaResponse obtener(String nombreUsuario, Long id) {
-        politica.exigirConsulta(usuario(nombreUsuario));
+        politica.exigirConsulta(accesoUsuarios.buscarActivo(nombreUsuario));
         return ConvocatoriaResponse.desde(convocatorias.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("No se encontro la convocatoria solicitada.")));
     }
-    private Usuario usuario(String nombre) { return usuarios.findByNombreUsuario(nombre).filter(Usuario::isActivo).orElseThrow(() -> new RecursoNoEncontradoException("No se encontro el perfil solicitado.")); }
     private String normalizar(String texto) { return texto == null ? "" : texto.trim().toLowerCase(); }
 }

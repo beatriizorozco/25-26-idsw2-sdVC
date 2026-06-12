@@ -352,3 +352,20 @@ La autenticación utiliza sesiones HTTP. El navegador conserva una cookie de ses
 **Solución:** Se separaron explícitamente la previsualización y la confirmación. La previsualización selecciona un importador compatible, extrae y valida los datos sin persistirlos; solo la confirmación revalida y ejecuta el guardado. Se incorporó un selector o registro de importadores para aplicar OCP y se eliminó la navegación directa al panel desde el detalle.
 
 **Validación:** El Análisis y el Diseño del bloque 9 respetan las entradas y salidas del diagrama de contexto. Los tres diagramas de secuencia incluyen consultas a Base de Datos, los PlantUML superan `-checkonly` y sus SVG fueron regenerados.
+# Auditoría SOLID transversal de los bloques implementados
+
+## Problema
+
+Los primeros bloques repetían la búsqueda de usuarios activos y las comprobaciones de rol dentro de numerosos servicios. Además, el panel principal y los tipos de recompensa requerían modificar clases centrales cada vez que se añadía una opción, y la carga de trabajo utilizaba proyectos libres escritos directamente en el servicio.
+
+## Solución
+
+- Se creó `AccesoUsuarioService` como única responsabilidad para resolver usuarios activos y exigir roles.
+- El panel principal se amplía mediante implementaciones de `ProveedorAccionesPanel`.
+- Las recompensas se validan mediante implementaciones de `ReglaTipoRecompensa`, registradas automáticamente por Spring.
+- `ProcesadorArchivoService` centraliza límites, lectura, tipo y normalización del nombre de archivo.
+- Las sugerencias de carga consultan proyectos libres reales mediante `ProyectoRepository`.
+
+## Resultado
+
+Los servicios de caso de uso conservan la coordinación del flujo, pero delegan identidad, archivos y reglas variables. Añadir módulos de panel o tipos de recompensa ya no obliga a modificar los coordinadores existentes, mejorando SRP, OCP y DIP sin cambiar los contratos públicos de la API.

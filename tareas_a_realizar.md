@@ -50,6 +50,12 @@ Actualizar [`RUP/02-diseño/README.md`](RUP/02-diseño/README.md) y sus diagrama
 
 Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante la construcción:
 
+- [x] Auditar transversalmente los bloques implementados contra SOLID.
+- [x] Centralizar la resolución de usuarios activos y roles para evitar responsabilidades duplicadas.
+- [x] Aplicar OCP al panel principal mediante proveedores de acciones extensibles.
+- [x] Aplicar OCP a recompensas mediante reglas independientes por tipo.
+- [x] Extraer el procesamiento común de archivos de proyectos, entregables y publicaciones.
+- [x] Sustituir los proyectos libres incrustados en carga de trabajo por consultas al repositorio.
 - [x] Documentar la estructura real del código.
 - [x] Crear el índice de Desarrollo por actor y familia funcional.
 - [x] Añadir trazabilidad desde cada caso desarrollado hacia Detalle, Análisis y Diseño.

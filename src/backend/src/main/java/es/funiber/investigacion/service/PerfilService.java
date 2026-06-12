@@ -24,48 +24,51 @@ public class PerfilService {
 
     private final UsuarioRepository usuarioRepository;
     private final SolicitudEliminacionPerfilRepository solicitudRepository;
+    private final AccesoUsuarioService accesoUsuarios;
 
     public PerfilService(
             UsuarioRepository usuarioRepository,
-            SolicitudEliminacionPerfilRepository solicitudRepository) {
+            SolicitudEliminacionPerfilRepository solicitudRepository,
+            AccesoUsuarioService accesoUsuarios) {
         this.usuarioRepository = usuarioRepository;
         this.solicitudRepository = solicitudRepository;
+        this.accesoUsuarios = accesoUsuarios;
     }
 
     @Transactional(readOnly = true)
     public PerfilResponse obtenerPerfilPropio(String nombreUsuario) {
-        return PerfilResponse.desde(buscarUsuarioActivo(nombreUsuario));
+        return PerfilResponse.desde(accesoUsuarios.buscarActivo(nombreUsuario));
     }
 
     @Transactional(readOnly = true)
     public PerfilResponse obtenerPerfilPorId(String nombreUsuario, Long perfilId) {
-        Usuario solicitante = buscarUsuarioActivo(nombreUsuario);
+        Usuario solicitante = accesoUsuarios.buscarActivo(nombreUsuario);
         if (solicitante.getRol() != Rol.COORDINADOR && !solicitante.getId().equals(perfilId)) {
             throw new AccesoNoPermitidoException();
         }
-        return PerfilResponse.desde(buscarUsuarioActivo(perfilId));
+        return PerfilResponse.desde(accesoUsuarios.buscarActivo(perfilId));
     }
 
     @Transactional
     public PerfilResponse actualizarPerfilPropio(String nombreUsuario, PerfilUpdateRequest request) {
-        Usuario usuario = buscarUsuarioActivo(nombreUsuario);
+        Usuario usuario = accesoUsuarios.buscarActivo(nombreUsuario);
         return actualizar(usuario, request);
     }
 
     @Transactional
     public PerfilResponse actualizarPerfilPorId(String nombreUsuario, Long perfilId, PerfilUpdateRequest request) {
-        Usuario solicitante = buscarUsuarioActivo(nombreUsuario);
+        Usuario solicitante = accesoUsuarios.buscarActivo(nombreUsuario);
         if (solicitante.getRol() != Rol.COORDINADOR && !solicitante.getId().equals(perfilId)) {
             throw new AccesoNoPermitidoException();
         }
-        return actualizar(buscarUsuarioActivo(perfilId), request);
+        return actualizar(accesoUsuarios.buscarActivo(perfilId), request);
     }
 
     @Transactional
     public SolicitudEliminacionPerfilResponse solicitarEliminacionPerfil(
             String nombreUsuario,
             SolicitudEliminacionRequest request) {
-        Usuario usuario = buscarUsuarioActivo(nombreUsuario);
+        Usuario usuario = accesoUsuarios.buscarActivo(nombreUsuario);
         if (solicitudRepository.existsByUsuarioAndEstado(usuario, EstadoSolicitudEliminacion.PENDIENTE)) {
             throw new SolicitudDuplicadaException();
         }
@@ -117,10 +120,7 @@ public class PerfilService {
     }
 
     private void exigirCoordinador(String nombreUsuario) {
-        Usuario usuario = buscarUsuarioActivo(nombreUsuario);
-        if (usuario.getRol() != Rol.COORDINADOR) {
-            throw new AccesoNoPermitidoException();
-        }
+        accesoUsuarios.exigirRol(nombreUsuario, Rol.COORDINADOR);
     }
 
     private void validarEliminacionSegura(Usuario perfil) {
@@ -129,24 +129,6 @@ public class PerfilService {
             throw new AccesoNoPermitidoException(
                     "No se puede eliminar el unico coordinador activo del sistema.");
         }
-    }
-
-    private Usuario buscarUsuarioActivo(String nombreUsuario) {
-        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuario)
-                .orElseThrow(() -> new RecursoNoEncontradoException("No se encontró el perfil solicitado."));
-        if (!usuario.isActivo()) {
-            throw new RecursoNoEncontradoException("No se encontró el perfil solicitado.");
-        }
-        return usuario;
-    }
-
-    private Usuario buscarUsuarioActivo(Long perfilId) {
-        Usuario usuario = usuarioRepository.findById(perfilId)
-                .orElseThrow(() -> new RecursoNoEncontradoException("No se encontró el perfil solicitado."));
-        if (!usuario.isActivo()) {
-            throw new RecursoNoEncontradoException("No se encontró el perfil solicitado.");
-        }
-        return usuario;
     }
 
     private SolicitudEliminacionPerfil buscarSolicitudPendiente(Long solicitudId) {

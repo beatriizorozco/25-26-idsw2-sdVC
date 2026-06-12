@@ -28,21 +28,24 @@ public class ProyectoService {
     private final UsuarioRepository usuarioRepository;
     private final MovimientoParticipacionProyectoRepository movimientoRepository;
     private final CargaTrabajoRepository cargaTrabajoRepository;
+    private final AccesoUsuarioService accesoUsuarios;
 
     public ProyectoService(
             ProyectoRepository proyectoRepository,
             UsuarioRepository usuarioRepository,
             MovimientoParticipacionProyectoRepository movimientoRepository,
-            CargaTrabajoRepository cargaTrabajoRepository) {
+            CargaTrabajoRepository cargaTrabajoRepository,
+            AccesoUsuarioService accesoUsuarios) {
         this.proyectoRepository = proyectoRepository;
         this.usuarioRepository = usuarioRepository;
         this.movimientoRepository = movimientoRepository;
         this.cargaTrabajoRepository = cargaTrabajoRepository;
+        this.accesoUsuarios = accesoUsuarios;
     }
 
     @Transactional(readOnly = true)
     public List<ProyectoResponse> listar(String nombreUsuario, boolean archivados, String criterio) {
-        Usuario usuario = buscarUsuarioActivo(nombreUsuario);
+        Usuario usuario = accesoUsuarios.buscarActivo(nombreUsuario);
         List<Proyecto> proyectos = usuario.getRol() == Rol.COORDINADOR
                 ? proyectoRepository.findByArchivadoOrderByNombreAsc(archivados)
                 : proyectoRepository.findDistinctByInvestigadoresIdOrderByNombreAsc(usuario.getId());
@@ -51,7 +54,7 @@ public class ProyectoService {
 
     @Transactional(readOnly = true)
     public ProyectoResponse obtener(String nombreUsuario, Long id) {
-        Usuario usuario = buscarUsuarioActivo(nombreUsuario);
+        Usuario usuario = accesoUsuarios.buscarActivo(nombreUsuario);
         Proyecto proyecto = buscarProyecto(id);
         if (usuario.getRol() != Rol.COORDINADOR && !proyecto.participa(usuario)) {
             throw new AccesoNoPermitidoException();
@@ -116,7 +119,7 @@ public class ProyectoService {
     public ProyectoResponse agregarInvestigador(String nombreUsuario, Long proyectoId, Long investigadorId) {
         Usuario coordinador = exigirCoordinador(nombreUsuario);
         Proyecto proyecto = buscarProyectoActivo(proyectoId);
-        Usuario investigador = buscarInvestigadorActivo(investigadorId);
+        Usuario investigador = accesoUsuarios.buscarInvestigadorActivo(investigadorId);
         if (proyecto.participa(investigador)) {
             throw new SolicitudDuplicadaException("El investigador ya participa en el proyecto.");
         }
@@ -139,7 +142,7 @@ public class ProyectoService {
             String motivo) {
         Usuario coordinador = exigirCoordinador(nombreUsuario);
         Proyecto proyecto = buscarProyectoActivo(proyectoId);
-        Usuario investigador = buscarInvestigadorActivo(investigadorId);
+        Usuario investigador = accesoUsuarios.buscarInvestigadorActivo(investigadorId);
         if (!proyecto.participa(investigador)) {
             throw new RecursoNoEncontradoException("El investigador no participa actualmente en el proyecto.");
         }
@@ -201,30 +204,8 @@ public class ProyectoService {
         return proyecto;
     }
 
-    private Usuario buscarInvestigadorActivo(Long id) {
-        Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("No se encontro el investigador solicitado."));
-        if (!usuario.isActivo() || usuario.getRol() != Rol.INVESTIGADOR) {
-            throw new RecursoNoEncontradoException("No se encontro el investigador solicitado.");
-        }
-        return usuario;
-    }
-
     private Usuario exigirCoordinador(String nombreUsuario) {
-        Usuario usuario = buscarUsuarioActivo(nombreUsuario);
-        if (usuario.getRol() != Rol.COORDINADOR) {
-            throw new AccesoNoPermitidoException();
-        }
-        return usuario;
-    }
-
-    private Usuario buscarUsuarioActivo(String nombreUsuario) {
-        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuario)
-                .orElseThrow(() -> new RecursoNoEncontradoException("No se encontro el perfil solicitado."));
-        if (!usuario.isActivo()) {
-            throw new RecursoNoEncontradoException("No se encontro el perfil solicitado.");
-        }
-        return usuario;
+        return accesoUsuarios.exigirRol(nombreUsuario, Rol.COORDINADOR);
     }
 
     private String limpiar(String valor) {

@@ -14,7 +14,6 @@ import es.funiber.investigacion.repository.ArchivoEntregableRepository;
 import es.funiber.investigacion.repository.EntregableRepository;
 import es.funiber.investigacion.repository.ProyectoRepository;
 import es.funiber.investigacion.repository.UsuarioRepository;
-import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import org.springframework.stereotype.Service;
@@ -24,28 +23,33 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class EntregableService {
 
-    private static final long TAMANO_MAXIMO = 15L * 1024 * 1024;
     private static final Set<String> ESTADOS_PERMITIDOS = Set.of("PRESENTADO", "EN_REVISION", "ACEPTADO");
 
     private final EntregableRepository entregableRepository;
     private final ArchivoEntregableRepository archivoRepository;
     private final ProyectoRepository proyectoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final AccesoUsuarioService accesoUsuarios;
+    private final ProcesadorArchivoService procesadorArchivos;
 
     public EntregableService(
             EntregableRepository entregableRepository,
             ArchivoEntregableRepository archivoRepository,
             ProyectoRepository proyectoRepository,
-            UsuarioRepository usuarioRepository) {
+            UsuarioRepository usuarioRepository,
+            AccesoUsuarioService accesoUsuarios,
+            ProcesadorArchivoService procesadorArchivos) {
         this.entregableRepository = entregableRepository;
         this.archivoRepository = archivoRepository;
         this.proyectoRepository = proyectoRepository;
         this.usuarioRepository = usuarioRepository;
+        this.accesoUsuarios = accesoUsuarios;
+        this.procesadorArchivos = procesadorArchivos;
     }
 
     @Transactional(readOnly = true)
     public List<EntregableResponse> listar(String nombreUsuario, Long proyectoId) {
-        Usuario usuario = buscarUsuarioActivo(nombreUsuario);
+        Usuario usuario = accesoUsuarios.buscarActivo(nombreUsuario);
         buscarProyectoVisible(usuario, proyectoId);
         return entregableRepository.findByProyectoIdAndRetiradoOrderByFechaCreacionDesc(proyectoId, false).stream()
                 .map(entregable -> respuesta(entregable, usuario))
@@ -54,7 +58,7 @@ public class EntregableService {
 
     @Transactional(readOnly = true)
     public EntregableResponse obtener(String nombreUsuario, Long id) {
-        Usuario usuario = buscarUsuarioActivo(nombreUsuario);
+        Usuario usuario = accesoUsuarios.buscarActivo(nombreUsuario);
         Entregable entregable = buscarActivo(id);
         buscarProyectoVisible(usuario, entregable.getProyecto().getId());
         return respuesta(entregable, usuario);
@@ -66,7 +70,7 @@ public class EntregableService {
             Long proyectoId,
             EntregableRequest datos,
             MultipartFile archivo) {
-        Usuario usuario = buscarUsuarioActivo(nombreUsuario);
+        Usuario usuario = accesoUsuarios.buscarActivo(nombreUsuario);
         Proyecto proyecto = buscarProyectoVisible(usuario, proyectoId);
         if (proyecto.isArchivado()) {
             throw new IllegalArgumentException("No se pueden crear entregables en un proyecto archivado.");
@@ -84,7 +88,7 @@ public class EntregableService {
             Long id,
             EntregableRequest datos,
             MultipartFile archivo) {
-        Usuario usuario = buscarUsuarioActivo(nombreUsuario);
+        Usuario usuario = accesoUsuarios.buscarActivo(nombreUsuario);
         Entregable entregable = buscarActivo(id);
         Proyecto proyecto = buscarProyectoVisible(usuario, entregable.getProyecto().getId());
         exigirProyectoActivo(proyecto);
@@ -100,7 +104,7 @@ public class EntregableService {
 
     @Transactional
     public EntregableResponse retirar(String nombreUsuario, Long id, String motivo) {
-        Usuario usuario = buscarUsuarioActivo(nombreUsuario);
+        Usuario usuario = accesoUsuarios.buscarActivo(nombreUsuario);
         Entregable entregable = buscarActivo(id);
         Proyecto proyecto = buscarProyectoVisible(usuario, entregable.getProyecto().getId());
         exigirProyectoActivo(proyecto);
@@ -114,7 +118,7 @@ public class EntregableService {
 
     @Transactional(readOnly = true)
     public ArchivoEntregable descargar(String nombreUsuario, Long entregableId, Long archivoId) {
-        Usuario usuario = buscarUsuarioActivo(nombreUsuario);
+        Usuario usuario = accesoUsuarios.buscarActivo(nombreUsuario);
         Entregable entregable = buscarActivo(entregableId);
         buscarProyectoVisible(usuario, entregable.getProyecto().getId());
         ArchivoEntregable archivo = archivoRepository.findById(archivoId)
@@ -129,24 +133,12 @@ public class EntregableService {
         if (fichero == null || fichero.isEmpty()) {
             return;
         }
-        if (fichero.getSize() > TAMANO_MAXIMO) {
-            throw new IllegalArgumentException("El archivo no puede superar los 15 MB.");
-        }
         int version = archivoRepository.findFirstByEntregableIdOrderByVersionDesc(entregable.getId())
                 .map(ArchivoEntregable::getVersion)
                 .orElse(0) + 1;
-        try {
-            String tipo = fichero.getContentType() == null ? "application/octet-stream" : fichero.getContentType();
-            archivoRepository.save(new ArchivoEntregable(
-                    entregable,
-                    version,
-                    limpiarNombre(fichero.getOriginalFilename()),
-                    tipo,
-                    fichero.getBytes(),
-                    usuario));
-        } catch (IOException exception) {
-            throw new IllegalArgumentException("No se pudo leer el archivo seleccionado.");
-        }
+        ContenidoArchivo contenido = procesadorArchivos.procesar(fichero);
+        archivoRepository.save(new ArchivoEntregable(
+                entregable, version, contenido.nombre(), contenido.tipo(), contenido.bytes(), usuario));
     }
 
     private EntregableResponse respuesta(Entregable entregable, Usuario usuario) {
@@ -177,15 +169,6 @@ public class EntregableService {
                 .orElseThrow(() -> new RecursoNoEncontradoException("No se encontro el entregable solicitado."));
     }
 
-    private Usuario buscarUsuarioActivo(String nombreUsuario) {
-        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuario)
-                .orElseThrow(() -> new RecursoNoEncontradoException("No se encontro el perfil solicitado."));
-        if (!usuario.isActivo()) {
-            throw new RecursoNoEncontradoException("No se encontro el perfil solicitado.");
-        }
-        return usuario;
-    }
-
     private void validar(EntregableRequest datos) {
         if (datos == null || datos.titulo() == null || datos.titulo().isBlank()) {
             throw new IllegalArgumentException("El titulo del entregable es obligatorio.");
@@ -211,9 +194,4 @@ public class EntregableService {
         return valor == null || valor.isBlank() ? null : valor.trim();
     }
 
-    private String limpiarNombre(String original) {
-        String nombre = original == null ? "archivo" : original.replace("\\", "/");
-        nombre = nombre.substring(nombre.lastIndexOf('/') + 1).trim();
-        return nombre.isBlank() ? "archivo" : nombre.substring(0, Math.min(nombre.length(), 240));
-    }
 }

@@ -102,6 +102,20 @@ public class DemoDataConfig {
                     EstadoProyecto.COMPLETADO,
                     investigador,
                     investigadorBarcelona);
+            crearProyectoLibreSiNoExiste(
+                    proyectoRepository,
+                    "PRY-SAN-01",
+                    "Optimizacion de gestion investigadora",
+                    "Gestion academica",
+                    SedeFuniber.SANTANDER,
+                    coordinador);
+            crearProyectoLibreSiNoExiste(
+                    proyectoRepository,
+                    "PRY-SAN-02",
+                    "Indicadores de productividad cientifica",
+                    "Produccion cientifica",
+                    SedeFuniber.SANTANDER,
+                    coordinador);
             crearRecompensaSiNoExiste(
                     recompensaRepository,
                     proyectoSantander,
@@ -198,5 +212,18 @@ public class DemoDataConfig {
                     concepto,
                     new BigDecimal(valor)));
         }
+    }
+
+    private void crearProyectoLibreSiNoExiste(
+            ProyectoRepository proyectoRepository,
+            String codigo,
+            String nombre,
+            String area,
+            SedeFuniber sede,
+            Usuario coordinador) {
+        Proyecto proyecto = proyectoRepository.findByCodigo(codigo)
+                .orElseGet(() -> new Proyecto(codigo, nombre, EstadoProyecto.EN_CURSO));
+        proyecto.actualizar(codigo, nombre, "", area, sede, null, null, EstadoProyecto.EN_CURSO, coordinador);
+        proyectoRepository.save(proyecto);
     }
 }

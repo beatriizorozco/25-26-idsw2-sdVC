@@ -5,13 +5,12 @@ import es.funiber.investigacion.dto.CargaTrabajoUpdateRequest;
 import es.funiber.investigacion.dto.PanelCargaTrabajoResponse;
 import es.funiber.investigacion.dto.ProyectoLibreResponse;
 import es.funiber.investigacion.dto.SugerenciaAsignacionResponse;
-import es.funiber.investigacion.exception.AccesoNoPermitidoException;
-import es.funiber.investigacion.exception.RecursoNoEncontradoException;
 import es.funiber.investigacion.model.CargaTrabajo;
 import es.funiber.investigacion.model.Rol;
 import es.funiber.investigacion.model.SedeFuniber;
 import es.funiber.investigacion.model.Usuario;
 import es.funiber.investigacion.repository.CargaTrabajoRepository;
+import es.funiber.investigacion.repository.ProyectoRepository;
 import es.funiber.investigacion.repository.UsuarioRepository;
 import java.math.BigDecimal;
 import java.util.Comparator;
@@ -27,12 +26,18 @@ public class CargaTrabajoService {
 
     private final UsuarioRepository usuarioRepository;
     private final CargaTrabajoRepository cargaTrabajoRepository;
+    private final AccesoUsuarioService accesoUsuarios;
+    private final ProyectoRepository proyectoRepository;
 
     public CargaTrabajoService(
             UsuarioRepository usuarioRepository,
-            CargaTrabajoRepository cargaTrabajoRepository) {
+            CargaTrabajoRepository cargaTrabajoRepository,
+            AccesoUsuarioService accesoUsuarios,
+            ProyectoRepository proyectoRepository) {
         this.usuarioRepository = usuarioRepository;
         this.cargaTrabajoRepository = cargaTrabajoRepository;
+        this.accesoUsuarios = accesoUsuarios;
+        this.proyectoRepository = proyectoRepository;
     }
 
     @Transactional(readOnly = true)
@@ -44,7 +49,7 @@ public class CargaTrabajoService {
                 .filter(usuario -> filtro.isBlank() || coincide(usuario, filtro))
                 .map(this::mapearCarga)
                 .toList();
-        List<ProyectoLibreResponse> proyectosLibres = proyectosLibresDemo();
+        List<ProyectoLibreResponse> proyectosLibres = obtenerProyectosLibres();
         return new PanelCargaTrabajoResponse(
                 MAXIMO_DOCENTE_SEMANAL,
                 cargas,
@@ -54,23 +59,20 @@ public class CargaTrabajoService {
 
     @Transactional(readOnly = true)
     public CargaTrabajoPersonaResponse obtenerCargaPropia(String nombreUsuario) {
-        return mapearCarga(buscarUsuarioActivo(nombreUsuario));
+        return mapearCarga(accesoUsuarios.buscarActivo(nombreUsuario));
     }
 
     @Transactional(readOnly = true)
     public CargaTrabajoPersonaResponse obtenerCargaPorPerfil(String nombreUsuario, Long perfilId) {
         exigirCoordinador(nombreUsuario);
-        return mapearCarga(buscarUsuarioActivo(perfilId));
+        return mapearCarga(accesoUsuarios.buscarActivo(perfilId));
     }
 
     @Transactional
     public CargaTrabajoPersonaResponse actualizarCargaPropia(
             String nombreUsuario,
             CargaTrabajoUpdateRequest request) {
-        Usuario usuario = buscarUsuarioActivo(nombreUsuario);
-        if (usuario.getRol() != Rol.INVESTIGADOR) {
-            throw new AccesoNoPermitidoException("Solo un investigador puede actualizar su carga propia.");
-        }
+        Usuario usuario = accesoUsuarios.exigirRol(nombreUsuario, Rol.INVESTIGADOR);
         return actualizarCarga(usuario, request);
     }
 
@@ -80,7 +82,7 @@ public class CargaTrabajoService {
             Long perfilId,
             CargaTrabajoUpdateRequest request) {
         exigirCoordinador(nombreUsuario);
-        return actualizarCarga(buscarUsuarioActivo(perfilId), request);
+        return actualizarCarga(accesoUsuarios.buscarActivo(perfilId), request);
     }
 
     private CargaTrabajoPersonaResponse actualizarCarga(Usuario usuario, CargaTrabajoUpdateRequest request) {
@@ -140,43 +142,19 @@ public class CargaTrabajoService {
                 .toList();
     }
 
-    private List<ProyectoLibreResponse> proyectosLibresDemo() {
-        return List.of(
-                new ProyectoLibreResponse(
-                        "PRY-SAN-01",
-                        "Optimizacion de gestion investigadora",
-                        SedeFuniber.SANTANDER.getEtiqueta(),
-                        "Gestion academica"),
-                new ProyectoLibreResponse(
-                        "PRY-SAN-02",
-                        "Indicadores de productividad cientifica",
-                        SedeFuniber.SANTANDER.getEtiqueta(),
-                        "Produccion cientifica"));
+    private List<ProyectoLibreResponse> obtenerProyectosLibres() {
+        return proyectoRepository.findByArchivadoOrderByNombreAsc(false).stream()
+                .filter(proyecto -> proyecto.getInvestigadores().isEmpty())
+                .map(proyecto -> new ProyectoLibreResponse(
+                        proyecto.getCodigo(),
+                        proyecto.getNombre(),
+                        proyecto.getSede() == null ? SedeFuniber.GLOBAL.getEtiqueta() : proyecto.getSede().getEtiqueta(),
+                        proyecto.getArea() == null ? "" : proyecto.getArea()))
+                .toList();
     }
 
     private void exigirCoordinador(String nombreUsuario) {
-        Usuario usuario = buscarUsuarioActivo(nombreUsuario);
-        if (usuario.getRol() != Rol.COORDINADOR) {
-            throw new AccesoNoPermitidoException();
-        }
-    }
-
-    private Usuario buscarUsuarioActivo(String nombreUsuario) {
-        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuario)
-                .orElseThrow(() -> new RecursoNoEncontradoException("No se encontro el perfil solicitado."));
-        if (!usuario.isActivo()) {
-            throw new RecursoNoEncontradoException("No se encontro el perfil solicitado.");
-        }
-        return usuario;
-    }
-
-    private Usuario buscarUsuarioActivo(Long perfilId) {
-        Usuario usuario = usuarioRepository.findById(perfilId)
-                .orElseThrow(() -> new RecursoNoEncontradoException("No se encontro el perfil solicitado."));
-        if (!usuario.isActivo()) {
-            throw new RecursoNoEncontradoException("No se encontro el perfil solicitado.");
-        }
-        return usuario;
+        accesoUsuarios.exigirRol(nombreUsuario, Rol.COORDINADOR);
     }
 
     private boolean coincide(Usuario usuario, String filtro) {

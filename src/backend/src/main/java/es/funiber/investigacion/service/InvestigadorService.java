@@ -28,21 +28,24 @@ public class InvestigadorService {
     private final ProyectoRepository proyectoRepository;
     private final CargaTrabajoRepository cargaTrabajoRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AccesoUsuarioService accesoUsuarios;
 
     public InvestigadorService(
             UsuarioRepository usuarioRepository,
             ProyectoRepository proyectoRepository,
             CargaTrabajoRepository cargaTrabajoRepository,
-            PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder,
+            AccesoUsuarioService accesoUsuarios) {
         this.usuarioRepository = usuarioRepository;
         this.proyectoRepository = proyectoRepository;
         this.cargaTrabajoRepository = cargaTrabajoRepository;
         this.passwordEncoder = passwordEncoder;
+        this.accesoUsuarios = accesoUsuarios;
     }
 
     @Transactional(readOnly = true)
     public List<InvestigadorResumenResponse> listar(String nombreUsuario, String criterio, Long proyectoId) {
-        Usuario solicitante = buscarUsuarioActivo(nombreUsuario);
+        Usuario solicitante = accesoUsuarios.buscarActivo(nombreUsuario);
         List<Usuario> investigadores = proyectoId == null
                 ? listarDirectorioGlobal(solicitante)
                 : listarParticipantes(solicitante, proyectoId);
@@ -55,8 +58,8 @@ public class InvestigadorService {
 
     @Transactional(readOnly = true)
     public InvestigadorDetalleResponse obtener(String nombreUsuario, Long investigadorId, Long proyectoId) {
-        Usuario solicitante = buscarUsuarioActivo(nombreUsuario);
-        Usuario investigador = buscarInvestigadorActivo(investigadorId);
+        Usuario solicitante = accesoUsuarios.buscarActivo(nombreUsuario);
+        Usuario investigador = accesoUsuarios.buscarInvestigadorActivo(investigadorId);
         if (solicitante.getRol() == Rol.INVESTIGADOR && proyectoId != null) {
             Proyecto proyecto = buscarProyectoVisibleParaInvestigador(solicitante, proyectoId);
             if (!proyecto.participa(investigador)) {
@@ -144,29 +147,8 @@ public class InvestigadorService {
                 .orElseThrow(() -> new RecursoNoEncontradoException("No se encontro el proyecto solicitado."));
     }
 
-    private Usuario buscarUsuarioActivo(String nombreUsuario) {
-        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuario)
-                .orElseThrow(() -> new RecursoNoEncontradoException("No se encontro el perfil solicitado."));
-        if (!usuario.isActivo()) {
-            throw new RecursoNoEncontradoException("No se encontro el perfil solicitado.");
-        }
-        return usuario;
-    }
-
-    private Usuario buscarInvestigadorActivo(Long id) {
-        Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("No se encontro el investigador solicitado."));
-        if (!usuario.isActivo() || usuario.getRol() != Rol.INVESTIGADOR) {
-            throw new RecursoNoEncontradoException("No se encontro el investigador solicitado.");
-        }
-        return usuario;
-    }
-
     private void exigirCoordinador(String nombreUsuario) {
-        Usuario usuario = buscarUsuarioActivo(nombreUsuario);
-        if (usuario.getRol() != Rol.COORDINADOR) {
-            throw new AccesoNoPermitidoException();
-        }
+        accesoUsuarios.exigirRol(nombreUsuario, Rol.COORDINADOR);
     }
 
     private BigDecimal cargaSemanal(Usuario usuario) {
