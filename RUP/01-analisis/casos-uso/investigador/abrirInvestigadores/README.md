@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para presentar a Investigador el listado de 
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `abrirInvestigadores()` desde el estado de contexto correspondiente.
-- **Control**: Se comunica con `InvestigadorController`.
-- **Salida**: Devuelve el control a la navegación definida para el Investigador.
+- **Entrada**: Recibe `abrirInvestigadores()` desde `PANEL_PRINCIPAL_ABIERTO` o `abrirInvestigadores(idProyecto)` desde `PROYECTO_ABIERTO`.
+- **Control**: Se comunica con `InvestigadoresController`.
+- **Salida**: Presenta `INVESTIGADORES_ABIERTOS` y permite derivar a `abrirInvestigador()` o `abrirPanelPrincipal()`.
 
 ### Clases de control
 
@@ -86,18 +86,18 @@ Analizar la colaboración necesaria para presentar a Investigador el listado de 
 
 ### Secuencia de operaciones
 
-1. **Inicio**: Estado de contexto -> `ListarInvestigadoresView.abrirInvestigadores()`.
-2. **Solicitud principal**: `ListarInvestigadoresView` -> `InvestigadorController.listarInvestigadores()`.
+1. **Inicio**: `PANEL_PRINCIPAL_ABIERTO` o `PROYECTO_ABIERTO` -> `ListarInvestigadoresView.abrirInvestigadores(idProyecto?)`.
+2. **Solicitud principal**: `ListarInvestigadoresView` -> `InvestigadoresController.listarInvestigadores(idProyecto?)`.
 3. **Listado global**: `InvestigadoresController` -> `InvestigadorRepository.obtenerActivos()`.
 4. **Listado contextual**: `InvestigadoresController` -> `ProyectoRepository.obtenerParticipantesDeProyectoPropio(idProyecto, investigador)`.
 5. **Búsqueda**: `InvestigadoresController` filtra dentro del alcance recibido.
-6. **Finalización**: `ListarInvestigadoresView` devuelve el control al estado de navegación definido.
+6. **Finalización**: `ListarInvestigadoresView` presenta `INVESTIGADORES_ABIERTOS` o deriva a una colaboración permitida.
 
 ### Patrón de colaboración establecido
 
 - **Entrada contextual**: Puede iniciarse desde `PANEL_PRINCIPAL_ABIERTO`, `PROYECTO_ABIERTO`; la vista conserva el origen para que el controlador ajuste el alcance cuando exista identificador de contexto.
 - **Análisis MVC completo**: Vista, Control y Entidad claramente separados.
-- **Salida estándar**: Retorno a la navegación permitida o a una colaboración relacionada.
+- **Salidas concretas**: `INVESTIGADORES_ABIERTOS`, `abrirInvestigador()` o `abrirPanelPrincipal()`.
 
 ## Correspondencia con requisitos
 

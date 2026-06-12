@@ -21,6 +21,10 @@ Análisis de cada caso de uso mediante:
 - **Diagramas de colaboración**: relaciones entre estado de entrada, vista, control, entidades y colaboraciones de salida.
 - **Responsabilidades definidas**: separación clara entre presentación, coordinación y datos.
 
+### [Auditoría final de Análisis](auditoria-final.md)
+
+Revisión transversal de cobertura, trazabilidad, estados de contexto, responsabilidades SOLID y decisiones de conservación histórica.
+
 ### Actores analizados
 
 - [Coordinador](casos-uso/coordinador/README.md): casos con permisos globales sobre proyectos, investigadores, publicaciones, entregables, convocatorias, recompensas y solicitudes de eliminación de perfil.
@@ -55,7 +59,7 @@ Análisis de cada caso de uso mediante:
 - **Gestión de sesión y navegación principal**: `iniciarSesion()`, `abrirPanelPrincipal()` y `cerrarSesion()`.
 - **Gestión de perfil**: opciones de perfil, edición, solicitud de eliminación y revisión de solicitudes por Coordinador.
 
-### Bloques documentados para revisión progresiva
+### Bloques revisados transversalmente
 
 - **Gestión de carga de trabajo**: consulta y edición de carga de trabajo.
 - **Gestión de proyectos**: consulta, creación, edición, eliminación y asignación de investigadores.
@@ -79,9 +83,9 @@ Casos `editarXXX()` donde una vista captura cambios, el controlador valida regla
 
 Casos `crearXXX()` donde el sistema registra una nueva entidad y deriva después al estado de detalle o edición correspondiente.
 
-### Patrón de eliminación segura
+### Patrón de baja segura
 
-Casos `eliminarXXX()` donde la vista solicita confirmación, el controlador valida permisos y dependencias, y el repositorio ejecuta la eliminación.
+Casos `eliminarXXX()` donde la vista solicita confirmación, el controlador valida permisos y dependencias, y el repositorio registra una desactivación, retirada, desasignación, archivado o anulación que conserva el histórico.
 
 ### Patrón de solicitud de eliminación de perfil
 
@@ -126,6 +130,7 @@ El Investigador o Coordinador registra una solicitud pendiente. El Coordinador r
 
 - [Casos de uso especificados](/RUP/00-casos-uso/02-detalle/README.md)
 - [Casos de uso - Análisis MVC](casos-uso/README.md)
+- [Auditoría final de Análisis](auditoria-final.md)
 - [Coordinador](casos-uso/coordinador/README.md)
 - [Investigador](casos-uso/investigador/README.md)
 - [Modelo del dominio](/RUP/00-casos-uso/00-modelo-del-dominio/modelo-dominio.md)

@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `abrirInvestigador()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `abrirInvestigador(idInvestigador)` desde `INVESTIGADORES_ABIERTOS`.
 - **Control**: Se comunica con `InvestigadorController`.
-- **Salida**: Devuelve el control a la navegación definida para el Investigador.
+- **Salida**: Presenta `INVESTIGADOR_ABIERTO` y permite derivar a `abrirInvestigadores()` o `abrirProyectos()`.
 
 ### Clases de control
 
@@ -86,18 +86,18 @@ Analizar la colaboración necesaria para presentar a Investigador el detalle de 
 
 ### Secuencia de operaciones
 
-1. **Inicio**: Estado de contexto -> `DetalleInvestigadorView.abrirInvestigador()`.
+1. **Inicio**: `INVESTIGADORES_ABIERTOS` -> `DetalleInvestigadorView.abrirInvestigador(idInvestigador)`.
 2. **Solicitud principal**: `DetalleInvestigadorView` -> `InvestigadorController.obtenerInvestigador(id)`.
 3. **Consulta del perfil**: `InvestigadorController` -> `InvestigadorRepository.obtenerActivoPorId(id)`.
 4. **Consulta visible**: `InvestigadorController` -> `ProyectoRepository.obtenerVisiblesCompartidos(idInvestigador, actor)`.
 5. **Presentación**: La vista presenta el perfil sin acciones administrativas.
-6. **Finalización**: `DetalleInvestigadorView` devuelve el control al estado de navegación definido.
+6. **Finalización**: `DetalleInvestigadorView` presenta `INVESTIGADOR_ABIERTO` o deriva a `abrirInvestigadores()` o `abrirProyectos()`.
 
 ### Patrón de colaboración establecido
 
-- **Entrada estándar**: Desde el estado activo del diagrama de contexto del Investigador.
+- **Entrada concreta**: Desde `INVESTIGADORES_ABIERTOS`.
 - **Análisis MVC completo**: Vista, Control y Entidad claramente separados.
-- **Salida estándar**: Retorno a la navegación permitida o a una colaboración relacionada.
+- **Salidas concretas**: `INVESTIGADOR_ABIERTO`, `abrirInvestigadores()` o `abrirProyectos()`.
 
 ## Correspondencia con requisitos
 

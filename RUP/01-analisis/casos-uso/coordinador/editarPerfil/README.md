@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para actualizar los datos del perfil propio 
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `editarPerfil()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `editarPerfil()` desde `OPCIONES_PERFIL_ABIERTO`.
 - **Control**: Se comunica con `PerfilController`.
-- **Salida**: Devuelve el control a la navegación definida para el Coordinador.
+- **Salida**: Mantiene `OPCIONES_PERFIL_ABIERTO` y permite derivar a `abrirOpcionesPerfil()`.
 
 ### Clases de control
 

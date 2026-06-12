@@ -40,7 +40,7 @@ Analizar la colaboración necesaria para registrar un nuevo investigador. El an�
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `crearInvestigador()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `crearInvestigador()` desde `INVESTIGADORES_ABIERTOS`.
 - **Control**: Se comunica con `CrearInvestigadorController`.
 - **Salida**: Abre el detalle del investigador creado o retorna al listado si se cancela.
 
@@ -86,18 +86,18 @@ Analizar la colaboración necesaria para registrar un nuevo investigador. El an�
 
 ### Secuencia de operaciones
 
-1. **Inicio**: Estado de contexto -> `CrearInvestigadorView.crearInvestigador()`.
+1. **Inicio**: `INVESTIGADORES_ABIERTOS` -> `CrearInvestigadorView.crearInvestigador()`.
 2. **Solicitud principal**: `CrearInvestigadorView` -> `CrearInvestigadorController.registrarInvestigador(datosMinimos)`.
 3. **Consulta de consistencia**: `CrearInvestigadorController` -> `InvestigadorRepository.existeUsuarioOCorreo(datosMinimos)`.
 4. **Creación conceptual**: `CrearInvestigadorController` -> `Investigador.crear(datosMinimos)`.
 5. **Persistencia**: `CrearInvestigadorController` -> `InvestigadorRepository.guardar(investigador)`.
-6. **Finalización**: `CrearInvestigadorView` devuelve el control al estado de navegación definido.
+6. **Finalización**: `CrearInvestigadorView` presenta `INVESTIGADOR_ABIERTO` o retorna a `INVESTIGADORES_ABIERTOS` si se cancela.
 
 ### Patrón de colaboración establecido
 
-- **Entrada estándar**: Desde el estado activo del diagrama de contexto del Coordinador.
+- **Entrada concreta**: Desde `INVESTIGADORES_ABIERTOS`.
 - **Análisis MVC completo**: Vista, Control y Entidad claramente separados.
-- **Salida estándar**: Retorno a la navegación permitida o a una colaboración relacionada.
+- **Salidas concretas**: `INVESTIGADOR_ABIERTO` tras crear o `INVESTIGADORES_ABIERTOS` al cancelar.
 
 ## Correspondencia con requisitos
 

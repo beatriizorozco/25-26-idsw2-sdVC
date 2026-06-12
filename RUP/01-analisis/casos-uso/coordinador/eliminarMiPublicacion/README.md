@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para retirar una publicación propia conserv
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `eliminarMiPublicacion()` desde el estado de contexto correspondiente.
+- **Entrada**: Compatibilidad documental de `eliminarPublicacion()` cuando se invoca desde `MI_PUBLICACION_ABIERTA`.
 - **Control**: Se comunica con `PublicacionController`.
-- **Salida**: Devuelve el control a la navegación definida para el Coordinador.
+- **Salida**: Presenta `MIS_PUBLICACIONES_ABIERTAS` tras retirar o mantiene `MI_PUBLICACION_ABIERTA` al cancelar.
 
 ### Clases de control
 

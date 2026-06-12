@@ -369,3 +369,13 @@ Los primeros bloques repetían la búsqueda de usuarios activos y las comprobaci
 ## Resultado
 
 Los servicios de caso de uso conservan la coordinación del flujo, pero delegan identidad, archivos y reglas variables. Añadir módulos de panel o tipos de recompensa ya no obliga a modificar los coordinadores existentes, mejorando SRP, OCP y DIP sin cambiar los contratos públicos de la API.
+
+### Cierre del Análisis sin una décima familia funcional
+
+**Síntoma:** Al comenzar el bloque 10 podía interpretarse que faltaba una nueva familia de casos de uso, aunque Detalle, Análisis y los diagramas de contexto ya contenían todas las capacidades funcionales acordadas.
+
+**Causa:** La planificación por bloques no distinguía explícitamente entre las nueve familias funcionales y el bloque final de revisión transversal.
+
+**Solución:** Se definió el bloque 10 como cierre transversal. Se comprobó que los 44 casos del Coordinador y los 27 del Investigador disponen de Detalle, Análisis y diagrama de colaboración. Se creó `RUP/01-analisis/auditoria-final.md` para documentar cobertura, trazabilidad, aplicación de SOLID, decisiones de conservación histórica y riesgos residuales. También se sustituyeron estados abstractos heredados en la familia de investigadores por entradas y salidas concretas respaldadas por los diagramas de contexto.
+
+**Validación:** Las nueve familias funcionales cubren todos los casos de uso definidos y los 71 casos disponen de `README.md` y `colaboracion.puml`.

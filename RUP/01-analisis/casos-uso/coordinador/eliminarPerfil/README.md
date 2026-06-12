@@ -40,7 +40,7 @@ Analizar la colaboración necesaria para desactivar un perfil desde una solicitu
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `eliminarPerfil()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `eliminarPerfil()` desde `SOLICITUD_ELIMINACION_PERFIL_ABIERTA`.
 - **Control**: Se comunica con `PerfilController`.
 - **Salida**: Si confirma, pasa a `SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS`; si cancela, permanece en `SOLICITUD_ELIMINACION_PERFIL_ABIERTA`.
 

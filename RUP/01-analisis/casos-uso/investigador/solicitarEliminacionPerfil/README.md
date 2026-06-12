@@ -40,7 +40,7 @@ Analizar la colaboración necesaria para registrar una solicitud de eliminación
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `solicitarEliminacionPerfil()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `solicitarEliminacionPerfil()` desde `OPCIONES_PERFIL_ABIERTO`.
 - **Control**: Se comunica con `PerfilController`.
 - **Salida**: Si confirma, pasa a `SESION_CERRADA`; si cancela, vuelve a `OPCIONES_PERFIL_ABIERTO`.
 

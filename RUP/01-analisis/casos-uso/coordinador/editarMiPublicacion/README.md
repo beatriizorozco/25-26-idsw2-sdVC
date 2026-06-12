@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para actualizar los datos de publicación pr
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `editarMiPublicacion()` desde el estado de contexto correspondiente.
+- **Entrada**: Compatibilidad documental de `editarPublicacion()` cuando se invoca desde `MI_PUBLICACION_ABIERTA`.
 - **Control**: Se comunica con `PublicacionController`.
-- **Salida**: Devuelve el control a la navegación definida para el Coordinador.
+- **Salida**: Mantiene `MI_PUBLICACION_ABIERTA`.
 
 ### Clases de control
 

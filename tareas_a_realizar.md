@@ -232,3 +232,15 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Crear y revisar el Diseño del bloque 9 con `README.md`, `secuencia.puml`, consultas a Base de Datos y SVG.
 - [x] Implementar el Desarrollo del bloque 9 respetando el registro extensible de importadores.
 - [x] Probar manualmente consulta, filtrado, detalle, cancelación e importación confirmada de convocatorias.
+
+## Bloque 10 - Cierre transversal
+
+- [x] Confirmar que las nueve familias funcionales cubren todos los casos de uso definidos.
+- [x] Comprobar que los 44 casos del Coordinador y los 27 del Investigador disponen de Detalle y Análisis.
+- [x] Verificar que los 71 casos disponen de `README.md` y `colaboracion.puml`.
+- [x] Auditar el Análisis completo contra diagramas de contexto y responsabilidades SOLID.
+- [x] Documentar las decisiones transversales y los riesgos residuales del Análisis.
+- [ ] Resolver los 27 enlaces de cabecera pendientes hacia documentos de Pruebas o alias históricos.
+- [ ] Revisar transversalmente el Diseño y sus consultas a Base de Datos.
+- [ ] Ejecutar una regresión global de Desarrollo y Pruebas.
+- [ ] Preparar Docker, despliegue público y documentación final de entrega.

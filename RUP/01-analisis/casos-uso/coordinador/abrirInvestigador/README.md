@@ -40,9 +40,9 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de i
 - Mantener la navegación hacia el estado siguiente o colaboraciones relacionadas.
 
 **Colaboraciones**:
-- **Entrada**: Recibe `abrirInvestigador()` desde el estado de contexto correspondiente.
+- **Entrada**: Recibe `abrirInvestigador(idCoordinador)` desde `OPCIONES_PERFIL_ABIERTO` o `abrirInvestigador(idInvestigador)` desde `INVESTIGADORES_ABIERTOS`.
 - **Control**: Se comunica con `InvestigadorController`.
-- **Salida**: Devuelve el control a la navegación definida para el Coordinador.
+- **Salida**: Presenta `INVESTIGADOR_ABIERTO` y permite derivar a `abrirOpcionesPerfil()`, `abrirInvestigadores()` o `abrirProyectos()`.
 
 ### Clases de control
 
@@ -86,18 +86,18 @@ Analizar la colaboración necesaria para presentar a Coordinador el detalle de i
 
 ### Secuencia de operaciones
 
-1. **Inicio**: Estado de contexto -> `DetalleInvestigadorView.abrirInvestigador()`.
+1. **Inicio**: `OPCIONES_PERFIL_ABIERTO` o `INVESTIGADORES_ABIERTOS` -> `DetalleInvestigadorView.abrirInvestigador(idInvestigador)`.
 2. **Solicitud principal**: `DetalleInvestigadorView` -> `InvestigadorController.obtenerInvestigador(id)`.
 3. **Consulta del perfil**: `InvestigadorController` -> `InvestigadorRepository.obtenerActivoPorId(id)`.
 4. **Consulta de proyectos**: `InvestigadorController` -> `ProyectoRepository.obtenerPorInvestigador(id)`.
 5. **Presentación**: La vista presenta el perfil y las navegaciones permitidas.
-6. **Finalización**: `DetalleInvestigadorView` devuelve el control al estado de navegación definido.
+6. **Finalización**: `DetalleInvestigadorView` presenta `INVESTIGADOR_ABIERTO` o deriva a una colaboración permitida.
 
 ### Patrón de colaboración establecido
 
 - **Entrada contextual**: Puede iniciarse desde `OPCIONES_PERFIL_ABIERTO`, `INVESTIGADORES_ABIERTOS`; la vista conserva el origen para que el controlador ajuste el alcance cuando exista identificador de contexto.
 - **Análisis MVC completo**: Vista, Control y Entidad claramente separados.
-- **Salida estándar**: Retorno a la navegación permitida o a una colaboración relacionada.
+- **Salidas concretas**: `INVESTIGADOR_ABIERTO`, `abrirOpcionesPerfil()`, `abrirInvestigadores()` o `abrirProyectos()`.
 
 ## Correspondencia con requisitos
 
