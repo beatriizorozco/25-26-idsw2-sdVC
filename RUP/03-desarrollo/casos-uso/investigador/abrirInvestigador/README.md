@@ -1,16 +1,75 @@
-# FUNIBER > Investigador > Abrir Investigador > Desarrollo
+# FUNIBER > Investigador > abrirInvestigador > Desarrollo
 
-> |[Inicio](/README.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/abrirInvestigador/README.md)|[Análisis](/RUP/01-analisis/casos-uso/investigador/abrirInvestigador/README.md)|[Diseño](/RUP/02-diseño/casos-uso/investigador/abrirInvestigador/README.md)|**Desarrollo**|
-> |-|-|-|-|-|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/abrirInvestigador/README.md)|[Análisis](/RUP/01-analisis/casos-uso/investigador/abrirInvestigador/README.md)|[Diseño](/RUP/02-diseño/casos-uso/investigador/abrirInvestigador/README.md)|**Desarrollo**|Pruebas|
+> |-|-|-|-|-|-|-|
 
-## Implementación
+- **Backend:** [InvestigadorDetalleResponse.java](/src/backend/src/main/java/es/funiber/investigacion/dto/InvestigadorDetalleResponse.java) · [InvestigadorService.java](/src/backend/src/main/java/es/funiber/investigacion/service/InvestigadorService.java)
+- **Frontend:** [InvestigadoresPage.tsx](/src/frontend/src/pages/InvestigadoresPage.tsx)
+- **Pruebas:** [InvestigadorIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/InvestigadorIntegrationTests.java)
+
+## Descripción
 
 `GET /api/investigadores/{id}` permite abrir un perfil visible del directorio o de un proyecto compartido. Si el investigador autenticado no comparte visibilidad con el perfil solicitado, el backend responde como recurso no encontrado.
 
-El detalle muestra únicamente la información visible del perfil y los proyectos compartidos o accesibles para el usuario autenticado.
+## Estado
 
-## Código relacionado
+**Completado** - Implementación integrada en Spring Boot y React.
 
-- [`InvestigadoresPage.tsx`](/src/frontend/src/pages/InvestigadoresPage.tsx)
-- [`InvestigadorDetalleResponse.java`](/src/backend/src/main/java/es/funiber/investigacion/dto/InvestigadorDetalleResponse.java)
-- [`InvestigadorService.java`](/src/backend/src/main/java/es/funiber/investigacion/service/InvestigadorService.java)
+## Contrato HTTP
+
+- `GET /api/investigadores/{id}`
+
+## Implementación por capas
+
+|Responsabilidad|Código relacionado|
+|-|-|
+|Página React|[InvestigadoresPage.tsx](/src/frontend/src/pages/InvestigadoresPage.tsx)|
+|Contrato de datos|[InvestigadorDetalleResponse.java](/src/backend/src/main/java/es/funiber/investigacion/dto/InvestigadorDetalleResponse.java)|
+|Servicio de aplicación|[InvestigadorService.java](/src/backend/src/main/java/es/funiber/investigacion/service/InvestigadorService.java)|
+|Prueba de integración|[InvestigadorIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/InvestigadorIntegrationTests.java)|
+
+## Flujo de datos
+
+1. El Investigador inicia `abrirInvestigador()` desde el estado permitido por el diagrama de contexto.
+2. La interfaz React captura la solicitud y utiliza el cliente HTTP común.
+3. El controlador REST valida sesión, permisos y datos de entrada.
+4. El servicio de aplicación coordina las reglas del caso de uso.
+5. Los repositorios consultan o persisten únicamente la información necesaria.
+6. La interfaz presenta el resultado y conserva la navegación definida.
+
+## Decisiones de implementación
+
+- **Responsabilidad única:** La presentación, coordinación, reglas y persistencia permanecen separadas.
+- **Abierto y cerrado:** Las reglas variables se delegan en servicios, políticas o estrategias extensibles.
+- **Seguridad:** El backend vuelve a validar permisos y propiedad aunque la interfaz oculte acciones.
+- **Trazabilidad:** La implementación mantiene correspondencia con Detalle, Análisis y Diseño.
+
+## Validación
+
+### Backend
+
+```bash
+cd src/backend
+mvn test -Dtest=InvestigadorIntegrationTests
+```
+
+### Frontend
+
+```bash
+cd src/frontend
+npm run build
+```
+
+### Comprobación funcional
+
+1. Iniciar sesión como Investigador.
+2. Acceder al flujo `abrirInvestigador()` desde un estado permitido.
+3. Ejecutar la operación principal y comprobar su resultado visible.
+4. Verificar las alternativas de cancelación, validación o falta de permisos aplicables.
+
+## Referencias
+
+- [Especificación detallada](/RUP/00-casos-uso/02-detalle/investigador/abrirInvestigador/README.md)
+- [Análisis de colaboración](/RUP/01-analisis/casos-uso/investigador/abrirInvestigador/README.md)
+- [Diseño y secuencia](/RUP/02-diseño/casos-uso/investigador/abrirInvestigador/README.md)
+- [Diagrama de contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)

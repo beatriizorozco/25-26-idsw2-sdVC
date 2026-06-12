@@ -3,13 +3,74 @@
 > |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/editarPerfil/README.md)|[Análisis](/RUP/01-analisis/casos-uso/investigador/editarPerfil/README.md)|[Diseño](/RUP/02-diseño/casos-uso/investigador/editarPerfil/README.md)|**Desarrollo**|[Pruebas](/RUP/04-pruebas/casos-uso/investigador/editarPerfil/README.md)|
 > |-|-|-|-|-|-|-|
 
-## Implementación
+- **Backend:** [PerfilController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/PerfilController.java) · [PerfilService.java](/src/backend/src/main/java/es/funiber/investigacion/service/PerfilService.java) · [PerfilUpdateRequest.java](/src/backend/src/main/java/es/funiber/investigacion/dto/PerfilUpdateRequest.java)
+- **Frontend:** [PerfilPage.tsx](/src/frontend/src/pages/PerfilPage.tsx)
+- **Pruebas:** [PerfilIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/PerfilIntegrationTests.java)
+
+## Descripción
 
 El formulario se precarga con el perfil propio y guarda cambios mediante `PATCH /api/perfil`. El backend solo permite modificar el perfil de la sesión actual para este rol.
 
-## Código relacionado
+## Estado
 
-- [`PerfilPage.tsx`](/src/frontend/src/pages/PerfilPage.tsx)
-- [`PerfilController.java`](/src/backend/src/main/java/es/funiber/investigacion/controller/PerfilController.java)
-- [`PerfilService.java`](/src/backend/src/main/java/es/funiber/investigacion/service/PerfilService.java)
-- [`PerfilUpdateRequest.java`](/src/backend/src/main/java/es/funiber/investigacion/dto/PerfilUpdateRequest.java)
+**Completado** - Implementación integrada en Spring Boot y React.
+
+## Contrato HTTP
+
+- `PATCH /api/perfil`
+
+## Implementación por capas
+
+|Responsabilidad|Código relacionado|
+|-|-|
+|Página React|[PerfilPage.tsx](/src/frontend/src/pages/PerfilPage.tsx)|
+|Controlador REST|[PerfilController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/PerfilController.java)|
+|Servicio de aplicación|[PerfilService.java](/src/backend/src/main/java/es/funiber/investigacion/service/PerfilService.java)|
+|Contrato de datos|[PerfilUpdateRequest.java](/src/backend/src/main/java/es/funiber/investigacion/dto/PerfilUpdateRequest.java)|
+|Prueba de integración|[PerfilIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/PerfilIntegrationTests.java)|
+
+## Flujo de datos
+
+1. El Investigador inicia `editarPerfil()` desde el estado permitido por el diagrama de contexto.
+2. La interfaz React captura la solicitud y utiliza el cliente HTTP común.
+3. El controlador REST valida sesión, permisos y datos de entrada.
+4. El servicio de aplicación coordina las reglas del caso de uso.
+5. Los repositorios consultan o persisten únicamente la información necesaria.
+6. La interfaz presenta el resultado y conserva la navegación definida.
+
+## Decisiones de implementación
+
+- **Responsabilidad única:** La presentación, coordinación, reglas y persistencia permanecen separadas.
+- **Abierto y cerrado:** Las reglas variables se delegan en servicios, políticas o estrategias extensibles.
+- **Seguridad:** El backend vuelve a validar permisos y propiedad aunque la interfaz oculte acciones.
+- **Trazabilidad:** La implementación mantiene correspondencia con Detalle, Análisis y Diseño.
+
+## Validación
+
+### Backend
+
+```bash
+cd src/backend
+mvn test -Dtest=PerfilIntegrationTests
+```
+
+### Frontend
+
+```bash
+cd src/frontend
+npm run build
+```
+
+### Comprobación funcional
+
+1. Iniciar sesión como Investigador.
+2. Acceder al flujo `editarPerfil()` desde un estado permitido.
+3. Ejecutar la operación principal y comprobar su resultado visible.
+4. Verificar las alternativas de cancelación, validación o falta de permisos aplicables.
+
+## Referencias
+
+- [Especificación detallada](/RUP/00-casos-uso/02-detalle/investigador/editarPerfil/README.md)
+- [Análisis de colaboración](/RUP/01-analisis/casos-uso/investigador/editarPerfil/README.md)
+- [Diseño y secuencia](/RUP/02-diseño/casos-uso/investigador/editarPerfil/README.md)
+- [Diagrama de contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)
