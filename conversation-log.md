@@ -640,3 +640,17 @@ La refactorización reduce duplicación, delimita responsabilidades y permite a�
 **Resultado:** se utilizó la skill `session-memory`. Se revisaron `conversation-log.md`, `tareas_a_realizar.md`, la rama activa `main`, los commits recientes, los índices de Detalle y Análisis y los diagramas de contexto de Coordinador e Investigador. Se confirmó que las nueve familias funcionales anteriores ya cubren todos los casos de uso definidos: sesión, perfil, carga de trabajo, recompensas, proyectos, investigadores, entregables, publicaciones y convocatorias.
 
 **Decisión:** el bloque 10 se abordará como cierre transversal del proyecto. Su primera fase será auditar el Análisis completo contra Detalle y diagramas de contexto, comprobar trazabilidad y responsabilidades SOLID y corregir incoherencias reales antes de avanzar a la revisión final de Diseño, Desarrollo, Pruebas y despliegue.
+
+---
+
+## [23:43, 12-06-2026] Fin de sesión - Auditoría final frente a los requisitos de entrega
+
+**Prompt:** el usuario solicitó revisar que el proyecto estuviera en orden frente a los requisitos de evaluación publicados por el profesor y cerrar la sesión mediante la skill `session-memory`, indicando expresamente la fecha.
+
+**Resultado:** se utilizó la skill `session-memory`. Se auditó la entrega completa frente a los artefactos obligatorios y se confirmó la presencia de `QUE_HACE.md`, el README principal, el código fuente, la documentación adicional, `conversation-log.md`, 156 fuentes PlantUML en `modelosUML` y 378 SVG en `images`. También se comprobó un historial incremental de 99 commits y la cobertura transversal de las nueve familias funcionales y los 71 casos de uso.
+
+Se creó `documents/analisis-resultado-asignatura.md`, que evalúa de forma explícita el diseño general, el acoplamiento, la cohesión, el tamaño modular y los cinco principios SOLID, incluyendo fortalezas y limitaciones honestas. Se actualizó el README principal con el estado real del proyecto, se convirtió `documents/README.md` en un índice útil y se reescribió `RUP/04-pruebas/README.md` para reflejar todas las familias funcionales y las evidencias actuales. Además, se eliminó el último aviso de lint de `ConvocatoriasPage.tsx`, documentando la decisión de ejecutar su carga inicial una sola vez.
+
+La validación final del 12 de junio de 2026 confirmó 48 pruebas backend correctas, sin fallos ni errores; las 11 migraciones Flyway aplicadas correctamente; compilación de producción del frontend correcta; lint frontend sin errores; y `git diff --check` limpio. Se identificó honestamente que `QUE_HACE.md` estuvo presente en el primer commit, pero fue completado en un commit posterior, y que reescribir el historial para ocultarlo sería contraproducente. No se realizó ningún commit durante este cierre.
+
+**Decisión:** el proyecto queda funcional, trazable y preparado para la defensa académica de diseño modular y SOLID. Antes de la entrega final se recomienda priorizar una última regresión manual global, completar o canonizar los enlaces pendientes hacia documentos individuales de Pruebas y preparar un despliegue público reproducible para que el profesor pueda acceder desde su equipo. La modularización adicional de algunas páginas frontend extensas queda como mejora futura y no bloquea la entrega.
