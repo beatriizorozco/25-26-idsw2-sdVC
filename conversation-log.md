@@ -643,7 +643,7 @@ La refactorización reduce duplicación, delimita responsabilidades y permite a�
 
 ---
 
-## [23:43, 12-06-2026] Fin de sesión - Auditoría final frente a los requisitos de entrega
+## [2026-06-12 23:43] Fin de sesión - Auditoría final frente a los requisitos de entrega
 
 **Prompt:** el usuario solicitó revisar que el proyecto estuviera en orden frente a los requisitos de evaluación publicados por el profesor y cerrar la sesión mediante la skill `session-memory`, indicando expresamente la fecha.
 
