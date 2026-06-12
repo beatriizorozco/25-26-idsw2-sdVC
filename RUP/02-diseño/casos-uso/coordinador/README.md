@@ -65,3 +65,9 @@
 - [Editar Publicación](editarPublicacion/README.md)
 - [Eliminar Publicación](eliminarPublicacion/README.md)
 - [Responder Publicación](responderPublicacion/README.md)
+
+## Consulta e importación de convocatorias
+
+- [Abrir Convocatorias](abrirConvocatorias/README.md)
+- [Abrir Convocatoria](abrirConvocatoria/README.md)
+- [Importar Convocatoria](importarConvocatoria/README.md)

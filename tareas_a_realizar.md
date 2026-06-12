@@ -220,5 +220,9 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Aplicar responsabilidad única separando vista, coordinación, autorización, validación, importación y persistencia.
 - [x] Aplicar OCP mediante `ImportadorConvocatoria` para admitir nuevas fuentes sin modificar el controlador.
 - [x] Regenerar los SVG de colaboración del bloque 9.
-- [ ] Revisar manualmente el Análisis completo del bloque 9 antes de avanzar.
-- [ ] Crear y revisar el Diseño del bloque 9 con `README.md`, `secuencia.puml`, consultas a Base de Datos y SVG.
+- [x] Revisar manualmente el Análisis completo del bloque 9 antes de avanzar.
+- [x] Corregir la trazabilidad de `abrirConvocatoria()` eliminando la navegación directa al panel no definida en el contexto.
+- [x] Separar la previsualización y la confirmación de `importarConvocatoria()` antes de persistir cambios.
+- [x] Crear y revisar el Diseño del bloque 9 con `README.md`, `secuencia.puml`, consultas a Base de Datos y SVG.
+- [ ] Implementar el Desarrollo del bloque 9 respetando el registro extensible de importadores.
+- [ ] Probar manualmente consulta, filtrado, detalle, cancelación e importación confirmada de convocatorias.

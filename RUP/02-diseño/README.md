@@ -64,7 +64,7 @@ La aplicación se plantea como una SPA con API REST y despliegue unificado.
 
 ## Diseño de casos de uso
 
-Los bloques diseñados cubren sesión, navegación principal, perfil, carga de trabajo, recompensas asociadas a proyectos completados y gestión de proyectos:
+Los bloques diseñados cubren sesión, navegación principal, perfil, carga de trabajo, recompensas, proyectos, investigadores, entregables, publicaciones y convocatorias:
 
 - [Casos de uso de Diseño](casos-uso/README.md)
 - [Coordinador](casos-uso/coordinador/README.md)

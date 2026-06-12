@@ -342,3 +342,13 @@ La autenticación utiliza sesiones HTTP. El navegador conserva una cookie de ses
 - `abrirConvocatorias()` presenta siempre el catálogo global, independientemente del estado de entrada.
 
 **Validación:** Se actualizaron los README y colaboraciones de Análisis del bloque 9, se regeneraron sus SVG y los PlantUML resultantes son válidos.
+
+### Importación de convocatorias sin confirmación técnica ni trazabilidad completa con el contexto
+
+**Síntoma:** La colaboración inicial de `importarConvocatoria()` extraía y guardaba la convocatoria en una única interacción, aunque el Detalle exigía presentar una previsualización y esperar la confirmación del Coordinador. Además, `abrirConvocatoria()` ofrecía volver directamente al panel pese a que esa transición no existe en el diagrama de contexto.
+
+**Causa:** El flujo funcional se había simplificado al trasladarlo a Análisis y conservaba una opción de navegación heredada que no estaba respaldada por el contexto.
+
+**Solución:** Se separaron explícitamente la previsualización y la confirmación. La previsualización selecciona un importador compatible, extrae y valida los datos sin persistirlos; solo la confirmación revalida y ejecuta el guardado. Se incorporó un selector o registro de importadores para aplicar OCP y se eliminó la navegación directa al panel desde el detalle.
+
+**Validación:** El Análisis y el Diseño del bloque 9 respetan las entradas y salidas del diagrama de contexto. Los tres diagramas de secuencia incluyen consultas a Base de Datos, los PlantUML superan `-checkonly` y sus SVG fueron regenerados.

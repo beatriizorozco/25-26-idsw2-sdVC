@@ -19,6 +19,7 @@ Organizar los diagramas de secuencia que convierten las colaboraciones de Análi
 - **Gestión de carga de trabajo**: consulta y edición de cargas según rol, sede y condición docente.
 - **Gestión de recompensas**: gestión global por Coordinador y consulta propia por Investigador para recompensas originadas por proyectos completados.
 - **Gestión de proyectos**: gestión completa y composición de equipos por Coordinador, con consulta restringida de proyectos propios para Investigador.
+- **Consulta e importación de convocatorias**: catálogo global, detalle e importación extensible por fuente para el Coordinador.
 
 ## Convenciones
 

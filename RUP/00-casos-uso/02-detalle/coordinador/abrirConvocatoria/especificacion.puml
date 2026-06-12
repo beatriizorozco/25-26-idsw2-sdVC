@@ -30,7 +30,6 @@ state abrirConvocatoria as "abrirConvocatoria()" {
     <b>Sistema</b> permite solicitar:
     • Importar convocatoria
     • Volver a convocatorias
-    • Volver al panel principal
     end note
 }
 

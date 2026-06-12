@@ -1,6 +1,6 @@
 # FUNIBER > Coordinador > abrirConvocatoria > Detalle y prototipado
 
-> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|**Detalle**|[Análisis](/RUP/01-analisis/README.md)|[Diseño](/RUP/02-diseño/README.md)|[Desarrollo](/RUP/03-desarrollo/README.md)|Pruebas|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|**Detalle**|[Análisis](/RUP/01-analisis/casos-uso/coordinador/abrirConvocatoria/README.md)|[Diseño](/RUP/02-diseño/casos-uso/coordinador/abrirConvocatoria/README.md)|[Desarrollo](/RUP/03-desarrollo/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
 ## Información del artefacto
@@ -57,7 +57,7 @@ Especificación detallada del caso de uso `abrirConvocatoria()` mediante diagram
 
 **Correspondencia con especificación:**
 - **Coordinador** solicita abrir una convocatoria
-- **Sistema** presenta y visualiza la convocatoria solicitada<br>**Sistema** muestra:<br>- Título<br>- Área<br>- Estado<br>- Fechas relevantes<br>- Descripción<br>- Requisitos y condiciones<br>- Criterios de evaluación y dotación<br>- Documentación asociada<br>- Información de contacto<br>**Sistema** permite solicitar:<br>- Importar convocatoria<br>- Volver a convocatorias<br>- Volver al panel principal
+- **Sistema** presenta y visualiza la convocatoria solicitada<br>**Sistema** muestra:<br>- Título<br>- Área<br>- Estado<br>- Fechas relevantes<br>- Descripción<br>- Requisitos y condiciones<br>- Criterios de evaluación y dotación<br>- Documentación asociada<br>- Información de contacto<br>**Sistema** permite solicitar:<br>- Importar convocatoria<br>- Volver a convocatorias
 - Convocatoria mostrada
 - abrirConvocatorias()
 
@@ -82,7 +82,7 @@ Especificación detallada del caso de uso `abrirConvocatoria()` mediante diagram
 |Actor|Acción|Sistema|Respuesta|
 |-|-|-|-|
 |**Coordinador**|solicita abrir una convocatoria|| |
-||**Sistema**|presenta y visualiza la convocatoria solicitada<br>**Sistema** muestra:<br>- Título<br>- Área<br>- Estado<br>- Fechas relevantes<br>- Descripción<br>- Requisitos y condiciones<br>- Criterios de evaluación y dotación<br>- Documentación asociada<br>- Información de contacto<br>**Sistema** permite solicitar:<br>- Importar convocatoria<br>- Volver a convocatorias<br>- Volver al panel principal| |
+||**Sistema**|presenta y visualiza la convocatoria solicitada<br>**Sistema** muestra:<br>- Título<br>- Área<br>- Estado<br>- Fechas relevantes<br>- Descripción<br>- Requisitos y condiciones<br>- Criterios de evaluación y dotación<br>- Documentación asociada<br>- Información de contacto<br>**Sistema** permite solicitar:<br>- Importar convocatoria<br>- Volver a convocatorias| |
 
 ## Estados internos del caso de uso
 

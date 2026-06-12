@@ -1,11 +1,11 @@
 # FUNIBER > Coordinador > abrirConvocatorias > Análisis
 
-> |[Inicio](/README.md)|[Contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/abrirConvocatorias/README.md)|**Análisis**|Diseño|Desarrollo|Pruebas|
+> |[Inicio](/README.md)|[Contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/abrirConvocatorias/README.md)|**Análisis**|[Diseño](/RUP/02-diseño/casos-uso/coordinador/abrirConvocatorias/README.md)|Desarrollo|Pruebas|
 > |-|-|-|-|-|-|-|
 
 ## Propósito
 
-Consultar y filtrar el listado global de convocatorias importadas.
+Consultar y filtrar el catálogo global de convocatorias disponibles, indicando cuáles ya se incorporaron al seguimiento interno.
 
 ## Diagrama de colaboración
 
@@ -19,7 +19,7 @@ Consultar y filtrar el listado global de convocatorias importadas.
 - **ConvocatoriaController**: Coordina la consulta sin autorizar ni persistir.
 - **PoliticaConvocatoria**: Decide si el actor puede consultar o importar convocatorias.
 - **ConvocatoriaRepository**: Recupera convocatorias usando los criterios solicitados.
-- **Convocatoria**: Conserva la información importada y su referencia de origen.
+- **Convocatoria**: Conserva la información disponible, su referencia de origen y su estado de incorporación al seguimiento.
 
 ## Flujo de colaboración
 

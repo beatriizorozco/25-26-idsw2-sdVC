@@ -1,0 +1,32 @@
+@startuml abrirConvocatorias-coordinador-diseno
+title Diagrama de secuencia - abrirConvocatorias
+
+actor Coordinador
+participant "abrirConvocatoriasPage\n(React)" as Frontend
+participant "ConvocatoriaController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "ConsultaConvocatoriaService" as Service
+participant "PoliticaConvocatoria" as Policy
+participant "ConvocatoriaRepository" as Repo
+database "Base de Datos" as DB
+
+Coordinador -> Frontend: Solicita abrirConvocatorias()
+Frontend -> Api: GET /api/convocatorias?texto=&area=&estado= + cookie
+Api -> Sesion: exigirCoordinador(authentication)
+Sesion --> Api: Coordinador autenticado
+Api -> Service: listar(filtro, actor)
+Service -> Policy: permitirConsulta(actor)
+Service -> Repo: buscar(filtro)
+Repo -> DB: SELECT id, titulo, area, estado, fecha_cierre,\nreferencia_externa, incorporada\nFROM convocatorias\nWHERE coincide_filtro = true\nORDER BY fecha_cierre
+DB --> Repo: Convocatorias disponibles
+Repo --> Service: Convocatorias disponibles
+Service --> Api: List<ConvocatoriaResumen>
+Api --> Frontend: 200 OK (ConvocatoriaResumenResponse[])
+Frontend --> Coordinador: Presenta CONVOCATORIAS_ABIERTAS
+
+note right of Frontend
+La misma secuencia se utiliza desde
+PANEL_PRINCIPAL_ABIERTO y
+CONVOCATORIA_ABIERTA.
+end note
+@enduml

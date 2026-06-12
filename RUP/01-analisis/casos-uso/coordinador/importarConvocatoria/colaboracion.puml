@@ -6,6 +6,7 @@ package importarConvocatoria as "importarConvocatoria()" {
     rectangle #629EF9 ImportarConvocatoriaView
     rectangle #b5bd68 ConvocatoriaController
     rectangle #b5bd68 PoliticaConvocatoria
+    rectangle #b5bd68 SelectorImportadorConvocatoria
     rectangle #b5bd68 "ImportadorConvocatoria\n<<interface>>" as Importador
     rectangle #b5bd68 ValidadorConvocatoria
     rectangle #F2AC4E ConvocatoriaRepository
@@ -15,13 +16,17 @@ package importarConvocatoria as "importarConvocatoria()" {
 rectangle #CDEBA5 ":CONVOCATORIA_ABIERTA" as Salida
 
 Entrada -r-> ImportarConvocatoriaView: importarConvocatoria()
-ImportarConvocatoriaView -d-> ConvocatoriaController: importar(fuente, actor)
+ImportarConvocatoriaView -d-> ConvocatoriaController: previsualizar(fuente, actor)
 ConvocatoriaController --> PoliticaConvocatoria: permitirImportacion(actor)
+ConvocatoriaController --> SelectorImportadorConvocatoria: seleccionar(fuente)
+SelectorImportadorConvocatoria --> Importador: obtenerCompatible(fuente)
 ConvocatoriaController --> Importador: extraer(fuente)
 Importador -- FuenteConvocatoria
 ConvocatoriaController --> ValidadorConvocatoria: validar(datosNormalizados)
 ValidadorConvocatoria --> ConvocatoriaRepository: existeReferenciaExterna(referencia)
-ConvocatoriaController --> ConvocatoriaRepository: guardar(convocatoria)
+ImportarConvocatoriaView --> ConvocatoriaController: confirmar(datosNormalizados, actor)
+ConvocatoriaController --> ValidadorConvocatoria: revalidar(datosNormalizados)
+ConvocatoriaController --> ConvocatoriaRepository: guardarTrasConfirmacion(convocatoria)
 ConvocatoriaRepository -- Convocatoria
 ImportarConvocatoriaView ..> Salida: presentarConvocatoria()
 

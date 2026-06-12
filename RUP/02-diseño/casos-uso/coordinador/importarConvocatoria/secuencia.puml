@@ -1,0 +1,55 @@
+@startuml importarConvocatoria-coordinador-diseno
+title Diagrama de secuencia - importarConvocatoria
+
+actor Coordinador
+participant "importarConvocatoriaPage\n(React)" as Frontend
+participant "ConvocatoriaController\n(Spring Boot)" as Api
+participant "SesionService" as Sesion
+participant "ImportacionConvocatoriaService" as Service
+participant "PoliticaConvocatoria" as Policy
+participant "RegistroImportadoresConvocatoria" as Registry
+participant "ImportadorConvocatoria\n<<interface>>" as Importer
+participant "ValidadorConvocatoria" as Validator
+participant "ConvocatoriaRepository" as Repo
+database "Base de Datos" as DB
+
+Coordinador -> Frontend: Introduce archivo o enlace
+Frontend -> Api: POST /api/convocatorias/importaciones/previsualizacion\n(FuenteConvocatoriaRequest) + cookie
+Api -> Sesion: exigirCoordinador(authentication)
+Sesion --> Api: Coordinador autenticado
+Api -> Service: previsualizar(fuente, actor)
+Service -> Policy: permitirImportacion(actor)
+Service -> Registry: obtenerCompatible(fuente)
+Registry --> Service: ImportadorConvocatoria
+Service -> Importer: extraer(fuente)
+Importer --> Service: DatosConvocatoriaNormalizados
+Service -> Validator: validarEstructura(datos)
+Service -> Repo: existeReferenciaExterna(referencia)
+Repo -> DB: SELECT EXISTS(SELECT 1 FROM convocatorias\nWHERE referencia_externa = ?)
+DB --> Repo: Existe / no existe
+Repo --> Service: Existe / no existe
+Service -> Validator: validarDuplicado(estadoExistente)
+Service --> Api: PrevisualizacionConvocatoria
+Api --> Frontend: 200 OK (PrevisualizacionConvocatoriaResponse)
+Frontend --> Coordinador: Presenta datos y solicita confirmacion
+
+alt Coordinador confirma
+    Coordinador -> Frontend: Confirma importacion
+    Frontend -> Api: POST /api/convocatorias/importaciones\n(ConfirmarImportacionRequest) + cookie
+    Api -> Sesion: exigirCoordinador(authentication)
+    Sesion --> Api: Coordinador autenticado
+    Api -> Service: confirmar(datos, fuente, actor)
+    Service -> Policy: permitirImportacion(actor)
+    Service -> Validator: revalidar(datos, fuente)
+    Service -> Repo: guardarImportada(convocatoria)
+    Repo -> DB: INSERT INTO convocatorias (..., referencia_externa, incorporada)\nVALUES (..., ?, true)\nON CONFLICT (referencia_externa)\nDO UPDATE SET ..., incorporada = true
+    DB --> Repo: Convocatoria importada
+    Repo --> Service: Convocatoria importada
+    Service --> Api: ConvocatoriaDetalle
+    Api --> Frontend: 201 Created / 200 OK
+    Frontend --> Coordinador: Presenta CONVOCATORIA_ABIERTA actualizada
+else Coordinador cancela
+    Coordinador -> Frontend: Cancela importacion
+    Frontend --> Coordinador: Mantiene CONVOCATORIA_ABIERTA sin cambios
+end
+@enduml
