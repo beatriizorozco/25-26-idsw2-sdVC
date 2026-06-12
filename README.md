@@ -169,19 +169,20 @@ npm run lint
 
 |Comprobación actual|Resultado|
 |-|-|
-|Suite backend|45 pruebas correctas|
+|Suite backend|48 pruebas correctas|
 |Compilación frontend de producción|Correcta|
+|Lint frontend|Sin errores; un aviso no bloqueante|
 |Autenticación y permisos por rol|Comprobados|
 |Recorridos manuales principales|Comprobados incrementalmente|
 |Diagramas PlantUML|Fuentes y SVG versionados|
 
 ## Estado actual
 
-El proyecto se encuentra en la recta final de construcción incremental:
+El proyecto ha completado las nueve familias funcionales y el bloque transversal de cierre:
 
-- Los bloques funcionales principales hasta publicaciones disponen de trazabilidad RUP y desarrollo funcional.
-- El análisis de convocatorias está preparado para revisión antes de pasar a Diseño.
-- Permanecen pendientes el cierre de los últimos bloques, la revisión transversal y el despliegue público.
+- Sesión, perfil, carga de trabajo, recompensas, proyectos, investigadores, entregables, publicaciones y convocatorias disponen de trazabilidad RUP y desarrollo funcional.
+- La auditoría transversal de Análisis y SOLID cubre los 71 casos de uso.
+- Permanecen pendientes el despliegue público, la regresión manual final y completar documentación de Pruebas por caso de uso.
 
 El seguimiento vivo se mantiene en [tareas_a_realizar.md](/tareas_a_realizar.md) y las decisiones técnicas relevantes en [incidencias_y_soluciones.md](/incidencias_y_soluciones.md).
 
@@ -209,6 +210,7 @@ El seguimiento vivo se mantiene en [tareas_a_realizar.md](/tareas_a_realizar.md)
 - [Modelo del dominio](/RUP/00-casos-uso/00-modelo-del-dominio/modelo-dominio.md)
 - [Detalle y prototipado](/RUP/00-casos-uso/02-detalle/README.md)
 - [Configuración técnica](/RUP/02-diseño/configuracion-proyecto.md)
+- [Análisis del resultado frente a la asignatura](/documents/analisis-resultado-asignatura.md)
 - [Glosario](/documents/vocabulario.md)
 - [Reuniones con la cliente](/documents/reuniones.md)
 - [Log de conversación](/conversation-log.md)

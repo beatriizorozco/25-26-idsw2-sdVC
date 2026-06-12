@@ -29,7 +29,9 @@ export function ConvocatoriasPage({ onVolver }: Props) {
     } catch (e) { setError(mensajeError(e, 'No se pudieron cargar las convocatorias.')) }
   }, [texto, area, estado])
 
-  useEffect(() => { void cargar() }, []) // La carga inicial no debe repetirse mientras se escribe el filtro.
+  // La carga inicial no debe repetirse mientras se escribe el filtro.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { void cargar() }, [])
 
   async function abrir(id: number) {
     try { setSeleccionada(await obtenerConvocatoria(id)); setModo('lista'); setError('') }
