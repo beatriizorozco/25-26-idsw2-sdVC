@@ -224,5 +224,5 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Corregir la trazabilidad de `abrirConvocatoria()` eliminando la navegación directa al panel no definida en el contexto.
 - [x] Separar la previsualización y la confirmación de `importarConvocatoria()` antes de persistir cambios.
 - [x] Crear y revisar el Diseño del bloque 9 con `README.md`, `secuencia.puml`, consultas a Base de Datos y SVG.
-- [ ] Implementar el Desarrollo del bloque 9 respetando el registro extensible de importadores.
-- [ ] Probar manualmente consulta, filtrado, detalle, cancelación e importación confirmada de convocatorias.
+- [x] Implementar el Desarrollo del bloque 9 respetando el registro extensible de importadores.
+- [x] Probar manualmente consulta, filtrado, detalle, cancelación e importación confirmada de convocatorias.

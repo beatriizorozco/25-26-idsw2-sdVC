@@ -608,3 +608,13 @@ La validación final confirmó que las 45 pruebas backend terminan con 0 fallos 
 **Resultado:** se utilizó la skill `session-memory` para cerrar y documentar la sesión. Se corrigió el fallo de arranque de Spring Boot causado por `java.io.Console.istty()` ajustando `JAVA_TOOL_OPTIONS` en `tools/start-dev.ps1`. Se validó manualmente el desarrollo del bloque 8 con Coordinador e Investigador, incluyendo creación, consulta, respuesta, edición y retirada de publicaciones, y se confirmó el control de permisos. También se revisó el análisis del bloque 9 contra los diagramas de contexto y el detalle de convocatorias, corrigiendo la navegación de `abrirConvocatoria()` y separando la previsualización de la confirmación en `importarConvocatoria()`. Se completó el diseño del bloque 9 con diagramas de secuencia, consultas SQL explícitas y componentes extensibles acordes con SOLID, especialmente SRP y OCP. Además, se adaptó el README principal del proyecto y se actualizaron `incidencias_y_soluciones.md` y `tareas_a_realizar.md`. Las comprobaciones finalizaron correctamente: 45 pruebas backend superadas, compilación frontend correcta, diagramas PlantUML válidos y enlaces de los nuevos README verificados.
 
 **Decisión:** el análisis y el diseño del bloque 9 quedan revisados y preparados. La próxima sesión comenzará con el desarrollo del bloque 9, manteniendo un registro extensible de importadores de convocatorias, y continuará con las pruebas manuales de listado, filtrado, detalle, cancelación e importación confirmada.
+
+---
+
+## [17:14] Inicio de sesión - Desarrollo del bloque 9 de convocatorias
+
+**Prompt:** el usuario inició una nueva sesión mediante la skill `session-memory` y solicitó pasar al Desarrollo del bloque 9.
+
+**Resultado:** se utilizó la skill `session-memory`. Se revisaron el historial, `tareas_a_realizar.md`, la rama activa `main`, los commits recientes y el estado del repositorio. Se confirmó que el bloque 8 está validado y que el bloque 9 dispone de Detalle, Análisis y Diseño revisados para `abrirConvocatorias()`, `abrirConvocatoria()` e `importarConvocatoria()`.
+
+**Decisión:** se implementará el bloque 9 respetando que las convocatorias son importadas y no tienen CRUD manual. El backend separará consulta, política, validación, selección extensible de importadores y persistencia; el frontend cubrirá listado, filtrado, detalle, previsualización, cancelación y confirmación. Finalmente se añadirán pruebas y documentación de Desarrollo.

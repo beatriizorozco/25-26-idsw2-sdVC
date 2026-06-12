@@ -15,6 +15,7 @@ src/frontend/dist/
 src/frontend/*.tsbuildinfo
 src/frontend/*-run.log
 src/frontend/*-run.err.log
+src/frontend/dev-server.*.log
 
 # Local diagram tooling
 tools/plantuml.jar

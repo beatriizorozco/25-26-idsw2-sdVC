@@ -296,3 +296,36 @@ export interface PublicacionRequest {
   contenido: string
 }
 
+export interface DatosConvocatoria {
+  titulo: string
+  entidadConvocante: string
+  area: string
+  estado: string
+  fechaApertura?: string
+  fechaCierre?: string
+  descripcion: string
+  requisitos: string
+  criteriosEvaluacion: string
+  dotacion: string
+  contacto: string
+  referenciaExterna: string
+  tipoFuente: string
+}
+
+export interface Convocatoria extends DatosConvocatoria {
+  id: number
+  incorporada: boolean
+  fechaImportacion: string
+}
+
+export interface FuenteConvocatoria {
+  tipo: 'ENLACE' | 'ARCHIVO'
+  referencia: string
+  contenido?: string
+}
+
+export interface PrevisualizacionConvocatoria {
+  datos: DatosConvocatoria
+  mensaje: string
+}
+

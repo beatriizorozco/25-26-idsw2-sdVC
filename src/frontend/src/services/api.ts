@@ -27,6 +27,10 @@ import type {
   Publicacion,
   PublicacionRequest,
   ArchivoPublicacion,
+  Convocatoria,
+  DatosConvocatoria,
+  FuenteConvocatoria,
+  PrevisualizacionConvocatoria,
 } from '../types'
 
 const API_URL = import.meta.env.VITE_API_URL ?? '/api'
@@ -470,5 +474,36 @@ export async function descargarArchivoPublicacion(publicacionId: number, archivo
   enlace.download = archivo.nombre
   enlace.click()
   URL.revokeObjectURL(enlace.href)
+}
+
+export function listarConvocatorias(texto = '', area = '', estado = ''): Promise<Convocatoria[]> {
+  const query = new URLSearchParams()
+  if (texto.trim()) query.set('texto', texto.trim())
+  if (area.trim()) query.set('area', area.trim())
+  if (estado.trim()) query.set('estado', estado.trim())
+  const suffix = query.size ? `?${query.toString()}` : ''
+  return request<Convocatoria[]>(`/convocatorias${suffix}`)
+}
+
+export function obtenerConvocatoria(id: number): Promise<Convocatoria> {
+  return request<Convocatoria>(`/convocatorias/${id}`)
+}
+
+export async function previsualizarConvocatoria(fuente: FuenteConvocatoria): Promise<PrevisualizacionConvocatoria> {
+  const token = await obtenerTokenCsrf()
+  return request<PrevisualizacionConvocatoria>('/convocatorias/importaciones/previsualizacion', {
+    method: 'POST',
+    headers: { [token.headerName]: token.token },
+    body: JSON.stringify(fuente),
+  })
+}
+
+export async function confirmarImportacionConvocatoria(datos: DatosConvocatoria): Promise<Convocatoria> {
+  const token = await obtenerTokenCsrf()
+  return request<Convocatoria>('/convocatorias/importaciones', {
+    method: 'POST',
+    headers: { [token.headerName]: token.token },
+    body: JSON.stringify({ datos }),
+  })
 }
 

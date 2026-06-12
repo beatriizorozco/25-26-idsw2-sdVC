@@ -9,9 +9,10 @@ import { RecompensasPage } from './pages/RecompensasPage'
 import { ProyectosPage } from './pages/ProyectosPage'
 import { InvestigadoresPage } from './pages/InvestigadoresPage'
 import { PublicacionesPage } from './pages/PublicacionesPage'
+import { ConvocatoriasPage } from './pages/ConvocatoriasPage'
 import type { PanelPrincipal, Sesion } from './types'
 
-type Vista = 'panel' | 'perfil' | 'carga-trabajo' | 'recompensas' | 'proyectos' | 'investigadores' | 'publicaciones' | 'mis-publicaciones'
+type Vista = 'panel' | 'perfil' | 'carga-trabajo' | 'recompensas' | 'proyectos' | 'investigadores' | 'publicaciones' | 'mis-publicaciones' | 'convocatorias'
 
 export default function App() {
   const [sesion, setSesion] = useState<Sesion | null>(null)
@@ -90,6 +91,7 @@ export default function App() {
               setVista('investigadores')
             }
             if (codigo === 'publicaciones' || codigo === 'mis-publicaciones') setVista(codigo)
+            if (codigo === 'convocatorias') setVista('convocatorias')
           }}
         />
       )}
@@ -124,6 +126,9 @@ export default function App() {
       )}
       {(vista === 'publicaciones' || vista === 'mis-publicaciones') && (
         <PublicacionesPage rol={sesion.rol} propias={vista === 'mis-publicaciones'} onVolver={() => setVista('panel')} />
+      )}
+      {vista === 'convocatorias' && (
+        <ConvocatoriasPage onVolver={() => setVista('panel')} />
       )}
       {confirmandoCierre && (
         <ConfirmarCierreSesionModal

@@ -1203,6 +1203,90 @@ textarea {
   gap: 14px;
 }
 
+.convocatorias-workspace {
+  max-width: 1280px;
+}
+
+.convocatorias-layout {
+  grid-template-columns: minmax(420px, .95fr) minmax(480px, 1.05fr);
+}
+
+.convocatorias-title .compact-button {
+  margin-left: auto;
+}
+
+.convocatoria-filters,
+.convocatoria-form {
+  display: grid;
+  gap: 13px;
+}
+
+.convocatoria-filters {
+  grid-template-columns: minmax(0, 1.4fr) minmax(150px, .8fr) minmax(130px, .6fr) auto;
+  align-items: end;
+}
+
+.convocatoria-filters input,
+.convocatoria-filters select,
+.convocatoria-form input,
+.convocatoria-form select {
+  min-height: 44px;
+  border: 1px solid #a9c3d2;
+  border-radius: 5px;
+  padding: 10px 11px;
+  background: #fafdff;
+}
+
+.convocatoria-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.convocatoria-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #d5e1ea;
+  border-radius: 5px;
+  padding: 14px;
+  text-align: left;
+  background: #ffffff;
+}
+
+.convocatoria-row:hover,
+.convocatoria-row.selected {
+  border-color: #75add0;
+  background: #f2f8fc;
+}
+
+.convocatoria-row strong,
+.convocatoria-row small {
+  display: block;
+}
+
+.convocatoria-row small {
+  margin-top: 4px;
+  color: #70808a;
+}
+
+.convocatoria-row b {
+  color: #00689d;
+  font-size: 12px;
+}
+
+.convocatoria-data dd {
+  overflow-wrap: anywhere;
+}
+
+.preview-message {
+  border-left: 3px solid #72aeca;
+  padding: 10px 13px;
+  color: #536a76;
+  background: #f4f9fc;
+}
+
 @media (max-width: 760px) {
   .login-layout {
     grid-template-columns: 1fr;
@@ -1264,7 +1348,8 @@ textarea {
 
   .form-grid,
   .assignment-row,
-  .file-upload-row {
+  .file-upload-row,
+  .convocatoria-filters {
     grid-template-columns: 1fr;
   }
 }
