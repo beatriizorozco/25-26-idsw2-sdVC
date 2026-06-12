@@ -1,25 +1,24 @@
 @startuml abrirConvocatoria-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":CONVOCATORIAS_ABIERTAS" as EstadoEntrada
+rectangle #CDEBA5 ":CONVOCATORIAS_ABIERTAS" as Entrada
 package abrirConvocatoria as "abrirConvocatoria()" {
     rectangle #629EF9 DetalleConvocatoriaView
     rectangle #b5bd68 ConvocatoriaController
+    rectangle #b5bd68 PoliticaConvocatoria
     rectangle #F2AC4E ConvocatoriaRepository
     rectangle #F2AC4E Convocatoria
 }
-
-rectangle #CDEBA5 ":CONVOCATORIA_ABIERTA" as EstadoSalida
+rectangle #CDEBA5 ":CONVOCATORIA_ABIERTA" as Salida
 rectangle #CDEBA5 ":Collaboration AbrirConvocatorias" as AbrirConvocatorias
+rectangle #CDEBA5 ":Collaboration ImportarConvocatoria" as ImportarConvocatoria
 
-EstadoEntrada -r-> DetalleConvocatoriaView: abrirConvocatoria()
-
-DetalleConvocatoriaView -d-> ConvocatoriaController: obtenerConvocatoria(id)
-DetalleConvocatoriaView --> ConvocatoriaController: prepararAccionesDisponibles(coordinador)
+Entrada -r-> DetalleConvocatoriaView: abrirConvocatoria(id)
+DetalleConvocatoriaView -d-> ConvocatoriaController: obtenerConvocatoria(id, actor)
+ConvocatoriaController --> PoliticaConvocatoria: permitirConsulta(actor)
 ConvocatoriaController --> ConvocatoriaRepository: obtenerPorId(id)
-ConvocatoriaController --> ConvocatoriaRepository: verificarPermisos(actor)
 ConvocatoriaRepository -- Convocatoria
-DetalleConvocatoriaView ..> EstadoSalida: continuarNavegacion()
+DetalleConvocatoriaView ..> Salida: presentarDetalle()
 DetalleConvocatoriaView ..> AbrirConvocatorias: abrirConvocatorias()
-
+DetalleConvocatoriaView ..> ImportarConvocatoria: importarConvocatoria()
 @enduml

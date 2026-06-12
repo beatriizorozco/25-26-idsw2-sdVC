@@ -588,3 +588,13 @@ El frontend incorpora `PublicacionesPage.tsx`, rutas para publicaciones globales
 La validación final confirmó que las 45 pruebas backend terminan con 0 fallos y 0 errores, que Flyway aplica correctamente las diez migraciones, que el frontend genera la compilación de producción y que `git diff --check` no detecta errores. No se realizó ningún commit durante la sesión.
 
 **Decisión:** el Desarrollo automático y la documentación del bloque 8 quedan terminados. La próxima sesión debe probar manualmente el bloque 8 en navegador con Coordinador e Investigador, comprobar permisos, archivos, respuestas y retirada lógica, y después continuar con el siguiente bloque. Con un 57 % de capacidad semanal restante existe margen razonable para completar el proyecto y corregir errores si se priorizan los bloques pendientes, las pruebas manuales críticas y la revisión final.
+
+---
+
+## [11:22] Inicio de sesión - Corrección del bloque 8 y preparación del bloque 9
+
+**Prompt:** el usuario inició una nueva sesión mediante la skill `session-memory`, informó de que Spring Boot no arranca y de que el bloque 8 muestra un error al completar solicitudes, y pidió continuar después con el Análisis del bloque 9 aplicando SOLID, especialmente responsabilidad única y OCP.
+
+**Resultado:** se utilizó la skill `session-memory`. Se recuperó el contexto de la sesión anterior: el bloque 8 está implementado y validado automáticamente, pero permanece pendiente su prueba manual real. Se identificó el bloque 9 como la familia de convocatorias importadas del Coordinador, formada inicialmente por `abrirConvocatorias()`, `abrirConvocatoria()` e `importarConvocatoria()`.
+
+**Decisión:** antes de crear el Análisis del bloque 9 se diagnosticará y corregirá el fallo real de arranque de Spring Boot, se validará el bloque 8 contra el backend en ejecución y se evitará aceptar únicamente las pruebas automatizadas como evidencia suficiente. Después se modelará el bloque 9 separando vista, coordinación, importación y persistencia para respetar responsabilidad única y permitir extensiones mediante OCP.

@@ -1,35 +1,31 @@
 @startuml abrirConvocatorias-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoEntrada1
-rectangle #CDEBA5 ":CONVOCATORIA_ABIERTA" as EstadoEntrada2
+rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as Panel
+rectangle #CDEBA5 ":CONVOCATORIA_ABIERTA" as Detalle
 package abrirConvocatorias as "abrirConvocatorias()" {
     rectangle #629EF9 ListarConvocatoriasView
     rectangle #b5bd68 ConvocatoriaController
+    rectangle #b5bd68 PoliticaConvocatoria
     rectangle #F2AC4E ConvocatoriaRepository
     rectangle #F2AC4E Convocatoria
 }
-
-rectangle #CDEBA5 ":CONVOCATORIAS_ABIERTAS" as EstadoSalida
+rectangle #CDEBA5 ":CONVOCATORIAS_ABIERTAS" as Salida
 rectangle #CDEBA5 ":Collaboration AbrirConvocatoria" as AbrirConvocatoria
-rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanelPrincipal
+rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanel
 
-EstadoEntrada1 -r-> ListarConvocatoriasView: abrirConvocatorias()
-EstadoEntrada2 -r-> ListarConvocatoriasView: abrirConvocatorias(idConvocatoria)
-
-ListarConvocatoriasView -d-> ConvocatoriaController: listarConvocatorias(contexto)
-ListarConvocatoriasView --> ConvocatoriaController: filtrarConvocatorias(criterio)
-ConvocatoriaController --> ConvocatoriaRepository: obtenerTodos()
-ConvocatoriaController --> ConvocatoriaRepository: obtenerPorContexto(contexto)
-ConvocatoriaController --> ConvocatoriaRepository: buscarPorCriterio(criterio)
+Panel -r-> ListarConvocatoriasView: abrirConvocatorias()
+Detalle -r-> ListarConvocatoriasView: abrirConvocatorias()
+ListarConvocatoriasView -d-> ConvocatoriaController: listarConvocatorias(filtro, actor)
+ConvocatoriaController --> PoliticaConvocatoria: permitirConsulta(actor)
+ConvocatoriaController --> ConvocatoriaRepository: buscar(filtro)
 ConvocatoriaRepository -- Convocatoria
-note right of ConvocatoriaController
-Contexto opcional:
-- sin identificador: listado global
-- con identificador: listado acotado
-end note
-ListarConvocatoriasView ..> EstadoSalida: continuarNavegacion()
-ListarConvocatoriasView ..> AbrirConvocatoria: abrirConvocatoria()
-ListarConvocatoriasView ..> AbrirPanelPrincipal: abrirPanelPrincipal()
+ListarConvocatoriasView ..> Salida: presentarListado()
+ListarConvocatoriasView ..> AbrirConvocatoria: abrirConvocatoria(id)
+ListarConvocatoriasView ..> AbrirPanel: abrirPanelPrincipal()
 
+note right of ListarConvocatoriasView
+El origen de navegacion no cambia
+el alcance global del listado.
+end note
 @enduml

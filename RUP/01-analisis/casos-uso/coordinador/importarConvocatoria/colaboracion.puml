@@ -1,25 +1,34 @@
 @startuml importarConvocatoria-analisis
 skinparam linetype polyline
 
-rectangle #CDEBA5 ":CONVOCATORIA_ABIERTA" as EstadoEntrada
+rectangle #CDEBA5 ":CONVOCATORIA_ABIERTA" as Entrada
 package importarConvocatoria as "importarConvocatoria()" {
     rectangle #629EF9 ImportarConvocatoriaView
     rectangle #b5bd68 ConvocatoriaController
+    rectangle #b5bd68 PoliticaConvocatoria
+    rectangle #b5bd68 "ImportadorConvocatoria\n<<interface>>" as Importador
+    rectangle #b5bd68 ValidadorConvocatoria
     rectangle #F2AC4E ConvocatoriaRepository
+    rectangle #F2AC4E FuenteConvocatoria
     rectangle #F2AC4E Convocatoria
 }
+rectangle #CDEBA5 ":CONVOCATORIA_ABIERTA" as Salida
 
-rectangle #CDEBA5 ":CONVOCATORIA_ABIERTA" as EstadoSalida
-
-
-EstadoEntrada -r-> ImportarConvocatoriaView: importarConvocatoria()
-
-ImportarConvocatoriaView -d-> ConvocatoriaController: importarConvocatoria(datos)
-ImportarConvocatoriaView --> ConvocatoriaController: validarConvocatoriaExterna(datos)
-ConvocatoriaController --> ConvocatoriaRepository: existeConvocatoria(datos)
+Entrada -r-> ImportarConvocatoriaView: importarConvocatoria()
+ImportarConvocatoriaView -d-> ConvocatoriaController: importar(fuente, actor)
+ConvocatoriaController --> PoliticaConvocatoria: permitirImportacion(actor)
+ConvocatoriaController --> Importador: extraer(fuente)
+Importador -- FuenteConvocatoria
+ConvocatoriaController --> ValidadorConvocatoria: validar(datosNormalizados)
+ValidadorConvocatoria --> ConvocatoriaRepository: existeReferenciaExterna(referencia)
 ConvocatoriaController --> ConvocatoriaRepository: guardar(convocatoria)
 ConvocatoriaRepository -- Convocatoria
-ImportarConvocatoriaView ..> EstadoSalida: continuarNavegacion()
+ImportarConvocatoriaView ..> Salida: presentarConvocatoria()
 
-
+note right of Importador
+Punto de extension OCP:
+cada fuente implementa esta
+abstraccion sin cambiar
+el controlador.
+end note
 @enduml

@@ -210,4 +210,15 @@ Actualizar [`RUP/03-desarrollo/README.md`](RUP/03-desarrollo/README.md) durante 
 - [x] Crear y revisar el Diseño del bloque 8 con consultas a Base de Datos.
 - [x] Implementar el Desarrollo del bloque 8 aplicando responsabilidad única, OCP y políticas de autorización separadas.
 - [x] Validar automáticamente el bloque 8 con pruebas de integración backend y compilación de producción frontend.
-- [ ] Probar manualmente el bloque 8 en navegador con Coordinador e Investigador.
+- [x] Probar manualmente el bloque 8 en navegador con Coordinador e Investigador.
+
+## Pendiente inmediato del bloque 9
+
+- [x] Identificar el bloque 9 como consulta e importación de convocatorias para el Coordinador.
+- [x] Confirmar que las convocatorias se importan y no disponen de CRUD manual.
+- [x] Revisar y corregir el Análisis de `abrirConvocatorias()`, `abrirConvocatoria()` e `importarConvocatoria()`.
+- [x] Aplicar responsabilidad única separando vista, coordinación, autorización, validación, importación y persistencia.
+- [x] Aplicar OCP mediante `ImportadorConvocatoria` para admitir nuevas fuentes sin modificar el controlador.
+- [x] Regenerar los SVG de colaboración del bloque 9.
+- [ ] Revisar manualmente el Análisis completo del bloque 9 antes de avanzar.
+- [ ] Crear y revisar el Diseño del bloque 9 con `README.md`, `secuencia.puml`, consultas a Base de Datos y SVG.

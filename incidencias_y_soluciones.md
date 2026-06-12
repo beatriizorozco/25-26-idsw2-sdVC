@@ -275,7 +275,7 @@ La autenticación utiliza sesiones HTTP. El navegador conserva una cookie de ses
 
 |Comprobación|Resultado|
 |-|-|
-|Suite backend|36 pruebas correctas|
+|Suite backend|45 pruebas correctas|
 |Lint frontend|Correcto|
 |Build frontend de producción|Correcto|
 |Reintento tras credenciales incorrectas|Comprobado|
@@ -285,6 +285,8 @@ La autenticación utiliza sesiones HTTP. El navegador conserva una cookie de ses
 |Carga de trabajo por sede|Comprobada por API|
 |Migración V4 de carga de trabajo|Aplicada en local|
 |SVG del bloque 3|Regenerados con PlantUML local|
+|Flujo manual del bloque 8|Comprobado con Coordinador e Investigador|
+|Análisis y SVG del bloque 9|Validados|
 
 ## Mejoras pendientes antes del despliegue
 
@@ -313,3 +315,30 @@ La autenticación utiliza sesiones HTTP. El navegador conserva una cookie de ses
 **Solución:** Completar un proyecto provoca su archivado automático, mientras que archivarlo lo marca como completado. Se añadió la migración `V8__archivos_proyecto.sql` y una API de archivos adjuntos. Coordinador e Investigadores participantes pueden listar, subir y descargar documentos de proyectos activos o archivados; únicamente el Coordinador puede eliminarlos.
 
 **Validación:** La suite backend completa supera 38 pruebas, incluidas las reglas de sincronización de estado, subida, consulta, permisos de descarga y eliminación exclusiva por Coordinador. La compilación de producción y el lint del frontend finalizan correctamente.
+
+### Spring Boot falla antes de iniciar y el frontend muestra errores genéricos
+
+**Síntoma:** `npm run dev` indicaba que Spring Boot no podía iniciarse y mostraba únicamente el final genérico del error de Maven. Al abrir funcionalidades como el bloque 8, el frontend mostraba `No se pudo completar la solicitud`.
+
+**Causa:** El registro completo de `src/backend/backend-run.log` mostraba un `UnsatisfiedLinkError` en `java.io.Console.istty()` durante la preparación del entorno de Spring Boot. El fallo ocurría antes de ejecutar la aplicación cuando el backend se iniciaba desde el script con la salida redirigida. El mensaje del bloque 8 era una consecuencia de que la API no estaba disponible.
+
+**Solución:** Se fijó explícitamente `CONSOLE_LOG_CHARSET=UTF-8` dentro de `JAVA_TOOL_OPTIONS` en `tools/start-dev.ps1`, manteniendo las opciones de codificación y `-Xshare:off`. Esto evita que Spring Boot intente resolver automáticamente el juego de caracteres mediante la consola problemática.
+
+**Validación:** El endpoint `/api/auth/csrf` y el frontend responden con estado `200`. También se comprobó manualmente el bloque 8 con Coordinador e Investigador: creación, respuesta, edición, consulta global, permisos diferenciados y retirada lógica de publicaciones.
+
+### Análisis de convocatorias acoplado a formatos y comportamientos inexistentes
+
+**Síntoma:** El Análisis inicial del bloque 9 trataba `abrirConvocatorias()` como una lista dependiente del contexto e importaba convocatorias sin separar autorización, validación, extracción y persistencia.
+
+**Causa:** Se habían heredado patrones genéricos de otros módulos sin respetar que las convocatorias siempre forman un catálogo global importado y que pueden incorporarse desde fuentes distintas.
+
+**Solución:** Se revisaron `abrirConvocatorias()`, `abrirConvocatoria()` e `importarConvocatoria()` aplicando SOLID:
+
+- `ConvocatoriaController` coordina el flujo sin asumir responsabilidades de autorización, validación o extracción.
+- `PoliticaConvocatoria` concentra los permisos del Coordinador.
+- `ValidadorConvocatoria` valida integridad y duplicados.
+- `ImportadorConvocatoria` actúa como interfaz extensible para añadir formatos o proveedores sin modificar el controlador.
+- `ConvocatoriaRepository` limita su responsabilidad al acceso y persistencia.
+- `abrirConvocatorias()` presenta siempre el catálogo global, independientemente del estado de entrada.
+
+**Validación:** Se actualizaron los README y colaboraciones de Análisis del bloque 9, se regeneraron sus SVG y los PlantUML resultantes son válidos.
