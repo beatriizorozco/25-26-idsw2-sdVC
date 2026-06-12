@@ -494,7 +494,7 @@ Las secuencias definen el comportamiento esperado entre frontend, controlador, `
 
 ---
 
-## [04:00] Fin de sesión
+## [2026-06-11 04:00] Fin de sesión
 
 **Prompt:** cierre automático de sesión solicitado mediante la skill `session-memory`.
 
@@ -506,7 +506,7 @@ En paralelo se avanzó en la implementación del módulo de investigadores: cont
 
 ---
 
-## [10:05] Inicio de sesión - Decidir revisión del bloque 6 o salto al bloque 7
+## [2026-06-11 10:05] Inicio de sesión - Decidir revisión del bloque 6 o salto al bloque 7
 
 **Prompt:** inicio de sesión solicitado mediante la skill `session-memory` para decidir si conviene revisar globalmente el bloque 6 o pasar a revisar Desarrollo y Análisis del bloque 7.
 
@@ -515,7 +515,7 @@ En paralelo se avanzó en la implementación del módulo de investigadores: cont
 **Decisión:** antes de avanzar al bloque 7 conviene cerrar una revisión global breve del bloque 6, centrada en confirmar consistencia documental y, sobre todo, recuperar un arranque estable del backend para poder validar manualmente la funcionalidad. Solo después de esa comprobación tendrá sentido pasar a Análisis y Desarrollo del bloque 7 con tranquilidad.
 ---
 
-## [10:58] Fin de sesión - Análisis corregido y Diseño del bloque 7 completado
+## [2026-06-11 10:58] Fin de sesión - Análisis corregido y Diseño del bloque 7 completado
 
 **Prompt:** el usuario decidió aplazar la reparación del arranque de Spring Boot y solicitó avanzar al bloque 7. Al finalizar el Diseño, pidió cerrar la sesión utilizando la skill `session-memory`.
 
@@ -527,7 +527,7 @@ Se creó el Diseño completo de los diez casos mediante sus `README.md` y `secue
 
 ---
 
-## [17:54] Inicio de sesión - Revisión del Análisis del bloque 7
+## [2026-06-11 17:54] Inicio de sesión - Revisión del Análisis del bloque 7
 
 **Prompt:** el usuario inició una nueva sesión mediante la skill `session-memory` y solicitó revisar el Análisis para confirmar si puede pasar a Diseño.
 
@@ -537,7 +537,7 @@ Se creó el Diseño completo de los diez casos mediante sus `README.md` y `secue
 
 ---
 
-## [18:56] Fin de sesión - Diseño transversal y Desarrollo del bloque 7 completados
+## [2026-06-11 18:56] Fin de sesión - Diseño transversal y Desarrollo del bloque 7 completados
 
 **Prompt:** el usuario solicitó completar y revisar el Desarrollo del bloque 7 y, una vez terminado, cerrar la sesión mediante la skill `session-memory`.
 
@@ -551,7 +551,7 @@ La revisión final confirmó que las 43 pruebas del backend terminan con 0 fallo
 
 ---
 
-## [20:44] Fin de sesión - Arranque estabilizado y presentación de recursos del proyecto mejorada
+## [2026-06-11 20:44] Fin de sesión - Arranque estabilizado y presentación de recursos del proyecto mejorada
 
 **Prompt:** el usuario solicitó corregir el fallo de inicio de Spring Boot, revisar la convivencia entre archivos adjuntos y entregables, aplicar los cambios visuales necesarios y cerrar la sesión mediante la skill `session-memory`.
 
@@ -565,7 +565,7 @@ La revisión final confirmó 43 pruebas backend con 0 fallos y 0 errores, compil
 
 ---
 
-## [22:59] Inicio de sesión - Preparación del bloque 8 de publicaciones
+## [2026-06-11 22:59] Inicio de sesión - Preparación del bloque 8 de publicaciones
 
 **Prompt:** el usuario inició una nueva sesión mediante la skill `session-memory` y preguntó si el proyecto está preparado para pasar al bloque 8.
 
@@ -577,7 +577,7 @@ Se identificó el bloque 8 como la familia funcional de publicaciones para Coord
 
 ---
 
-## [00:25] Fin de sesión - Desarrollo del bloque 8 de publicaciones completado
+## [2026-06-12 00:25] Fin de sesión - Desarrollo del bloque 8 de publicaciones completado
 
 **Prompt:** el usuario solicitó implementar el Desarrollo del bloque 8, valorar si el 57 % de capacidad semanal restante permite terminar el proyecto y cerrar la sesión mediante la skill `session-memory`.
 
@@ -591,7 +591,7 @@ La validación final confirmó que las 45 pruebas backend terminan con 0 fallos 
 
 ---
 
-## [11:22] Inicio de sesión - Corrección del bloque 8 y preparación del bloque 9
+## [2026-06-12 11:22] Inicio de sesión - Corrección del bloque 8 y preparación del bloque 9
 
 **Prompt:** el usuario inició una nueva sesión mediante la skill `session-memory`, informó de que Spring Boot no arranca y de que el bloque 8 muestra un error al completar solicitudes, y pidió continuar después con el Análisis del bloque 9 aplicando SOLID, especialmente responsabilidad única y OCP.
 
@@ -601,7 +601,7 @@ La validación final confirmó que las 45 pruebas backend terminan con 0 fallos 
 
 ---
 
-## [12:32] Fin de sesión - Bloque 8 validado y diseño del bloque 9 completado
+## [2026-06-12 12:32] Fin de sesión - Bloque 8 validado y diseño del bloque 9 completado
 
 **Prompt:** cierre automático de sesión solicitado mediante la skill `session-memory`.
 
@@ -611,7 +611,7 @@ La validación final confirmó que las 45 pruebas backend terminan con 0 fallos 
 
 ---
 
-## [17:14] Inicio de sesión - Desarrollo del bloque 9 de convocatorias
+## [2026-06-12 17:14] Inicio de sesión - Desarrollo del bloque 9 de convocatorias
 
 **Prompt:** el usuario inició una nueva sesión mediante la skill `session-memory` y solicitó pasar al Desarrollo del bloque 9.
 
@@ -621,7 +621,7 @@ La validación final confirmó que las 45 pruebas backend terminan con 0 fallos 
 
 ---
 
-## [18:04] Fin de sesión - Desarrollo del bloque 9 y auditoría SOLID transversal completados
+## [2026-06-12 18:04] Fin de sesión - Desarrollo del bloque 9 y auditoría SOLID transversal completados
 
 **Prompt:** el usuario solicitó revisar que los bloques ya implementados cumplieran SOLID, corregir los incumplimientos, probar el proyecto completo y cerrar la sesión mediante la skill `session-memory`.
 
@@ -633,7 +633,7 @@ La refactorización reduce duplicación, delimita responsabilidades y permite a�
 
 ---
 
-## [22:11] Inicio de sesión - Análisis transversal del bloque 10 final
+## [2026-06-12 22:11] Inicio de sesión - Análisis transversal del bloque 10 final
 
 **Prompt:** el usuario inició una nueva sesión mediante la skill `session-memory`, celebró que únicamente queda el bloque 10 y solicitó comenzarlo por Análisis manteniendo el cumplimiento de SOLID.
 
