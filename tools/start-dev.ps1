@@ -17,10 +17,12 @@ if (-not (Test-Path (Join-Path $javaHome "bin\java.exe"))) {
     exit 1
 }
 
-# Evita reutilizar una caché CDS incompatible cuando VS Code actualiza su JDK integrado.
 $env:JAVA_HOME = $javaHome
 $env:Path = "$(Join-Path $javaHome 'bin');$env:Path"
-$env:JAVA_TOOL_OPTIONS = "-Xshare:off -DCONSOLE_LOG_CHARSET=UTF-8 -Dstdout.encoding=UTF-8 -Dstderr.encoding=UTF-8"
+
+# No heredar opciones globales: algunas distribuciones de JDK para Windows
+# fallan al inicializar java.io.Console cuando se fuerzan desde JAVA_TOOL_OPTIONS.
+Remove-Item Env:JAVA_TOOL_OPTIONS -ErrorAction SilentlyContinue
 
 function Test-BackendPort {
     $client = [System.Net.Sockets.TcpClient]::new()
