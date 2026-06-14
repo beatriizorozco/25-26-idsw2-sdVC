@@ -1,4 +1,4 @@
-﻿@startuml editarProyecto-coordinador-diseno
+@startuml editarProyecto-coordinador-diseno
 title Diagrama de secuencia - Editar proyecto
 
 actor Coordinador
@@ -20,22 +20,22 @@ else Coordinador guarda
     Coordinador -> Frontend: Modifica datos y guarda
     Frontend -> Api: PATCH /api/proyectos/{id}\nProyectoUpdateRequest + cookie
     activate Api
-    Api -> Sesion: exigirCoordinador(authentication)
+    Api -> Sesion: obtenerSesionActual(authentication)
     activate Sesion
     alt Sesion de Coordinador activa
         Sesion --> Api: Coordinador autenticado
         deactivate Sesion
         Api -> Service: actualizar(id, cambios)
         activate Service
-        Service -> Repo: obtenerActivoPorId(id)
+        Service -> Repo: findById(id)
         Repo -> DB: SELECT * FROM proyectos WHERE id = ? AND archivado = false
         DB --> Repo: Resultado de persistencia
         Repo --> Service: Proyecto / vacio
-        Service -> ConvocatoriaRepo: obtenerImportada(cambios.convocatoriaId?)
+        Service -> ConvocatoriaRepo: findById(cambios.convocatoriaId?)
         ConvocatoriaRepo -> DB: SELECT * FROM convocatorias WHERE id = ? AND importada = true
         DB --> ConvocatoriaRepo: Resultado de persistencia
         ConvocatoriaRepo --> Service: Convocatoria / vacio
-        Service -> Service: aplicarCambiosYValidarFechas()
+note right of Service: Responsabilidad interna: aplicarCambiosYValidarFechas
         alt Proyecto inexistente, archivado o datos invalidos
             Service --> Api: RecursoNoEncontradoException / ValidacionException
             deactivate Service
@@ -43,7 +43,7 @@ else Coordinador guarda
             deactivate Api
             Frontend --> Coordinador: Presenta error y conserva formulario
         else Cambios validos
-            Service -> Repo: guardar(proyecto)
+            Service -> Repo: save(proyecto)
         Repo -> DB: UPDATE proyectos SET codigo = ?, nombre = ?, descripcion = ?, area = ?, sede = ?,\nestado = ?, fecha_inicio = ?, fecha_fin = ?, convocatoria_id = ? WHERE id = ?
             DB --> Repo: Resultado de persistencia
             Repo --> Service: Proyecto actualizado

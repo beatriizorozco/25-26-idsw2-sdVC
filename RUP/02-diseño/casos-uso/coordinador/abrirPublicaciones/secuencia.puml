@@ -1,4 +1,4 @@
-﻿@startuml abrirPublicaciones-coordinador-diseno
+@startuml abrirPublicaciones-coordinador-diseno
 title Diagrama de secuencia - abrirPublicaciones
 actor Coordinador
 participant "abrirPublicacionesPage\n(React)" as Frontend
@@ -12,11 +12,11 @@ database "Base de Datos" as DB
 
 Coordinador -> Frontend: Solicita abrirPublicaciones()
 Frontend -> Api: GET /api/publicaciones?filtro= + cookie
-Api -> Sesion: exigirCoordinador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 Sesion --> Api: Actor autenticado
-Api -> Service: listarActivas(filtro, actor)
-Service -> Policy: permitirConsultaGlobal(actor)
-Service -> Repo: buscarActivas(filtro)
+Api -> Service: listar(filtro, actor)
+note right of Policy: Responsabilidad interna: permitirConsultaGlobal
+Service -> Repo: findByRetiradaOrderByFechaActualizacionDesc(filtro)
 Repo -> DB: SELECT * FROM publicaciones\nWHERE retirada = false AND coincide_filtro = true
 DB --> Repo: Publicaciones activas
 Repo --> Service: Publicaciones activas

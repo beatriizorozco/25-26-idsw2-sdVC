@@ -1,4 +1,4 @@
-﻿@startuml solicitarEliminacionPerfil-investigador-diseño
+@startuml solicitarEliminacionPerfil-investigador-diseño
 title Diagrama de secuencia - Solicitar eliminación de perfil del Investigador
 
 actor Investigador
@@ -22,15 +22,15 @@ else Confirma solicitud
     activate Api
     Api -> Sesion: obtenerSesionActual(authentication)
     activate Sesion
-    Sesion --> Api: SesionResponse(INVESTIGADOR)
+    Sesion --> Api: SesionResponse
     deactivate Sesion
     Api -> PerfilService: solicitarEliminacionPerfil(investigador, datos)
     activate PerfilService
-    PerfilService -> PerfilService: validarSolicitud(datos)
-    PerfilService -> SolicitudRepository: existePendiente(perfil)
+note right of PerfilService: Responsabilidad interna: validarSolicitud
+    PerfilService -> SolicitudRepository: existsByUsuarioAndEstado(perfil)
     SolicitudRepository -> DB: SELECT EXISTS(SELECT 1 FROM solicitudes_eliminacion_perfil WHERE usuario_id = ? AND estado = 'PENDIENTE')
     DB --> SolicitudRepository: Resultado de persistencia
-    PerfilService -> SolicitudRepository: guardar(solicitud)
+    PerfilService -> SolicitudRepository: save(solicitud)
     SolicitudRepository -> DB: INSERT INTO solicitudes_eliminacion_perfil (usuario_id, motivo, estado, fecha_creacion)\nVALUES (?, ?, 'PENDIENTE', CURRENT_TIMESTAMP)
     DB --> SolicitudRepository: Resultado de persistencia
     activate SolicitudRepository

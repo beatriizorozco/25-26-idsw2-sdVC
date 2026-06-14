@@ -1,4 +1,4 @@
-﻿@startuml abrirProyectos-coordinador-diseno
+@startuml abrirProyectos-coordinador-diseno
 title Diagrama de secuencia - Abrir proyectos como Coordinador
 
 actor Coordinador
@@ -13,7 +13,7 @@ Coordinador -> Frontend: Solicita abrir proyectos
 activate Frontend
 Frontend -> Api: GET /api/proyectos?criterio={criterio}&investigadorId={id?}\nCookie de sesion
 activate Api
-Api -> Sesion: exigirCoordinador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 activate Sesion
 alt Sesion de Coordinador activa
     Sesion --> Api: Coordinador autenticado
@@ -21,11 +21,11 @@ alt Sesion de Coordinador activa
     Api -> Service: listar(criterio, investigadorId?)
     activate Service
     alt Sin investigador seleccionado
-        Service -> Repo: buscarActivos(criterio)
+        Service -> Repo: findByArchivadoOrderByNombreAsc(criterio)
         Repo -> DB: SELECT * FROM proyectos WHERE archivado = false\nAND (LOWER(codigo) LIKE ? OR LOWER(nombre) LIKE ?) ORDER BY nombre
         DB --> Repo: Resultado de persistencia
     else Con investigador seleccionado
-        Service -> Repo: buscarActivosPorInvestigador(criterio, investigadorId)
+        Service -> Repo: findDistinctByInvestigadoresIdOrderByNombreAsc(criterio, investigadorId)
         Repo -> DB: SELECT p.* FROM proyectos p JOIN proyecto_investigadores pi ON pi.proyecto_id = p.id WHERE pi.usuario_id = ? AND p.archivado = false
         DB --> Repo: Resultado de persistencia
     end

@@ -1,4 +1,4 @@
-﻿@startuml abrirProyectos-investigador-diseno
+@startuml abrirProyectos-investigador-diseno
 title Diagrama de secuencia - Abrir proyectos como Investigador
 
 actor Investigador
@@ -13,14 +13,14 @@ Investigador -> Frontend: Solicita abrir proyectos
 activate Frontend
 Frontend -> Api: GET /api/proyectos/me?criterio={criterio}\nCookie de sesion
 activate Api
-Api -> Sesion: exigirInvestigador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 activate Sesion
 alt Sesion de Investigador activa
     Sesion --> Api: Investigador autenticado
     deactivate Sesion
-    Api -> Service: listarVisiblesPropios(investigadorId, criterio)
+    Api -> Service: listar(investigadorId, criterio)
     activate Service
-    Service -> Repo: buscarActivosVisiblesPorInvestigador(investigadorId, criterio)
+    Service -> Repo: findDistinctByInvestigadoresIdOrderByNombreAsc(investigadorId, criterio)
     Repo -> DB: SELECT p.* FROM proyectos p JOIN proyecto_investigadores pi ON pi.proyecto_id = p.id WHERE pi.usuario_id = ? AND p.archivado = false
     DB --> Repo: Resultado de persistencia
     Repo --> Service: Lista<Proyecto>

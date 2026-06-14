@@ -1,11 +1,11 @@
-﻿@startuml abrirSolicitudEliminacionPerfil-coordinador-diseño
+@startuml abrirSolicitudEliminacionPerfil-coordinador-diseño
 title Diagrama de secuencia - Abrir solicitud de eliminación de perfil
 
 actor Coordinador
 participant "SolicitudEliminacionPerfilDetallePage\n(React)" as Frontend
 participant "SolicitudEliminacionPerfilController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
-participant "SolicitudEliminacionPerfilService" as SolicitudService
+participant "PerfilService" as SolicitudService
 participant "SolicitudEliminacionPerfilRepository" as SolicitudRepository
 database "Base de Datos" as DB
 
@@ -17,11 +17,11 @@ activate Api
 Api -> Sesion: obtenerSesionActual(authentication)
 activate Sesion
 alt Sesión de Coordinador activa
-    Sesion --> Api: SesionResponse(COORDINADOR)
+    Sesion --> Api: SesionResponse
     deactivate Sesion
     Api -> SolicitudService: obtenerSolicitud(id)
     activate SolicitudService
-    SolicitudService -> SolicitudRepository: obtenerPorId(id)
+    SolicitudService -> SolicitudRepository: findById(id)
     SolicitudRepository -> DB: SELECT * FROM usuarios WHERE id = ?
     DB --> SolicitudRepository: Resultado de persistencia
     activate SolicitudRepository

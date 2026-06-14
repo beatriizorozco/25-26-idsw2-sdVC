@@ -1,4 +1,4 @@
-﻿@startuml editarPerfil-investigador-diseño
+@startuml editarPerfil-investigador-diseño
 title Diagrama de secuencia - Editar perfil del Investigador
 
 actor Investigador
@@ -6,7 +6,7 @@ participant "EditarPerfilForm\n(React)" as Frontend
 participant "PerfilController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "PerfilService" as PerfilService
-participant "PerfilRepository" as PerfilRepository
+participant "UsuarioRepository" as PerfilRepository
 database "Base de Datos" as DB
 
 Investigador -> Frontend: Solicita editar su perfil
@@ -20,18 +20,18 @@ activate Api
 Api -> Sesion: obtenerSesionActual(authentication)
 activate Sesion
 alt Sesión activa
-    Sesion --> Api: SesionResponse(INVESTIGADOR)
+    Sesion --> Api: SesionResponse
     deactivate Sesion
-    Api -> PerfilService: editarPerfilPropio(investigador, datos)
+    Api -> PerfilService: actualizarPerfilPropio(investigador, datos)
     activate PerfilService
-    PerfilService -> PerfilService: validarCambios(datos)
-    PerfilService -> PerfilRepository: obtenerPorUsuario(investigador)
+note right of PerfilService: Responsabilidad interna: validarCambios
+    PerfilService -> PerfilRepository: findByNombreUsuario(investigador)
     PerfilRepository -> DB: SELECT * FROM usuarios WHERE usuario_id = ?
     DB --> PerfilRepository: Resultado de persistencia
     activate PerfilRepository
     PerfilRepository --> PerfilService: Perfil
-    PerfilService -> PerfilService: actualizarCampos(perfil, datos)
-    PerfilService -> PerfilRepository: guardar(perfilActualizado)
+    PerfilService -> PerfilService: actualizar(perfil, datos)
+    PerfilService -> PerfilRepository: save(perfilActualizado)
     PerfilRepository -> DB: UPDATE usuarios SET nombre_completo = ?, correo = ?, unidad = ?,\nlinea_investigacion = ?, biografia = ? WHERE id = ?
     DB --> PerfilRepository: Resultado de persistencia
     PerfilRepository --> PerfilService: Perfil actualizado

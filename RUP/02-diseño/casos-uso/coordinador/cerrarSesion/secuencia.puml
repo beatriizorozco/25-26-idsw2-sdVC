@@ -14,18 +14,18 @@ end note
 
 Coordinador -> Frontend: Solicita cerrar sesión
 activate Frontend
-Frontend -> Modal: abrir()
+note right of Modal: Responsabilidad interna: abrir
 activate Modal
 Modal --> Coordinador: Solicita confirmación
 
 alt Cancela el cierre
-    Coordinador -> Modal: cancelar()
-    Modal --> Frontend: cerrar()
+note right of Modal: Responsabilidad interna: cancelar
+note right of Frontend: Responsabilidad interna: cerrar
     deactivate Modal
     Frontend --> Coordinador: Mantiene PANEL_PRINCIPAL_ABIERTO
 else Confirma el cierre
-    Coordinador -> Modal: confirmar()
-    Modal --> Frontend: confirmarCierre()
+note right of Modal: Responsabilidad interna: confirmar
+note right of Frontend: Responsabilidad interna: confirmarCierre
     deactivate Modal
     Frontend -> Api: GET /api/auth/csrf\nObtener token vigente
     activate Api

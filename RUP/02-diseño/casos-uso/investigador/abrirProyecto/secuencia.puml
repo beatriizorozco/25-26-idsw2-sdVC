@@ -1,4 +1,4 @@
-﻿@startuml abrirProyecto-investigador-diseno
+@startuml abrirProyecto-investigador-diseno
 title Diagrama de secuencia - Abrir proyecto como Investigador
 
 actor Investigador
@@ -7,7 +7,7 @@ participant "ProyectoController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "ProyectoService" as Service
 participant "ProyectoRepository" as Repo
-participant "InvestigadorRepository" as InvestigadorRepo
+participant "UsuarioRepository" as InvestigadorRepo
 participant "EntregableRepository" as EntregableRepo
 database "Base de Datos" as DB
 
@@ -15,14 +15,14 @@ Investigador -> Frontend: Selecciona proyecto
 activate Frontend
 Frontend -> Api: GET /api/proyectos/me/{id}\nCookie de sesion
 activate Api
-Api -> Sesion: exigirInvestigador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 activate Sesion
 alt Sesion de Investigador activa
     Sesion --> Api: Investigador autenticado
     deactivate Sesion
-    Api -> Service: obtenerDetalleVisible(id, investigadorId)
+    Api -> Service: obtener(id, investigadorId)
     activate Service
-    Service -> Repo: obtenerActivoVisiblePorId(id, investigadorId)
+    Service -> Repo: findById(id, investigadorId)
     Repo -> DB: SELECT p.* FROM proyectos p JOIN proyecto_investigadores pi ON pi.proyecto_id = p.id WHERE p.id = ? AND pi.usuario_id = ? AND p.archivado = false
     DB --> Repo: Resultado de persistencia
     Repo --> Service: Proyecto / vacio
@@ -33,11 +33,11 @@ alt Sesion de Investigador activa
         deactivate Api
         Frontend --> Investigador: Presenta proyecto no encontrado
     else Proyecto visible
-        Service -> InvestigadorRepo: obtenerEquipoVisible(id)
+        Service -> InvestigadorRepo: findByRolAndActivoTrueOrderByNombreCompletoAsc(id)
         InvestigadorRepo -> DB: SELECT u.* FROM usuarios u JOIN proyecto_investigadores pi ON pi.usuario_id = u.id WHERE pi.proyecto_id = ?
         DB --> InvestigadorRepo: Resultado de persistencia
         InvestigadorRepo --> Service: Equipo visible
-        Service -> EntregableRepo: obtenerVisiblesPorProyecto(id, investigadorId)
+        Service -> EntregableRepo: findByProyectoIdAndRetiradoOrderByFechaCreacionDesc(id, investigadorId)
         EntregableRepo -> DB: SELECT * FROM entregables WHERE proyecto_id = ? AND retirado = false
         DB --> EntregableRepo: Resultado de persistencia
         EntregableRepo --> Service: Entregables visibles

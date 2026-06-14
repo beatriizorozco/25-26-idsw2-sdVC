@@ -12,11 +12,11 @@ database "Base de Datos" as DB
 
 Coordinador -> Frontend: Selecciona una convocatoria
 Frontend -> Api: GET /api/convocatorias/{id} + cookie
-Api -> Sesion: exigirCoordinador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 Sesion --> Api: Coordinador autenticado
-Api -> Service: obtenerDetalle(id, actor)
-Service -> Policy: permitirConsulta(actor)
-Service -> Repo: obtenerPorId(id)
+Api -> Service: obtener(id, actor)
+Service -> Policy: exigirConsulta(actor)
+Service -> Repo: findById(id)
 Repo -> DB: SELECT * FROM convocatorias\nWHERE id = ?
 DB --> Repo: Convocatoria / vacio
 Repo --> Service: Convocatoria / vacio

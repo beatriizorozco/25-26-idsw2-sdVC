@@ -1,4 +1,4 @@
-﻿@startuml abrirOpcionesPerfil-coordinador-diseno
+@startuml abrirOpcionesPerfil-coordinador-diseno
 title Diagrama de secuencia - Abrir opciones de perfil propio del Coordinador
 
 actor Coordinador
@@ -6,7 +6,7 @@ participant "PerfilPage\n(React)" as Frontend
 participant "PerfilController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "PerfilService" as PerfilService
-participant "PerfilRepository" as PerfilRepository
+participant "UsuarioRepository" as PerfilRepository
 database "Base de Datos" as DB
 
 Coordinador -> Frontend: Solicita abrir opciones de perfil
@@ -17,11 +17,11 @@ activate Api
 Api -> Sesion: obtenerSesionActual(authentication)
 activate Sesion
 alt Sesion de Coordinador activa
-    Sesion --> Api: SesionResponse(COORDINADOR)
+    Sesion --> Api: SesionResponse
     deactivate Sesion
     Api -> PerfilService: obtenerPerfilPropio(coordinador)
     activate PerfilService
-    PerfilService -> PerfilRepository: obtenerPorUsuario(coordinador)
+    PerfilService -> PerfilRepository: findByNombreUsuario(coordinador)
     PerfilRepository -> DB: SELECT * FROM usuarios WHERE usuario_id = ?
     DB --> PerfilRepository: Resultado de persistencia
     activate PerfilRepository

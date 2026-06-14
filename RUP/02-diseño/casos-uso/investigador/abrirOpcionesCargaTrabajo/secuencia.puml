@@ -1,4 +1,4 @@
-﻿@startuml abrirOpcionesCargaTrabajo-investigador-diseno
+@startuml abrirOpcionesCargaTrabajo-investigador-diseno
 title Diagrama de secuencia - Abrir carga de trabajo propia del Investigador
 
 actor Investigador
@@ -17,20 +17,20 @@ activate Api
 Api -> Sesion: obtenerSesionActual(authentication)
 activate Sesion
 alt Sesion activa
-    Sesion --> Api: SesionResponse(INVESTIGADOR)
+    Sesion --> Api: SesionResponse
     deactivate Sesion
     Api -> Service: obtenerCargaPropia(investigador)
     activate Service
-    Service -> CargaRepo: obtenerPorUsuario(investigador)
+    Service -> CargaRepo: findByUsuario(investigador)
     CargaRepo -> DB: SELECT * FROM cargas_trabajo WHERE usuario_id = ?
     DB --> CargaRepo: Resultado de persistencia
     activate CargaRepo
     CargaRepo --> Service: CargaTrabajo
     deactivate CargaRepo
     alt Sede con docencia investigadora
-        Service -> Service: calcularMargenDocente(maximo16h)
+        Service -> Service: mapearCarga(maximo16h)
     else Sede solo investigadora
-        Service -> Service: marcarDocenciaNoAplicable()
+        Service -> Service: mapearCarga()
     end
     Service --> Api: CargaTrabajoPropiaResponse
     deactivate Service

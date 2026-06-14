@@ -1,4 +1,4 @@
-﻿@startuml abrirRecompensa-investigador-diseno
+@startuml abrirRecompensa-investigador-diseno
 title Diagrama de secuencia - Abrir recompensa propia
 
 actor Investigador
@@ -14,19 +14,19 @@ Investigador -> Frontend: Selecciona una recompensa propia
 activate Frontend
 Frontend -> Api: GET /api/recompensas/me/{id}\nCookie de sesion
 activate Api
-Api -> Sesion: exigirInvestigador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 activate Sesion
 alt Sesion de Investigador activa
     Sesion --> Api: Investigador autenticado
     deactivate Sesion
     Api -> Service: obtenerPropia(investigadorId, id)
     activate Service
-    Service -> Repo: obtenerPropiaPorId(investigadorId, id)
+    Service -> Repo: findById(investigadorId, id)
     Repo -> DB: SELECT * FROM recompensas WHERE beneficiario_id = ? AND id = ? AND anulada = false
     DB --> Repo: Resultado de persistencia
     Repo --> Service: Recompensa propia / vacio
     alt Recompensa propia existente
-        Service -> ProyectoRepo: obtenerCompletado(recompensa.proyectoId)
+        Service -> ProyectoRepo: findById(recompensa.proyectoId)
         ProyectoRepo -> DB: SELECT * FROM proyectos WHERE id = ? AND estado = 'COMPLETADO'
         DB --> ProyectoRepo: Resultado de persistencia
         ProyectoRepo --> Service: Proyecto completado

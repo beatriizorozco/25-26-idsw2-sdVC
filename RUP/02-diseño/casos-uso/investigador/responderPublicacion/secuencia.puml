@@ -1,4 +1,4 @@
-﻿@startuml responderPublicacion-investigador-diseno
+@startuml responderPublicacion-investigador-diseno
 title Diagrama de secuencia - responderPublicacion
 actor Investigador
 participant "responderPublicacionPage\n(React)" as Frontend
@@ -7,19 +7,19 @@ participant "SesionService" as Sesion
 participant "PublicacionService" as Service
 participant "PoliticaPublicacion" as Policy
 participant "PublicacionRepository" as Repo
-participant "RespuestaRepository" as RespRepo
+participant "RespuestaPublicacionRepository" as RespRepo
 database "Base de Datos" as DB
 
 Investigador -> Frontend: Solicita responderPublicacion()
 Frontend -> Api: POST /api/publicaciones/{id}/respuestas + RespuestaCreateRequest + cookie
-Api -> Sesion: exigirInvestigador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 Sesion --> Api: Actor autenticado
 Api -> Service: responder(id, contenido, actor)
-Service -> Repo: obtenerActivaPorId(id)
+Service -> Repo: findByIdAndRetirada(id)
 Repo -> DB: SELECT * FROM publicaciones WHERE id = ? AND retirada = false
 DB --> Repo: Publicacion / vacio
-Service -> Policy: permitirResponder(actor, publicacion)
-Service -> RespRepo: guardar(respuesta)
+note right of Policy: Responsabilidad interna: permitirResponder
+Service -> RespRepo: save(respuesta)
 RespRepo -> DB: INSERT INTO respuestas_publicacion\n(publicacion_id, autor_id, contenido, fecha)\nVALUES (?, ?, ?, CURRENT_TIMESTAMP)
 DB --> RespRepo: Respuesta creada
 Service --> Api: Resultado del caso de uso

@@ -12,11 +12,11 @@ database "Base de Datos" as DB
 
 Coordinador -> Frontend: Solicita abrirConvocatorias()
 Frontend -> Api: GET /api/convocatorias?texto=&area=&estado= + cookie
-Api -> Sesion: exigirCoordinador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 Sesion --> Api: Coordinador autenticado
 Api -> Service: listar(filtro, actor)
-Service -> Policy: permitirConsulta(actor)
-Service -> Repo: buscar(filtro)
+Service -> Policy: exigirConsulta(actor)
+Service -> Repo: findAllByOrderByFechaCierreAsc(filtro)
 Repo -> DB: SELECT id, titulo, area, estado, fecha_cierre,\nreferencia_externa, incorporada\nFROM convocatorias\nWHERE coincide_filtro = true\nORDER BY fecha_cierre
 DB --> Repo: Convocatorias disponibles
 Repo --> Service: Convocatorias disponibles

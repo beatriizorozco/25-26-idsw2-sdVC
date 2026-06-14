@@ -1,4 +1,4 @@
-﻿@startuml abrirInvestigadores-coordinador-diseno
+@startuml abrirInvestigadores-coordinador-diseno
 title Diagrama de secuencia - Abrir investigadores como Coordinador
 
 actor Coordinador
@@ -17,7 +17,7 @@ activate Api
 Api -> Sesion: obtenerSesionActual(authentication)
 activate Sesion
 alt Sesion valida
-    Sesion --> Api: SesionResponse(usuario, rol)
+    Sesion --> Api: SesionResponse
     deactivate Sesion
     Api -> Service: listar(sesion, criterio, proyectoId?)
     activate Service
@@ -27,7 +27,7 @@ alt Sesion valida
         DB --> UsuarioRepo: Resultado de persistencia
         UsuarioRepo --> Service: Lista<Usuario>
     else Con proyecto seleccionado
-        Service -> ProyectoRepo: obtenerParticipantes(proyectoId, criterio)
+        Service -> ProyectoRepo: findById(proyectoId, criterio)
         ProyectoRepo -> DB: SELECT u.* FROM usuarios u JOIN proyecto_investigadores pi ON pi.usuario_id = u.id WHERE pi.proyecto_id = ?
         DB --> ProyectoRepo: Resultado de persistencia
         ProyectoRepo --> Service: Lista<Usuario>

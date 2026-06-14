@@ -1,4 +1,4 @@
-﻿@startuml eliminarInvestigador-coordinador-diseno
+@startuml eliminarInvestigador-coordinador-diseno
 title Diagrama de secuencia - Desasignar investigador de proyecto
 
 actor Coordinador
@@ -7,7 +7,7 @@ participant "ProyectoController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "ProyectoService" as Service
 participant "ProyectoRepository" as Repo
-participant "InvestigadorRepository" as InvestigadorRepo
+participant "UsuarioRepository" as InvestigadorRepo
 participant "EntregableRepository" as EntregableRepo
 database "Base de Datos" as DB
 
@@ -15,22 +15,22 @@ Coordinador -> Frontend: Solicita desasignar investigador del proyecto
 activate Frontend
 Frontend -> Api: GET /api/proyectos/{id}/investigadores/{investigadorId}/opciones-desasignacion\nCookie de sesion
 activate Api
-Api -> Sesion: exigirCoordinador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 activate Sesion
 alt Sesion de Coordinador activa
     Sesion --> Api: Coordinador autenticado
     deactivate Sesion
-    Api -> Service: prepararDesasignacion(id, investigadorId)
+note right of Service: Responsabilidad interna: prepararDesasignacion
     activate Service
-    Service -> Repo: obtenerActivoPorId(id)
+    Service -> Repo: findById(id)
     Repo -> DB: SELECT * FROM proyectos WHERE id = ? AND archivado = false
     DB --> Repo: Resultado de persistencia
     Repo --> Service: Proyecto / vacio
-    Service -> InvestigadorRepo: obtenerAsociadoActivo(id, investigadorId)
+    Service -> InvestigadorRepo: findById(id, investigadorId)
     InvestigadorRepo -> DB: SELECT u.* FROM usuarios u JOIN proyecto_investigadores pi ON pi.usuario_id = u.id WHERE pi.proyecto_id = ? AND u.id = ?
     DB --> InvestigadorRepo: Resultado de persistencia
     InvestigadorRepo --> Service: Investigador / vacio
-    Service -> EntregableRepo: obtenerPendientesAsignados(id, investigadorId)
+    Service -> EntregableRepo: findAll(id, investigadorId)
     EntregableRepo -> DB: SELECT * FROM solicitudes_eliminacion_perfil WHERE estado = 'PENDIENTE' ORDER BY fecha_creacion DESC
     DB --> EntregableRepo: Resultado de persistencia
     EntregableRepo --> Service: Responsabilidades pendientes
@@ -59,11 +59,11 @@ alt Sesion de Coordinador activa
             Coordinador -> Frontend: Confirma desasignacion con motivo
             Frontend -> Api: PATCH /api/proyectos/{id}/investigadores/{investigadorId}/desasignacion\nDesasignacionRequest + cookie
             activate Api
-            Api -> Sesion: exigirCoordinador(authentication)
+            Api -> Sesion: obtenerSesionActual(authentication)
             Sesion --> Api: Coordinador autenticado
-            Api -> Service: desasignarInvestigador(id, investigadorId, motivo, coordinador)
+            Api -> Service: retirarInvestigador(id, investigadorId, motivo, coordinador)
             activate Service
-            Service -> EntregableRepo: obtenerPendientesAsignados(id, investigadorId)
+            Service -> EntregableRepo: findAll(id, investigadorId)
             EntregableRepo -> DB: SELECT * FROM solicitudes_eliminacion_perfil WHERE estado = 'PENDIENTE' ORDER BY fecha_creacion DESC
             DB --> EntregableRepo: Resultado de persistencia
             EntregableRepo --> Service: Responsabilidades pendientes
@@ -74,7 +74,7 @@ alt Sesion de Coordinador activa
                 deactivate Api
                 Frontend --> Coordinador: Presenta conflicto y conserva PROYECTO_ABIERTO
             else Sin responsabilidades pendientes
-                Service -> Repo: registrarDesasignacion(id, investigadorId, fecha, coordinador, motivo)
+                Service -> Repo: save(id, investigadorId, fecha, coordinador, motivo)
                 Repo -> DB: DELETE FROM proyecto_investigadores WHERE proyecto_id = ? AND usuario_id = ?\nINSERT INTO movimientos_participacion_proyecto (proyecto_id, investigador_id, tipo, responsable_id, fecha, motivo) VALUES (?, ?, 'DESASIGNACION', ?, ?, ?)
                 DB --> Repo: Resultado de persistencia
                 Repo --> Service: Participacion desasignada

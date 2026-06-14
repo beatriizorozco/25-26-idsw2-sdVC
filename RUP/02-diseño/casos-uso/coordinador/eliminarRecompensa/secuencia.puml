@@ -1,4 +1,4 @@
-﻿@startuml eliminarRecompensa-coordinador-diseno
+@startuml eliminarRecompensa-coordinador-diseno
 title Diagrama de secuencia - Anular recompensa
 
 actor Coordinador
@@ -20,14 +20,14 @@ else Coordinador confirma
     Coordinador -> Frontend: Confirma anulacion con motivo
     Frontend -> Api: PATCH /api/recompensas/{id}/anulacion\nMotivo y cookie de sesion
     activate Api
-    Api -> Sesion: exigirCoordinador(authentication)
+    Api -> Sesion: obtenerSesionActual(authentication)
     activate Sesion
     alt Sesion de Coordinador activa
         Sesion --> Api: Coordinador autenticado
         deactivate Sesion
-        Api -> Service: anular(id, motivo, coordinador)
+        Api -> Service: eliminar(id, motivo, coordinador)
         activate Service
-        Service -> Repo: obtenerPorId(id)
+        Service -> Repo: findById(id)
         Repo -> DB: SELECT * FROM recompensas WHERE id = ?
         DB --> Repo: Resultado de persistencia
         Repo --> Service: Recompensa / vacio
@@ -38,11 +38,11 @@ else Coordinador confirma
             deactivate Api
             Frontend --> Coordinador: Presenta recompensa no encontrada
         else Recompensa existente
-            Service -> ProyectoRepo: obtenerCompletado(recompensa.proyectoId)
+            Service -> ProyectoRepo: findById(recompensa.proyectoId)
             ProyectoRepo -> DB: SELECT * FROM proyectos WHERE id = ? AND estado = 'COMPLETADO'
             DB --> ProyectoRepo: Resultado de persistencia
             ProyectoRepo --> Service: Proyecto completado
-            Service -> Repo: anular(recompensa, fecha, coordinador, motivo)
+            Service -> Repo: save(recompensa, fecha, coordinador, motivo)
             Repo -> DB: UPDATE recompensas SET anulada = true, fecha_anulacion = ?, anulada_por_id = ?, motivo_anulacion = ? WHERE id = ?
             DB --> Repo: Resultado de persistencia
             Repo --> Service: Recompensa anulada

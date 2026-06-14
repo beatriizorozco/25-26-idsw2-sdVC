@@ -1,4 +1,4 @@
-﻿@startuml crearPublicacion-coordinador-diseno
+@startuml crearPublicacion-coordinador-diseno
 title Diagrama de secuencia - crearPublicacion
 actor Coordinador
 participant "crearPublicacionPage\n(React)" as Frontend
@@ -12,15 +12,15 @@ database "Base de Datos" as DB
 
 Coordinador -> Frontend: Solicita crearPublicacion()
 Frontend -> Api: POST /api/publicaciones + PublicacionCreateRequest + cookie
-Api -> Sesion: exigirCoordinador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 Sesion --> Api: Actor autenticado
 Api -> Service: crear(datos, actor)
-Service -> Policy: permitirCrear(actor)
-Service -> Service: validarYAsignarAutor(datos, actor)
-Service -> Repo: guardar(publicacion)
+note right of Policy: Responsabilidad interna: permitirCrear
+note right of Service: Responsabilidad interna: validarYAsignarAutor
+Service -> Repo: save(publicacion)
 Repo -> DB: INSERT INTO publicaciones\n(titulo, contenido, estado, visibilidad, autor_id, retirada)\nVALUES (?, ?, ?, ?, ?, false)
 DB --> Repo: Publicacion creada
-Service -> ArchivoRepo: guardarAdjuntosOpcionales(publicacion, adjuntos, actor)
+Service -> ArchivoRepo: save(publicacion, adjuntos, actor)
 ArchivoRepo -> DB: INSERT INTO archivos_publicacion\n(publicacion_id, nombre, contenido, subido_por_id, retirado)\nVALUES (?, ?, ?, ?, false)
 DB --> ArchivoRepo: Adjuntos creados / vacio
 Service --> Api: Resultado del caso de uso

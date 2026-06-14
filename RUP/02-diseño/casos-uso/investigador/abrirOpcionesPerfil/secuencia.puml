@@ -1,4 +1,4 @@
-﻿@startuml abrirOpcionesPerfil-investigador-diseño
+@startuml abrirOpcionesPerfil-investigador-diseño
 title Diagrama de secuencia - Abrir opciones de perfil del Investigador
 
 actor Investigador
@@ -6,7 +6,7 @@ participant "PerfilPage\n(React)" as Frontend
 participant "PerfilController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "PerfilService" as PerfilService
-participant "PerfilRepository" as PerfilRepository
+participant "UsuarioRepository" as PerfilRepository
 database "Base de Datos" as DB
 
 Investigador -> Frontend: Solicita abrir opciones de perfil
@@ -17,11 +17,11 @@ activate Api
 Api -> Sesion: obtenerSesionActual(authentication)
 activate Sesion
 alt Sesión activa
-    Sesion --> Api: SesionResponse(INVESTIGADOR)
+    Sesion --> Api: SesionResponse
     deactivate Sesion
     Api -> PerfilService: obtenerPerfilPropio(investigador)
     activate PerfilService
-    PerfilService -> PerfilRepository: obtenerPorUsuario(investigador)
+    PerfilService -> PerfilRepository: findByNombreUsuario(investigador)
     PerfilRepository -> DB: SELECT * FROM usuarios WHERE usuario_id = ?
     DB --> PerfilRepository: Resultado de persistencia
     activate PerfilRepository

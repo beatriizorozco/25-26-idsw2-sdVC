@@ -1,4 +1,4 @@
-﻿@startuml editarCargaTrabajo-investigador-diseno
+@startuml editarCargaTrabajo-investigador-diseno
 title Diagrama de secuencia - Editar carga de trabajo propia del Investigador
 
 actor Investigador
@@ -20,11 +20,11 @@ activate Api
 Api -> Sesion: obtenerSesionActual(authentication)
 activate Sesion
 alt Sesion activa
-    Sesion --> Api: SesionResponse(INVESTIGADOR)
+    Sesion --> Api: SesionResponse
     deactivate Sesion
     Api -> Service: actualizarCargaPropia(investigador, datos)
     activate Service
-    Service -> Service: validarHoras(datos, sede, maximo16h)
+    Service -> Service: validarCargaDocente(datos, sede, maximo16h)
     alt Sede sin docencia registra horas docentes
         Service --> Api: validacion fallida
         Api --> Frontend: 400 Bad Request
@@ -34,13 +34,13 @@ alt Sesion activa
         Api --> Frontend: 400 Bad Request
         Frontend --> Investigador: Presenta error de limite docente
     else Carga valida
-        Service -> CargaRepo: obtenerPorUsuario(investigador)
+        Service -> CargaRepo: findByUsuario(investigador)
         CargaRepo -> DB: SELECT * FROM cargas_trabajo WHERE usuario_id = ?
         DB --> CargaRepo: Resultado de persistencia
         activate CargaRepo
         CargaRepo --> Service: CargaTrabajo
-        Service -> Service: actualizarCampos(cargaTrabajo, datos)
-        Service -> CargaRepo: guardar(cargaTrabajoActualizada)
+        Service -> Service: actualizarCarga(cargaTrabajo, datos)
+        Service -> CargaRepo: save(cargaTrabajoActualizada)
         CargaRepo -> DB: UPDATE cargas_trabajo SET horas_docencia = ?, horas_investigacion = ?,\nhoras_gestion_academica = ?, observaciones = ?, fecha_actualizacion = CURRENT_TIMESTAMP\nWHERE usuario_id = ?
         DB --> CargaRepo: Resultado de persistencia
         CargaRepo --> Service: CargaTrabajo actualizada

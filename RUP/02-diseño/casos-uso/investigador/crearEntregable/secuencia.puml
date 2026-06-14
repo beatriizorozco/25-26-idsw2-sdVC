@@ -7,28 +7,28 @@ participant "SesionService" as Sesion
 participant "EntregableService" as Service
 participant "ProyectoRepository" as ProyectoRepo
 participant "EntregableRepository" as Repo
-participant "ArchivoRepository" as ArchivoRepo
+participant "ArchivoEntregableRepository" as ArchivoRepo
 database "Base de Datos" as DB
 
 Investigador -> Frontend: Introduce datos y archivo opcional
 Frontend -> Api: POST /api/proyectos/{proyectoId}/entregables\nEntregableCreateRequest + archivo? + cookie
-Api -> Sesion: exigirInvestigador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 Sesion --> Api: Investigador autenticado
-Api -> Service: crearPropio(proyectoId, datos, archivo?, investigador)
-Service -> ProyectoRepo: verificarParticipacion(proyectoId, investigador)
+Api -> Service: crear(proyectoId, datos, archivo?, investigador)
+Service -> ProyectoRepo: findById(proyectoId, investigador)
 ProyectoRepo -> DB: SELECT 1 FROM proyecto_investigadores\nWHERE proyecto_id = ? AND investigador_id = ?\nAND activo = true
 DB --> ProyectoRepo: Participacion / vacio
 ProyectoRepo --> Service: Proyecto visible / acceso denegado
-Service -> Service: validarDatosYAsignarAutor(investigador)
+note right of Service: Responsabilidad interna: validarDatosYAsignarAutor
 alt Datos invalidos o sin participacion
   Service --> Api: ValidacionException / AccesoDenegadoException
   Api --> Frontend: 400 / 403
 else Datos validos
-  Service -> Repo: guardar(entregable)
+  Service -> Repo: save(entregable)
   Repo -> DB: INSERT INTO entregables\n(proyecto_id, titulo, descripcion, autor_id, retirado)\nVALUES (?, ?, ?, ?, false)
   DB --> Repo: Entregable creado con ID
   Repo --> Service: Entregable creado
-  Service -> ArchivoRepo: guardarOpcional(entregable, archivo, investigador)
+  Service -> ArchivoRepo: save(entregable, archivo, investigador)
   ArchivoRepo -> DB: INSERT INTO archivos_entregable\n(entregable_id, version, archivo, subido_por_id)\nVALUES (?, 1, ?, ?)
   DB --> ArchivoRepo: Archivo / vacio
   Service --> Api: EntregableDetalleResponse

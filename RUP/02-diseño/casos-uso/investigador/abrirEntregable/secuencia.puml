@@ -7,23 +7,23 @@ participant "SesionService" as Sesion
 participant "EntregableService" as Service
 participant "ProyectoRepository" as ProyectoRepo
 participant "EntregableRepository" as Repo
-participant "ArchivoRepository" as ArchivoRepo
+participant "ArchivoEntregableRepository" as ArchivoRepo
 database "Base de Datos" as DB
 
 Investigador -> Frontend: Selecciona entregable
 Frontend -> Api: GET /api/entregables/{id}\nCookie de sesion
-Api -> Sesion: exigirInvestigador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 Sesion --> Api: Investigador autenticado
-Api -> Service: obtenerDetalleVisible(id, investigador)
-Service -> Repo: obtenerActivoPorId(id)
+Api -> Service: obtener(id, investigador)
+Service -> Repo: findByIdAndRetirado(id)
 Repo -> DB: SELECT * FROM entregables\nWHERE id = ? AND retirado = false
 DB --> Repo: Entregable / vacio
 Repo --> Service: Entregable / vacio
-Service -> ProyectoRepo: verificarParticipacion(proyectoId, investigador)
+Service -> ProyectoRepo: findById(proyectoId, investigador)
 ProyectoRepo -> DB: SELECT 1 FROM proyecto_investigadores\nWHERE proyecto_id = ? AND investigador_id = ?\nAND activo = true
 DB --> ProyectoRepo: Participacion / vacio
 ProyectoRepo --> Service: Proyecto visible / acceso denegado
-Service -> ArchivoRepo: obtenerPorEntregable(id)
+Service -> ArchivoRepo: findByEntregableIdOrderByVersionDesc(id)
 ArchivoRepo -> DB: SELECT * FROM archivos_entregable\nWHERE entregable_id = ?\nORDER BY version DESC
 DB --> ArchivoRepo: Archivos y versiones
 Service --> Api: EntregableDetalleResponse + esAutor

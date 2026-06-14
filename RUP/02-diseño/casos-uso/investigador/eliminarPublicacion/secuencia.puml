@@ -1,4 +1,4 @@
-﻿@startuml eliminarPublicacion-investigador-diseno
+@startuml eliminarPublicacion-investigador-diseno
 title Diagrama de secuencia - eliminarPublicacion
 actor Investigador
 participant "eliminarPublicacionPage\n(React)" as Frontend
@@ -12,14 +12,14 @@ database "Base de Datos" as DB
 
 Investigador -> Frontend: Solicita eliminarPublicacion()
 Frontend -> Api: DELETE /api/publicaciones/me/{id} + RetiradaRequest + cookie
-Api -> Sesion: exigirInvestigador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 Sesion --> Api: Actor autenticado
-Api -> Service: retirarPropia(id, motivo, actor)
-Service -> Repo: obtenerActivaPorId(id)
+Api -> Service: retirar(id, motivo, actor)
+Service -> Repo: findByIdAndRetirada(id)
 Repo -> DB: SELECT * FROM publicaciones WHERE id = ? AND retirada = false
 DB --> Repo: Publicacion / vacio
 Service -> Policy: exigirAutoria(actor, publicacion)
-Service -> Repo: retirarPropia(id, motivo, actor)
+Service -> Repo: save(id, motivo, actor)
 Repo -> DB: UPDATE publicaciones SET retirada = true,\nfecha_retirada = CURRENT_TIMESTAMP, motivo_retirada = ?, retirado_por_id = ?\nWHERE id = ? AND autor_id = ? AND retirada = false
 DB --> Repo: Publicacion retirada
 Service --> Api: Resultado del caso de uso

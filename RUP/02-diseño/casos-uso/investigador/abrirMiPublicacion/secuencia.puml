@@ -1,4 +1,4 @@
-﻿@startuml abrirMiPublicacion-investigador-diseno
+@startuml abrirMiPublicacion-investigador-diseno
 title Diagrama de secuencia - abrirMiPublicacion
 actor Investigador
 participant "abrirMiPublicacionPage\n(React)" as Frontend
@@ -7,23 +7,23 @@ participant "SesionService" as Sesion
 participant "PublicacionService" as Service
 participant "PoliticaPublicacion" as Policy
 participant "PublicacionRepository" as Repo
-participant "RespuestaRepository" as RespRepo
+participant "RespuestaPublicacionRepository" as RespRepo
 participant "ArchivoPublicacionRepository" as ArchivoRepo
 database "Base de Datos" as DB
 
 Investigador -> Frontend: Solicita abrirMiPublicacion()
 Frontend -> Api: GET /api/publicaciones/me/{id} + cookie
-Api -> Sesion: exigirInvestigador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 Sesion --> Api: Actor autenticado
-Api -> Service: obtenerPropia(id, actor)
-Service -> Repo: obtenerActivaPorId(id)
+Api -> Service: obtener(id, actor)
+Service -> Repo: findByIdAndRetirada(id)
 Repo -> DB: SELECT * FROM publicaciones\nWHERE id = ? AND retirada = false
 DB --> Repo: Publicacion / vacio
 Service -> Policy: exigirAutoria(actor, publicacion)
-Service -> RespRepo: buscarPorPublicacion(id)
+Service -> RespRepo: findByPublicacionIdOrderByFecha(id)
 RespRepo -> DB: SELECT * FROM respuestas_publicacion\nWHERE publicacion_id = ? ORDER BY fecha
 DB --> RespRepo: Respuestas
-Service -> ArchivoRepo: buscarPorPublicacion(id)
+Service -> ArchivoRepo: findByPublicacionIdOrderByFechaSubidaDesc(id)
 ArchivoRepo -> DB: SELECT * FROM archivos_publicacion\nWHERE publicacion_id = ? AND retirado = false
 DB --> ArchivoRepo: Adjuntos
 Service --> Api: Resultado del caso de uso

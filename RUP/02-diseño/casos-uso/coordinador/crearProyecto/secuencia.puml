@@ -1,4 +1,4 @@
-﻿@startuml crearProyecto-coordinador-diseno
+@startuml crearProyecto-coordinador-diseno
 title Diagrama de secuencia - Crear proyecto
 
 actor Coordinador
@@ -14,11 +14,11 @@ Coordinador -> Frontend: Solicita crear proyecto
 activate Frontend
 Frontend -> Api: GET /api/proyectos/opciones-creacion\nCookie de sesion
 activate Api
-Api -> Sesion: exigirCoordinador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 Sesion --> Api: Coordinador autenticado
-Api -> Service: prepararCreacion()
+note right of Service: Responsabilidad interna: prepararCreacion
 activate Service
-Service -> ConvocatoriaRepo: obtenerDisponibles()
+Service -> ConvocatoriaRepo: findAllByOrderByFechaCierreAsc()
 ConvocatoriaRepo -> DB: SELECT * FROM convocatorias WHERE disponible = true ORDER BY fecha_fin
 DB --> ConvocatoriaRepo: Resultado de persistencia
 ConvocatoriaRepo --> Service: Convocatorias importadas
@@ -34,16 +34,16 @@ else Coordinador guarda
     Coordinador -> Frontend: Introduce datos y guarda
     Frontend -> Api: POST /api/proyectos\nProyectoCreateRequest + cookie
     activate Api
-    Api -> Sesion: exigirCoordinador(authentication)
+    Api -> Sesion: obtenerSesionActual(authentication)
     Sesion --> Api: Coordinador autenticado
     Api -> Service: crear(datos, coordinador)
     activate Service
-    Service -> ConvocatoriaRepo: obtenerImportada(datos.convocatoriaId)
+    Service -> ConvocatoriaRepo: findById(datos.convocatoriaId)
     ConvocatoriaRepo -> DB: SELECT * FROM convocatorias WHERE id = ? AND importada = true
     DB --> ConvocatoriaRepo: Resultado de persistencia
     ConvocatoriaRepo --> Service: Convocatoria / vacio
-    Service -> Service: validarDatosYFechas(datos)
-    Service -> Service: asignarCodigoCoordinadorYEstadoCreado()
+note right of Service: Responsabilidad interna: validarDatosYFechas
+note right of Service: Responsabilidad interna: asignarCodigoCoordinadorYEstadoCreado
     alt Datos invalidos
         Service --> Api: ValidacionException
         deactivate Service
@@ -51,7 +51,7 @@ else Coordinador guarda
         deactivate Api
         Frontend --> Coordinador: Presenta errores y conserva formulario
     else Datos validos
-        Service -> Repo: guardar(proyecto)
+        Service -> Repo: save(proyecto)
         Repo -> DB: INSERT INTO proyectos (codigo, nombre, descripcion, area, sede, estado,\nfecha_inicio, fecha_fin, convocatoria_id, archivado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, false)
         DB --> Repo: Resultado de persistencia
         Repo --> Service: Proyecto creado

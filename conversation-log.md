@@ -654,3 +654,15 @@ Se creó `documents/analisis-resultado-asignatura.md`, que evalúa de forma expl
 La validación final del 12 de junio de 2026 confirmó 48 pruebas backend correctas, sin fallos ni errores; las 11 migraciones Flyway aplicadas correctamente; compilación de producción del frontend correcta; lint frontend sin errores; y `git diff --check` limpio. Se identificó honestamente que `QUE_HACE.md` estuvo presente en el primer commit, pero fue completado en un commit posterior, y que reescribir el historial para ocultarlo sería contraproducente. No se realizó ningún commit durante este cierre.
 
 **Decisión:** el proyecto queda funcional, trazable y preparado para la defensa académica de diseño modular y SOLID. Antes de la entrega final se recomienda priorizar una última regresión manual global, completar o canonizar los enlaces pendientes hacia documentos individuales de Pruebas y preparar un despliegue público reproducible para que el profesor pueda acceder desde su equipo. La modularización adicional de algunas páginas frontend extensas queda como mejora futura y no bloquea la entrega.
+
+---
+
+## [2026-06-14 23:17] Inicio de sesión - Auditoría de trazabilidad entre Diseño y Desarrollo
+
+**Prompt:** el usuario inició una nueva sesión mediante la skill `session-memory` después de solicitar la revisión de que todos los métodos representados en Diseño también existieran en el código de Desarrollo.
+
+**Resultado:** se utilizó la skill `session-memory`. Se revisaron `conversation-log.md`, `tareas_a_realizar.md`, la rama activa `main`, los commits recientes, el estado del repositorio y las tecnologías actuales: backend Spring Boot 3.5.7 con Java 17 y frontend React 18 con TypeScript y Vite. La revisión previa auditó los 69 diagramas de secuencia de Diseño y detectó que la trazabilidad literal con Desarrollo todavía no es completa. Muchas operaciones de los diagramas son nombres conceptuales antiguos o responsabilidades internas representadas como métodos, mientras el código las concentra en operaciones públicas más cohesionadas.
+
+Quedan sin commit `documents/auditoria-trazabilidad-metodos.md`, `tools/auditar-trazabilidad-diseno.ps1` y la actualización de `tareas_a_realizar.md`. La herramienta permite repetir la comparación entre llamadas de Diseño y métodos declarados en el backend, diferenciando métodos heredados de Spring Data y tipos de respuesta.
+
+**Decisión:** la siguiente tarea prioritaria es alinear los diagramas de Diseño con las operaciones públicas reales de Desarrollo por familias funcionales. No se añadirán métodos alias artificiales al código únicamente para satisfacer los diagramas, porque duplicarían responsabilidades y perjudicarían SRP y OCP. Después deberá repetirse la auditoría hasta reducir las discrepancias y regenerar los SVG afectados.

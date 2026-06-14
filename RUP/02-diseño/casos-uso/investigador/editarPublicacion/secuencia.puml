@@ -1,4 +1,4 @@
-﻿@startuml editarPublicacion-investigador-diseno
+@startuml editarPublicacion-investigador-diseno
 title Diagrama de secuencia - editarPublicacion
 actor Investigador
 participant "editarPublicacionPage\n(React)" as Frontend
@@ -12,18 +12,18 @@ database "Base de Datos" as DB
 
 Investigador -> Frontend: Solicita editarPublicacion()
 Frontend -> Api: PATCH /api/publicaciones/me/{id} + PublicacionUpdateRequest + cookie
-Api -> Sesion: exigirInvestigador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 Sesion --> Api: Actor autenticado
-Api -> Service: actualizarPropia(id, cambios, actor)
-Service -> Repo: obtenerActivaPorId(id)
+Api -> Service: actualizar(id, cambios, actor)
+Service -> Repo: findByIdAndRetirada(id)
 Repo -> DB: SELECT * FROM publicaciones WHERE id = ? AND retirada = false
 DB --> Repo: Publicacion / vacio
 Service -> Policy: exigirAutoria(actor, publicacion)
-Service -> Service: aplicarCambiosYValidar()
-Service -> Repo: guardar(publicacion)
+Service -> Service: actualizar()
+Service -> Repo: save(publicacion)
 Repo -> DB: UPDATE publicaciones SET titulo = ?, contenido = ?,\nestado = ?, visibilidad = ? WHERE id = ? AND autor_id = ? AND retirada = false
 DB --> Repo: Publicacion actualizada
-Service -> ArchivoRepo: agregarAdjuntosOpcionales(publicacion, adjuntos, actor)
+Service -> ArchivoRepo: save(publicacion, adjuntos, actor)
 ArchivoRepo -> DB: INSERT INTO archivos_publicacion\n(publicacion_id, nombre, contenido, subido_por_id, retirado)\nVALUES (?, ?, ?, ?, false)
 DB --> ArchivoRepo: Adjuntos creados / vacio
 Service --> Api: Resultado del caso de uso

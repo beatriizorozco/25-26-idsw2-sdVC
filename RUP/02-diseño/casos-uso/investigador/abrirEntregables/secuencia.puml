@@ -11,14 +11,14 @@ database "Base de Datos" as DB
 
 Investigador -> Frontend: Solicita abrir entregables del proyecto
 Frontend -> Api: GET /api/proyectos/{proyectoId}/entregables?filtro=\nCookie de sesion
-Api -> Sesion: exigirInvestigador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 Sesion --> Api: Investigador autenticado
-Api -> Service: listarVisiblesPorProyecto(proyectoId, filtro, investigador)
-Service -> ProyectoRepo: verificarParticipacion(proyectoId, investigador)
+Api -> Service: listar(proyectoId, filtro, investigador)
+Service -> ProyectoRepo: findById(proyectoId, investigador)
 ProyectoRepo -> DB: SELECT p.* FROM proyectos p\nJOIN proyecto_investigadores pi ON pi.proyecto_id = p.id\nWHERE p.id = ? AND pi.investigador_id = ?\nAND pi.activo = true AND p.archivado = false
 DB --> ProyectoRepo: Proyecto visible / vacio
 ProyectoRepo --> Service: Proyecto visible / acceso denegado
-Service -> Repo: buscarActivosPorProyecto(proyectoId, filtro)
+Service -> Repo: findByProyectoIdAndRetiradoOrderByFechaCreacionDesc(proyectoId, filtro)
 Repo -> DB: SELECT * FROM entregables\nWHERE proyecto_id = ? AND retirado = false\nAND coincide_filtro = true
 DB --> Repo: Entregables activos
 Repo --> Service: Entregables activos

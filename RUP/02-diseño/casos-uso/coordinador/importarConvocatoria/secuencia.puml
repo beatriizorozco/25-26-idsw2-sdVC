@@ -15,20 +15,20 @@ database "Base de Datos" as DB
 
 Coordinador -> Frontend: Introduce archivo o enlace
 Frontend -> Api: POST /api/convocatorias/importaciones/previsualizacion\n(FuenteConvocatoriaRequest) + cookie
-Api -> Sesion: exigirCoordinador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 Sesion --> Api: Coordinador autenticado
 Api -> Service: previsualizar(fuente, actor)
-Service -> Policy: permitirImportacion(actor)
+Service -> Policy: exigirImportacion(actor)
 Service -> Registry: obtenerCompatible(fuente)
 Registry --> Service: ImportadorConvocatoria
 Service -> Importer: extraer(fuente)
 Importer --> Service: DatosConvocatoriaNormalizados
-Service -> Validator: validarEstructura(datos)
-Service -> Repo: existeReferenciaExterna(referencia)
+Service -> Validator: validar(datos)
+Service -> Repo: existsByReferenciaExterna(referencia)
 Repo -> DB: SELECT EXISTS(SELECT 1 FROM convocatorias\nWHERE referencia_externa = ?)
 DB --> Repo: Existe / no existe
 Repo --> Service: Existe / no existe
-Service -> Validator: validarDuplicado(estadoExistente)
+Service -> Validator: yaIncorporada(estadoExistente)
 Service --> Api: PrevisualizacionConvocatoria
 Api --> Frontend: 200 OK (PrevisualizacionConvocatoriaResponse)
 Frontend --> Coordinador: Presenta datos y solicita confirmacion
@@ -36,12 +36,12 @@ Frontend --> Coordinador: Presenta datos y solicita confirmacion
 alt Coordinador confirma
     Coordinador -> Frontend: Confirma importacion
     Frontend -> Api: POST /api/convocatorias/importaciones\n(ConfirmarImportacionRequest) + cookie
-    Api -> Sesion: exigirCoordinador(authentication)
+    Api -> Sesion: obtenerSesionActual(authentication)
     Sesion --> Api: Coordinador autenticado
     Api -> Service: confirmar(datos, fuente, actor)
-    Service -> Policy: permitirImportacion(actor)
-    Service -> Validator: revalidar(datos, fuente)
-    Service -> Repo: guardarImportada(convocatoria)
+    Service -> Policy: exigirImportacion(actor)
+    Service -> Validator: validar(datos, fuente)
+    Service -> Repo: save(convocatoria)
     Repo -> DB: INSERT INTO convocatorias (..., referencia_externa, incorporada)\nVALUES (..., ?, true)\nON CONFLICT (referencia_externa)\nDO UPDATE SET ..., incorporada = true
     DB --> Repo: Convocatoria importada
     Repo --> Service: Convocatoria importada

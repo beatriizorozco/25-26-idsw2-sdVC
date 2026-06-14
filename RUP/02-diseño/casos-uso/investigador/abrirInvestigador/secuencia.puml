@@ -1,4 +1,4 @@
-﻿@startuml abrirInvestigador-investigador-diseno
+@startuml abrirInvestigador-investigador-diseno
 title Diagrama de secuencia - Abrir investigador como Investigador
 
 actor Investigador
@@ -17,9 +17,9 @@ activate Api
 Api -> Sesion: obtenerSesionActual(authentication)
 activate Sesion
 alt Sesion valida
-    Sesion --> Api: SesionResponse(usuario, rol)
+    Sesion --> Api: SesionResponse
     deactivate Sesion
-    Api -> Service: obtenerDetalle(sesion, id, proyectoId?)
+    Api -> Service: obtener(sesion, id, proyectoId?)
     activate Service
     Service -> UsuarioRepo: findById(id)
     UsuarioRepo -> DB: SELECT * FROM usuarios WHERE id = ?

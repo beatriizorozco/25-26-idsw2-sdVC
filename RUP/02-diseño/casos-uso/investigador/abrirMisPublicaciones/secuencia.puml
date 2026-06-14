@@ -1,4 +1,4 @@
-﻿@startuml abrirMisPublicaciones-investigador-diseno
+@startuml abrirMisPublicaciones-investigador-diseno
 title Diagrama de secuencia - abrirMisPublicaciones
 actor Investigador
 participant "abrirMisPublicacionesPage\n(React)" as Frontend
@@ -12,11 +12,11 @@ database "Base de Datos" as DB
 
 Investigador -> Frontend: Solicita abrirMisPublicaciones()
 Frontend -> Api: GET /api/publicaciones/me?filtro= + cookie
-Api -> Sesion: exigirInvestigador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 Sesion --> Api: Actor autenticado
-Api -> Service: listarPropias(filtro, actor)
-Service -> Policy: alcancePropio(actor)
-Service -> Repo: buscarActivasPorAutor(actor.id, filtro)
+Api -> Service: listar(filtro, actor)
+note right of Policy: Responsabilidad interna: alcancePropio
+Service -> Repo: findByAutorAndRetiradaOrderByFechaActualizacionDesc(actor.id, filtro)
 Repo -> DB: SELECT * FROM publicaciones\nWHERE autor_id = ? AND retirada = false\nAND coincide_filtro = true
 DB --> Repo: Publicaciones propias
 Repo --> Service: Publicaciones propias

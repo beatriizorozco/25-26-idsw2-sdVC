@@ -1,4 +1,4 @@
-﻿@startuml iniciarSesion-diseño
+@startuml iniciarSesion-diseño
 title Diagrama de secuencia - Iniciar sesión
 
 actor Investigador
@@ -20,7 +20,7 @@ Frontend --> Investigador: Presenta formulario de acceso
 Investigador -> Frontend: Introduce usuario y contraseña
 Frontend -> Api: GET /api/auth/csrf
 activate Api
-Api -> Security: obtenerTokenCsrf()
+note right of Security: Responsabilidad interna: obtenerTokenCsrf
 activate Security
 Security --> Api: CsrfTokenResponse
 deactivate Security
@@ -38,7 +38,7 @@ DB --> Repo: Usuario o vacío
 deactivate DB
 Repo --> Auth: Optional<Usuario>
 deactivate Repo
-Auth -> Auth: validarCredenciales(usuario, contrasena, activo)
+Auth -> Auth: autenticar(usuario, contrasena, activo)
 
 alt Credenciales correctas y usuario activo
     Auth --> Api: Usuario autenticado
@@ -51,7 +51,7 @@ alt Credenciales correctas y usuario activo
     deactivate Api
     Frontend -> Api: GET /api/auth/csrf\nRenovar token tras autenticación
     activate Api
-    Api -> Security: obtenerTokenCsrf()
+note right of Security: Responsabilidad interna: obtenerTokenCsrf
     activate Security
     Security --> Api: CsrfTokenResponse renovado
     deactivate Security

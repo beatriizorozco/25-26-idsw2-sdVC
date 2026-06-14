@@ -1,4 +1,4 @@
-﻿@startuml abrirRecompensa-coordinador-diseno
+@startuml abrirRecompensa-coordinador-diseno
 title Diagrama de secuencia - Abrir recompensa como Coordinador
 
 actor Coordinador
@@ -8,34 +8,34 @@ participant "SesionService" as Sesion
 participant "RecompensaService" as Service
 participant "RecompensaRepository" as Repo
 participant "ProyectoRepository" as ProyectoRepo
-participant "InvestigadorRepository" as InvestigadorRepo
+participant "UsuarioRepository" as InvestigadorRepo
 database "Base de Datos" as DB
 
 Coordinador -> Frontend: Selecciona una recompensa
 activate Frontend
 Frontend -> Api: GET /api/recompensas/{id}\nCookie de sesion
 activate Api
-Api -> Sesion: exigirCoordinador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 activate Sesion
 alt Sesion de Coordinador activa
     Sesion --> Api: Coordinador autenticado
     deactivate Sesion
     Api -> Service: obtenerGlobal(id)
     activate Service
-    Service -> Repo: obtenerPorId(id)
+    Service -> Repo: findById(id)
     Repo -> DB: SELECT * FROM recompensas WHERE id = ?
     DB --> Repo: Resultado de persistencia
     Repo --> Service: Recompensa
     alt Recompensa existente
-        Service -> ProyectoRepo: obtenerCompletado(recompensa.proyectoId)
+        Service -> ProyectoRepo: findById(recompensa.proyectoId)
         ProyectoRepo -> DB: SELECT * FROM proyectos WHERE id = ? AND estado = 'COMPLETADO'
         DB --> ProyectoRepo: Resultado de persistencia
         ProyectoRepo --> Service: Proyecto completado
-        Service -> InvestigadorRepo: obtenerBeneficiario(recompensa.investigadorId)
+        Service -> InvestigadorRepo: findById(recompensa.investigadorId)
         InvestigadorRepo -> DB: SELECT * FROM usuarios WHERE id = ? AND activo = true
         DB --> InvestigadorRepo: Resultado de persistencia
         InvestigadorRepo --> Service: Beneficiario con sede y condicion
-        Service -> Service: validarTipoSegunBeneficiario()
+        Service -> Service: validarDatos()
         Service --> Api: RecompensaDetalleResponse
         deactivate Service
         Api --> Frontend: 200 OK\nDetalle y acciones de gestion

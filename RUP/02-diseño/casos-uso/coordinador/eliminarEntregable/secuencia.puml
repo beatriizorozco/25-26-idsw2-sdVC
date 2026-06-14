@@ -15,14 +15,14 @@ alt Coordinador cancela
 else Coordinador confirma
   Coordinador -> Frontend: Confirma retirada con motivo
   Frontend -> Api: PATCH /api/entregables/{id}/retirada\nmotivo + cookie
-  Api -> Sesion: exigirCoordinador(authentication)
+  Api -> Sesion: obtenerSesionActual(authentication)
   Sesion --> Api: Coordinador autenticado
   Api -> Service: retirar(id, motivo, coordinador)
-  Service -> Repo: obtenerActivoPorId(id)
+  Service -> Repo: findByIdAndRetirado(id)
   Repo -> DB: SELECT * FROM entregables\nWHERE id = ? AND retirado = false
   DB --> Repo: Entregable / vacio
   Repo --> Service: Entregable / vacio
-  Service -> Repo: retirar(id, fecha, coordinador, motivo)
+  Service -> Repo: save(id, fecha, coordinador, motivo)
   Repo -> DB: UPDATE entregables SET retirado = true,\nfecha_retirada = ?, retirado_por_id = ?, motivo_retirada = ?\nWHERE id = ?
   DB --> Repo: Entregable retirado
   Repo --> Service: Entregable retirado

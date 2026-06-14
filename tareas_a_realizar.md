@@ -40,6 +40,7 @@ Actualizar [`RUP/02-diseño/configuracion-proyecto.md`](RUP/02-diseño/configura
 
 Actualizar [`RUP/02-diseño/README.md`](RUP/02-diseño/README.md) y sus diagramas generales:
 
+- [x] Alinear los métodos de los 69 diagramas de secuencia con las operaciones públicas reales de Desarrollo, siguiendo [`documents/auditoria-trazabilidad-metodos.md`](documents/auditoria-trazabilidad-metodos.md).
 - [ ] Ampliar el índice de casos de uso conforme se diseñen nuevos bloques.
 - [ ] Actualizar `arquitectura.puml` si cambia la arquitectura desplegada.
 - [ ] Actualizar `clases-diseño.puml` con las entidades y servicios de cada iteración.

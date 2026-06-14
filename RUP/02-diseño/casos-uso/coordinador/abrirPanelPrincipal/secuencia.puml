@@ -20,7 +20,7 @@ activate Api
 Api -> Sesion: obtenerSesionActual()
 activate Sesion
 alt Sesión activa
-    Sesion --> Api: SesionResponse(COORDINADOR)
+    Sesion --> Api: SesionResponse
     deactivate Sesion
     Api -> Panel: obtenerAccionesDisponibles(COORDINADOR)
     activate Panel

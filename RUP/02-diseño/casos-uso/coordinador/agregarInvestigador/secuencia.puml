@@ -1,4 +1,4 @@
-﻿@startuml agregarInvestigador-coordinador-diseno
+@startuml agregarInvestigador-coordinador-diseno
 title Diagrama de secuencia - Agregar investigador a proyecto
 
 actor Coordinador
@@ -7,7 +7,7 @@ participant "ProyectoController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "ProyectoService" as Service
 participant "ProyectoRepository" as Repo
-participant "InvestigadorRepository" as InvestigadorRepo
+participant "UsuarioRepository" as InvestigadorRepo
 participant "CargaTrabajoRepository" as CargaRepo
 database "Base de Datos" as DB
 
@@ -15,23 +15,23 @@ Coordinador -> Frontend: Solicita agregar investigador
 activate Frontend
 Frontend -> Api: GET /api/proyectos/{id}/candidatos\nCookie de sesion
 activate Api
-Api -> Sesion: exigirCoordinador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 Sesion --> Api: Coordinador autenticado
-Api -> Service: obtenerCandidatos(id)
+Api -> Service: listarCandidatos(id)
 activate Service
-Service -> Repo: obtenerActivoPorId(id)
+Service -> Repo: findById(id)
 Repo -> DB: SELECT * FROM proyectos WHERE id = ? AND archivado = false
 DB --> Repo: Resultado de persistencia
 Repo --> Service: Proyecto
-Service -> InvestigadorRepo: obtenerNoAsociados(id)
+Service -> InvestigadorRepo: findByRolAndActivoTrueOrderByNombreCompletoAsc(id)
 InvestigadorRepo -> DB: SELECT * FROM usuarios WHERE rol = 'INVESTIGADOR' AND activo = true AND id NOT IN (SELECT usuario_id FROM proyecto_investigadores WHERE proyecto_id = ?)
 DB --> InvestigadorRepo: Resultado de persistencia
 InvestigadorRepo --> Service: Candidatos
-Service -> CargaRepo: obtenerCargas(candidatos)
+Service -> CargaRepo: findAll(candidatos)
 CargaRepo -> DB: SELECT * FROM cargas_trabajo WHERE usuario_id IN (?)
 DB --> CargaRepo: Resultado de persistencia
 CargaRepo --> Service: Cargas y disponibilidad
-Service -> Service: evaluarCompatibilidadYRecomendarMenorCarga()
+note right of Service: Responsabilidad interna: evaluarCompatibilidadYRecomendarMenorCarga
 Service --> Api: Lista<CandidatoProyectoResponse>
 deactivate Service
 Api --> Frontend: 200 OK\nCandidatos ordenados
@@ -44,23 +44,23 @@ else Coordinador confirma
     Coordinador -> Frontend: Selecciona candidato y confirma
     Frontend -> Api: POST /api/proyectos/{id}/investigadores/{investigadorId}\nCookie de sesion
     activate Api
-    Api -> Sesion: exigirCoordinador(authentication)
+    Api -> Sesion: obtenerSesionActual(authentication)
     Sesion --> Api: Coordinador autenticado
-    Api -> Service: asociarInvestigador(id, investigadorId)
+    Api -> Service: agregarInvestigador(id, investigadorId)
     activate Service
-    Service -> Repo: obtenerActivoPorId(id)
+    Service -> Repo: findById(id)
     Repo -> DB: SELECT * FROM proyectos WHERE id = ? AND archivado = false
     DB --> Repo: Resultado de persistencia
     Repo --> Service: Proyecto / vacio
-    Service -> InvestigadorRepo: obtenerCandidatoDisponible(id, investigadorId)
+    Service -> InvestigadorRepo: findById(id, investigadorId)
     InvestigadorRepo -> DB: SELECT * FROM usuarios WHERE id = ? AND rol = 'INVESTIGADOR' AND activo = true
     DB --> InvestigadorRepo: Resultado de persistencia
     InvestigadorRepo --> Service: Investigador / vacio
-    Service -> CargaRepo: obtenerCargaActual(investigadorId)
+    Service -> CargaRepo: findByUsuario(investigadorId)
     CargaRepo -> DB: SELECT * FROM cargas_trabajo WHERE usuario_id = ?
     DB --> CargaRepo: Resultado de persistencia
     CargaRepo --> Service: Carga y disponibilidad actualizadas
-    Service -> Service: reevaluarCompatibilidadYDisponibilidad()
+note right of Service: Responsabilidad interna: reevaluarCompatibilidadYDisponibilidad
     alt Proyecto no disponible, candidato invalido o ya asociado
         Service --> Api: ValidacionException / ConflictoException
         deactivate Service
@@ -68,7 +68,7 @@ else Coordinador confirma
         deactivate Api
         Frontend --> Coordinador: Presenta error y conserva candidatos
     else Candidato valido
-        Service -> Repo: registrarAsignacion(id, investigadorId, fecha, coordinador)
+        Service -> Repo: save(id, investigadorId, fecha, coordinador)
         Repo -> DB: INSERT INTO proyecto_investigadores (proyecto_id, usuario_id) VALUES (?, ?)\nINSERT INTO movimientos_participacion_proyecto (proyecto_id, investigador_id, tipo, responsable_id, fecha) VALUES (?, ?, 'ASIGNACION', ?, ?)
         DB --> Repo: Resultado de persistencia
         Repo --> Service: Participacion activa

@@ -1,4 +1,4 @@
-﻿@startuml editarCargaTrabajo-coordinador-diseno
+@startuml editarCargaTrabajo-coordinador-diseno
 title Diagrama de secuencia - Editar carga de trabajo por Coordinador
 
 actor Coordinador
@@ -6,7 +6,7 @@ participant "EditarCargaTrabajoForm\n(React)" as Frontend
 participant "CargaTrabajoController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "CargaTrabajoService" as Service
-participant "PersonaRepository" as PersonaRepo
+participant "UsuarioRepository" as PersonaRepo
 participant "CargaTrabajoRepository" as CargaRepo
 database "Base de Datos" as DB
 
@@ -18,17 +18,17 @@ activate Api
 Api -> Sesion: obtenerSesionActual(authentication)
 activate Sesion
 alt Sesion de Coordinador activa
-    Sesion --> Api: SesionResponse(COORDINADOR)
+    Sesion --> Api: SesionResponse
     deactivate Sesion
-    Api -> Service: obtenerCargaDePersona(coordinador, personaId)
+    Api -> Service: obtenerCargaPorPerfil(coordinador, personaId)
     activate Service
-    Service -> PersonaRepo: obtenerPorId(personaId)
+    Service -> PersonaRepo: findById(personaId)
     PersonaRepo -> DB: SELECT * FROM usuarios WHERE id = ?
     DB --> PersonaRepo: Resultado de persistencia
     activate PersonaRepo
     PersonaRepo --> Service: Persona con sede
     deactivate PersonaRepo
-    Service -> CargaRepo: obtenerPorPersona(personaId)
+    Service -> CargaRepo: findByUsuario(personaId)
     CargaRepo -> DB: SELECT * FROM cargas_trabajo WHERE usuario_id = ?
     DB --> CargaRepo: Resultado de persistencia
     activate CargaRepo
@@ -44,17 +44,17 @@ alt Sesion de Coordinador activa
     activate Api
     Api -> Sesion: obtenerSesionActual(authentication)
     activate Sesion
-    Sesion --> Api: SesionResponse(COORDINADOR)
+    Sesion --> Api: SesionResponse
     deactivate Sesion
-    Api -> Service: actualizarCargaDePersona(coordinador, personaId, datos)
+    Api -> Service: actualizarCargaPorPerfil(coordinador, personaId, datos)
     activate Service
-    Service -> PersonaRepo: obtenerPorId(personaId)
+    Service -> PersonaRepo: findById(personaId)
     PersonaRepo -> DB: SELECT * FROM usuarios WHERE id = ?
     DB --> PersonaRepo: Resultado de persistencia
     activate PersonaRepo
     PersonaRepo --> Service: Persona con sede
     deactivate PersonaRepo
-    Service -> Service: validarHoras(datos, sede, maximo16h)
+    Service -> Service: validarCargaDocente(datos, sede, maximo16h)
     alt Sede sin docencia registra horas docentes
         Service --> Api: validacion fallida
         Api --> Frontend: 400 Bad Request
@@ -64,18 +64,18 @@ alt Sesion de Coordinador activa
         Api --> Frontend: 400 Bad Request
         Frontend --> Coordinador: Presenta error de limite docente
     else Carga valida
-        Service -> CargaRepo: obtenerPorPersona(personaId)
+        Service -> CargaRepo: findByUsuario(personaId)
         CargaRepo -> DB: SELECT * FROM cargas_trabajo WHERE usuario_id = ?
         DB --> CargaRepo: Resultado de persistencia
         activate CargaRepo
         CargaRepo --> Service: CargaTrabajo
-        Service -> Service: actualizarCampos(cargaTrabajo, datos)
-        Service -> CargaRepo: guardar(cargaTrabajoActualizada)
+        Service -> Service: actualizarCarga(cargaTrabajo, datos)
+        Service -> CargaRepo: save(cargaTrabajoActualizada)
         CargaRepo -> DB: UPDATE cargas_trabajo SET horas_docencia = ?, horas_investigacion = ?,\nhoras_gestion_academica = ?, observaciones = ?, fecha_actualizacion = CURRENT_TIMESTAMP\nWHERE usuario_id = ?
         DB --> CargaRepo: Resultado de persistencia
         CargaRepo --> Service: CargaTrabajo actualizada
         deactivate CargaRepo
-        Service -> CargaRepo: recalcularPrioridadParaProyectosLibres(personaId)
+        Service -> CargaRepo: save(personaId)
         CargaRepo -> DB: UPDATE cargas_trabajo SET fecha_actualizacion = CURRENT_TIMESTAMP WHERE usuario_id = ?
         DB --> CargaRepo: Resultado de persistencia
         CargaRepo --> Service: Prioridad actualizada

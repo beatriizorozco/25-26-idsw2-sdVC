@@ -15,14 +15,14 @@ alt Investigador cancela
 else Investigador confirma
   Investigador -> Frontend: Confirma retirada con motivo
   Frontend -> Api: PATCH /api/entregables/{id}/retirada\nmotivo + cookie
-  Api -> Sesion: exigirInvestigador(authentication)
+  Api -> Sesion: obtenerSesionActual(authentication)
   Sesion --> Api: Investigador autenticado
-  Api -> Service: retirarPropio(id, motivo, investigador)
-  Service -> Repo: obtenerActivoPorIdYAutor(id, investigador)
+  Api -> Service: retirar(id, motivo, investigador)
+  Service -> Repo: findByIdAndRetirado(id, investigador)
   Repo -> DB: SELECT * FROM entregables\nWHERE id = ? AND autor_id = ? AND retirado = false
   DB --> Repo: Entregable propio / vacio
   Repo --> Service: Entregable propio / vacio
-  Service -> Repo: retirar(id, fecha, investigador, motivo)
+  Service -> Repo: save(id, fecha, investigador, motivo)
   Repo -> DB: UPDATE entregables SET retirado = true,\nfecha_retirada = ?, retirado_por_id = ?, motivo_retirada = ?\nWHERE id = ? AND autor_id = ?
   DB --> Repo: Entregable retirado
   Repo --> Service: Entregable retirado

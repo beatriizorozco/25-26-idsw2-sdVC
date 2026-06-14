@@ -20,7 +20,7 @@ activate Api
 Api -> Sesion: obtenerSesionActual()
 activate Sesion
 alt Sesión activa
-    Sesion --> Api: SesionResponse(INVESTIGADOR)
+    Sesion --> Api: SesionResponse
     deactivate Sesion
     Api -> Panel: obtenerAccionesDisponibles(INVESTIGADOR)
     activate Panel

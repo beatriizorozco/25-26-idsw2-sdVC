@@ -6,19 +6,19 @@ participant "EntregableController\n(Spring Boot)" as Api
 participant "SesionService" as Sesion
 participant "EntregableService" as Service
 participant "EntregableRepository" as Repo
-participant "ArchivoRepository" as ArchivoRepo
+participant "ArchivoEntregableRepository" as ArchivoRepo
 database "Base de Datos" as DB
 
 Coordinador -> Frontend: Selecciona entregable
 Frontend -> Api: GET /api/entregables/{id}\nCookie de sesion
-Api -> Sesion: exigirCoordinador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 Sesion --> Api: Coordinador autenticado
-Api -> Service: obtenerDetalle(id)
-Service -> Repo: obtenerActivoPorId(id)
+Api -> Service: obtener(id)
+Service -> Repo: findByIdAndRetirado(id)
 Repo -> DB: SELECT * FROM entregables\nWHERE id = ? AND retirado = false
 DB --> Repo: Entregable / vacio
 Repo --> Service: Entregable / vacio
-Service -> ArchivoRepo: obtenerPorEntregable(id)
+Service -> ArchivoRepo: findByEntregableIdOrderByVersionDesc(id)
 ArchivoRepo -> DB: SELECT * FROM archivos_entregable\nWHERE entregable_id = ?\nORDER BY version DESC
 DB --> ArchivoRepo: Archivos y versiones
 ArchivoRepo --> Service: Archivos y versiones

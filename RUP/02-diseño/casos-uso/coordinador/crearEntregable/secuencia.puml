@@ -7,29 +7,29 @@ participant "SesionService" as Sesion
 participant "EntregableService" as Service
 participant "ProyectoRepository" as ProyectoRepo
 participant "EntregableRepository" as Repo
-participant "ArchivoRepository" as ArchivoRepo
+participant "ArchivoEntregableRepository" as ArchivoRepo
 database "Base de Datos" as DB
 
 Coordinador -> Frontend: Introduce datos y archivo opcional
 Frontend -> Api: POST /api/proyectos/{proyectoId}/entregables\nEntregableCreateRequest + archivo? + cookie
-Api -> Sesion: exigirCoordinador(authentication)
+Api -> Sesion: obtenerSesionActual(authentication)
 Sesion --> Api: Coordinador autenticado
 Api -> Service: crear(proyectoId, datos, archivo?, coordinador)
-Service -> ProyectoRepo: obtenerActivoPorId(proyectoId)
+Service -> ProyectoRepo: findById(proyectoId)
 ProyectoRepo -> DB: SELECT * FROM proyectos\nWHERE id = ? AND archivado = false
 DB --> ProyectoRepo: Proyecto / vacio
 ProyectoRepo --> Service: Proyecto / vacio
-Service -> Service: validarDatosYArchivo()
+note right of Service: Responsabilidad interna: validarDatosYArchivo
 alt Proyecto inexistente o datos invalidos
   Service --> Api: RecursoNoEncontradoException / ValidacionException
   Api --> Frontend: 404 Not Found / 400 Bad Request
   Frontend --> Coordinador: Presenta error y conserva formulario
 else Datos validos
-  Service -> Repo: guardar(entregable)
+  Service -> Repo: save(entregable)
   Repo -> DB: INSERT INTO entregables\n(proyecto_id, titulo, descripcion, autor_id, retirado)\nVALUES (?, ?, ?, ?, false)
   DB --> Repo: Entregable creado con ID
   Repo --> Service: Entregable creado
-  Service -> ArchivoRepo: guardarOpcional(entregable, archivo, coordinador)
+  Service -> ArchivoRepo: save(entregable, archivo, coordinador)
   ArchivoRepo -> DB: INSERT INTO archivos_entregable\n(entregable_id, version, archivo, subido_por_id)\nVALUES (?, 1, ?, ?)
   DB --> ArchivoRepo: Archivo / vacio
   ArchivoRepo --> Service: Archivo / vacio
