@@ -666,3 +666,15 @@ La validación final del 12 de junio de 2026 confirmó 48 pruebas backend correc
 Quedan sin commit `documents/auditoria-trazabilidad-metodos.md`, `tools/auditar-trazabilidad-diseno.ps1` y la actualización de `tareas_a_realizar.md`. La herramienta permite repetir la comparación entre llamadas de Diseño y métodos declarados en el backend, diferenciando métodos heredados de Spring Data y tipos de respuesta.
 
 **Decisión:** la siguiente tarea prioritaria es alinear los diagramas de Diseño con las operaciones públicas reales de Desarrollo por familias funcionales. No se añadirán métodos alias artificiales al código únicamente para satisfacer los diagramas, porque duplicarían responsabilidades y perjudicarían SRP y OCP. Después deberá repetirse la auditoría hasta reducir las discrepancias y regenerar los SVG afectados.
+
+---
+
+## [2026-06-15 00:51] Fin de sesión - Trazabilidad completa y preparación final de entrega
+
+**Prompt:** el usuario solicitó cerrar la sesión mediante la skill `session-memory` tras preguntar si quedaban tareas importantes antes de entregar el proyecto el 16 de junio de 2026.
+
+**Resultado:** se utilizó la skill `session-memory`. Se alinearon los 69 diagramas de secuencia de Diseño con las operaciones públicas reales del código de Desarrollo, sustituyendo nombres conceptuales antiguos por métodos existentes y representando como notas las responsabilidades internas que no constituyen APIs públicas. Se regeneraron sus 69 SVG y se incorporaron herramientas reutilizables para repetir la alineación y auditar automáticamente la trazabilidad. La comprobación final revisó 355 llamadas y terminó con 0 métodos no declarados, 0 errores PlantUML y ausencia de texto corrupto.
+
+También se realizó una validación final de entrega. El backend compiló y superó sus 48 pruebas automatizadas sin fallos ni errores; el frontend generó correctamente su compilación de producción; ESLint terminó sin incidencias; `git diff --check` no detectó errores; y se confirmó la presencia de los artefactos obligatorios: README principal, `QUE_HACE.md`, código fuente, documentación, modelos PlantUML, SVG y `conversation-log.md`. El repositorio quedó limpio al finalizar la sesión.
+
+**Decisión:** el proyecto queda técnicamente preparado para la entrega. Antes de presentarlo se recomienda realizar únicamente una regresión manual breve con Coordinador e Investigador, revisar o canonizar los 27 enlaces de cabecera pendientes hacia Pruebas y preparar la demostración oral. Docker, despliegue público y mejoras arquitectónicas adicionales se mantienen como tareas opcionales y no deben desplazar estas comprobaciones finales.
