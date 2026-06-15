@@ -4,8 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "powershell -NoProfile -ExecutionPolicy Bypass -File ../../tools/start-dev.ps1",
-    "dev:frontend": "vite",
+    "dev": "node ../../tools/start-dev.mjs",
+    "dev:frontend": "vite --configLoader runner",
+    "dev:vite": "vite --configLoader runner",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
