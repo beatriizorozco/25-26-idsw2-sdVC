@@ -1,9 +1,9 @@
-﻿# FUNIBER > Coordinador > abrirMisPublicaciones > Diseno
+# FUNIBER > Coordinador > abrirMisPublicaciones > Diseño
 
-> |[Inicio](/README.md)|[Contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/abrirMisPublicaciones/README.md)|[Analisis](/RUP/01-analisis/casos-uso/coordinador/abrirMisPublicaciones/README.md)|**Diseno**|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/abrirMisPublicaciones/README.md)|Pruebas|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/abrirMisPublicaciones/README.md)|[Análisis](/RUP/01-analisis/casos-uso/coordinador/abrirMisPublicaciones/README.md)|**Diseño**|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/abrirMisPublicaciones/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
-## Proposito
+## Propósito
 
 Consultar y filtrar las publicaciones creadas por el Coordinador autenticado.
 

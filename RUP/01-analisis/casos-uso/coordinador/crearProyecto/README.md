@@ -1,6 +1,6 @@
 # FUNIBER > Coordinador > crearProyecto > Análisis
 
-> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/crearProyecto/README.md)|**Análisis**|[Diseño](/RUP/02-diseño/casos-uso/coordinador/crearProyecto/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/crearProyecto/README.md)|[Pruebas](/RUP/04-pruebas/casos-uso/coordinador/crearProyecto/README.md)|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/crearProyecto/README.md)|**Análisis**|[Diseño](/RUP/02-diseño/casos-uso/coordinador/crearProyecto/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/crearProyecto/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
 ## Información del artefacto

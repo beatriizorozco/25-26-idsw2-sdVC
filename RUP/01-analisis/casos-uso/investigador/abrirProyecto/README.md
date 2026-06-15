@@ -1,6 +1,6 @@
 # FUNIBER > Investigador > abrirProyecto > Análisis
 
-> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/abrirProyecto/README.md)|**Análisis**|[Diseño](/RUP/02-diseño/casos-uso/investigador/abrirProyecto/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/investigador/abrirProyecto/README.md)|[Pruebas](/RUP/04-pruebas/casos-uso/investigador/abrirProyecto/README.md)|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/abrirProyecto/README.md)|**Análisis**|[Diseño](/RUP/02-diseño/casos-uso/investigador/abrirProyecto/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/investigador/abrirProyecto/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
 ## Información del artefacto

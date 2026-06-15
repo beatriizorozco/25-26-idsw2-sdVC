@@ -1,6 +1,6 @@
 # FUNIBER > Coordinador > editarMiPublicacion > Análisis
 
-> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/editarMiPublicacion/README.md)|**Análisis**|[Diseño](/RUP/02-diseño/casos-uso/coordinador/editarMiPublicacion/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/editarMiPublicacion/README.md)|[Pruebas](/RUP/04-pruebas/casos-uso/coordinador/editarMiPublicacion/README.md)|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/editarMiPublicacion/README.md)|**Análisis**|[Diseño](/RUP/02-diseño/casos-uso/coordinador/editarPublicacion/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/editarPublicacion/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
 ## Información del artefacto

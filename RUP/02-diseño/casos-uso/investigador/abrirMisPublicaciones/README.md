@@ -1,9 +1,9 @@
-﻿# FUNIBER > Investigador > abrirMisPublicaciones > Diseno
+# FUNIBER > Investigador > abrirMisPublicaciones > Diseño
 
-> |[Inicio](/README.md)|[Contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/abrirMisPublicaciones/README.md)|[Analisis](/RUP/01-analisis/casos-uso/investigador/abrirMisPublicaciones/README.md)|**Diseno**|[Desarrollo](/RUP/03-desarrollo/casos-uso/investigador/abrirMisPublicaciones/README.md)|Pruebas|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/abrirMisPublicaciones/README.md)|[Análisis](/RUP/01-analisis/casos-uso/investigador/abrirMisPublicaciones/README.md)|**Diseño**|[Desarrollo](/RUP/03-desarrollo/casos-uso/investigador/abrirMisPublicaciones/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
-## Proposito
+## Propósito
 
 Consultar y filtrar las publicaciones creadas por el Investigador autenticado.
 

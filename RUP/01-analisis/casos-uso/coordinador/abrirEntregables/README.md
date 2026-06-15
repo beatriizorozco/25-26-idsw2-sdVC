@@ -1,6 +1,6 @@
-﻿# FUNIBER > Coordinador > abrirEntregables > Análisis
+# FUNIBER > Coordinador > abrirEntregables > Análisis
 
-> |[Inicio](/README.md)|[Contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/abrirEntregables/README.md)|**Análisis**|[Diseño](/RUP/02-diseño/casos-uso/coordinador/abrirEntregables/README.md)|Desarrollo|Pruebas|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/abrirEntregables/README.md)|**Análisis**|[Diseño](/RUP/02-diseño/casos-uso/coordinador/abrirEntregables/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/abrirEntregables/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
 ## Propósito

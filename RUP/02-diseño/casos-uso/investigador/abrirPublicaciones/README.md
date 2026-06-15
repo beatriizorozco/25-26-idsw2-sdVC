@@ -1,9 +1,9 @@
-﻿# FUNIBER > Investigador > abrirPublicaciones > Diseno
+# FUNIBER > Investigador > abrirPublicaciones > Diseño
 
-> |[Inicio](/README.md)|[Contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/abrirPublicaciones/README.md)|[Analisis](/RUP/01-analisis/casos-uso/investigador/abrirPublicaciones/README.md)|**Diseno**|[Desarrollo](/RUP/03-desarrollo/casos-uso/investigador/abrirPublicaciones/README.md)|Pruebas|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/abrirPublicaciones/README.md)|[Análisis](/RUP/01-analisis/casos-uso/investigador/abrirPublicaciones/README.md)|**Diseño**|[Desarrollo](/RUP/03-desarrollo/casos-uso/investigador/abrirPublicaciones/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
-## Proposito
+## Propósito
 
 Consultar y filtrar las publicaciones activas de la plataforma.
 

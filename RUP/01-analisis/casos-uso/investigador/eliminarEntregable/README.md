@@ -1,6 +1,6 @@
-﻿# FUNIBER > Investigador > eliminarEntregable > Análisis
+# FUNIBER > Investigador > eliminarEntregable > Análisis
 
-> |[Inicio](/README.md)|[Contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/eliminarEntregable/README.md)|**Análisis**|[Diseño](/RUP/02-diseño/casos-uso/investigador/eliminarEntregable/README.md)|Desarrollo|Pruebas|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/eliminarEntregable/README.md)|**Análisis**|[Diseño](/RUP/02-diseño/casos-uso/investigador/eliminarEntregable/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/investigador/eliminarEntregable/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
 ## Propósito

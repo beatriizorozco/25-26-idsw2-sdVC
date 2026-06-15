@@ -1,9 +1,9 @@
-﻿# FUNIBER > Coordinador > responderPublicacion > Diseno
+# FUNIBER > Coordinador > responderPublicacion > Diseño
 
-> |[Inicio](/README.md)|[Contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/responderPublicacion/README.md)|[Analisis](/RUP/01-analisis/casos-uso/coordinador/responderPublicacion/README.md)|**Diseno**|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/responderPublicacion/README.md)|Pruebas|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/responderPublicacion/README.md)|[Análisis](/RUP/01-analisis/casos-uso/coordinador/responderPublicacion/README.md)|**Diseño**|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/responderPublicacion/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
-## Proposito
+## Propósito
 
 Registrar una respuesta en una publicacion activa.
 

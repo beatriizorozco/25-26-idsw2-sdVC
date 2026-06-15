@@ -1,9 +1,9 @@
-﻿# FUNIBER > Coordinador > abrirMiPublicacion > Diseno
+# FUNIBER > Coordinador > abrirMiPublicacion > Diseño
 
-> |[Inicio](/README.md)|[Contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/abrirMiPublicacion/README.md)|[Analisis](/RUP/01-analisis/casos-uso/coordinador/abrirMiPublicacion/README.md)|**Diseno**|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/abrirMiPublicacion/README.md)|Pruebas|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/abrirMiPublicacion/README.md)|[Análisis](/RUP/01-analisis/casos-uso/coordinador/abrirMiPublicacion/README.md)|**Diseño**|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/abrirMiPublicacion/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
-## Proposito
+## Propósito
 
 Consultar el detalle de una publicacion propia.
 

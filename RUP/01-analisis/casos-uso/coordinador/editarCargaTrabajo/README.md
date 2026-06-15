@@ -1,9 +1,9 @@
-# FUNIBER > Coordinador > editarCargaTrabajo > Analisis
+# FUNIBER > Coordinador > editarCargaTrabajo > Análisis
 
-> |[Inicio](/README.md)|[Contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/editarCargaTrabajo/README.md)|**Analisis**|[Diseno](/RUP/02-diseño/casos-uso/coordinador/editarCargaTrabajo/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/editarCargaTrabajo/README.md)|[Pruebas](/RUP/04-pruebas/casos-uso/coordinador/editarCargaTrabajo/README.md)|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/editarCargaTrabajo/README.md)|**Análisis**|[Diseño](/RUP/02-diseño/casos-uso/coordinador/editarCargaTrabajo/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/editarCargaTrabajo/README.md)|[Pruebas](/RUP/04-pruebas/casos-uso/coordinador/editarCargaTrabajo/README.md)|
 > |-|-|-|-|-|-|-|
 
-## Informacion del artefacto
+## Información del artefacto
 
 - **Proyecto**: FUNIBER - Plataforma Interna de Investigacion
 - **Fase RUP**: Elaboration (Elaboracion)
@@ -12,7 +12,7 @@
 - **Fecha**: 2026-06-04
 - **Autor**: Equipo de desarrollo
 
-## Proposito
+## Propósito
 
 Analizar la colaboracion necesaria para que el Coordinador actualice la carga de trabajo de una persona seleccionada, validando los datos antes de guardar y manteniendo retorno a las opciones de carga de trabajo.
 

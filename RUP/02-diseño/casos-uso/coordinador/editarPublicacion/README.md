@@ -1,9 +1,9 @@
-﻿# FUNIBER > Coordinador > editarPublicacion > Diseno
+# FUNIBER > Coordinador > editarPublicacion > Diseño
 
-> |[Inicio](/README.md)|[Contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/editarPublicacion/README.md)|[Analisis](/RUP/01-analisis/casos-uso/coordinador/editarPublicacion/README.md)|**Diseno**|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/editarPublicacion/README.md)|Pruebas|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/editarPublicacion/README.md)|[Análisis](/RUP/01-analisis/casos-uso/coordinador/editarPublicacion/README.md)|**Diseño**|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/editarPublicacion/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
-## Proposito
+## Propósito
 
 Actualizar una publicacion propia o ajena mediante el permiso global del Coordinador.
 

@@ -1,9 +1,9 @@
-﻿# FUNIBER > Investigador > eliminarPublicacion > Diseno
+# FUNIBER > Investigador > eliminarPublicacion > Diseño
 
-> |[Inicio](/README.md)|[Contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/eliminarPublicacion/README.md)|[Analisis](/RUP/01-analisis/casos-uso/investigador/eliminarPublicacion/README.md)|**Diseno**|[Desarrollo](/RUP/03-desarrollo/casos-uso/investigador/eliminarPublicacion/README.md)|Pruebas|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/eliminarPublicacion/README.md)|[Análisis](/RUP/01-analisis/casos-uso/investigador/eliminarPublicacion/README.md)|**Diseño**|[Desarrollo](/RUP/03-desarrollo/casos-uso/investigador/eliminarPublicacion/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
-## Proposito
+## Propósito
 
 Retirar logicamente una publicacion propia conservando su trazabilidad.
 

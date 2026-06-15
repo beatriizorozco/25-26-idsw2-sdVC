@@ -1,9 +1,9 @@
-# FUNIBER > Investigador > abrirOpcionesCargaTrabajo > Analisis
+# FUNIBER > Investigador > abrirOpcionesCargaTrabajo > Análisis
 
-> |[Inicio](/README.md)|[Contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/abrirOpcionesCargaTrabajo/README.md)|**Analisis**|[Diseno](/RUP/02-diseño/casos-uso/investigador/abrirOpcionesCargaTrabajo/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/investigador/abrirOpcionesCargaTrabajo/README.md)|[Pruebas](/RUP/04-pruebas/casos-uso/investigador/abrirOpcionesCargaTrabajo/README.md)|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/abrirOpcionesCargaTrabajo/README.md)|**Análisis**|[Diseño](/RUP/02-diseño/casos-uso/investigador/abrirOpcionesCargaTrabajo/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/investigador/abrirOpcionesCargaTrabajo/README.md)|[Pruebas](/RUP/04-pruebas/casos-uso/investigador/abrirOpcionesCargaTrabajo/README.md)|
 > |-|-|-|-|-|-|-|
 
-## Informacion del artefacto
+## Información del artefacto
 
 - **Proyecto**: FUNIBER - Plataforma Interna de Investigacion
 - **Fase RUP**: Elaboration (Elaboracion)
@@ -12,7 +12,7 @@
 - **Fecha**: 2026-06-04
 - **Autor**: Equipo de desarrollo
 
-## Proposito
+## Propósito
 
 Analizar la colaboracion necesaria para que el Investigador consulte su propia carga de trabajo, visualice su resumen semanal y acceda a la edicion de sus datos.
 

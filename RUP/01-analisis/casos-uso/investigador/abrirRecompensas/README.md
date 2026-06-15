@@ -1,6 +1,6 @@
 # FUNIBER > Investigador > abrirRecompensas > Análisis
 
-> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/abrirRecompensas/README.md)|**Análisis**|[Diseño](/RUP/02-diseño/casos-uso/investigador/abrirRecompensas/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/investigador/abrirRecompensas/README.md)|[Pruebas](/RUP/04-pruebas/casos-uso/investigador/abrirRecompensas/README.md)|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/abrirRecompensas/README.md)|**Análisis**|[Diseño](/RUP/02-diseño/casos-uso/investigador/abrirRecompensas/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/investigador/abrirRecompensas/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
 ## Información del artefacto

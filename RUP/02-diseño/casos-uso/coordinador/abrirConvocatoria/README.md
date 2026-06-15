@@ -1,6 +1,6 @@
 # FUNIBER > Coordinador > abrirConvocatoria > Diseño
 
-> |[Inicio](/README.md)|[Contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/abrirConvocatoria/README.md)|[Análisis](/RUP/01-analisis/casos-uso/coordinador/abrirConvocatoria/README.md)|**Diseño**|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/abrirConvocatoria/README.md)|Pruebas|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/abrirConvocatoria/README.md)|[Análisis](/RUP/01-analisis/casos-uso/coordinador/abrirConvocatoria/README.md)|**Diseño**|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/abrirConvocatoria/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
 ## Propósito

@@ -1,9 +1,9 @@
-﻿# FUNIBER > Coordinador > crearPublicacion > Analisis
+# FUNIBER > Coordinador > crearPublicacion > Análisis
 
-> |[Inicio](/README.md)|[Contexto](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/crearPublicacion/README.md)|**Analisis**|[Diseno](/RUP/02-dise%C3%B1o/casos-uso/coordinador/crearPublicacion/README.md)|Desarrollo|Pruebas|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/crearPublicacion/README.md)|**Análisis**|[Diseño](/RUP/02-diseño/casos-uso/coordinador/crearPublicacion/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/crearPublicacion/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
-## Proposito
+## Propósito
 
 Registrar una publicacion propia con el Coordinador autenticado como autor.
 

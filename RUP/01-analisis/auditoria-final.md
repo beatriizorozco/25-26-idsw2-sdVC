@@ -64,7 +64,7 @@ El bloque 10 no introduce casos de uso nuevos. Actúa como control final de cohe
 ## Riesgos residuales
 
 - La revisión documental no sustituye la regresión manual completa de todos los flujos.
-- La auditoría detectó 27 enlaces de cabecera hacia documentos de Pruebas todavía no creados o alias históricos que deben canonizarse durante el cierre transversal.
+- Las cabeceras de Análisis y Diseño enlazan únicamente artefactos existentes; las fases sin documento individual de Pruebas se muestran como texto plano para evitar rutas rotas.
 - Las consultas administrativas de históricos pueden ampliarse en futuras iteraciones.
 - El despliegue público y la configuración de secretos permanecen pendientes.
 

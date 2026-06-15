@@ -1,6 +1,6 @@
 # FUNIBER > Coordinador > eliminarRecompensa > Análisis
 
-> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/eliminarRecompensa/README.md)|**Análisis**|[Diseño](/RUP/02-diseño/casos-uso/coordinador/eliminarRecompensa/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/eliminarRecompensa/README.md)|[Pruebas](/RUP/04-pruebas/casos-uso/coordinador/eliminarRecompensa/README.md)|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/eliminarRecompensa/README.md)|**Análisis**|[Diseño](/RUP/02-diseño/casos-uso/coordinador/eliminarRecompensa/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/eliminarRecompensa/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
 ## Información del artefacto
