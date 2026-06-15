@@ -4,8 +4,6 @@ $workspace = Split-Path -Parent $PSScriptRoot
 $backendDirectory = Join-Path $workspace "src\backend"
 $frontendDirectory = Join-Path $workspace "src\frontend"
 $backendUrl = "http://127.0.0.1:8080/api/auth/csrf"
-$backendLog = Join-Path $backendDirectory "backend-run.log"
-$backendErrorLog = Join-Path $backendDirectory "backend-run.err.log"
 $javaHome = $env:JAVA_HOME
 
 if ([string]::IsNullOrWhiteSpace($javaHome) -or -not (Test-Path (Join-Path $javaHome "bin\java.exe"))) {
@@ -20,9 +18,11 @@ if (-not (Test-Path (Join-Path $javaHome "bin\java.exe"))) {
 $env:JAVA_HOME = $javaHome
 $env:Path = "$(Join-Path $javaHome 'bin');$env:Path"
 
-# No heredar opciones globales: algunas distribuciones de JDK para Windows
-# fallan al inicializar java.io.Console cuando se fuerzan desde JAVA_TOOL_OPTIONS.
-Remove-Item Env:JAVA_TOOL_OPTIONS -ErrorAction SilentlyContinue
+# La extensión Java de VS Code puede dejar una caché CDS creada con otro JDK.
+# Maven y Spring Boot arrancan JVM distintas, por lo que se desactiva CDS en ambas.
+Remove-Item Env:JAVA_TOOL_OPTIONS, Env:JDK_JAVA_OPTIONS -ErrorAction SilentlyContinue
+$env:MAVEN_OPTS = "-Xshare:off"
+$env:CONSOLE_LOG_CHARSET = "UTF-8"
 
 function Test-BackendPort {
     $client = [System.Net.Sockets.TcpClient]::new()
@@ -50,24 +50,58 @@ function Test-Backend {
 }
 
 if (-not (Test-Backend)) {
-    Write-Host "Backend no disponible. Iniciando Spring Boot..."
+    $backendJar = Get-ChildItem (Join-Path $backendDirectory "target") -Filter "*.jar" -ErrorAction SilentlyContinue |
+        Where-Object { $_.Name -notlike "*.original" } |
+        Sort-Object LastWriteTime -Descending |
+        Select-Object -First 1
+
+    $latestBackendSource = Get-ChildItem (Join-Path $backendDirectory "src"), (Join-Path $backendDirectory "pom.xml") -Recurse -File |
+        Sort-Object LastWriteTime -Descending |
+        Select-Object -First 1
+
+    if ($null -eq $backendJar -or $latestBackendSource.LastWriteTime -gt $backendJar.LastWriteTime) {
+        Write-Host "Backend no disponible. Empaquetando Spring Boot..."
+
+        Push-Location $backendDirectory
+        try {
+            & .\mvnw.cmd -DskipTests package
+            if ($LASTEXITCODE -ne 0) {
+                Write-Error "No se pudo empaquetar el backend."
+                exit 1
+            }
+        }
+        finally {
+            Pop-Location
+        }
+
+        $backendJar = Get-ChildItem (Join-Path $backendDirectory "target") -Filter "*.jar" |
+            Where-Object { $_.Name -notlike "*.original" } |
+            Sort-Object LastWriteTime -Descending |
+            Select-Object -First 1
+    }
+    else {
+        Write-Host "Backend no disponible. Reutilizando el JAR existente..."
+    }
+
+    if ($null -eq $backendJar) {
+        Write-Error "No se encontro el JAR ejecutable del backend."
+        exit 1
+    }
+
+    Write-Host "Iniciando Spring Boot desde $($backendJar.Name)..."
 
     $backendProcess = Start-Process `
-        -FilePath "cmd.exe" `
-        -ArgumentList "/c", ".\mvnw.cmd spring-boot:run" `
+        -FilePath (Join-Path $javaHome "bin\java.exe") `
+        -ArgumentList "-Xshare:off", "-jar", $backendJar.FullName `
         -WorkingDirectory $backendDirectory `
         -WindowStyle Hidden `
-        -RedirectStandardOutput $backendLog `
-        -RedirectStandardError $backendErrorLog `
         -PassThru
 
     $backendReady = $false
     for ($attempt = 1; $attempt -le 90; $attempt++) {
         Start-Sleep -Seconds 1
         if ($backendProcess.HasExited) {
-            Write-Host "Spring Boot no pudo iniciarse. Ultimas lineas del registro:" -ForegroundColor Red
-            Get-Content $backendLog -Tail 20
-            Get-Content $backendErrorLog -Tail 20
+            Write-Host "Spring Boot no pudo iniciarse. Revisa la ventana del backend." -ForegroundColor Red
             exit 1
         }
 
@@ -78,7 +112,7 @@ if (-not (Test-Backend)) {
     }
 
     if (-not $backendReady) {
-        Write-Error "El backend no respondió en 90 segundos. Revisa src/backend/backend-run.err.log."
+        Write-Error "El backend no respondió en 90 segundos. Revisa la ventana del backend."
         exit 1
     }
 }
