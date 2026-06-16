@@ -1,6 +1,6 @@
 # FUNIBER > Coordinador > abrirConvocatoria > Detalle y prototipado
 
-> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|**Detalle**|[Análisis](/RUP/01-analisis/casos-uso/coordinador/abrirConvocatoria/README.md)|[Diseño](/RUP/02-diseño/casos-uso/coordinador/abrirConvocatoria/README.md)|[Desarrollo](/RUP/03-desarrollo/README.md)|Pruebas|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|**Detalle**|[Análisis](/RUP/01-analisis/casos-uso/coordinador/abrirConvocatoria/README.md)|[Diseño](/RUP/02-diseño/casos-uso/coordinador/abrirConvocatoria/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/abrirConvocatoria/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
 ## Información del artefacto

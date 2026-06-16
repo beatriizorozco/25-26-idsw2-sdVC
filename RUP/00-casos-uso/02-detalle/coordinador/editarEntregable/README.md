@@ -1,6 +1,6 @@
 # FUNIBER > Coordinador > editarEntregable > Detalle y prototipado
 
-> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|**Detalle**|[Análisis](/RUP/01-analisis/README.md)|[Diseño](/RUP/02-diseño/README.md)|[Desarrollo](/RUP/03-desarrollo/README.md)|Pruebas|
+> |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|**Detalle**|[Análisis](/RUP/01-analisis/casos-uso/coordinador/editarEntregable/README.md)|[Diseño](/RUP/02-diseño/casos-uso/coordinador/editarEntregable/README.md)|[Desarrollo](/RUP/03-desarrollo/casos-uso/coordinador/editarEntregable/README.md)|Pruebas|
 > |-|-|-|-|-|-|-|
 
 ## Información del artefacto
