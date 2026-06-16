@@ -5,6 +5,8 @@ rectangle #CDEBA5 ":MI_PUBLICACION_ABIERTA" as EstadoEntrada
 package editarMiPublicacion as "editarMiPublicacion()" {
     rectangle #629EF9 EditarPublicacionView
     rectangle #b5bd68 PublicacionController
+    rectangle #b5bd68 PublicacionService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E PublicacionRepository
     rectangle #F2AC4E Publicacion
 }
@@ -18,8 +20,10 @@ EstadoEntrada -r-> EditarPublicacionView: editarMiPublicacion()
 
 EditarPublicacionView -d-> PublicacionController: editarPublicacion(id, datos)
 EditarPublicacionView --> PublicacionController: validarCambios(datos)
-PublicacionController --> PublicacionRepository: obtenerPorId(id)
-PublicacionController --> PublicacionRepository: actualizar(entidad)
+PublicacionController --> SesionService: obtenerSesionActual(authentication)
+PublicacionController --> PublicacionService: actualizar(id, cambios, actor)
+PublicacionService --> PublicacionRepository: obtenerPorId(id)
+PublicacionService --> PublicacionRepository: actualizar(entidad)
 PublicacionRepository -- Publicacion
 EditarPublicacionView ..> EstadoSalida: continuarNavegacion()
 EditarPublicacionView ..> EditarPublicacion: editarPublicacion()

@@ -1,10 +1,12 @@
-﻿@startuml editarPublicacion-investigador-analisis
+@startuml editarPublicacion-investigador-analisis
 skinparam linetype polyline
 
 rectangle #CDEBA5 ":MI_PUBLICACION_ABIERTA" as EstadoEntrada
 package editarPublicacion as "editarPublicacion()" {
     rectangle #629EF9 "editarPublicacionView" as View
     rectangle #b5bd68 PublicacionController
+    rectangle #b5bd68 PublicacionService
+    rectangle #b5bd68 SesionService
     rectangle #b5bd68 PoliticaPublicacion
     rectangle #F2AC4E PublicacionRepository
     rectangle #F2AC4E Publicacion
@@ -15,11 +17,13 @@ rectangle #CDEBA5 ":MI_PUBLICACION_ABIERTA" as EstadoSalida
 
 EstadoEntrada -r-> View: editarPublicacion()
 View -d-> PublicacionController: editarPublicacion(solicitud, actor)
-PublicacionController --> PublicacionRepository: obtenerActivaPorId(id)
-PublicacionController --> PoliticaPublicacion: exigirAutoria(actor, publicacion)
-PublicacionController --> PublicacionRepository: actualizar(publicacion)
+PublicacionController --> PublicacionService: actualizar(id, cambios, actor)
+PublicacionController --> SesionService: obtenerSesionActual(authentication)
+PublicacionService --> PublicacionRepository: obtenerActivaPorId(id)
+PublicacionService --> PoliticaPublicacion: exigirAutoria(actor, publicacion)
+PublicacionService --> PublicacionRepository: actualizar(publicacion)
 PublicacionRepository -- Publicacion
-PublicacionController --> ArchivoPublicacionRepository: gestionarAdjuntosOpcionales(publicacion, adjuntos)
+PublicacionService --> ArchivoPublicacionRepository: gestionarAdjuntosOpcionales(publicacion, adjuntos)
 ArchivoPublicacionRepository -- ArchivoPublicacion
 View ..> EstadoSalida: continuarNavegacion()
 

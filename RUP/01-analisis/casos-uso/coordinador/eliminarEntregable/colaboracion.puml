@@ -5,6 +5,8 @@ rectangle #CDEBA5 ":ENTREGABLE_ABIERTO" as EstadoEntrada
 package eliminarEntregable as "eliminarEntregable()" {
     rectangle #629EF9 EliminarEntregableView
     rectangle #b5bd68 EntregableController
+    rectangle #b5bd68 EntregableService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E EntregableRepository
     rectangle #F2AC4E Entregable
 }
@@ -17,11 +19,13 @@ rectangle #CDEBA5 ":Collaboration AbrirEntregable" as AbrirEntregable
 EstadoEntrada -r-> EliminarEntregableView: eliminarEntregable()
 
 EliminarEntregableView -d-> EntregableController: solicitarConfirmacion(id)
+EntregableController --> EntregableService: retirar(id, motivo, coordinador)
+EntregableController --> SesionService: obtenerSesionActual(authentication)
 EntregableController --> EliminarEntregableView: presentarConfirmacion()
 EliminarEntregableView --> EntregableController: confirmarRetirada(id, motivo, coordinador)
 EliminarEntregableView --> EntregableController: cancelarRetirada()
-EntregableController --> EntregableRepository: obtenerActivoPorId(id)
-EntregableController --> EntregableRepository: retirar(id, fecha, coordinador, motivo)
+EntregableService --> EntregableRepository: obtenerActivoPorId(id)
+EntregableService --> EntregableRepository: retirar(id, fecha, coordinador, motivo)
 EntregableRepository -- Entregable
 EliminarEntregableView ..> EstadoSalidaExitosa: entregableRetirado()
 EliminarEntregableView ..> EstadoSalidaCancelada: retiradaCancelada()

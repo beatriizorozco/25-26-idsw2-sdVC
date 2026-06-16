@@ -5,6 +5,8 @@ rectangle #CDEBA5 ":CONVOCATORIA_ABIERTA" as Entrada
 package importarConvocatoria as "importarConvocatoria()" {
     rectangle #629EF9 ImportarConvocatoriaView
     rectangle #b5bd68 ConvocatoriaController
+    rectangle #b5bd68 ImportacionConvocatoriaService
+    rectangle #b5bd68 SesionService
     rectangle #b5bd68 PoliticaConvocatoria
     rectangle #b5bd68 SelectorImportadorConvocatoria
     rectangle #b5bd68 "ImportadorConvocatoria\n<<interface>>" as Importador
@@ -17,16 +19,19 @@ rectangle #CDEBA5 ":CONVOCATORIA_ABIERTA" as Salida
 
 Entrada -r-> ImportarConvocatoriaView: importarConvocatoria()
 ImportarConvocatoriaView -d-> ConvocatoriaController: previsualizar(fuente, actor)
-ConvocatoriaController --> PoliticaConvocatoria: permitirImportacion(actor)
-ConvocatoriaController --> SelectorImportadorConvocatoria: seleccionar(fuente)
+ConvocatoriaController --> SesionService: obtenerSesionActual(authentication)
+ConvocatoriaController --> ImportacionConvocatoriaService: previsualizar(fuente, actor)
+ConvocatoriaController --> ImportacionConvocatoriaService: confirmar(datos, fuente, actor)
+ImportacionConvocatoriaService --> PoliticaConvocatoria: permitirImportacion(actor)
+ImportacionConvocatoriaService --> SelectorImportadorConvocatoria: seleccionar(fuente)
 SelectorImportadorConvocatoria --> Importador: obtenerCompatible(fuente)
 ConvocatoriaController --> Importador: extraer(fuente)
 Importador -- FuenteConvocatoria
-ConvocatoriaController --> ValidadorConvocatoria: validar(datosNormalizados)
+ImportacionConvocatoriaService --> ValidadorConvocatoria: validar(datosNormalizados)
 ValidadorConvocatoria --> ConvocatoriaRepository: existeReferenciaExterna(referencia)
 ImportarConvocatoriaView --> ConvocatoriaController: confirmar(datosNormalizados, actor)
-ConvocatoriaController --> ValidadorConvocatoria: revalidar(datosNormalizados)
-ConvocatoriaController --> ConvocatoriaRepository: guardarTrasConfirmacion(convocatoria)
+ImportacionConvocatoriaService --> ValidadorConvocatoria: revalidar(datosNormalizados)
+ImportacionConvocatoriaService --> ConvocatoriaRepository: guardarTrasConfirmacion(convocatoria)
 ConvocatoriaRepository -- Convocatoria
 ImportarConvocatoriaView ..> Salida: presentarConvocatoria()
 

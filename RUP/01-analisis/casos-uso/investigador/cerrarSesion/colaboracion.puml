@@ -6,6 +6,7 @@ actor Investigador
 package cerrarSesion as "cerrarSesion()" {
     rectangle #629EF9 CerrarSesionView
     rectangle #b5bd68 CerrarSesionController
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E Sesion
 }
 
@@ -17,14 +18,14 @@ Investigador -r-> CerrarSesionView: cerrarSesion()
 PanelPrincipalAbierto -r-> CerrarSesionView: cerrarSesion()
 
 CerrarSesionView -d-> CerrarSesionController: solicitarConfirmacion()
-
+CerrarSesionController --> SesionService: cerrarSesion()
 CerrarSesionController --> CerrarSesionView: presentarConfirmacion()
 
 CerrarSesionView -r-> PanelPrincipalAbierto: cancelarCierre()\n[cancelacion]
 
 CerrarSesionView --> CerrarSesionController: confirmarCierre()\n[confirmacion]
 
-CerrarSesionController --> Sesion: cerrarSesion()
+SesionService --> Sesion: cerrarSesion()
 
 CerrarSesionView -r-> SesionCerrada: presentarSesionCerrada()
 

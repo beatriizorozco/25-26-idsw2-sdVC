@@ -6,6 +6,8 @@ rectangle #CDEBA5 ":PANEL_PRINCIPAL_ABIERTO" as EstadoEntrada2
 package abrirRecompensas as "abrirRecompensas()" {
     rectangle #629EF9 ListarRecompensasView
     rectangle #b5bd68 RecompensaController
+    rectangle #b5bd68 RecompensaService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E RecompensaRepository
     rectangle #F2AC4E ProyectoRepository
     rectangle #F2AC4E InvestigadorRepository
@@ -22,12 +24,14 @@ EstadoEntrada1 -r-> ListarRecompensasView: abrirRecompensas(idRecompensa)
 EstadoEntrada2 -r-> ListarRecompensasView: abrirRecompensas()
 
 ListarRecompensasView -d-> RecompensaController: listarRecompensasPropias(investigador, contexto)
+RecompensaController --> RecompensaService: listarPropias(investigadorId, criterio)
+RecompensaController --> SesionService: obtenerSesionActual(authentication)
 ListarRecompensasView --> RecompensaController: filtrarRecompensasPropias(criterio)
-RecompensaController --> InvestigadorRepository: obtenerPerfil(investigador)
-RecompensaController --> RecompensaRepository: obtenerPropiasDeProyectosCompletados(investigador)
-RecompensaController --> RecompensaRepository: obtenerPropiasPorContexto(investigador, contexto)
-RecompensaController --> RecompensaRepository: buscarPropiasPorCriterio(investigador, criterio)
-RecompensaController --> ProyectoRepository: verificarCompletados()
+RecompensaService --> InvestigadorRepository: obtenerPerfil(investigador)
+RecompensaService --> RecompensaRepository: obtenerPropiasDeProyectosCompletados(investigador)
+RecompensaService --> RecompensaRepository: obtenerPropiasPorContexto(investigador, contexto)
+RecompensaService --> RecompensaRepository: buscarPropiasPorCriterio(investigador, criterio)
+RecompensaService --> ProyectoRepository: verificarCompletados()
 RecompensaRepository -- Recompensa
 ProyectoRepository -- Proyecto
 InvestigadorRepository -- Investigador

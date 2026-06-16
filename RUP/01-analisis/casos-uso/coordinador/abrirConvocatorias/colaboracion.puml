@@ -6,6 +6,8 @@ rectangle #CDEBA5 ":CONVOCATORIA_ABIERTA" as Detalle
 package abrirConvocatorias as "abrirConvocatorias()" {
     rectangle #629EF9 ListarConvocatoriasView
     rectangle #b5bd68 ConvocatoriaController
+    rectangle #b5bd68 ConsultaConvocatoriaService
+    rectangle #b5bd68 SesionService
     rectangle #b5bd68 PoliticaConvocatoria
     rectangle #F2AC4E ConvocatoriaRepository
     rectangle #F2AC4E Convocatoria
@@ -17,8 +19,10 @@ rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanel
 Panel -r-> ListarConvocatoriasView: abrirConvocatorias()
 Detalle -r-> ListarConvocatoriasView: abrirConvocatorias()
 ListarConvocatoriasView -d-> ConvocatoriaController: listarConvocatorias(filtro, actor)
-ConvocatoriaController --> PoliticaConvocatoria: permitirConsulta(actor)
-ConvocatoriaController --> ConvocatoriaRepository: buscar(filtro)
+ConvocatoriaController --> SesionService: obtenerSesionActual(authentication)
+ConvocatoriaController --> ConsultaConvocatoriaService: listar(filtro, actor)
+ConsultaConvocatoriaService --> PoliticaConvocatoria: permitirConsulta(actor)
+ConsultaConvocatoriaService --> ConvocatoriaRepository: buscar(filtro)
 ConvocatoriaRepository -- Convocatoria
 ListarConvocatoriasView ..> Salida: presentarListado()
 ListarConvocatoriasView ..> AbrirConvocatoria: abrirConvocatoria(id)

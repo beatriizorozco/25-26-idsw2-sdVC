@@ -5,6 +5,8 @@ rectangle #CDEBA5 ":CONVOCATORIAS_ABIERTAS" as Entrada
 package abrirConvocatoria as "abrirConvocatoria()" {
     rectangle #629EF9 DetalleConvocatoriaView
     rectangle #b5bd68 ConvocatoriaController
+    rectangle #b5bd68 ConsultaConvocatoriaService
+    rectangle #b5bd68 SesionService
     rectangle #b5bd68 PoliticaConvocatoria
     rectangle #F2AC4E ConvocatoriaRepository
     rectangle #F2AC4E Convocatoria
@@ -15,8 +17,10 @@ rectangle #CDEBA5 ":Collaboration ImportarConvocatoria" as ImportarConvocatoria
 
 Entrada -r-> DetalleConvocatoriaView: abrirConvocatoria(id)
 DetalleConvocatoriaView -d-> ConvocatoriaController: obtenerConvocatoria(id, actor)
-ConvocatoriaController --> PoliticaConvocatoria: permitirConsulta(actor)
-ConvocatoriaController --> ConvocatoriaRepository: obtenerPorId(id)
+ConvocatoriaController --> SesionService: obtenerSesionActual(authentication)
+ConvocatoriaController --> ConsultaConvocatoriaService: obtener(id, actor)
+ConsultaConvocatoriaService --> PoliticaConvocatoria: permitirConsulta(actor)
+ConsultaConvocatoriaService --> ConvocatoriaRepository: obtenerPorId(id)
 ConvocatoriaRepository -- Convocatoria
 DetalleConvocatoriaView ..> Salida: presentarDetalle()
 DetalleConvocatoriaView ..> AbrirConvocatorias: abrirConvocatorias()

@@ -5,6 +5,8 @@ rectangle #CDEBA5 ":PROYECTOS_ABIERTOS" as EstadoEntrada
 package crearProyecto as "crearProyecto()" {
     rectangle #629EF9 CrearProyectoView
     rectangle #b5bd68 ProyectoController
+    rectangle #b5bd68 ProyectoService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E ProyectoRepository
     rectangle #F2AC4E ConvocatoriaRepository
     rectangle #F2AC4E Proyecto
@@ -27,11 +29,13 @@ rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanelPrincipal
 EstadoEntrada -r-> CrearProyectoView: crearProyecto()
 
 CrearProyectoView -d-> ProyectoController: prepararCreacion()
-ProyectoController --> ConvocatoriaRepository: obtenerDisponibles()
+ProyectoController --> ProyectoService: crear(datos, coordinador)
+ProyectoController --> SesionService: obtenerSesionActual(authentication)
+ProyectoService --> ConvocatoriaRepository: obtenerDisponibles()
 CrearProyectoView --> ProyectoController: crearProyecto(datosMinimos, coordinador)
-ProyectoController --> ProyectoController: validarDatosYFechas(datosMinimos)
-ProyectoController --> ProyectoController: asignarCodigoCoordinadorYEstadoCreado()
-ProyectoController --> ProyectoRepository: guardar(proyecto)
+ProyectoService --> ProyectoService: validarDatosYFechas(datosMinimos)
+ProyectoService --> ProyectoService: asignarCodigoCoordinadorYEstadoCreado()
+ProyectoService --> ProyectoRepository: guardar(proyecto)
 ProyectoRepository -- Proyecto
 ConvocatoriaRepository -- Convocatoria
 CrearProyectoView ..> EstadoSalida: proyectoCreado()

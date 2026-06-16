@@ -6,6 +6,8 @@ rectangle #CDEBA5 ":SOLICITUD_ELIMINACION_PERFIL_ABIERTA" as EstadoEntradaSolici
 package abrirSolicitudesEliminacionPerfil as "abrirSolicitudesEliminacionPerfil()" {
     rectangle #629EF9 ListarSolicitudesEliminacionPerfilView
     rectangle #b5bd68 SolicitudEliminacionPerfilController
+    rectangle #b5bd68 PerfilService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E SolicitudEliminacionPerfilRepository
     rectangle #F2AC4E SolicitudEliminacionPerfil
 }
@@ -18,9 +20,11 @@ EstadoEntradaOpciones -r-> ListarSolicitudesEliminacionPerfilView: abrirSolicitu
 EstadoEntradaSolicitud -d-> ListarSolicitudesEliminacionPerfilView: abrirSolicitudesEliminacionPerfil()
 
 ListarSolicitudesEliminacionPerfilView -d-> SolicitudEliminacionPerfilController: listarSolicitudesPendientes()
+SolicitudEliminacionPerfilController --> SesionService: obtenerSesionActual(authentication)
+SolicitudEliminacionPerfilController --> PerfilService: listarSolicitudesPendientes(criterio)
 ListarSolicitudesEliminacionPerfilView --> SolicitudEliminacionPerfilController: filtrarSolicitudes(criterio)
-SolicitudEliminacionPerfilController --> SolicitudEliminacionPerfilRepository: obtenerPendientes() : List<SolicitudEliminacionPerfil>
-SolicitudEliminacionPerfilController --> SolicitudEliminacionPerfilRepository: buscarPorCriterio(criterio) : List<SolicitudEliminacionPerfil>
+PerfilService --> SolicitudEliminacionPerfilRepository: obtenerPendientes() : List<SolicitudEliminacionPerfil>
+PerfilService --> SolicitudEliminacionPerfilRepository: buscarPorCriterio(criterio) : List<SolicitudEliminacionPerfil>
 SolicitudEliminacionPerfilRepository -- SolicitudEliminacionPerfil
 ListarSolicitudesEliminacionPerfilView ..> EstadoSalida: solicitudesEliminacionPerfilAbiertas()
 ListarSolicitudesEliminacionPerfilView ..> AbrirSolicitudEliminacionPerfil: abrirSolicitudEliminacionPerfil(id)

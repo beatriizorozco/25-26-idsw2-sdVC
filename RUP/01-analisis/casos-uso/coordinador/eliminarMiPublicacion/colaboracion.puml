@@ -5,6 +5,8 @@ rectangle #CDEBA5 ":MI_PUBLICACION_ABIERTA" as EstadoEntrada
 package eliminarMiPublicacion as "eliminarMiPublicacion()" {
     rectangle #629EF9 EliminarPublicacionView
     rectangle #b5bd68 PublicacionController
+    rectangle #b5bd68 PublicacionService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E PublicacionRepository
     rectangle #F2AC4E Publicacion
 }
@@ -20,8 +22,10 @@ PublicacionController --> EliminarPublicacionView: presentarConfirmacion()
 EliminarPublicacionView --> PublicacionController: confirmarRetirada(id)
 EliminarPublicacionView --> PublicacionController: cancelarRetirada()
 EliminarPublicacionView --> PublicacionController: validarRetirada(id)
-PublicacionController --> PublicacionRepository: obtenerPorId(id)
-PublicacionController --> PublicacionRepository: retirar(id, fecha, coordinador, motivo)
+PublicacionController --> SesionService: obtenerSesionActual(authentication)
+PublicacionController --> PublicacionService: retirar(id, motivo, actor)
+PublicacionService --> PublicacionRepository: obtenerPorId(id)
+PublicacionService --> PublicacionRepository: retirar(id, fecha, coordinador, motivo)
 PublicacionRepository -- Publicacion
 note right of PublicacionRepository
 La retirada conserva autoria,

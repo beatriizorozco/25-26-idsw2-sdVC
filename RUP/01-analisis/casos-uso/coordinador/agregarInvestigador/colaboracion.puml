@@ -5,6 +5,8 @@ rectangle #CDEBA5 ":PROYECTO_ABIERTO" as EstadoEntrada
 package agregarInvestigador as "agregarInvestigador()" {
     rectangle #629EF9 AgregarInvestigadorView
     rectangle #b5bd68 ProyectoController
+    rectangle #b5bd68 ProyectoService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E ProyectoRepository
     rectangle #F2AC4E InvestigadorRepository
     rectangle #F2AC4E CargaTrabajoRepository
@@ -25,13 +27,16 @@ rectangle #CDEBA5 ":Collaboration AbrirProyectos" as AbrirProyectos
 EstadoEntrada -r-> AgregarInvestigadorView: agregarInvestigador(proyectoId)
 
 AgregarInvestigadorView -d-> ProyectoController: prepararCandidatos(proyectoId)
-ProyectoController --> ProyectoRepository: obtenerPorId(proyectoId)
-ProyectoController --> InvestigadorRepository: obtenerNoAsociados(proyectoId)
-ProyectoController --> CargaTrabajoRepository: obtenerCargas(candidatos)
-ProyectoController --> ProyectoController: evaluarCompatibilidadYDisponibilidad()
-ProyectoController --> ProyectoController: recomendarMenorCargaCompatible()
+ProyectoController --> ProyectoService: listarCandidatos(id)
+ProyectoController --> ProyectoService: agregarInvestigador(id, investigadorId)
+ProyectoController --> SesionService: obtenerSesionActual(authentication)
+ProyectoService --> ProyectoRepository: obtenerPorId(proyectoId)
+ProyectoService --> InvestigadorRepository: obtenerNoAsociados(proyectoId)
+ProyectoService --> CargaTrabajoRepository: obtenerCargas(candidatos)
+ProyectoService --> ProyectoService: evaluarCompatibilidadYDisponibilidad()
+ProyectoService --> ProyectoService: recomendarMenorCargaCompatible()
 AgregarInvestigadorView --> ProyectoController: asociarInvestigador(proyectoId, investigadorId)
-ProyectoController --> ProyectoRepository: asociarInvestigador(proyectoId, investigadorId)
+ProyectoService --> ProyectoRepository: asociarInvestigador(proyectoId, investigadorId)
 ProyectoRepository -- Proyecto
 InvestigadorRepository -- Investigador
 CargaTrabajoRepository -- CargaTrabajo

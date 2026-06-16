@@ -6,6 +6,8 @@ actor Investigador
 package abrirPanelPrincipal as "abrirPanelPrincipal()" {
     rectangle #629EF9 PanelPrincipalView
     rectangle #b5bd68 AbrirPanelPrincipalController
+    rectangle #b5bd68 PanelPrincipalService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E Sesion
 }
 
@@ -37,8 +39,10 @@ RecompensasAbiertas -r-> PanelPrincipalView: abrirPanelPrincipal()
 ProyectosAbiertos -r-> PanelPrincipalView: abrirPanelPrincipal()
 
 PanelPrincipalView -d-> AbrirPanelPrincipalController: obtenerAccionesDisponibles(sesion)
+AbrirPanelPrincipalController --> SesionService: obtenerSesionActual()
+AbrirPanelPrincipalController --> PanelPrincipalService: obtenerAccionesDisponibles(INVESTIGADOR)
 
-AbrirPanelPrincipalController --> Sesion: obtenerRolActivo() : Investigador
+PanelPrincipalService --> Sesion: obtenerRolActivo() : Investigador
 
 AbrirPanelPrincipalController --> PanelPrincipalView: presentarAccionesDisponibles(investigador)
 

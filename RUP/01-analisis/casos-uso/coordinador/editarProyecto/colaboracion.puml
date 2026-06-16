@@ -5,6 +5,8 @@ rectangle #CDEBA5 ":PROYECTO_ABIERTO" as EstadoEntrada
 package editarProyecto as "editarProyecto()" {
     rectangle #629EF9 EditarProyectoView
     rectangle #b5bd68 ProyectoController
+    rectangle #b5bd68 ProyectoService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E ProyectoRepository
     rectangle #F2AC4E Proyecto
 }
@@ -20,11 +22,13 @@ rectangle #CDEBA5 ":Collaboration AbrirProyectos" as AbrirProyectos
 EstadoEntrada -r-> EditarProyectoView: editarProyecto(proyectoId)
 
 EditarProyectoView -d-> ProyectoController: prepararEdicion(proyectoId)
-ProyectoController --> ProyectoRepository: obtenerPorId(proyectoId)
-ProyectoController --> ProyectoController: obtenerTransicionesPermitidas(proyecto.estado)
+ProyectoController --> ProyectoService: actualizar(id, cambios)
+ProyectoController --> SesionService: obtenerSesionActual(authentication)
+ProyectoService --> ProyectoRepository: obtenerPorId(proyectoId)
+ProyectoService --> ProyectoService: obtenerTransicionesPermitidas(proyecto.estado)
 EditarProyectoView --> ProyectoController: editarProyecto(proyectoId, cambios)
-ProyectoController --> ProyectoController: validarDatosFechasYTransicion(cambios)
-ProyectoController --> ProyectoRepository: actualizar(proyecto)
+ProyectoService --> ProyectoService: validarDatosFechasYTransicion(cambios)
+ProyectoService --> ProyectoRepository: actualizar(proyecto)
 ProyectoRepository -- Proyecto
 EditarProyectoView ..> EstadoSalida: proyectoActualizado()
 EditarProyectoView ..> EstadoSalida: cancelarEdicion()

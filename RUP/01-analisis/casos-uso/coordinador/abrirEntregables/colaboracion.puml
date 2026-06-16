@@ -6,6 +6,8 @@ rectangle #CDEBA5 ":ENTREGABLE_ABIERTO" as EstadoEntrada2
 package abrirEntregables as "abrirEntregables()" {
     rectangle #629EF9 ListarEntregablesView
     rectangle #b5bd68 EntregableController
+    rectangle #b5bd68 EntregableService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E ProyectoRepository
     rectangle #F2AC4E EntregableRepository
     rectangle #F2AC4E Proyecto
@@ -21,10 +23,12 @@ EstadoEntrada1 -r-> ListarEntregablesView: abrirEntregables(idProyecto)
 EstadoEntrada2 -r-> ListarEntregablesView: abrirEntregables(idProyecto)
 
 ListarEntregablesView -d-> EntregableController: listarEntregables(idProyecto)
+EntregableController --> EntregableService: listar(proyectoId, filtro)
+EntregableController --> SesionService: obtenerSesionActual(authentication)
 ListarEntregablesView --> EntregableController: filtrarEntregables(idProyecto, criterio)
-EntregableController --> ProyectoRepository: obtenerPorId(idProyecto)
-EntregableController --> EntregableRepository: obtenerActivosPorProyecto(idProyecto)
-EntregableController --> EntregableRepository: buscarActivosPorProyecto(idProyecto, criterio)
+EntregableService --> ProyectoRepository: obtenerPorId(idProyecto)
+EntregableService --> EntregableRepository: obtenerActivosPorProyecto(idProyecto)
+EntregableService --> EntregableRepository: buscarActivosPorProyecto(idProyecto, criterio)
 ProyectoRepository -- Proyecto
 EntregableRepository -- Entregable
 note right of EntregableController

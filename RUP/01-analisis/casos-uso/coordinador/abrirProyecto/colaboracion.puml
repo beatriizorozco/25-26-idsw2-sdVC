@@ -6,6 +6,8 @@ rectangle #CDEBA5 ":ENTREGABLES_ABIERTOS" as EstadoEntrada2
 package abrirProyecto as "abrirProyecto()" {
     rectangle #629EF9 DetalleProyectoView
     rectangle #b5bd68 ProyectoController
+    rectangle #b5bd68 ProyectoService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E ProyectoRepository
     rectangle #F2AC4E InvestigadorRepository
     rectangle #F2AC4E EntregableRepository
@@ -27,9 +29,11 @@ EstadoEntrada1 -r-> DetalleProyectoView: abrirProyecto(idProyecto)
 EstadoEntrada2 -r-> DetalleProyectoView: abrirProyecto(proyectoId)
 
 DetalleProyectoView -d-> ProyectoController: abrirProyecto(proyectoId)
-ProyectoController --> ProyectoRepository: obtenerPorId(proyectoId)
-ProyectoController --> InvestigadorRepository: obtenerEquipoPorProyecto(proyectoId)
-ProyectoController --> EntregableRepository: obtenerPorProyecto(proyectoId)
+ProyectoController --> ProyectoService: obtener(id)
+ProyectoController --> SesionService: obtenerSesionActual(authentication)
+ProyectoService --> ProyectoRepository: obtenerPorId(proyectoId)
+ProyectoService --> InvestigadorRepository: obtenerEquipoPorProyecto(proyectoId)
+ProyectoService --> EntregableRepository: obtenerPorProyecto(proyectoId)
 ProyectoRepository -- Proyecto
 InvestigadorRepository -- Investigador
 EntregableRepository -- Entregable

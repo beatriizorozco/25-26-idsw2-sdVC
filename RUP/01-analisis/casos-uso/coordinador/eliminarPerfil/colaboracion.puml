@@ -5,6 +5,8 @@ rectangle #CDEBA5 ":SOLICITUD_ELIMINACION_PERFIL_ABIERTA" as EstadoEntrada
 package eliminarPerfil as "eliminarPerfil()" {
     rectangle #629EF9 EliminarPerfilView
     rectangle #b5bd68 PerfilController
+    rectangle #b5bd68 PerfilService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E PerfilRepository
     rectangle #F2AC4E Perfil
     rectangle #F2AC4E SolicitudEliminacionPerfilRepository
@@ -18,14 +20,16 @@ rectangle #CDEBA5 ":Collaboration AbrirSolicitudesEliminacionPerfil" as AbrirSol
 EstadoEntrada -r-> EliminarPerfilView: eliminarPerfil()
 
 EliminarPerfilView -d-> PerfilController: solicitarConfirmacion(idSolicitud, idPerfil)
+PerfilController --> SesionService: obtenerSesionActual(authentication)
+PerfilController --> PerfilService: eliminarPerfilDesdeSolicitud(coordinador, idSolicitud)
 PerfilController --> EliminarPerfilView: presentarConfirmacion()
 EliminarPerfilView --> PerfilController: confirmarDesactivacion(idSolicitud, idPerfil)
 EliminarPerfilView --> PerfilController: cancelarDesactivacion()
 EliminarPerfilView --> PerfilController: validarDesactivacion(idPerfil)
-PerfilController --> SolicitudEliminacionPerfilRepository: obtenerPorId(idSolicitud)
-PerfilController --> PerfilRepository: obtenerPorId(idPerfil)
-PerfilController --> PerfilRepository: desactivar(idPerfil, fecha, coordinador)
-PerfilController --> SolicitudEliminacionPerfilRepository: marcarResuelta(idSolicitud)
+PerfilService --> SolicitudEliminacionPerfilRepository: obtenerPorId(idSolicitud)
+PerfilService --> PerfilRepository: obtenerPorId(idPerfil)
+PerfilService --> PerfilRepository: desactivar(idPerfil, fecha, coordinador)
+PerfilService --> SolicitudEliminacionPerfilRepository: marcarResuelta(idSolicitud)
 PerfilRepository -- Perfil
 SolicitudEliminacionPerfilRepository -- SolicitudEliminacionPerfil
 EliminarPerfilView ..> EstadoSalidaExitosa: perfilDesactivado()

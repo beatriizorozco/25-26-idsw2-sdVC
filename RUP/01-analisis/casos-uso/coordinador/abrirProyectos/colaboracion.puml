@@ -7,6 +7,8 @@ rectangle #CDEBA5 ":INVESTIGADOR_ABIERTO" as EstadoEntrada3
 package abrirProyectos as "abrirProyectos()" {
     rectangle #629EF9 ListarProyectosView
     rectangle #b5bd68 ProyectoController
+    rectangle #b5bd68 ProyectoService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E ProyectoRepository
     rectangle #F2AC4E Proyecto
 }
@@ -21,10 +23,12 @@ EstadoEntrada2 -r-> ListarProyectosView: abrirProyectos()
 EstadoEntrada3 -r-> ListarProyectosView: abrirProyectos(idInvestigador)
 
 ListarProyectosView -d-> ProyectoController: listarProyectos(investigadorId?)
-ProyectoController --> ProyectoRepository: obtenerActivos()
-ProyectoController --> ProyectoRepository: obtenerActivosPorInvestigador(investigadorId)
+ProyectoController --> ProyectoService: listar(criterio, investigadorId?)
+ProyectoController --> SesionService: obtenerSesionActual(authentication)
+ProyectoService --> ProyectoRepository: obtenerActivos()
+ProyectoService --> ProyectoRepository: obtenerActivosPorInvestigador(investigadorId)
 ListarProyectosView --> ProyectoController: filtrarProyectos(criterio, investigadorId?)
-ProyectoController --> ProyectoRepository: buscarPorCriterio(criterio, investigadorId?)
+ProyectoService --> ProyectoRepository: buscarPorCriterio(criterio, investigadorId?)
 ProyectoRepository -- Proyecto
 note right of ProyectoController
 Contexto opcional:

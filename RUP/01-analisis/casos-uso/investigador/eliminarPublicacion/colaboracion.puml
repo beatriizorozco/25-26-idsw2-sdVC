@@ -1,10 +1,12 @@
-﻿@startuml eliminarPublicacion-investigador-analisis
+@startuml eliminarPublicacion-investigador-analisis
 skinparam linetype polyline
 
 rectangle #CDEBA5 ":MI_PUBLICACION_ABIERTA" as EstadoEntrada
 package eliminarPublicacion as "eliminarPublicacion()" {
     rectangle #629EF9 "eliminarPublicacionView" as View
     rectangle #b5bd68 PublicacionController
+    rectangle #b5bd68 PublicacionService
+    rectangle #b5bd68 SesionService
     rectangle #b5bd68 PoliticaPublicacion
     rectangle #F2AC4E PublicacionRepository
     rectangle #F2AC4E Publicacion
@@ -14,9 +16,11 @@ rectangle #CDEBA5 ":MIS_PUBLICACIONES_ABIERTAS" as EstadoSalida
 
 EstadoEntrada -r-> View: eliminarPublicacion()
 View -d-> PublicacionController: eliminarPublicacion(solicitud, actor)
-PublicacionController --> PublicacionRepository: obtenerActivaPorId(id)
-PublicacionController --> PoliticaPublicacion: exigirAutoria(actor, publicacion)
-PublicacionController --> PublicacionRepository: retirar(publicacion, motivo, actor)
+PublicacionController --> PublicacionService: retirar(id, motivo, actor)
+PublicacionController --> SesionService: obtenerSesionActual(authentication)
+PublicacionService --> PublicacionRepository: obtenerActivaPorId(id)
+PublicacionService --> PoliticaPublicacion: exigirAutoria(actor, publicacion)
+PublicacionService --> PublicacionRepository: retirar(publicacion, motivo, actor)
 PublicacionRepository -- Publicacion
 
 View ..> EstadoSalida: continuarNavegacion()

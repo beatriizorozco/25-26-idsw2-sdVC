@@ -7,6 +7,8 @@ rectangle #CDEBA5 ":SESION_CERRADA" as SesionCerrada
 package iniciarSesion as "iniciarSesion()" {
     rectangle #629EF9 IniciarSesionView
     rectangle #b5bd68 IniciarSesionController
+    rectangle #b5bd68 AuthService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E UsuarioRepository
     rectangle #F2AC4E Usuario
     rectangle #F2AC4E Sesion
@@ -19,14 +21,16 @@ SesionCerrada -r-> IniciarSesionView: iniciarSesion()
 Investigador -r-> IniciarSesionView: introducirCredenciales(usuario, contrasena)
 
 IniciarSesionView -d-> IniciarSesionController: autenticar(usuario, contrasena) : Sesion
+IniciarSesionController --> SesionService: crearSesion(usuario, rol)
+IniciarSesionController --> AuthService: autenticar(usuario, contrasena)
 
-IniciarSesionController --> UsuarioRepository: validarCredenciales(usuario, contrasena) : Usuario
+AuthService --> UsuarioRepository: validarCredenciales(usuario, contrasena) : Usuario
 
 UsuarioRepository -- Usuario
 
 IniciarSesionController --> IniciarSesionView: presentarCredencialesIncorrectas()\n[credenciales incorrectas]
 
-IniciarSesionController --> Sesion: crearSesion(usuario) : Sesion\n[credenciales correctas]
+AuthService --> Sesion: crearSesion(usuario) : Sesion\n[credenciales correctas]
 
 IniciarSesionView -r-> PanelPrincipalAbierto: abrirPanelPrincipal()\n[credenciales correctas]
 

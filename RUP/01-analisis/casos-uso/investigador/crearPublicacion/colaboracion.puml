@@ -1,10 +1,12 @@
-﻿@startuml crearPublicacion-investigador-analisis
+@startuml crearPublicacion-investigador-analisis
 skinparam linetype polyline
 
 rectangle #CDEBA5 ":MIS_PUBLICACIONES_ABIERTAS" as EstadoEntrada
 package crearPublicacion as "crearPublicacion()" {
     rectangle #629EF9 "crearPublicacionView" as View
     rectangle #b5bd68 PublicacionController
+    rectangle #b5bd68 PublicacionService
+    rectangle #b5bd68 SesionService
     rectangle #b5bd68 PoliticaPublicacion
     rectangle #F2AC4E PublicacionRepository
     rectangle #F2AC4E Publicacion
@@ -15,11 +17,12 @@ rectangle #CDEBA5 ":MI_PUBLICACION_ABIERTA" as EstadoSalida
 
 EstadoEntrada -r-> View: crearPublicacion()
 View -d-> PublicacionController: crearPublicacion(solicitud, actor)
-
-PublicacionController --> PoliticaPublicacion: permitirCrear(actor)
-PublicacionController --> PublicacionRepository: guardar(publicacion)
+PublicacionController --> PublicacionService: crear(datos, actor)
+PublicacionController --> SesionService: obtenerSesionActual(authentication)
+PublicacionService --> PoliticaPublicacion: permitirCrear(actor)
+PublicacionService --> PublicacionRepository: guardar(publicacion)
 PublicacionRepository -- Publicacion
-PublicacionController --> ArchivoPublicacionRepository: gestionarAdjuntosOpcionales(publicacion, adjuntos)
+PublicacionService --> ArchivoPublicacionRepository: gestionarAdjuntosOpcionales(publicacion, adjuntos)
 ArchivoPublicacionRepository -- ArchivoPublicacion
 View ..> EstadoSalida: continuarNavegacion()
 

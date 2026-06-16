@@ -5,6 +5,8 @@ rectangle #CDEBA5 ":RECOMPENSA_ABIERTA" as EstadoEntrada
 package eliminarRecompensa as "eliminarRecompensa()" {
     rectangle #629EF9 EliminarRecompensaView
     rectangle #b5bd68 RecompensaController
+    rectangle #b5bd68 RecompensaService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E RecompensaRepository
     rectangle #F2AC4E ProyectoRepository
     rectangle #F2AC4E Recompensa
@@ -18,12 +20,14 @@ rectangle #CDEBA5 ":Collaboration AbrirRecompensas" as AbrirRecompensas
 EstadoEntrada -r-> EliminarRecompensaView: eliminarRecompensa()
 
 EliminarRecompensaView -d-> RecompensaController: solicitarConfirmacion(id)
+RecompensaController --> RecompensaService: eliminar(id, motivo, coordinador)
+RecompensaController --> SesionService: obtenerSesionActual(authentication)
 RecompensaController --> EliminarRecompensaView: presentarConfirmacion()
 EliminarRecompensaView --> RecompensaController: confirmarAnulacion(id)
 EliminarRecompensaView --> RecompensaController: validarAnulacion(id)
-RecompensaController --> RecompensaRepository: obtenerPorId(id)
-RecompensaController --> ProyectoRepository: verificarProyectoCompletado(recompensa)
-RecompensaController --> RecompensaRepository: anular(id, fecha, coordinador, motivo)
+RecompensaService --> RecompensaRepository: obtenerPorId(id)
+RecompensaService --> ProyectoRepository: verificarProyectoCompletado(recompensa)
+RecompensaService --> RecompensaRepository: anular(id, fecha, coordinador, motivo)
 EliminarRecompensaView --> RecompensaController: cancelarAnulacion()
 RecompensaRepository -- Recompensa
 ProyectoRepository -- Proyecto

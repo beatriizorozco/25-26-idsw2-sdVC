@@ -5,6 +5,8 @@ rectangle #CDEBA5 ":OPCIONES_CARGA_TRABAJO_ABIERTAS" as EstadoEntrada
 package editarCargaTrabajo as "editarCargaTrabajo()" {
     rectangle #629EF9 EditarCargaTrabajoView
     rectangle #b5bd68 CargaTrabajoController
+    rectangle #b5bd68 CargaTrabajoService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E CargaTrabajoRepository
     rectangle #F2AC4E PersonaRepository
     rectangle #F2AC4E CargaTrabajo
@@ -17,14 +19,17 @@ rectangle #CDEBA5 ":Collaboration AbrirPanelPrincipal" as AbrirPanelPrincipal
 EstadoEntrada -r-> EditarCargaTrabajoView: editarCargaTrabajo(idPersona)
 
 EditarCargaTrabajoView -d-> CargaTrabajoController: obtenerCargaDePersona(coordinador, idPersona)
+CargaTrabajoController --> CargaTrabajoService: obtenerCargaPorPerfil(coordinador, personaId)
+CargaTrabajoController --> CargaTrabajoService: actualizarCargaPorPerfil(coordinador, personaId, datos)
+CargaTrabajoController --> SesionService: obtenerSesionActual(authentication)
 EditarCargaTrabajoView --> CargaTrabajoController: validarHoras(datos)
 EditarCargaTrabajoView --> CargaTrabajoController: actualizarCargaDePersona(coordinador, idPersona, datos)
-CargaTrabajoController --> PersonaRepository: obtenerPorId(idPersona)
-CargaTrabajoController --> CargaTrabajoRepository: obtenerPorPersona(idPersona)
+CargaTrabajoService --> PersonaRepository: obtenerPorId(idPersona)
+CargaTrabajoService --> CargaTrabajoRepository: obtenerPorPersona(idPersona)
 CargaTrabajoController --> Persona: esInvestigadorDocenteSegunSede()
-CargaTrabajoController --> CargaTrabajo: validarLimiteDocente(maximo16h)
-CargaTrabajoController --> CargaTrabajoRepository: actualizar(cargaTrabajo)
-CargaTrabajoController --> CargaTrabajoRepository: recalcularPrioridadParaProyectosLibres(idPersona)
+CargaTrabajoService --> CargaTrabajo: validarLimiteDocente(maximo16h)
+CargaTrabajoService --> CargaTrabajoRepository: actualizar(cargaTrabajo)
+CargaTrabajoService --> CargaTrabajoRepository: recalcularPrioridadParaProyectosLibres(idPersona)
 PersonaRepository -- Persona
 CargaTrabajoRepository -- CargaTrabajo
 EditarCargaTrabajoView ..> EstadoSalida: cargaTrabajoActualizada()

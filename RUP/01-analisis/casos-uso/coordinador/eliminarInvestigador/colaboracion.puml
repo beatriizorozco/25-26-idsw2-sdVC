@@ -5,6 +5,8 @@ rectangle #CDEBA5 ":PROYECTO_ABIERTO" as EstadoEntrada
 package eliminarInvestigador as "eliminarInvestigador()" {
     rectangle #629EF9 EliminarInvestigadorView
     rectangle #b5bd68 ProyectoController
+    rectangle #b5bd68 ProyectoService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E ProyectoRepository
     rectangle #F2AC4E InvestigadorRepository
     rectangle #F2AC4E EntregableRepository
@@ -25,12 +27,14 @@ rectangle #CDEBA5 ":Collaboration AbrirProyectos" as AbrirProyectos
 EstadoEntrada -r-> EliminarInvestigadorView: eliminarInvestigador(proyectoId, investigadorId)
 
 EliminarInvestigadorView -d-> ProyectoController: comprobarDesasignacion(proyectoId, investigadorId)
-ProyectoController --> ProyectoRepository: obtenerPorId(proyectoId)
-ProyectoController --> InvestigadorRepository: obtenerPorId(investigadorId)
-ProyectoController --> EntregableRepository: obtenerPendientesAsignados(proyectoId, investigadorId)
+ProyectoController --> ProyectoService: retirarInvestigador(id, investigadorId, motivo, coordinador)
+ProyectoController --> SesionService: obtenerSesionActual(authentication)
+ProyectoService --> ProyectoRepository: obtenerPorId(proyectoId)
+ProyectoService --> InvestigadorRepository: obtenerPorId(investigadorId)
+ProyectoService --> EntregableRepository: obtenerPendientesAsignados(proyectoId, investigadorId)
 ProyectoController --> EliminarInvestigadorView: presentarResultadoYConfirmacion()
 EliminarInvestigadorView --> ProyectoController: confirmarDesasignacion(proyectoId, investigadorId)
-ProyectoController --> ProyectoRepository: registrarDesasignacion(proyectoId, investigadorId, fecha, coordinador)
+ProyectoService --> ProyectoRepository: registrarDesasignacion(proyectoId, investigadorId, fecha, coordinador)
 ProyectoRepository -- Proyecto
 InvestigadorRepository -- Investigador
 EntregableRepository -- Entregable

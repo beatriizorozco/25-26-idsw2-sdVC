@@ -5,6 +5,8 @@ rectangle #CDEBA5 ":ENTREGABLE_ABIERTO" as EstadoEntrada
 package editarEntregable as "editarEntregable()" {
     rectangle #629EF9 EditarEntregableView
     rectangle #b5bd68 EntregableController
+    rectangle #b5bd68 EntregableService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E EntregableRepository
     rectangle #F2AC4E ArchivoRepository
     rectangle #F2AC4E Entregable
@@ -18,9 +20,11 @@ rectangle #CDEBA5 ":Collaboration EliminarEntregable" as EliminarEntregable
 EstadoEntrada -r-> EditarEntregableView: editarEntregable()
 
 EditarEntregableView -d-> EntregableController: editarEntregablePropio(id, datos, archivo?, investigador)
-EntregableController --> EntregableRepository: obtenerActivoPorIdYAutor(id, investigador)
-EntregableController --> EntregableRepository: actualizar(entidad)
-EntregableController --> ArchivoRepository: agregarVersionOpcional(entregable, archivo, investigador)
+EntregableController --> EntregableService: actualizar(id, cambios, archivo?, investigador)
+EntregableController --> SesionService: obtenerSesionActual(authentication)
+EntregableService --> EntregableRepository: obtenerActivoPorIdYAutor(id, investigador)
+EntregableService --> EntregableRepository: actualizar(entidad)
+EntregableService --> ArchivoRepository: agregarVersionOpcional(entregable, archivo, investigador)
 EntregableRepository -- Entregable
 ArchivoRepository -- ArchivoAdjunto
 EditarEntregableView ..> EstadoSalida: continuarNavegacion()

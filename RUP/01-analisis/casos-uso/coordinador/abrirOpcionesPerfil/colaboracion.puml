@@ -6,6 +6,8 @@ rectangle #CDEBA5 ":SOLICITUDES_ELIMINACION_PERFIL_ABIERTAS" as EstadoEntradaSol
 package abrirOpcionesPerfil as "abrirOpcionesPerfil()" {
     rectangle #629EF9 OpcionesPerfilView
     rectangle #b5bd68 PerfilController
+    rectangle #b5bd68 PerfilService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E PerfilRepository
     rectangle #F2AC4E Perfil
 }
@@ -20,9 +22,11 @@ EstadoEntradaPanel -d-> OpcionesPerfilView: abrirOpcionesPerfil()
 EstadoEntradaSolicitudes -d-> OpcionesPerfilView: abrirOpcionesPerfil()
 
 OpcionesPerfilView -d-> PerfilController: obtenerPerfilPropio(coordinador)
+PerfilController --> SesionService: obtenerSesionActual(authentication)
+PerfilController --> PerfilService: obtenerPerfilPropio(coordinador)
 OpcionesPerfilView --> PerfilController: prepararAccionesDisponibles(coordinador)
-PerfilController --> PerfilRepository: obtenerPorUsuario(coordinador)
-PerfilController --> PerfilRepository: verificarPermisos(actor)
+PerfilService --> PerfilRepository: obtenerPorUsuario(coordinador)
+PerfilService --> PerfilRepository: verificarPermisos(actor)
 PerfilRepository -- Perfil
 OpcionesPerfilView ..> EstadoSalida: opcionesPerfilAbierto()
 OpcionesPerfilView ..> EditarPerfil: editarPerfil()

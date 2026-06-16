@@ -7,6 +7,8 @@ rectangle #CDEBA5 ":INVESTIGADORES_ABIERTOS" as InvestigadoresAbiertos
 package abrirInvestigador as "abrirInvestigador(idInvestigador)" {
     rectangle #629EF9 DetalleInvestigadorView
     rectangle #b5bd68 InvestigadorController
+    rectangle #b5bd68 InvestigadorService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E InvestigadorRepository
     rectangle #F2AC4E ProyectoRepository
     rectangle #F2AC4E Investigador
@@ -22,9 +24,11 @@ Coordinador -- InvestigadoresAbiertos
 PerfilAbierto -r-> DetalleInvestigadorView: abrirInvestigador(idCoordinador)
 InvestigadoresAbiertos -r-> DetalleInvestigadorView: abrirInvestigador(idInvestigador)
 DetalleInvestigadorView -d-> InvestigadorController: obtenerInvestigador(idInvestigador) : Investigador
-InvestigadorController --> InvestigadorRepository: obtenerActivoPorId(idInvestigador) : Investigador
+InvestigadorController --> InvestigadorService: obtener(sesion, id, proyectoId?)
+InvestigadorController --> SesionService: obtenerSesionActual(authentication)
+InvestigadorService --> InvestigadorRepository: obtenerActivoPorId(idInvestigador) : Investigador
 DetalleInvestigadorView --> InvestigadorController: listarProyectosAsociados(idInvestigador) : List<Proyecto>
-InvestigadorController --> ProyectoRepository: obtenerPorInvestigador(idInvestigador) : List<Proyecto>
+InvestigadorService --> ProyectoRepository: obtenerPorInvestigador(idInvestigador) : List<Proyecto>
 InvestigadorRepository -- Investigador
 ProyectoRepository -- Proyecto
 DetalleInvestigadorView ..> InvestigadorAbierto: investigadorPresentado()

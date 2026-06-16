@@ -5,6 +5,8 @@ rectangle #CDEBA5 ":RECOMPENSAS_ABIERTAS" as EstadoEntrada
 package abrirRecompensa as "abrirRecompensa()" {
     rectangle #629EF9 DetalleRecompensaView
     rectangle #b5bd68 RecompensaController
+    rectangle #b5bd68 RecompensaService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E RecompensaRepository
     rectangle #F2AC4E ProyectoRepository
     rectangle #F2AC4E InvestigadorRepository
@@ -19,11 +21,13 @@ rectangle #CDEBA5 ":Collaboration AbrirRecompensas" as AbrirRecompensas
 EstadoEntrada -r-> DetalleRecompensaView: abrirRecompensa()
 
 DetalleRecompensaView -d-> RecompensaController: obtenerRecompensa(id)
+RecompensaController --> RecompensaService: obtenerPropia(investigadorId, id)
+RecompensaController --> SesionService: obtenerSesionActual(authentication)
 DetalleRecompensaView --> RecompensaController: prepararAccionesDisponibles(investigador)
-RecompensaController --> InvestigadorRepository: obtenerPerfil(investigador)
-RecompensaController --> RecompensaRepository: obtenerPropiaPorId(investigador, id)
-RecompensaController --> ProyectoRepository: verificarProyectoCompletado(recompensa)
-RecompensaController --> RecompensaController: validarTipoSegunPerfil()
+RecompensaService --> InvestigadorRepository: obtenerPerfil(investigador)
+RecompensaService --> RecompensaRepository: obtenerPropiaPorId(investigador, id)
+RecompensaService --> ProyectoRepository: verificarProyectoCompletado(recompensa)
+RecompensaService --> RecompensaService: validarTipoSegunPerfil()
 RecompensaRepository -- Recompensa
 ProyectoRepository -- Proyecto
 InvestigadorRepository -- Investigador

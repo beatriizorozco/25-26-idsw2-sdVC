@@ -700,3 +700,17 @@ También se realizó una validación final de entrega. El backend compiló y sup
 También se unificaron las cabeceras visuales de los 19 README índice de RUP mediante la navegación completa de insignias usada en el README principal. Los README individuales conservaron su cabecera específica por fases. La comprobación transversal revisó los 318 README de RUP y terminó con 0 enlaces rotos, 0 etiquetas `<div>` descompensadas y `git diff --check` sin errores. No se realizó ningún commit durante la sesión.
 
 **Decisión:** la documentación de Análisis y Diseño y la navegación general de RUP quedan coherentes, trazables y preparadas para la entrega. Los índices utilizarán la cabecera global de insignias y los casos individuales mantendrán la tabla de trazabilidad por fases. El siguiente paso recomendado es guardar este cierre documental en un commit y concentrar el tiempo restante en la regresión manual y la preparación de la presentación.
+
+---
+
+## [2026-06-16 13:39] Alineacion de diagramas de Analisis con Diseno
+
+**Prompt:** el usuario inicio la sesion con `session-memory` y senalo que los diagramas de Analisis no incluian la capa de servicios que si aparece en Diseno, rompiendo la cohesion entre ambas disciplinas. Solicito adaptar los diagramas de Analisis a los de Diseno.
+
+**Resultado:** se utilizo la skill `session-memory`. Se revisaron los `colaboracion.puml` de `RUP/01-analisis/casos-uso` y los `secuencia.puml` equivalentes de `RUP/02-diseno/casos-uso`. Se actualizaron 71 diagramas de colaboracion de Analisis para incorporar las clases `*Service` y `SesionService` cuando aparecen en Diseno, manteniendo el flujo conceptual `View -> Controller -> Service -> Repository/Policy`. Las consultas, politicas, validaciones internas y persistencia dejaron de depender directamente del controlador cuando Diseno ya las delega en servicios de aplicacion.
+
+Tambien se corrigieron los casos historicos `editarMiPublicacion()` y `eliminarMiPublicacion()`, que no tienen carpeta canonica homonima en Diseno pero se corresponden con `editarPublicacion()` y `eliminarPublicacion()`. En esos casos se introdujeron `PublicacionService` y `SesionService` para conservar la misma arquitectura que los casos canonicos.
+
+La validacion textual confirmo que no quedan flechas `Controller --> Repository`, `Controller --> Politica` ni `Controller --> Policy`, que todos los servicios usados estan declarados, que los 71 `.puml` conservan `@startuml` y `@enduml`, y que no se introdujo BOM UTF-8. No se regeneraron los SVG porque `plantuml` no esta instalado en el entorno y no existe jar de PlantUML en el repositorio.
+
+**Decision:** se adopta como criterio final que Analisis y Diseno mantengan la misma separacion de responsabilidades: las vistas interactuan con controladores, los controladores gestionan sesion y delegan en servicios de aplicacion, y los servicios colaboran con repositorios, politicas y entidades. Queda pendiente regenerar los SVG de Analisis cuando PlantUML este disponible, antes de considerar cerrada visualmente esta correccion.

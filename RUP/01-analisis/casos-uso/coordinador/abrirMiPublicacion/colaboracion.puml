@@ -1,10 +1,12 @@
-﻿@startuml abrirMiPublicacion-coordinador-analisis
+@startuml abrirMiPublicacion-coordinador-analisis
 skinparam linetype polyline
 
 rectangle #CDEBA5 ":MIS_PUBLICACIONES_ABIERTAS" as EstadoEntrada
 package abrirMiPublicacion as "abrirMiPublicacion()" {
     rectangle #629EF9 "abrirMiPublicacionView" as View
     rectangle #b5bd68 PublicacionController
+    rectangle #b5bd68 PublicacionService
+    rectangle #b5bd68 SesionService
     rectangle #b5bd68 PoliticaPublicacion
     rectangle #F2AC4E PublicacionRepository
     rectangle #F2AC4E Publicacion
@@ -17,12 +19,14 @@ rectangle #CDEBA5 ":MI_PUBLICACION_ABIERTA" as EstadoSalida
 
 EstadoEntrada -r-> View: abrirMiPublicacion()
 View -d-> PublicacionController: abrirMiPublicacion(solicitud, actor)
-PublicacionController --> PublicacionRepository: obtenerActivaPorId(id)
-PublicacionController --> PoliticaPublicacion: exigirAutoria(actor, publicacion)
+PublicacionController --> PublicacionService: obtener(id, actor)
+PublicacionController --> SesionService: obtenerSesionActual(authentication)
+PublicacionService --> PublicacionRepository: obtenerActivaPorId(id)
+PublicacionService --> PoliticaPublicacion: exigirAutoria(actor, publicacion)
 
 PublicacionRepository -- Publicacion
-PublicacionController --> RespuestaRepository: buscarPorPublicacion(id)
-PublicacionController --> ArchivoPublicacionRepository: buscarPorPublicacion(id)
+PublicacionService --> RespuestaRepository: buscarPorPublicacion(id)
+PublicacionService --> ArchivoPublicacionRepository: buscarPorPublicacion(id)
 RespuestaRepository -- Respuesta
 ArchivoPublicacionRepository -- ArchivoPublicacion
 View ..> EstadoSalida: continuarNavegacion()

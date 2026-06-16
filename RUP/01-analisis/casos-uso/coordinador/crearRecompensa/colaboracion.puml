@@ -5,6 +5,8 @@ rectangle #CDEBA5 ":RECOMPENSAS_ABIERTAS" as EstadoEntrada
 package crearRecompensa as "crearRecompensa()" {
     rectangle #629EF9 CrearRecompensaView
     rectangle #b5bd68 RecompensaController
+    rectangle #b5bd68 RecompensaService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E RecompensaRepository
     rectangle #F2AC4E ProyectoRepository
     rectangle #F2AC4E InvestigadorRepository
@@ -20,16 +22,21 @@ rectangle #CDEBA5 ":Collaboration AbrirRecompensa" as AbrirRecompensa
 EstadoEntrada -r-> CrearRecompensaView: crearRecompensa()
 
 CrearRecompensaView -d-> RecompensaController: prepararCreacion()
-RecompensaController --> ProyectoRepository: obtenerCompletadosPendientesRecompensa()
+RecompensaController --> RecompensaService: prepararCreacion()
+RecompensaController --> RecompensaService: obtenerBeneficiariosElegibles(proyectoId)
+RecompensaController --> RecompensaService: obtenerTiposPermitidos(proyectoId, investigadorId)
+RecompensaController --> RecompensaService: crear(datos)
+RecompensaController --> SesionService: obtenerSesionActual(authentication)
+RecompensaService --> ProyectoRepository: obtenerCompletadosPendientesRecompensa()
 CrearRecompensaView --> RecompensaController: seleccionarProyecto(proyectoId)
-RecompensaController --> InvestigadorRepository: obtenerElegiblesPorProyecto(proyectoId)
+RecompensaService --> InvestigadorRepository: obtenerElegiblesPorProyecto(proyectoId)
 CrearRecompensaView --> RecompensaController: seleccionarBeneficiario(investigadorId)
-RecompensaController --> InvestigadorRepository: obtenerBeneficiario(investigadorId)
-RecompensaController --> RecompensaController: obtenerTiposPermitidos(beneficiario)
+RecompensaService --> InvestigadorRepository: obtenerBeneficiario(investigadorId)
+RecompensaService --> RecompensaService: obtenerTiposPermitidos(beneficiario)
 CrearRecompensaView --> RecompensaController: crearRecompensa(datos)
-RecompensaController --> RecompensaController: validarRecompensa(datos)
-RecompensaController --> RecompensaRepository: existeDuplicado(datos)
-RecompensaController --> RecompensaRepository: guardar(entidad)
+RecompensaService --> RecompensaService: validarRecompensa(datos)
+RecompensaService --> RecompensaRepository: existeDuplicado(datos)
+RecompensaService --> RecompensaRepository: guardar(entidad)
 RecompensaRepository -- Recompensa
 ProyectoRepository -- Proyecto
 InvestigadorRepository -- Investigador

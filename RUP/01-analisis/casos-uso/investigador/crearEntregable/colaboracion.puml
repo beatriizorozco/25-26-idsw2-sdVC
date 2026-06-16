@@ -5,6 +5,8 @@ rectangle #CDEBA5 ":ENTREGABLES_ABIERTOS" as EstadoEntrada
 package crearEntregable as "crearEntregable()" {
     rectangle #629EF9 CrearEntregableView
     rectangle #b5bd68 EntregableController
+    rectangle #b5bd68 EntregableService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E ProyectoRepository
     rectangle #F2AC4E EntregableRepository
     rectangle #F2AC4E ArchivoRepository
@@ -21,9 +23,11 @@ rectangle #CDEBA5 ":Collaboration AbrirEntregables" as AbrirEntregables
 EstadoEntrada -r-> CrearEntregableView: crearEntregable()
 
 CrearEntregableView -d-> EntregableController: crearEntregable(idProyecto, datos, archivo?, investigador)
-EntregableController --> ProyectoRepository: verificarParticipacion(idProyecto, investigador)
-EntregableController --> EntregableRepository: guardar(entidad)
-EntregableController --> ArchivoRepository: guardarOpcional(entregable, archivo, investigador)
+EntregableController --> EntregableService: crear(proyectoId, datos, archivo?, investigador)
+EntregableController --> SesionService: obtenerSesionActual(authentication)
+EntregableService --> ProyectoRepository: verificarParticipacion(idProyecto, investigador)
+EntregableService --> EntregableRepository: guardar(entidad)
+EntregableService --> ArchivoRepository: guardarOpcional(entregable, archivo, investigador)
 ProyectoRepository -- Proyecto
 EntregableRepository -- Entregable
 ArchivoRepository -- ArchivoAdjunto

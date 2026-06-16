@@ -5,6 +5,8 @@ rectangle #CDEBA5 ":OPCIONES_PERFIL_ABIERTO" as EstadoEntrada
 package solicitarEliminacionPerfil as "solicitarEliminacionPerfil()" {
     rectangle #629EF9 SolicitarEliminacionPerfilView
     rectangle #b5bd68 PerfilController
+    rectangle #b5bd68 PerfilService
+    rectangle #b5bd68 SesionService
     rectangle #F2AC4E PerfilRepository
     rectangle #F2AC4E Perfil
     rectangle #F2AC4E SolicitudEliminacionPerfilRepository
@@ -18,9 +20,12 @@ rectangle #CDEBA5 ":OPCIONES_PERFIL_ABIERTO" as EstadoSalidaCancelada
 EstadoEntrada -r-> SolicitarEliminacionPerfilView: solicitarEliminacionPerfil()
 
 SolicitarEliminacionPerfilView -d-> PerfilController: solicitarEliminacionPerfil(datos)
+PerfilController --> SesionService: obtenerSesionActual(authentication)
+PerfilController --> PerfilService: solicitarEliminacionPerfil(coordinador, datos)
+PerfilController --> SesionService: cerrarSesion(request, response, authentication)
 SolicitarEliminacionPerfilView --> PerfilController: validarSolicitud(datos)
-PerfilController --> PerfilRepository: existeSolicitudPendiente(perfil)
-PerfilController --> SolicitudEliminacionPerfilRepository: guardar(solicitud)
+PerfilService --> PerfilRepository: existeSolicitudPendiente(perfil)
+PerfilService --> SolicitudEliminacionPerfilRepository: guardar(solicitud)
 PerfilRepository -- Perfil
 SolicitudEliminacionPerfilRepository -- SolicitudEliminacionPerfil
 SolicitarEliminacionPerfilView ..> EstadoSalidaExitosa: solicitudEnviada()

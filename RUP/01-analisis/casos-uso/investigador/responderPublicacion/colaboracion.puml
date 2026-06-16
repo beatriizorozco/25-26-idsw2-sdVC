@@ -1,10 +1,12 @@
-﻿@startuml responderPublicacion-investigador-analisis
+@startuml responderPublicacion-investigador-analisis
 skinparam linetype polyline
 
 rectangle #CDEBA5 ":PUBLICACION_ABIERTA" as EstadoEntrada
 package responderPublicacion as "responderPublicacion()" {
     rectangle #629EF9 "responderPublicacionView" as View
     rectangle #b5bd68 PublicacionController
+    rectangle #b5bd68 PublicacionService
+    rectangle #b5bd68 SesionService
     rectangle #b5bd68 PoliticaPublicacion
     rectangle #F2AC4E PublicacionRepository
     rectangle #F2AC4E Publicacion
@@ -15,9 +17,11 @@ rectangle #CDEBA5 ":PUBLICACION_ABIERTA" as EstadoSalida
 
 EstadoEntrada -r-> View: responderPublicacion()
 View -d-> PublicacionController: responderPublicacion(solicitud, actor)
-PublicacionController --> PublicacionRepository: obtenerActivaPorId(id)
-PublicacionController --> PoliticaPublicacion: permitirResponder(actor, publicacion)
-PublicacionController --> RespuestaRepository: guardar(respuesta)
+PublicacionController --> PublicacionService: responder(id, contenido, actor)
+PublicacionController --> SesionService: obtenerSesionActual(authentication)
+PublicacionService --> PublicacionRepository: obtenerActivaPorId(id)
+PublicacionService --> PoliticaPublicacion: permitirResponder(actor, publicacion)
+PublicacionService --> RespuestaRepository: guardar(respuesta)
 PublicacionRepository -- Publicacion
 RespuestaRepository -- Respuesta
 View ..> EstadoSalida: continuarNavegacion()
