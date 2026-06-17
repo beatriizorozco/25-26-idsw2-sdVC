@@ -3,7 +3,7 @@
 > |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/abrirOpcionesPerfil/README.md)|[Análisis](/RUP/01-analisis/casos-uso/coordinador/abrirOpcionesPerfil/README.md)|[Diseño](/RUP/02-diseño/casos-uso/coordinador/abrirOpcionesPerfil/README.md)|**Desarrollo**|[Pruebas](/RUP/04-pruebas/casos-uso/coordinador/abrirOpcionesPerfil/README.md)|
 > |-|-|-|-|-|-|-|
 
-- **Backend:** [PerfilController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/PerfilController.java) · [PerfilService.java](/src/backend/src/main/java/es/funiber/investigacion/service/PerfilService.java) · [Usuario.java](/src/backend/src/main/java/es/funiber/investigacion/model/Usuario.java)
+- **Backend:** [PerfilController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/PerfilController.java) · [PerfilService.java](/src/backend/src/main/java/es/funiber/investigacion/service/PerfilService.java) · [SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java) · [UsuarioRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/UsuarioRepository.java) · [Usuario.java](/src/backend/src/main/java/es/funiber/investigacion/model/Usuario.java)
 - **Frontend:** [PerfilPage.tsx](/src/frontend/src/pages/PerfilPage.tsx) · [api.ts](/src/frontend/src/services/api.ts)
 - **Pruebas:** [PerfilIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/PerfilIntegrationTests.java)
 
@@ -23,11 +23,13 @@ El perfil se abre desde el módulo `Perfil` del panel principal. El frontend con
 
 |Responsabilidad|Código relacionado|
 |-|-|
-|Página React|[PerfilPage.tsx](/src/frontend/src/pages/PerfilPage.tsx)|
-|Cliente HTTP|[api.ts](/src/frontend/src/services/api.ts)|
 |Controlador REST|[PerfilController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/PerfilController.java)|
 |Servicio de aplicación|[PerfilService.java](/src/backend/src/main/java/es/funiber/investigacion/service/PerfilService.java)|
-|Modelo de dominio|[Usuario.java](/src/backend/src/main/java/es/funiber/investigacion/model/Usuario.java)|
+|Servicio de aplicación|[SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java)|
+|Repositorio|[UsuarioRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/UsuarioRepository.java)|
+|Entidad de dominio|[Usuario.java](/src/backend/src/main/java/es/funiber/investigacion/model/Usuario.java)|
+|Cliente HTTP|[api.ts](/src/frontend/src/services/api.ts)|
+|Página React|[PerfilPage.tsx](/src/frontend/src/pages/PerfilPage.tsx)|
 |Prueba de integración|[PerfilIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/PerfilIntegrationTests.java)|
 
 ## Flujo de datos

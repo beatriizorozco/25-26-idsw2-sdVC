@@ -3,7 +3,7 @@
 > |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/iniciarSesion/README.md)|[Análisis](/RUP/01-analisis/casos-uso/coordinador/iniciarSesion/README.md)|[Diseño](/RUP/02-diseño/casos-uso/coordinador/iniciarSesion/README.md)|**Desarrollo**|[Pruebas](/RUP/04-pruebas/casos-uso/coordinador/iniciarSesion/README.md)|
 > |-|-|-|-|-|-|-|
 
-- **Backend:** [AuthController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/AuthController.java) · [AuthService.java](/src/backend/src/main/java/es/funiber/investigacion/service/AuthService.java) · [SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java)
+- **Backend:** [AuthController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/AuthController.java) · [AuthService.java](/src/backend/src/main/java/es/funiber/investigacion/service/AuthService.java) · [SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java) · [UsuarioRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/UsuarioRepository.java) · [Usuario.java](/src/backend/src/main/java/es/funiber/investigacion/model/Usuario.java)
 - **Frontend:** [LoginPage.tsx](/src/frontend/src/pages/LoginPage.tsx) · [api.ts](/src/frontend/src/services/api.ts)
 - **Pruebas:** [FlujoSesionIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/FlujoSesionIntegrationTests.java)
 
@@ -23,11 +23,13 @@ El acceso se implementa mediante `LoginPage`, `AuthController`, `AuthService`, `
 
 |Responsabilidad|Código relacionado|
 |-|-|
-|Página React|[LoginPage.tsx](/src/frontend/src/pages/LoginPage.tsx)|
-|Cliente HTTP|[api.ts](/src/frontend/src/services/api.ts)|
 |Controlador REST|[AuthController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/AuthController.java)|
 |Servicio de aplicación|[AuthService.java](/src/backend/src/main/java/es/funiber/investigacion/service/AuthService.java)|
 |Servicio de aplicación|[SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java)|
+|Repositorio|[UsuarioRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/UsuarioRepository.java)|
+|Entidad de dominio|[Usuario.java](/src/backend/src/main/java/es/funiber/investigacion/model/Usuario.java)|
+|Cliente HTTP|[api.ts](/src/frontend/src/services/api.ts)|
+|Página React|[LoginPage.tsx](/src/frontend/src/pages/LoginPage.tsx)|
 |Prueba de integración|[FlujoSesionIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/FlujoSesionIntegrationTests.java)|
 
 ## Flujo de datos

@@ -23,10 +23,10 @@ El cierre comienza en un modal de confirmación. Cancelar conserva el panel; con
 
 |Responsabilidad|Código relacionado|
 |-|-|
-|Componente React|[ConfirmarCierreSesionModal.tsx](/src/frontend/src/components/ConfirmarCierreSesionModal.tsx)|
-|Cliente HTTP|[api.ts](/src/frontend/src/services/api.ts)|
 |Controlador REST|[AuthController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/AuthController.java)|
 |Servicio de aplicación|[SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java)|
+|Cliente HTTP|[api.ts](/src/frontend/src/services/api.ts)|
+|Componente React|[ConfirmarCierreSesionModal.tsx](/src/frontend/src/components/ConfirmarCierreSesionModal.tsx)|
 |Prueba de integración|[FlujoSesionIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/FlujoSesionIntegrationTests.java)|
 
 ## Flujo de datos

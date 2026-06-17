@@ -3,7 +3,7 @@
 > |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/crearPublicacion/README.md)|[Análisis](/RUP/01-analisis/casos-uso/investigador/crearPublicacion/README.md)|[Diseño](/RUP/02-diseño/casos-uso/investigador/crearPublicacion/README.md)|**Desarrollo**|Pruebas|
 > |-|-|-|-|-|-|-|
 
-- **Backend:** [PublicacionRequest.java](/src/backend/src/main/java/es/funiber/investigacion/dto/PublicacionRequest.java) · [PublicacionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/PublicacionService.java)
+- **Backend:** [PublicacionController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/PublicacionController.java) · [PublicacionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/PublicacionService.java) · [SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java) · [ArchivoPublicacionRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ArchivoPublicacionRepository.java) · [PublicacionRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/PublicacionRepository.java) · [ArchivoPublicacion.java](/src/backend/src/main/java/es/funiber/investigacion/model/ArchivoPublicacion.java) · [Publicacion.java](/src/backend/src/main/java/es/funiber/investigacion/model/Publicacion.java) · [PoliticaPublicacion.java](/src/backend/src/main/java/es/funiber/investigacion/service/PoliticaPublicacion.java)
 - **Pruebas:** [PublicacionIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/PublicacionIntegrationTests.java)
 
 ## Descripción
@@ -22,8 +22,15 @@ Crea una publicación propia mediante `POST /api/publicaciones`, con autoría to
 
 |Responsabilidad|Código relacionado|
 |-|-|
-|Contrato de datos|[PublicacionRequest.java](/src/backend/src/main/java/es/funiber/investigacion/dto/PublicacionRequest.java)|
+|Controlador REST|[PublicacionController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/PublicacionController.java)|
 |Servicio de aplicación|[PublicacionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/PublicacionService.java)|
+|Servicio de aplicación|[SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java)|
+|Repositorio|[ArchivoPublicacionRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ArchivoPublicacionRepository.java)|
+|Repositorio|[PublicacionRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/PublicacionRepository.java)|
+|Entidad de dominio|[ArchivoPublicacion.java](/src/backend/src/main/java/es/funiber/investigacion/model/ArchivoPublicacion.java)|
+|Entidad de dominio|[Publicacion.java](/src/backend/src/main/java/es/funiber/investigacion/model/Publicacion.java)|
+|Política de dominio|[PoliticaPublicacion.java](/src/backend/src/main/java/es/funiber/investigacion/service/PoliticaPublicacion.java)|
+|Contrato de datos|[PublicacionRequest.java](/src/backend/src/main/java/es/funiber/investigacion/dto/PublicacionRequest.java)|
 |Prueba de integración|[PublicacionIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/PublicacionIntegrationTests.java)|
 
 ## Flujo de datos

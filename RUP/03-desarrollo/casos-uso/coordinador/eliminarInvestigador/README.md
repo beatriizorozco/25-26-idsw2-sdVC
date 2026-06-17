@@ -3,7 +3,7 @@
 > |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/eliminarInvestigador/README.md)|[Análisis](/RUP/01-analisis/casos-uso/coordinador/eliminarInvestigador/README.md)|[Diseño](/RUP/02-diseño/casos-uso/coordinador/eliminarInvestigador/README.md)|**Desarrollo**|Pruebas|
 > |-|-|-|-|-|-|-|
 
-- **Backend:** [MovimientoParticipacionProyecto.java](/src/backend/src/main/java/es/funiber/investigacion/model/MovimientoParticipacionProyecto.java) · [ProyectoService.java](/src/backend/src/main/java/es/funiber/investigacion/service/ProyectoService.java)
+- **Backend:** [ProyectoController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/ProyectoController.java) · [ProyectoService.java](/src/backend/src/main/java/es/funiber/investigacion/service/ProyectoService.java) · [SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java) · [EntregableRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/EntregableRepository.java) · [ProyectoRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ProyectoRepository.java) · [UsuarioRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/UsuarioRepository.java) · [Entregable.java](/src/backend/src/main/java/es/funiber/investigacion/model/Entregable.java) · [Proyecto.java](/src/backend/src/main/java/es/funiber/investigacion/model/Proyecto.java) · [Usuario.java](/src/backend/src/main/java/es/funiber/investigacion/model/Usuario.java)
 - **Pruebas:** [InvestigadorIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/InvestigadorIntegrationTests.java)
 
 ## Descripción
@@ -22,8 +22,16 @@ La operación desasigna al investigador del equipo activo, exige un motivo y con
 
 |Responsabilidad|Código relacionado|
 |-|-|
-|Modelo de dominio|[MovimientoParticipacionProyecto.java](/src/backend/src/main/java/es/funiber/investigacion/model/MovimientoParticipacionProyecto.java)|
+|Controlador REST|[ProyectoController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/ProyectoController.java)|
 |Servicio de aplicación|[ProyectoService.java](/src/backend/src/main/java/es/funiber/investigacion/service/ProyectoService.java)|
+|Servicio de aplicación|[SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java)|
+|Repositorio|[EntregableRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/EntregableRepository.java)|
+|Repositorio|[ProyectoRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ProyectoRepository.java)|
+|Repositorio|[UsuarioRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/UsuarioRepository.java)|
+|Entidad de dominio|[Entregable.java](/src/backend/src/main/java/es/funiber/investigacion/model/Entregable.java)|
+|Entidad de dominio|[Proyecto.java](/src/backend/src/main/java/es/funiber/investigacion/model/Proyecto.java)|
+|Entidad de dominio|[Usuario.java](/src/backend/src/main/java/es/funiber/investigacion/model/Usuario.java)|
+|Modelo de dominio|[MovimientoParticipacionProyecto.java](/src/backend/src/main/java/es/funiber/investigacion/model/MovimientoParticipacionProyecto.java)|
 |Prueba de integración|[InvestigadorIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/InvestigadorIntegrationTests.java)|
 
 ## Flujo de datos

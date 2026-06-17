@@ -3,7 +3,7 @@
 > |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/eliminarPerfil/README.md)|[Análisis](/RUP/01-analisis/casos-uso/coordinador/eliminarPerfil/README.md)|[Diseño](/RUP/02-diseño/casos-uso/coordinador/eliminarPerfil/README.md)|**Desarrollo**|[Pruebas](/RUP/04-pruebas/casos-uso/coordinador/eliminarPerfil/README.md)|
 > |-|-|-|-|-|-|-|
 
-- **Backend:** [SolicitudEliminacionPerfilController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/SolicitudEliminacionPerfilController.java) · [PerfilService.java](/src/backend/src/main/java/es/funiber/investigacion/service/PerfilService.java) · [EliminacionPerfilResponse.java](/src/backend/src/main/java/es/funiber/investigacion/dto/EliminacionPerfilResponse.java)
+- **Backend:** [SolicitudEliminacionPerfilController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/SolicitudEliminacionPerfilController.java) · [PerfilService.java](/src/backend/src/main/java/es/funiber/investigacion/service/PerfilService.java) · [SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java) · [SolicitudEliminacionPerfilRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/SolicitudEliminacionPerfilRepository.java) · [UsuarioRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/UsuarioRepository.java) · [SolicitudEliminacionPerfil.java](/src/backend/src/main/java/es/funiber/investigacion/model/SolicitudEliminacionPerfil.java) · [Usuario.java](/src/backend/src/main/java/es/funiber/investigacion/model/Usuario.java)
 - **Frontend:** [PerfilPage.tsx](/src/frontend/src/pages/PerfilPage.tsx)
 - **Pruebas:** [PerfilIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/PerfilIntegrationTests.java)
 
@@ -23,10 +23,15 @@ La desactivación requiere confirmación. El frontend envía `DELETE /api/solici
 
 |Responsabilidad|Código relacionado|
 |-|-|
-|Página React|[PerfilPage.tsx](/src/frontend/src/pages/PerfilPage.tsx)|
 |Controlador REST|[SolicitudEliminacionPerfilController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/SolicitudEliminacionPerfilController.java)|
 |Servicio de aplicación|[PerfilService.java](/src/backend/src/main/java/es/funiber/investigacion/service/PerfilService.java)|
+|Servicio de aplicación|[SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java)|
+|Repositorio|[SolicitudEliminacionPerfilRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/SolicitudEliminacionPerfilRepository.java)|
+|Repositorio|[UsuarioRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/UsuarioRepository.java)|
+|Entidad de dominio|[SolicitudEliminacionPerfil.java](/src/backend/src/main/java/es/funiber/investigacion/model/SolicitudEliminacionPerfil.java)|
+|Entidad de dominio|[Usuario.java](/src/backend/src/main/java/es/funiber/investigacion/model/Usuario.java)|
 |Contrato de datos|[EliminacionPerfilResponse.java](/src/backend/src/main/java/es/funiber/investigacion/dto/EliminacionPerfilResponse.java)|
+|Página React|[PerfilPage.tsx](/src/frontend/src/pages/PerfilPage.tsx)|
 |Prueba de integración|[PerfilIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/PerfilIntegrationTests.java)|
 
 ## Flujo de datos

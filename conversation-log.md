@@ -714,3 +714,15 @@ Tambien se corrigieron los casos historicos `editarMiPublicacion()` y `eliminarM
 La validacion textual confirmo que no quedan flechas `Controller --> Repository`, `Controller --> Politica` ni `Controller --> Policy`, que todos los servicios usados estan declarados, que los 71 `.puml` conservan `@startuml` y `@enduml`, y que no se introdujo BOM UTF-8. Posteriormente se descargo PlantUML de forma temporal, se regeneraron los 71 SVG de Analisis referenciados por los README y se elimino el jar temporal para no versionarlo.
 
 **Decision:** se adopta como criterio final que Analisis y Diseno mantengan la misma separacion de responsabilidades: las vistas interactuan con controladores, los controladores gestionan sesion y delegan en servicios de aplicacion, y los servicios colaboran con repositorios, politicas y entidades. La correccion queda cerrada tanto en fuentes PlantUML como en SVG renderizados.
+
+---
+
+## [2026-06-18 00:41] Trazabilidad de README de Desarrollo con Diseno
+
+**Prompt:** el usuario inicio la sesion con `session-memory` y solicito asegurar que los Markdown de Desarrollo reflejaran todos los enlaces a repositorios, controllers, entidades y servicios derivados del Diseno, especialmente donde faltaban servicios u otros componentes.
+
+**Resultado:** se utilizo la skill `session-memory`. Se revisaron los `secuencia.puml` de los 69 casos de uso de `RUP/02-diseno/casos-uso` y se cruzaron sus participantes tecnicos con las clases reales del backend Spring Boot. Tras aclarar que la trazabilidad debia vivir en Desarrollo, se dejaron sin cambios funcionales los README de Diseno y se actualizaron los 69 README individuales de `RUP/03-desarrollo/casos-uso`.
+
+En cada README de Desarrollo se completo la linea `Backend` y la tabla `Implementacion por capas` con los controllers, servicios, repositorios y entidades inferidas desde cada repositorio; tambien se incorporaron politicas, importadores, validadores y registros cuando el diagrama los modela explicitamente. La validacion confirmo 0 enlaces backend rotos, 0 participantes tecnicos de Diseno ausentes en Desarrollo y `git diff --check` sin errores, salvo avisos de normalizacion CRLF propios de la configuracion de Git en Windows.
+
+**Decision:** los README individuales de Desarrollo quedan alineados con sus diagramas de Diseno y con el codigo real, usando como fuente canonica los participantes de secuencia y las clases Java existentes. Los README indice no se modificaron porque no representan un flujo concreto ni declaran participantes tecnicos propios.

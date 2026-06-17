@@ -3,7 +3,7 @@
 > |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/abrirSolicitudEliminacionPerfil/README.md)|[Análisis](/RUP/01-analisis/casos-uso/coordinador/abrirSolicitudEliminacionPerfil/README.md)|[Diseño](/RUP/02-diseño/casos-uso/coordinador/abrirSolicitudEliminacionPerfil/README.md)|**Desarrollo**|[Pruebas](/RUP/04-pruebas/casos-uso/coordinador/abrirSolicitudEliminacionPerfil/README.md)|
 > |-|-|-|-|-|-|-|
 
-- **Backend:** [SolicitudEliminacionPerfilController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/SolicitudEliminacionPerfilController.java) · [SolicitudEliminacionPerfilResponse.java](/src/backend/src/main/java/es/funiber/investigacion/dto/SolicitudEliminacionPerfilResponse.java)
+- **Backend:** [SolicitudEliminacionPerfilController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/SolicitudEliminacionPerfilController.java) · [PerfilService.java](/src/backend/src/main/java/es/funiber/investigacion/service/PerfilService.java) · [SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java) · [SolicitudEliminacionPerfilRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/SolicitudEliminacionPerfilRepository.java) · [SolicitudEliminacionPerfil.java](/src/backend/src/main/java/es/funiber/investigacion/model/SolicitudEliminacionPerfil.java)
 - **Frontend:** [PerfilPage.tsx](/src/frontend/src/pages/PerfilPage.tsx)
 - **Pruebas:** [PerfilIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/PerfilIntegrationTests.java)
 
@@ -23,9 +23,13 @@ El detalle se abre al seleccionar una solicitud pendiente. El frontend invoca `G
 
 |Responsabilidad|Código relacionado|
 |-|-|
-|Página React|[PerfilPage.tsx](/src/frontend/src/pages/PerfilPage.tsx)|
 |Controlador REST|[SolicitudEliminacionPerfilController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/SolicitudEliminacionPerfilController.java)|
+|Servicio de aplicación|[PerfilService.java](/src/backend/src/main/java/es/funiber/investigacion/service/PerfilService.java)|
+|Servicio de aplicación|[SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java)|
+|Repositorio|[SolicitudEliminacionPerfilRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/SolicitudEliminacionPerfilRepository.java)|
+|Entidad de dominio|[SolicitudEliminacionPerfil.java](/src/backend/src/main/java/es/funiber/investigacion/model/SolicitudEliminacionPerfil.java)|
 |Contrato de datos|[SolicitudEliminacionPerfilResponse.java](/src/backend/src/main/java/es/funiber/investigacion/dto/SolicitudEliminacionPerfilResponse.java)|
+|Página React|[PerfilPage.tsx](/src/frontend/src/pages/PerfilPage.tsx)|
 |Prueba de integración|[PerfilIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/PerfilIntegrationTests.java)|
 
 ## Flujo de datos

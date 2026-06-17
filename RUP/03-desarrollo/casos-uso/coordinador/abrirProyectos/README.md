@@ -3,7 +3,7 @@
 > |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/abrirProyectos/README.md)|[Análisis](/RUP/01-analisis/casos-uso/coordinador/abrirProyectos/README.md)|[Diseño](/RUP/02-diseño/casos-uso/coordinador/abrirProyectos/README.md)|**Desarrollo**|Pruebas|
 > |-|-|-|-|-|-|-|
 
-- **Backend:** [ProyectoController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/ProyectoController.java) · [ProyectoService.java](/src/backend/src/main/java/es/funiber/investigacion/service/ProyectoService.java)
+- **Backend:** [ProyectoController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/ProyectoController.java) · [ProyectoService.java](/src/backend/src/main/java/es/funiber/investigacion/service/ProyectoService.java) · [SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java) · [ProyectoRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ProyectoRepository.java) · [Proyecto.java](/src/backend/src/main/java/es/funiber/investigacion/model/Proyecto.java)
 - **Frontend:** [ProyectosPage.tsx](/src/frontend/src/pages/ProyectosPage.tsx)
 - **Pruebas:** [ProyectoIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/ProyectoIntegrationTests.java)
 
@@ -23,9 +23,12 @@ La pantalla de proyectos permite filtrar y alternar entre proyectos activos y ar
 
 |Responsabilidad|Código relacionado|
 |-|-|
-|Página React|[ProyectosPage.tsx](/src/frontend/src/pages/ProyectosPage.tsx)|
 |Controlador REST|[ProyectoController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/ProyectoController.java)|
 |Servicio de aplicación|[ProyectoService.java](/src/backend/src/main/java/es/funiber/investigacion/service/ProyectoService.java)|
+|Servicio de aplicación|[SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java)|
+|Repositorio|[ProyectoRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ProyectoRepository.java)|
+|Entidad de dominio|[Proyecto.java](/src/backend/src/main/java/es/funiber/investigacion/model/Proyecto.java)|
+|Página React|[ProyectosPage.tsx](/src/frontend/src/pages/ProyectosPage.tsx)|
 |Prueba de integración|[ProyectoIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/ProyectoIntegrationTests.java)|
 
 ## Flujo de datos

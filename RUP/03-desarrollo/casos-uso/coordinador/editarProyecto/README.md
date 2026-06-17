@@ -3,7 +3,7 @@
 > |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/editarProyecto/README.md)|[Análisis](/RUP/01-analisis/casos-uso/coordinador/editarProyecto/README.md)|[Diseño](/RUP/02-diseño/casos-uso/coordinador/editarProyecto/README.md)|**Desarrollo**|Pruebas|
 > |-|-|-|-|-|-|-|
 
-- **Backend:** [ProyectoService.java](/src/backend/src/main/java/es/funiber/investigacion/service/ProyectoService.java) · [Proyecto.java](/src/backend/src/main/java/es/funiber/investigacion/model/Proyecto.java)
+- **Backend:** [ProyectoController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/ProyectoController.java) · [ProyectoService.java](/src/backend/src/main/java/es/funiber/investigacion/service/ProyectoService.java) · [SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java) · [ConvocatoriaRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ConvocatoriaRepository.java) · [ProyectoRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ProyectoRepository.java) · [Convocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/model/Convocatoria.java) · [Proyecto.java](/src/backend/src/main/java/es/funiber/investigacion/model/Proyecto.java)
 - **Pruebas:** [ProyectoIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/ProyectoIntegrationTests.java)
 
 ## Descripción
@@ -22,8 +22,13 @@
 
 |Responsabilidad|Código relacionado|
 |-|-|
+|Controlador REST|[ProyectoController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/ProyectoController.java)|
 |Servicio de aplicación|[ProyectoService.java](/src/backend/src/main/java/es/funiber/investigacion/service/ProyectoService.java)|
-|Modelo de dominio|[Proyecto.java](/src/backend/src/main/java/es/funiber/investigacion/model/Proyecto.java)|
+|Servicio de aplicación|[SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java)|
+|Repositorio|[ConvocatoriaRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ConvocatoriaRepository.java)|
+|Repositorio|[ProyectoRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ProyectoRepository.java)|
+|Entidad de dominio|[Convocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/model/Convocatoria.java)|
+|Entidad de dominio|[Proyecto.java](/src/backend/src/main/java/es/funiber/investigacion/model/Proyecto.java)|
 |Prueba de integración|[ProyectoIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/ProyectoIntegrationTests.java)|
 
 ## Flujo de datos

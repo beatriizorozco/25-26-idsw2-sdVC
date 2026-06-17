@@ -3,7 +3,7 @@
 > |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/importarConvocatoria/README.md)|[Análisis](/RUP/01-analisis/casos-uso/coordinador/importarConvocatoria/README.md)|[Diseño](/RUP/02-diseño/casos-uso/coordinador/importarConvocatoria/README.md)|**Desarrollo**|Pruebas|
 > |-|-|-|-|-|-|-|
 
-- **Backend:** [ImportacionConvocatoriaService.java](/src/backend/src/main/java/es/funiber/investigacion/service/ImportacionConvocatoriaService.java) · [ImportadorConvocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/service/ImportadorConvocatoria.java) · [RegistroImportadoresConvocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/service/RegistroImportadoresConvocatoria.java) · [ImportadorJsonConvocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/service/ImportadorJsonConvocatoria.java) · [ImportadorReferenciaConvocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/service/ImportadorReferenciaConvocatoria.java) · [ValidadorConvocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/service/ValidadorConvocatoria.java)
+- **Backend:** [ConvocatoriaController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/ConvocatoriaController.java) · [ImportacionConvocatoriaService.java](/src/backend/src/main/java/es/funiber/investigacion/service/ImportacionConvocatoriaService.java) · [SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java) · [ConvocatoriaRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ConvocatoriaRepository.java) · [Convocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/model/Convocatoria.java) · [PoliticaConvocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/service/PoliticaConvocatoria.java) · [ImportadorConvocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/service/ImportadorConvocatoria.java) · [ValidadorConvocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/service/ValidadorConvocatoria.java) · [RegistroImportadoresConvocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/service/RegistroImportadoresConvocatoria.java)
 - **Frontend:** [ConvocatoriasPage.tsx](/src/frontend/src/pages/ConvocatoriasPage.tsx)
 - **Pruebas:** [ConvocatoriaIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/ConvocatoriaIntegrationTests.java)
 
@@ -23,12 +23,17 @@ Importa convocatorias externas mediante un flujo de previsualización y confirma
 
 |Responsabilidad|Código relacionado|
 |-|-|
+|Controlador REST|[ConvocatoriaController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/ConvocatoriaController.java)|
 |Servicio de aplicación|[ImportacionConvocatoriaService.java](/src/backend/src/main/java/es/funiber/investigacion/service/ImportacionConvocatoriaService.java)|
-|Servicio de aplicación|[ImportadorConvocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/service/ImportadorConvocatoria.java)|
-|Servicio de aplicación|[RegistroImportadoresConvocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/service/RegistroImportadoresConvocatoria.java)|
 |Servicio de aplicación|[ImportadorJsonConvocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/service/ImportadorJsonConvocatoria.java)|
 |Servicio de aplicación|[ImportadorReferenciaConvocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/service/ImportadorReferenciaConvocatoria.java)|
-|Servicio de aplicación|[ValidadorConvocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/service/ValidadorConvocatoria.java)|
+|Servicio de aplicación|[SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java)|
+|Repositorio|[ConvocatoriaRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ConvocatoriaRepository.java)|
+|Entidad de dominio|[Convocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/model/Convocatoria.java)|
+|Política de dominio|[PoliticaConvocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/service/PoliticaConvocatoria.java)|
+|Estrategia de importación|[ImportadorConvocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/service/ImportadorConvocatoria.java)|
+|Validador|[ValidadorConvocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/service/ValidadorConvocatoria.java)|
+|Registro de estrategias|[RegistroImportadoresConvocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/service/RegistroImportadoresConvocatoria.java)|
 |Página React|[ConvocatoriasPage.tsx](/src/frontend/src/pages/ConvocatoriasPage.tsx)|
 |Prueba de integración|[ConvocatoriaIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/ConvocatoriaIntegrationTests.java)|
 

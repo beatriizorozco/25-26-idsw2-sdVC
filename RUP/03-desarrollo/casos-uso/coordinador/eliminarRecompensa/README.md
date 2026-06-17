@@ -22,6 +22,13 @@ El Diseño actualizado exige confirmación y motivo antes de `PATCH /api/recompe
 
 |Responsabilidad|Código relacionado|
 |-|-|
+|Controlador REST|[RecompensaController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/RecompensaController.java)|
+|Servicio de aplicación|[RecompensaService.java](/src/backend/src/main/java/es/funiber/investigacion/service/RecompensaService.java)|
+|Servicio de aplicación|[SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java)|
+|Repositorio|[ProyectoRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ProyectoRepository.java)|
+|Repositorio|[RecompensaRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/RecompensaRepository.java)|
+|Entidad de dominio|[Proyecto.java](/src/backend/src/main/java/es/funiber/investigacion/model/Proyecto.java)|
+|Entidad de dominio|[Recompensa.java](/src/backend/src/main/java/es/funiber/investigacion/model/Recompensa.java)|
 |Página React|[RecompensasPage.tsx](/src/frontend/src/pages/RecompensasPage.tsx)|
 |Prueba de integración|[RecompensaIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/RecompensaIntegrationTests.java)|
 

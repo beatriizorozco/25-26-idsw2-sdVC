@@ -3,7 +3,7 @@
 > |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/editarEntregable/README.md)|[Análisis](/RUP/01-analisis/casos-uso/investigador/editarEntregable/README.md)|[Diseño](/RUP/02-diseño/casos-uso/investigador/editarEntregable/README.md)|**Desarrollo**|Pruebas|
 > |-|-|-|-|-|-|-|
 
-- **Backend:** [EntregableService.java](/src/backend/src/main/java/es/funiber/investigacion/service/EntregableService.java)
+- **Backend:** [EntregableController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/EntregableController.java) · [EntregableService.java](/src/backend/src/main/java/es/funiber/investigacion/service/EntregableService.java) · [SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java) · [ArchivoEntregableRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ArchivoEntregableRepository.java) · [EntregableRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/EntregableRepository.java) · [ArchivoEntregable.java](/src/backend/src/main/java/es/funiber/investigacion/model/ArchivoEntregable.java) · [Entregable.java](/src/backend/src/main/java/es/funiber/investigacion/model/Entregable.java)
 - **Pruebas:** [EntregableIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/EntregableIntegrationTests.java)
 
 ## Descripción
@@ -22,7 +22,13 @@ El Investigador solo puede editar entregables de su autoría. Puede actualizar s
 
 |Responsabilidad|Código relacionado|
 |-|-|
+|Controlador REST|[EntregableController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/EntregableController.java)|
 |Servicio de aplicación|[EntregableService.java](/src/backend/src/main/java/es/funiber/investigacion/service/EntregableService.java)|
+|Servicio de aplicación|[SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java)|
+|Repositorio|[ArchivoEntregableRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ArchivoEntregableRepository.java)|
+|Repositorio|[EntregableRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/EntregableRepository.java)|
+|Entidad de dominio|[ArchivoEntregable.java](/src/backend/src/main/java/es/funiber/investigacion/model/ArchivoEntregable.java)|
+|Entidad de dominio|[Entregable.java](/src/backend/src/main/java/es/funiber/investigacion/model/Entregable.java)|
 |Prueba de integración|[EntregableIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/EntregableIntegrationTests.java)|
 
 ## Flujo de datos

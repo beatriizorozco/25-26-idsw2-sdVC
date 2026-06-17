@@ -3,7 +3,7 @@
 > |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/abrirInvestigador/README.md)|[Análisis](/RUP/01-analisis/casos-uso/coordinador/abrirInvestigador/README.md)|[Diseño](/RUP/02-diseño/casos-uso/coordinador/abrirInvestigador/README.md)|**Desarrollo**|Pruebas|
 > |-|-|-|-|-|-|-|
 
-- **Backend:** [InvestigadorDetalleResponse.java](/src/backend/src/main/java/es/funiber/investigacion/dto/InvestigadorDetalleResponse.java) · [InvestigadorService.java](/src/backend/src/main/java/es/funiber/investigacion/service/InvestigadorService.java)
+- **Backend:** [InvestigadorController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/InvestigadorController.java) · [InvestigadorService.java](/src/backend/src/main/java/es/funiber/investigacion/service/InvestigadorService.java) · [SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java) · [ProyectoRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ProyectoRepository.java) · [UsuarioRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/UsuarioRepository.java) · [Proyecto.java](/src/backend/src/main/java/es/funiber/investigacion/model/Proyecto.java) · [Usuario.java](/src/backend/src/main/java/es/funiber/investigacion/model/Usuario.java)
 - **Frontend:** [InvestigadoresPage.tsx](/src/frontend/src/pages/InvestigadoresPage.tsx)
 - **Pruebas:** [InvestigadorIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/InvestigadorIntegrationTests.java)
 
@@ -23,9 +23,15 @@
 
 |Responsabilidad|Código relacionado|
 |-|-|
-|Página React|[InvestigadoresPage.tsx](/src/frontend/src/pages/InvestigadoresPage.tsx)|
-|Contrato de datos|[InvestigadorDetalleResponse.java](/src/backend/src/main/java/es/funiber/investigacion/dto/InvestigadorDetalleResponse.java)|
+|Controlador REST|[InvestigadorController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/InvestigadorController.java)|
 |Servicio de aplicación|[InvestigadorService.java](/src/backend/src/main/java/es/funiber/investigacion/service/InvestigadorService.java)|
+|Servicio de aplicación|[SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java)|
+|Repositorio|[ProyectoRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ProyectoRepository.java)|
+|Repositorio|[UsuarioRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/UsuarioRepository.java)|
+|Entidad de dominio|[Proyecto.java](/src/backend/src/main/java/es/funiber/investigacion/model/Proyecto.java)|
+|Entidad de dominio|[Usuario.java](/src/backend/src/main/java/es/funiber/investigacion/model/Usuario.java)|
+|Contrato de datos|[InvestigadorDetalleResponse.java](/src/backend/src/main/java/es/funiber/investigacion/dto/InvestigadorDetalleResponse.java)|
+|Página React|[InvestigadoresPage.tsx](/src/frontend/src/pages/InvestigadoresPage.tsx)|
 |Prueba de integración|[InvestigadorIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/InvestigadorIntegrationTests.java)|
 
 ## Flujo de datos

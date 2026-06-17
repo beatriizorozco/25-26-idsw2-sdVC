@@ -3,7 +3,7 @@
 > |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/investigador/abrirRecompensas/README.md)|[Análisis](/RUP/01-analisis/casos-uso/investigador/abrirRecompensas/README.md)|[Diseño](/RUP/02-diseño/casos-uso/investigador/abrirRecompensas/README.md)|**Desarrollo**|Pruebas|
 > |-|-|-|-|-|-|-|
 
-- **Backend:** [PanelPrincipalService.java](/src/backend/src/main/java/es/funiber/investigacion/service/PanelPrincipalService.java) · [RecompensaService.java](/src/backend/src/main/java/es/funiber/investigacion/service/RecompensaService.java)
+- **Backend:** [RecompensaController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/RecompensaController.java) · [RecompensaService.java](/src/backend/src/main/java/es/funiber/investigacion/service/RecompensaService.java) · [SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java) · [ProyectoRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ProyectoRepository.java) · [RecompensaRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/RecompensaRepository.java) · [Proyecto.java](/src/backend/src/main/java/es/funiber/investigacion/model/Proyecto.java) · [Recompensa.java](/src/backend/src/main/java/es/funiber/investigacion/model/Recompensa.java)
 - **Frontend:** [RecompensasPage.tsx](/src/frontend/src/pages/RecompensasPage.tsx)
 - **Pruebas:** [RecompensaIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/RecompensaIntegrationTests.java)
 
@@ -23,9 +23,15 @@ El Investigador consulta únicamente sus recompensas mediante `GET /api/recompen
 
 |Responsabilidad|Código relacionado|
 |-|-|
-|Página React|[RecompensasPage.tsx](/src/frontend/src/pages/RecompensasPage.tsx)|
+|Controlador REST|[RecompensaController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/RecompensaController.java)|
 |Servicio de aplicación|[PanelPrincipalService.java](/src/backend/src/main/java/es/funiber/investigacion/service/PanelPrincipalService.java)|
 |Servicio de aplicación|[RecompensaService.java](/src/backend/src/main/java/es/funiber/investigacion/service/RecompensaService.java)|
+|Servicio de aplicación|[SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java)|
+|Repositorio|[ProyectoRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ProyectoRepository.java)|
+|Repositorio|[RecompensaRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/RecompensaRepository.java)|
+|Entidad de dominio|[Proyecto.java](/src/backend/src/main/java/es/funiber/investigacion/model/Proyecto.java)|
+|Entidad de dominio|[Recompensa.java](/src/backend/src/main/java/es/funiber/investigacion/model/Recompensa.java)|
+|Página React|[RecompensasPage.tsx](/src/frontend/src/pages/RecompensasPage.tsx)|
 |Prueba de integración|[RecompensaIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/RecompensaIntegrationTests.java)|
 
 ## Flujo de datos

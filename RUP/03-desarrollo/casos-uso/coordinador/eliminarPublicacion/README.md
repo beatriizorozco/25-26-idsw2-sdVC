@@ -3,7 +3,7 @@
 > |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/eliminarPublicacion/README.md)|[Análisis](/RUP/01-analisis/casos-uso/coordinador/eliminarPublicacion/README.md)|[Diseño](/RUP/02-diseño/casos-uso/coordinador/eliminarPublicacion/README.md)|**Desarrollo**|Pruebas|
 > |-|-|-|-|-|-|-|
 
-- **Backend:** [Publicacion.java](/src/backend/src/main/java/es/funiber/investigacion/model/Publicacion.java) · [V10__publicaciones.sql](/src/backend/src/main/resources/db/migration/V10__publicaciones.sql)
+- **Backend:** [PublicacionController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/PublicacionController.java) · [PublicacionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/PublicacionService.java) · [SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java) · [PublicacionRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/PublicacionRepository.java) · [Publicacion.java](/src/backend/src/main/java/es/funiber/investigacion/model/Publicacion.java) · [PoliticaPublicacion.java](/src/backend/src/main/java/es/funiber/investigacion/service/PoliticaPublicacion.java)
 - **Pruebas:** [PublicacionIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/PublicacionIntegrationTests.java)
 
 ## Descripción
@@ -22,7 +22,12 @@ Retira publicaciones mediante `DELETE /api/publicaciones/{id}`. La baja es lógi
 
 |Responsabilidad|Código relacionado|
 |-|-|
-|Modelo de dominio|[Publicacion.java](/src/backend/src/main/java/es/funiber/investigacion/model/Publicacion.java)|
+|Controlador REST|[PublicacionController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/PublicacionController.java)|
+|Servicio de aplicación|[PublicacionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/PublicacionService.java)|
+|Servicio de aplicación|[SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java)|
+|Repositorio|[PublicacionRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/PublicacionRepository.java)|
+|Entidad de dominio|[Publicacion.java](/src/backend/src/main/java/es/funiber/investigacion/model/Publicacion.java)|
+|Política de dominio|[PoliticaPublicacion.java](/src/backend/src/main/java/es/funiber/investigacion/service/PoliticaPublicacion.java)|
 |Persistencia|[V10__publicaciones.sql](/src/backend/src/main/resources/db/migration/V10__publicaciones.sql)|
 |Prueba de integración|[PublicacionIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/PublicacionIntegrationTests.java)|
 

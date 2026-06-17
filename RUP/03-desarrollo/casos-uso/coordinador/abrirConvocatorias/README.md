@@ -3,7 +3,7 @@
 > |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/abrirConvocatorias/README.md)|[Análisis](/RUP/01-analisis/casos-uso/coordinador/abrirConvocatorias/README.md)|[Diseño](/RUP/02-diseño/casos-uso/coordinador/abrirConvocatorias/README.md)|**Desarrollo**|Pruebas|
 > |-|-|-|-|-|-|-|
 
-- **Backend:** [ConvocatoriaController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/ConvocatoriaController.java) · [ConsultaConvocatoriaService.java](/src/backend/src/main/java/es/funiber/investigacion/service/ConsultaConvocatoriaService.java) · [ConvocatoriaRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ConvocatoriaRepository.java)
+- **Backend:** [ConvocatoriaController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/ConvocatoriaController.java) · [ConsultaConvocatoriaService.java](/src/backend/src/main/java/es/funiber/investigacion/service/ConsultaConvocatoriaService.java) · [SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java) · [ConvocatoriaRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ConvocatoriaRepository.java) · [Convocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/model/Convocatoria.java) · [PoliticaConvocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/service/PoliticaConvocatoria.java)
 - **Frontend:** [ConvocatoriasPage.tsx](/src/frontend/src/pages/ConvocatoriasPage.tsx)
 - **Pruebas:** [ConvocatoriaIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/ConvocatoriaIntegrationTests.java)
 
@@ -25,7 +25,10 @@ Consulta y filtra las convocatorias incorporadas mediante `GET /api/convocatoria
 |-|-|
 |Controlador REST|[ConvocatoriaController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/ConvocatoriaController.java)|
 |Servicio de aplicación|[ConsultaConvocatoriaService.java](/src/backend/src/main/java/es/funiber/investigacion/service/ConsultaConvocatoriaService.java)|
+|Servicio de aplicación|[SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java)|
 |Repositorio|[ConvocatoriaRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ConvocatoriaRepository.java)|
+|Entidad de dominio|[Convocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/model/Convocatoria.java)|
+|Política de dominio|[PoliticaConvocatoria.java](/src/backend/src/main/java/es/funiber/investigacion/service/PoliticaConvocatoria.java)|
 |Página React|[ConvocatoriasPage.tsx](/src/frontend/src/pages/ConvocatoriasPage.tsx)|
 |Prueba de integración|[ConvocatoriaIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/ConvocatoriaIntegrationTests.java)|
 

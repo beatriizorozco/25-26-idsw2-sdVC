@@ -3,7 +3,7 @@
 > |[🏠️](/README.md)|[📊](/RUP/00-casos-uso/01-actores-casos-uso/diagramas-contexto.md)|[Detalle](/RUP/00-casos-uso/02-detalle/coordinador/abrirEntregables/README.md)|[Análisis](/RUP/01-analisis/casos-uso/coordinador/abrirEntregables/README.md)|[Diseño](/RUP/02-diseño/casos-uso/coordinador/abrirEntregables/README.md)|**Desarrollo**|Pruebas|
 > |-|-|-|-|-|-|-|
 
-- **Backend:** [EntregableController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/EntregableController.java)
+- **Backend:** [EntregableController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/EntregableController.java) · [EntregableService.java](/src/backend/src/main/java/es/funiber/investigacion/service/EntregableService.java) · [SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java) · [EntregableRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/EntregableRepository.java) · [ProyectoRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ProyectoRepository.java) · [Entregable.java](/src/backend/src/main/java/es/funiber/investigacion/model/Entregable.java) · [Proyecto.java](/src/backend/src/main/java/es/funiber/investigacion/model/Proyecto.java)
 - **Frontend:** [EntregablesProyecto.tsx](/src/frontend/src/components/EntregablesProyecto.tsx)
 - **Pruebas:** [EntregableIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/EntregableIntegrationTests.java)
 
@@ -24,6 +24,12 @@
 |Responsabilidad|Código relacionado|
 |-|-|
 |Controlador REST|[EntregableController.java](/src/backend/src/main/java/es/funiber/investigacion/controller/EntregableController.java)|
+|Servicio de aplicación|[EntregableService.java](/src/backend/src/main/java/es/funiber/investigacion/service/EntregableService.java)|
+|Servicio de aplicación|[SesionService.java](/src/backend/src/main/java/es/funiber/investigacion/service/SesionService.java)|
+|Repositorio|[EntregableRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/EntregableRepository.java)|
+|Repositorio|[ProyectoRepository.java](/src/backend/src/main/java/es/funiber/investigacion/repository/ProyectoRepository.java)|
+|Entidad de dominio|[Entregable.java](/src/backend/src/main/java/es/funiber/investigacion/model/Entregable.java)|
+|Entidad de dominio|[Proyecto.java](/src/backend/src/main/java/es/funiber/investigacion/model/Proyecto.java)|
 |Componente React|[EntregablesProyecto.tsx](/src/frontend/src/components/EntregablesProyecto.tsx)|
 |Prueba de integración|[EntregableIntegrationTests.java](/src/backend/src/test/java/es/funiber/investigacion/controller/EntregableIntegrationTests.java)|
 
